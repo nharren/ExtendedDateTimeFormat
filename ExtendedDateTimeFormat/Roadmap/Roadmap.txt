@@ -1,0 +1,5 @@
+﻿1. Optimize (string literals, for instance).
+2. Add more tests.
+3. Possibly validate time zone offsets against list of known offsets: http://en.wikipedia.org/wiki/List_of_UTC_time_offsets
+4. Possibly separate out validation logic.
+5. Add XML Documentation
