@@ -1,4 +1,5 @@
 using System.ExtendedDateTimeFormat.Converters;
+using System.ExtendedDateTimeFormat.Parsers;
 using System.ExtendedDateTimeFormat.Serializers;
 
 namespace System.ExtendedDateTimeFormat
@@ -10,6 +11,11 @@ namespace System.ExtendedDateTimeFormat
         new public string Month { get; set; }
 
         new public string Day { get; set; }
+
+        public static ShortFormExtendedDateTime Parse(string shortFormExtendedDateTimeString)
+        {
+            return ShortFormExtendedDateTimeParser.Parse(shortFormExtendedDateTimeString);
+        }
 
         public ExtendedDateTimeExclusiveSet ToExclusiveSet(bool allowUnspecified = false)
         {

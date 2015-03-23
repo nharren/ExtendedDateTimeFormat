@@ -229,9 +229,9 @@ namespace System.ExtendedDateTimeFormat.Serializers
                     return "Error: An hour cannot exist without a day.";
                 }
 
-                if (extendedDateTime.Hour.Value < 0 || extendedDateTime.Hour.Value > 23)
+                if (extendedDateTime.Hour.Value < 0 || extendedDateTime.Hour.Value > 24)
                 {
-                    return "Error: An hour must be a number from 0 to 23.";
+                    return "Error: An hour must be a number from 0 to 24.";
                 }
 
                 stringBuilder.Append('T');

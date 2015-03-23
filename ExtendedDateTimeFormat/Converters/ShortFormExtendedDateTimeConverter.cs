@@ -45,17 +45,17 @@
 
             if (shortFormExtendedDateTime.Year == null)
             {
-                throw new Exception("A date must have a year.");
+                throw new ConversionException("A date must have a year.");
             }
 
             if (shortFormExtendedDateTime.Year.StartsWith("y"))
             {
-                throw new Exception("Cannot convert a short-hand long-form date to an exclusive set.");
+                throw new ConversionException("Cannot convert a short-hand long-form date to an exclusive set.");
             }
 
             if (shortFormExtendedDateTime.Year.Length != 4 && !(shortFormExtendedDateTime.Year.Length == 5 && shortFormExtendedDateTime.Year.StartsWith("-")))
             {
-                throw new Exception("A year must be four characters long.");
+                throw new ConversionException("A year must be four characters long.");
             }
 
             for (int i = 0; i < shortFormExtendedDateTime.Year.Length; i++)
@@ -107,7 +107,7 @@
 
             if (shortFormExtendedDateTime.Month.Length != 2)
             {
-                throw new Exception("A month must be two characters long.");
+                throw new ConversionException("A month must be two characters long.");
             }
 
             for (int i = 0; i < 2; i++)
@@ -153,7 +153,7 @@
 
             if (shortFormExtendedDateTime.Day.Length != 2)
             {
-                throw new Exception("A day must be two characters long.");
+                throw new ConversionException("A day must be two characters long.");
             }
 
             var daysInMonth = ExtendedDateTime.DaysInMonth(endExtendedDateTime.Year.Value, endExtendedDateTime.Month.Value);
@@ -207,7 +207,7 @@
                         }
                         else
                         {
-                            throw new Exception("The day must be between 1 and 31.");
+                            throw new ConversionException("The day must be between 1 and 31.");
                         }
                     }
                 }
