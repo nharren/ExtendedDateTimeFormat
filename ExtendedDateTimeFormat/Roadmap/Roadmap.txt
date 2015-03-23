@@ -3,4 +3,3 @@
 3. Validate time zone offsets against list of known offsets: http://en.wikipedia.org/wiki/List_of_UTC_time_offsets
 4. Validators
 5. XML Documentation
-6. Include Parse method in each object which redirects the request to the appropriate parser.
