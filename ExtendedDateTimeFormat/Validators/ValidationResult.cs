@@ -8,7 +8,7 @@ namespace System.ExtendedDateTimeFormat.Validators
 {
     public struct ValidationResult
     {
-        public List<string> Errors { get; set; }
+        public List<string> Errors { get; internal set; }
 
         public ValidationResult()
         {

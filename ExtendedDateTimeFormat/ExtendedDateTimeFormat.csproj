@@ -71,6 +71,9 @@
     <Compile Include="Serializers\ShortFormExtendedDateTimeSerializer.cs" />
     <Compile Include="ShortFormExtendedDateTime.cs" />
     <Compile Include="TimeZone.cs" />
+    <Compile Include="Validators\ExtendedDateTimeValidator.cs" />
+    <Compile Include="Validators\ValidationLevel.cs" />
+    <Compile Include="Validators\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagrams\Primary Classes.mdj" />

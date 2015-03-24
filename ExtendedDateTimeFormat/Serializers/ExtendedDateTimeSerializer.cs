@@ -37,6 +37,10 @@ namespace System.ExtendedDateTimeFormat.Serializers
                     stringBuilder.Append(extendedDateTime.Year.Value.ToString("D4"));
                 }
             }
+            else
+            {
+                return "Error: An extended date time string must have a year.";
+            }
 
             if (extendedDateTime.YearExponent.HasValue)
             {
