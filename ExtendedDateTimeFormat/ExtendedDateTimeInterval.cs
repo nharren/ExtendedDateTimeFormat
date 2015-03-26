@@ -1,5 +1,4 @@
-using System.ExtendedDateTimeFormat.Parsers;
-using System.ExtendedDateTimeFormat.Serializers;
+using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
@@ -8,11 +7,6 @@ namespace System.ExtendedDateTimeFormat
         public IExtendedDateTimeType End { get; set; }
 
         public IExtendedDateTimeType Start { get; set; }
-
-        public static ExtendedDateTimeInterval Parse(string extendedDateTimeIntervalString)
-        {
-            return ExtendedDateTimeIntervalParser.Parse(extendedDateTimeIntervalString);
-        }
 
         public override string ToString()
         {

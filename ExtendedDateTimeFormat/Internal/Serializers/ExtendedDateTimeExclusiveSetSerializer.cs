@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace System.ExtendedDateTimeFormat.Serializers
+namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
-    public static class ExtendedDateTimeExclusiveSetSerializer
+    internal static class ExtendedDateTimeExclusiveSetSerializer
     {
         public static string Serialize(ExtendedDateTimeExclusiveSet extendedDateTimeExclusiveSet)
         {

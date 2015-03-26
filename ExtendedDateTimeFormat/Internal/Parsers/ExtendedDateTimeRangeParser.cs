@@ -1,6 +1,6 @@
-﻿namespace System.ExtendedDateTimeFormat.Parsers
+﻿namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    public static class ExtendedDateTimeRangeParser
+    internal static class ExtendedDateTimeRangeParser
     {
         public static ExtendedDateTimeRange Parse(string extendedDateTimeRangeString)
         {

@@ -1,4 +1,4 @@
-﻿namespace System.ExtendedDateTimeFormat.Parsers
+﻿namespace System.ExtendedDateTimeFormat
 {
     [Serializable]
     public class ParseException : Exception

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System.ExtendedDateTimeFormat.Parsers
+namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    public static class ShortFormExtendedDateTimeParser
+    internal static class ShortFormExtendedDateTimeParser
     {
         public static ShortFormExtendedDateTime Parse(string shortFormExtendedDateTimeString)
         {

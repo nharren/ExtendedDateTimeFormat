@@ -1,31 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System.ExtendedDateTimeFormat.Parsers
+namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    public static class ExtendedDateTimeExclusiveSetParser
+    internal static class ExtendedDateTimeInclusiveSetParser
     {
-        public static ExtendedDateTimeExclusiveSet Parse(string extendedDateTimeExclusiveSetString)
+        public static ExtendedDateTimeInclusiveSet Parse(string extendedDateTimeInclusiveSetString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeExclusiveSetString))
+            if (string.IsNullOrWhiteSpace(extendedDateTimeInclusiveSetString))
             {
                 return null;
             }
 
-            var hasStartBrace = extendedDateTimeExclusiveSetString[0] == '[';
-            var hasEndBrace = extendedDateTimeExclusiveSetString[extendedDateTimeExclusiveSetString.Length - 1] == ']';
+            var hasStartBrace = extendedDateTimeInclusiveSetString[0] == '{';
+            var hasEndBrace = extendedDateTimeInclusiveSetString[extendedDateTimeInclusiveSetString.Length - 1] == '}';
 
             if (!hasStartBrace || !hasEndBrace)
             {
-                throw new ParseException("An exclusive set string must be surrounded by square brackets.", extendedDateTimeExclusiveSetString);
+                throw new ParseException("An inclusive set string must be surrounded by curly braces.", extendedDateTimeInclusiveSetString);
             }
 
-            var contentsString = extendedDateTimeExclusiveSetString.Substring(1, extendedDateTimeExclusiveSetString.Length - 2);
+            var contentsString = extendedDateTimeInclusiveSetString.Substring(1, extendedDateTimeInclusiveSetString.Length - 2);
             var closingChar = (char?)null;
             var setRanges = new Dictionary<int, int>();             // A dictionary of indexes where sets begin and end within the contents string.
             var setStartingIndex = (int?)null;
 
-            for (int i = 0; i < contentsString.Length; i++)        // Locate nested sets.
+            for (int i = 0; i < contentsString.Length; i++)         // Locate nested sets.
             {
                 if (contentsString[i] == '{' && setStartingIndex == null)
                 {
@@ -49,7 +49,7 @@ namespace System.ExtendedDateTimeFormat.Parsers
 
             var currentSetRangeIndex = 0;
             var remainingChars = new List<char>();
-            var exclusiveSet = new ExtendedDateTimeExclusiveSet();
+            var inclusiveSet = new ExtendedDateTimeInclusiveSet();
 
             for (int i = 0; i < contentsString.Length; i++)                                     // Add set contents, including nested sets.
             {
@@ -63,15 +63,15 @@ namespace System.ExtendedDateTimeFormat.Parsers
                     {
                         if (preceedingElementString.Contains(".."))
                         {
-                            exclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeRangeParser.Parse(preceedingElementString));
+                            inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeRangeParser.Parse(preceedingElementString));
                         }
                         else if (preceedingElementString.Contains('u') || preceedingElementString.Contains('x'))
                         {
-                            exclusiveSet.Add((IExtendedDateTimeSetType)ShortFormExtendedDateTimeParser.Parse(preceedingElementString));
+                            inclusiveSet.Add((IExtendedDateTimeSetType)ShortFormExtendedDateTimeParser.Parse(preceedingElementString));
                         }
                         else
                         {
-                            exclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeParser.Parse(preceedingElementString));
+                            inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeParser.Parse(preceedingElementString));
                         }
                     }
 
@@ -81,11 +81,11 @@ namespace System.ExtendedDateTimeFormat.Parsers
 
                     if (setString[0] == '{')
                     {
-                        exclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeInclusiveSetParser.Parse(setString));
+                        inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeInclusiveSetParser.Parse(setString));
                     }
                     else
                     {
-                        exclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeExclusiveSetParser.Parse(setString));
+                        inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeExclusiveSetParser.Parse(setString));
                     }
 
                     i = setRanges[i];
@@ -105,19 +105,19 @@ namespace System.ExtendedDateTimeFormat.Parsers
             {
                 if (remainingElementString.Contains(".."))
                 {
-                    exclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeRangeParser.Parse(remainingElementString));
+                    inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeRangeParser.Parse(remainingElementString));
                 }
                 else if (remainingElementString.Contains('u') || remainingElementString.Contains('x'))
                 {
-                    exclusiveSet.Add((IExtendedDateTimeSetType)ShortFormExtendedDateTimeParser.Parse(remainingElementString));
+                    inclusiveSet.Add((IExtendedDateTimeSetType)ShortFormExtendedDateTimeParser.Parse(remainingElementString));
                 }
                 else
                 {
-                    exclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeParser.Parse(remainingElementString));
+                    inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeParser.Parse(remainingElementString));
                 }
             }
 
-            return exclusiveSet;
+            return inclusiveSet;
         }
     }
 }

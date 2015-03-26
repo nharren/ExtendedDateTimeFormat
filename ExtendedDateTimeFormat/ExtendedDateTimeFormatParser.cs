@@ -1,6 +1,7 @@
+using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.Linq;
 
-namespace System.ExtendedDateTimeFormat.Parsers
+namespace System.ExtendedDateTimeFormat
 {
     public static class ExtendedDateTimeFormatParser
     {

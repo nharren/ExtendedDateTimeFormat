@@ -1,6 +1,5 @@
-using System.ExtendedDateTimeFormat.Parsers;
-using System.ExtendedDateTimeFormat.Serializers;
 
+using System.ExtendedDateTimeFormat.Internal.Serializers;
 namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTime : ISingleExtendedDateTimeType
@@ -73,11 +72,6 @@ namespace System.ExtendedDateTimeFormat
             int[] days = isLeapYear ? DaysToMonth366 : DaysToMonth365;
 
             return days[month] - days[month - 1];
-        }
-
-        public static ExtendedDateTime Parse(string extendedDateTimeString)
-        {
-            return ExtendedDateTimeParser.Parse(extendedDateTimeString);
         }
 
         public override string ToString()

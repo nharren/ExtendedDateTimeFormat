@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 
-namespace System.ExtendedDateTimeFormat.Parsers
+namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    public static class ExtendedDateTimeIntervalParser
+    internal static class ExtendedDateTimeIntervalParser
     {
         public static ExtendedDateTimeInterval Parse(string extendedDateTimeIntervalString)
         {

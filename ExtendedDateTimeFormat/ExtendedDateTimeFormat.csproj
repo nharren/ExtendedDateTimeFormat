@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,37 +44,34 @@
     <Compile Include="Converters\ShortFormExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
     <Compile Include="ExtendedDateTimeExclusiveSet.cs" />
-    <Compile Include="Parsers\ExtendedDateTimeExclusiveSetParser.cs" />
+    <Compile Include="Internal\Parsers\ExtendedDateTimeExclusiveSetParser.cs" />
     <Compile Include="ExtendedDateTimeFlags.cs" />
-    <Compile Include="Parsers\ExtendedDateTimeFormatParser.cs" />
+    <Compile Include="ExtendedDateTimeFormatParser.cs" />
     <Compile Include="ExtendedDateTimeInclusiveSet.cs" />
-    <Compile Include="Parsers\ExtendedDateTimeInclusiveSetParser.cs" />
+    <Compile Include="Internal\Parsers\ExtendedDateTimeInclusiveSetParser.cs" />
     <Compile Include="ExtendedDateTimeInterval.cs" />
-    <Compile Include="Parsers\ExtendedDateTimeIntervalParser.cs" />
-    <Compile Include="Parsers\ExtendedDateTimeParser.cs" />
+    <Compile Include="Internal\Parsers\ExtendedDateTimeIntervalParser.cs" />
+    <Compile Include="Internal\Parsers\ExtendedDateTimeParser.cs" />
     <Compile Include="ExtendedDateTimeRange.cs" />
-    <Compile Include="Parsers\ExtendedDateTimeRangeParser.cs" />
-    <Compile Include="Parsers\ShortFormExtendedDateTimeParser.cs">
+    <Compile Include="Internal\Parsers\ExtendedDateTimeRangeParser.cs" />
+    <Compile Include="Internal\Parsers\ShortFormExtendedDateTimeParser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serializers\ExtendedDateTimeExclusiveSetSerializer.cs" />
-    <Compile Include="Serializers\ExtendedDateTimeInclusiveSetSerializer.cs" />
-    <Compile Include="Serializers\ExtendedDateTimeIntervalSerializer.cs" />
-    <Compile Include="Serializers\ExtendedDateTimeRangeSerializer.cs" />
-    <Compile Include="Serializers\ExtendedDateTimeSerializer.cs" />
+    <Compile Include="Internal\Serializers\ExtendedDateTimeExclusiveSetSerializer.cs" />
+    <Compile Include="Internal\Serializers\ExtendedDateTimeInclusiveSetSerializer.cs" />
+    <Compile Include="Internal\Serializers\ExtendedDateTimeIntervalSerializer.cs" />
+    <Compile Include="Internal\Serializers\ExtendedDateTimeRangeSerializer.cs" />
+    <Compile Include="Internal\Serializers\ExtendedDateTimeSerializer.cs" />
     <Compile Include="IExtendedDateTimeIndependentType.cs" />
     <Compile Include="IExtendedDateTimeType.cs" />
     <Compile Include="IExtendedDateTimeSetType.cs" />
     <Compile Include="ISingleExtendedDateTimeType.cs" />
-    <Compile Include="Parsers\ParseException.cs" />
+    <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Season.cs" />
-    <Compile Include="Serializers\ShortFormExtendedDateTimeSerializer.cs" />
+    <Compile Include="Internal\Serializers\ShortFormExtendedDateTimeSerializer.cs" />
     <Compile Include="ShortFormExtendedDateTime.cs" />
     <Compile Include="TimeZone.cs" />
-    <Compile Include="Validators\ExtendedDateTimeValidator.cs" />
-    <Compile Include="Validators\ValidationLevel.cs" />
-    <Compile Include="Validators\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagrams\Primary Classes.mdj" />
