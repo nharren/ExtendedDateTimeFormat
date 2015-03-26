@@ -73,7 +73,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                         if (currentScope < 0)
                         {
-                            throw new ParseException("There were more scopes closed then were opened.", new string(componentBuffer.ToArray()));
+                            throw new ParseException("There are more closed scopes than opened.", new string(componentBuffer.ToArray()));
                         }
                     }
                     else if (char.IsDigit(extendedDateTimeCharacter))                            // Add digit to component buffer.
@@ -135,7 +135,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else
                     {
-                        throw new ParseException("The character \'" + extendedDateTimeCharacter + "\' in the extended date time string could not be recognized.", new string(componentBuffer.ToArray()));
+                        throw new ParseException("The character \'" + extendedDateTimeCharacter + "\' could not be recognized.", new string(componentBuffer.ToArray()));
                     }
                 }
                 else                                                                                                           // Parsing time portion of extended date time.
@@ -162,7 +162,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else
                     {
-                        throw new ParseException("The character \'" + extendedDateTimeCharacter + "\' in the extended date time string could not be recognized.", new string(componentBuffer.ToArray()));
+                        throw new ParseException("The character \'" + extendedDateTimeCharacter + "\' could not be recognized.", new string(componentBuffer.ToArray()));
                     }
                 }
             }
@@ -181,7 +181,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             if (currentScope > 0)
             {
-                throw new ParseException("There were more scopes opened then were closed.", new string(componentBuffer.ToArray()));
+                throw new ParseException("There are more opened scopes than closed.", new string(componentBuffer.ToArray()));
             }
 
             return extendedDateTime;
@@ -193,11 +193,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (componentString.Any(c => !char.IsDigit(c)))
                 {
-                    throw new ParseException("An hour component must contain only digits.", componentString);
+                    throw new ParseException("The hour must be a number.", componentString);
                 }
                 else if (componentString.Length != 2)
                 {
-                    throw new ParseException("An hour component must contain exactly two digits.", componentString);
+                    throw new ParseException("The hour must have exactly two digits.", componentString);
                 }
 
                 extendedDateTime.Hour = int.Parse(componentString);
@@ -208,11 +208,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (componentString.Any(c => !char.IsDigit(c)))
                 {
-                    throw new ParseException("A minute component must contain only digits.", componentString);
+                    throw new ParseException("The minute must be a number.", componentString);
                 }
                 else if (componentString.Length != 2)
                 {
-                    throw new ParseException("A minute component must contain exactly two digits.", componentString);
+                    throw new ParseException("The minute must contain exactly two digits.", componentString);
                 }
 
                 extendedDateTime.Minute = int.Parse(componentString);
@@ -223,11 +223,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (componentString.Any(c => !char.IsDigit(c)))
                 {
-                    throw new ParseException("A second (the time quantity) component must contain only digits.", componentString);
+                    throw new ParseException("The second must be a number.", componentString);
                 }
                 else if (componentString.Length != 2)
                 {
-                    throw new ParseException("A second (the time quantity) component must contain exactly two digits.", componentString);
+                    throw new ParseException("The second must have two digits.", componentString);
                 }
 
                 extendedDateTime.Second = int.Parse(componentString);
@@ -248,26 +248,26 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     if (timeZoneOffsetComponentStrings.Length == 0)
                     {
-                        throw new ParseException("A time zone offset must contain at least two digits to indicate the hour offset.", componentString);
+                        throw new ParseException("The time zone offset must have at least two digits.", componentString);
                     }
 
                     var hourOffsetString = timeZoneOffsetComponentStrings[0];                        // Time zone hours offset.
 
                     if (hourOffsetString.Any(c => !char.IsDigit(c) && c != '+' && c != '-'))
                     {
-                        throw new ParseException("A time zone hour offset must contain only digits.", hourOffsetString);
+                        throw new ParseException("The time zone hour offset must be a number.", hourOffsetString);
                     }
 
                     if (hourOffsetString.StartsWith("+") || hourOffsetString.StartsWith("-"))
                     {
                         if (hourOffsetString.Length != 3)
                         {
-                            throw new ParseException("A time zone hour offset must contain exactly two digits.", hourOffsetString);
+                            throw new ParseException("The time zone hour offset must have exactly two digits.", hourOffsetString);
                         }
                     }
                     else if (hourOffsetString.Length != 2)
                     {
-                        throw new ParseException("A time zone hour offset must contain exactly two digits.", hourOffsetString);
+                        throw new ParseException("The time zone hour offset must have exactly two digits.", hourOffsetString);
                     }
 
                     extendedDateTime.TimeZone.HourOffset = int.Parse(hourOffsetString);
@@ -278,11 +278,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                         if (minuteOffsetString.Any(c => !char.IsDigit(c)))
                         {
-                            throw new ParseException("A time zone minute offset must contain only digits.", minuteOffsetString);
+                            throw new ParseException("The time zone minute offset must be a number.", minuteOffsetString);
                         }
                         else if (minuteOffsetString.Length != 2)
                         {
-                            throw new ParseException("A time zone minute offset must contain exactly two digits.", minuteOffsetString);
+                            throw new ParseException("The time zone minute offset must have exactly two digits.", minuteOffsetString);
                         }
 
                         extendedDateTime.TimeZone.MinuteOffset = int.Parse(minuteOffsetString);
@@ -290,13 +290,13 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     if (timeZoneOffsetComponentStrings.Length > 2)
                     {
-                        throw new ParseException("A time zone offset can contain at most two components: One for hours and one for minutes.", componentString);
+                        throw new ParseException("The time zone offset can have at most two components: hours and minutes.", componentString);
                     }
                 }
             }
             else
             {
-                throw new ParseException("There can be at most three time components exluding a time zone component.", componentString);
+                throw new ParseException("The time can have at most three components excluding the time zone.", componentString);
             }
         }
 
@@ -306,7 +306,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (componentString.Length < 4)
                 {
-                    throw new ParseException("A year must be at least four characters long.", new string(componentString.ToArray()));
+                    throw new ParseException("The year must have at least four digits.", new string(componentString.ToArray()));
                 }
 
                 var isLongFormYear = false;
@@ -343,7 +343,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else
                     {
-                        throw new ParseException("A year string is invalid.", new string(componentString.ToArray()));
+                        throw new ParseException("The year is invalid.", new string(componentString.ToArray()));
                     }
                 }
 
@@ -382,18 +382,18 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     if (componentString.Length != 2)
                     {
-                        throw new ParseException("A season string excluding a qualifier must be two digits long.", componentString);
+                        throw new ParseException("The season must have two digits (excluding the qualifier).", componentString);
                     }
                     else if (componentString.Any(c => !char.IsDigit(c)))
                     {
-                        throw new ParseException("A season string excluding a qualifier can contain digits only.", componentString);
+                        throw new ParseException("The season must be a number (excluding the qualifier).", componentString);
                     }
 
                     var seasonInteger = int.Parse(componentString);
 
                     if (seasonInteger < 21 || seasonInteger > 24)
                     {
-                        throw new ParseException("A season string must be a number between 21 and 24.", componentString);
+                        throw new ParseException("The season must be between 21 and 24.", componentString);
                     }
 
                     extendedDateTime.Season = (Season)seasonInteger;
@@ -406,18 +406,18 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 {
                     if (componentString.Length != 2)
                     {
-                        throw new ParseException("A month string excluding a qualifier must be two digits long.", componentString);
+                        throw new ParseException("The month must have two digits.", componentString);
                     }
                     else if (componentString.Any(c => !char.IsDigit(c)))
                     {
-                        throw new ParseException("A month string excluding a qualifier can contain digits only.", componentString);
+                        throw new ParseException("The month must be a number.", componentString);
                     }
 
                     var monthInteger = int.Parse(componentString);
 
                     if (monthInteger < 1 || monthInteger > 12)
                     {
-                        throw new ParseException("A month string must be a number between 01 and 12.", componentString);
+                        throw new ParseException("The month must be between 1 and 12.", componentString);
                     }
 
                     extendedDateTime.Month = monthInteger;
@@ -431,23 +431,23 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (hasSeasonComponent)
                 {
-                    throw new ParseException("A date string with a season cannot also have a day.", componentString);
+                    throw new ParseException("A season and day cannot coexist.", componentString);
                 }
 
                 if (componentString.Length != 2)
                 {
-                    throw new ParseException("A day string excluding a qualifier must be two digits long.", componentString);
+                    throw new ParseException("The day must have two digits.", componentString);
                 }
                 else if (componentString.Any(c => !char.IsDigit(c)))
                 {
-                    throw new ParseException("A day string excluding a qualifier can contain digits only.", componentString);
+                    throw new ParseException("The day must be a number.", componentString);
                 }
 
                 var dayInteger = int.Parse(componentString);
 
                 if (dayInteger < 1 || dayInteger > 31)
                 {
-                    throw new ParseException("A day string must be a number between 01 and 31.", componentString);
+                    throw new ParseException("The day must be between 1 and 31.", componentString);
                 }
 
                 var daysInMonth = ExtendedDateTime.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
@@ -465,7 +465,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             }
             else if (dateComponentIndex > 2)
             {
-                throw new ParseException("A date string can have at most three components.", componentString);
+                throw new ParseException("The date can have at most three components.", componentString);
             }
         }
 
