@@ -4,9 +4,9 @@ namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTimeInterval : IExtendedDateTimeIndependentType
     {
-        public IExtendedDateTimeNestedType End { get; set; }
+        public IExtendedDateTimeNestingType End { get; set; }
 
-        public IExtendedDateTimeNestedType Start { get; set; }
+        public IExtendedDateTimeNestingType Start { get; set; }
 
         public override string ToString()
         {

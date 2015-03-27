@@ -43,12 +43,12 @@
     <Compile Include="Converters\ConversionException.cs" />
     <Compile Include="Converters\IncompleteExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
-    <Compile Include="ExtendedDateTimeExclusiveSet.cs" />
-    <Compile Include="Internal\Parsers\ExtendedDateTimeExclusiveSetParser.cs" />
+    <Compile Include="ExtendedDateTimePossibilityCollection.cs" />
+    <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
     <Compile Include="ExtendedDateTimeFlags.cs" />
     <Compile Include="ExtendedDateTimeFormatParser.cs" />
-    <Compile Include="ExtendedDateTimeInclusiveSet.cs" />
-    <Compile Include="Internal\Parsers\ExtendedDateTimeInclusiveSetParser.cs" />
+    <Compile Include="ExtendedDateTimeCollection.cs" />
+    <Compile Include="Internal\Parsers\ExtendedDateTimeCollectionParser.cs" />
     <Compile Include="ExtendedDateTimeInterval.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeIntervalParser.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeParser.cs" />
@@ -57,14 +57,14 @@
     <Compile Include="Internal\Parsers\IncompleteExtendedDateTimeParser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Internal\Serializers\ExtendedDateTimeExclusiveSetSerializer.cs" />
-    <Compile Include="Internal\Serializers\ExtendedDateTimeInclusiveSetSerializer.cs" />
+    <Compile Include="Internal\Serializers\ExtendedDateTimePossibilityCollectionSerializer.cs" />
+    <Compile Include="Internal\Serializers\ExtendedDateTimeCollectionSerializer.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimeIntervalSerializer.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimeRangeSerializer.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimeSerializer.cs" />
     <Compile Include="IExtendedDateTimeIndependentType.cs" />
-    <Compile Include="IExtendedDateTimeNestedType.cs" />
-    <Compile Include="IExtendedDateTimeSetType.cs" />
+    <Compile Include="IExtendedDateTimeNestingType.cs" />
+    <Compile Include="IExtendedDateTimeCollectionChild.cs" />
     <Compile Include="ISingleExtendedDateTimeType.cs" />
     <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

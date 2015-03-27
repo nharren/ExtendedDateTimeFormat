@@ -174,13 +174,13 @@ namespace ExtendedDateTimeFormatTests
 
                 // Conversion from Unpsecified or Masked To One of a Set
 
-                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("15uu-12-uu")).ToExclusiveSet(true).ToString(),
-                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("196x")).ToExclusiveSet().ToString(),
-                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1999-uu-uu")).ToExclusiveSet(true).ToString(),
-                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-uu-uu")).ToExclusiveSet(true).ToString(),
-                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-02-uu")).ToExclusiveSet(true).ToString(),
-                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-31")).ToExclusiveSet(true).ToString(),
-                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-3u")).ToExclusiveSet(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("15uu-12-uu")).ToPossibilityCollection(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("196x")).ToPossibilityCollection().ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1999-uu-uu")).ToPossibilityCollection(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-uu-uu")).ToPossibilityCollection(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-02-uu")).ToPossibilityCollection(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-31")).ToPossibilityCollection(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-3u")).ToPossibilityCollection(true).ToString(),
             };
 
             var allStrings = specificationStrings.Concat(malformedStrings).Concat(otherStrings);
@@ -214,13 +214,13 @@ namespace ExtendedDateTimeFormatTests
                     {
                         WriteExtendedDateTimeInterval(1, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
                     }
-                    else if (extendedDateTimeObject is ExtendedDateTimeExclusiveSet)
+                    else if (extendedDateTimeObject is ExtendedDateTimePossibilityCollection)
                     {
-                        WriteExtendedDateTimeExclusiveSet(1, (ExtendedDateTimeExclusiveSet)extendedDateTimeObject, stringBuilder);
+                        WriteExtendedDateTimePossibilityCollection(1, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
                     }
-                    else if (extendedDateTimeObject is ExtendedDateTimeInclusiveSet)
+                    else if (extendedDateTimeObject is ExtendedDateTimeCollection)
                     {
-                        WriteExtendedDateTimeInclusiveSet(1, (ExtendedDateTimeInclusiveSet)extendedDateTimeObject, stringBuilder);
+                        WriteExtendedDateTimeCollection(1, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
                     }
                     else if (extendedDateTimeObject is IncompleteExtendedDateTime)
                     {
@@ -449,19 +449,19 @@ namespace ExtendedDateTimeFormatTests
             }
         }
 
-        private static void WriteExtendedDateTimeInclusiveSet(int startingIndent, ExtendedDateTimeInclusiveSet extendedDateTimeInclusiveSet, StringBuilder stringBuilder)
+        private static void WriteExtendedDateTimeCollection(int startingIndent, ExtendedDateTimeCollection extendedDateTimeCollection, StringBuilder stringBuilder)
         {
-            stringBuilder.AppendLine("[ExtendedDateTimeInclusiveSet]".Indent(startingIndent) + " (\"" + extendedDateTimeInclusiveSet.ToString() + "\")");
+            stringBuilder.AppendLine("[ExtendedDateTimeCollection]".Indent(startingIndent) + " (\"" + extendedDateTimeCollection.ToString() + "\")");
 
-            foreach (var item in extendedDateTimeInclusiveSet)
+            foreach (var item in extendedDateTimeCollection)
             {
-                if (item is ExtendedDateTimeExclusiveSet)
+                if (item is ExtendedDateTimePossibilityCollection)
                 {
-                    WriteExtendedDateTimeExclusiveSet(startingIndent + 1, (ExtendedDateTimeExclusiveSet)item, stringBuilder);
+                    WriteExtendedDateTimePossibilityCollection(startingIndent + 1, (ExtendedDateTimePossibilityCollection)item, stringBuilder);
                 }
-                else if (item is ExtendedDateTimeInclusiveSet)
+                else if (item is ExtendedDateTimeCollection)
                 {
-                    WriteExtendedDateTimeInclusiveSet(startingIndent + 1, (ExtendedDateTimeInclusiveSet)item, stringBuilder);
+                    WriteExtendedDateTimeCollection(startingIndent + 1, (ExtendedDateTimeCollection)item, stringBuilder);
                 }
                 else if (item is ExtendedDateTimeRange)
                 {
@@ -478,19 +478,19 @@ namespace ExtendedDateTimeFormatTests
             }
         }
 
-        private static void WriteExtendedDateTimeExclusiveSet(int startingIndent, ExtendedDateTimeExclusiveSet extendedDateTimeExclusiveSet, StringBuilder stringBuilder)
+        private static void WriteExtendedDateTimePossibilityCollection(int startingIndent, ExtendedDateTimePossibilityCollection extendedDateTimePossibilityCollection, StringBuilder stringBuilder)
         {
-            stringBuilder.AppendLine("[ExtendedDateTimeExclusiveSet]".Indent(startingIndent) + " (\"" + extendedDateTimeExclusiveSet.ToString() + "\")");
+            stringBuilder.AppendLine("[ExtendedDateTimePossibilityCollection]".Indent(startingIndent) + " (\"" + extendedDateTimePossibilityCollection.ToString() + "\")");
 
-            foreach (var item in extendedDateTimeExclusiveSet)
+            foreach (var item in extendedDateTimePossibilityCollection)
             {
-                if (item is ExtendedDateTimeExclusiveSet)
+                if (item is ExtendedDateTimePossibilityCollection)
                 {
-                    WriteExtendedDateTimeExclusiveSet(startingIndent + 1, (ExtendedDateTimeExclusiveSet)item, stringBuilder);
+                    WriteExtendedDateTimePossibilityCollection(startingIndent + 1, (ExtendedDateTimePossibilityCollection)item, stringBuilder);
                 }
-                else if (item is ExtendedDateTimeInclusiveSet)
+                else if (item is ExtendedDateTimeCollection)
                 {
-                    WriteExtendedDateTimeInclusiveSet(startingIndent + 1, (ExtendedDateTimeInclusiveSet)item, stringBuilder);
+                    WriteExtendedDateTimeCollection(startingIndent + 1, (ExtendedDateTimeCollection)item, stringBuilder);
                 }
                 else if (item is ExtendedDateTimeRange)
                 {
@@ -512,9 +512,9 @@ namespace ExtendedDateTimeFormatTests
             stringBuilder.AppendLine("[ExtendedDateTimeRange]".Indent(startingIndent) + " (\"" + extendedDateTimeRange.ToString() + "\")");
             stringBuilder.AppendLine("Start:".Indent(startingIndent + 1));
 
-            if (extendedDateTimeRange.Start is ExtendedDateTimeExclusiveSet)
+            if (extendedDateTimeRange.Start is ExtendedDateTimePossibilityCollection)
             {
-                WriteExtendedDateTimeExclusiveSet(startingIndent + 2, (ExtendedDateTimeExclusiveSet)extendedDateTimeRange.Start, stringBuilder);
+                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeRange.Start, stringBuilder);
             }
             else if (extendedDateTimeRange.Start is IncompleteExtendedDateTime)
             {
@@ -527,9 +527,9 @@ namespace ExtendedDateTimeFormatTests
 
             stringBuilder.AppendLine("End:".Indent(startingIndent + 1));
 
-            if (extendedDateTimeRange.End is ExtendedDateTimeExclusiveSet)
+            if (extendedDateTimeRange.End is ExtendedDateTimePossibilityCollection)
             {
-                WriteExtendedDateTimeExclusiveSet(startingIndent + 2, (ExtendedDateTimeExclusiveSet)extendedDateTimeRange.End, stringBuilder);
+                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeRange.End, stringBuilder);
             }
             else if (extendedDateTimeRange.End is IncompleteExtendedDateTime)
             {
@@ -546,13 +546,13 @@ namespace ExtendedDateTimeFormatTests
             stringBuilder.AppendLine("[ExtendedDateTimeInterval]".Indent(startingIndent) + " (\"" + extendedDateTimeInterval.ToString() + "\")");
             stringBuilder.AppendLine("Start:".Indent(startingIndent + 1));
 
-            if (extendedDateTimeInterval.Start is ExtendedDateTimeExclusiveSet)
+            if (extendedDateTimeInterval.Start is ExtendedDateTimePossibilityCollection)
             {
-                WriteExtendedDateTimeExclusiveSet(startingIndent + 2, (ExtendedDateTimeExclusiveSet)extendedDateTimeInterval.Start, stringBuilder);
+                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeInterval.Start, stringBuilder);
             }
-            else if (extendedDateTimeInterval.Start is ExtendedDateTimeInclusiveSet)
+            else if (extendedDateTimeInterval.Start is ExtendedDateTimeCollection)
             {
-                WriteExtendedDateTimeInclusiveSet(startingIndent + 2, (ExtendedDateTimeInclusiveSet)extendedDateTimeInterval.Start, stringBuilder);
+                WriteExtendedDateTimeCollection(startingIndent + 2, (ExtendedDateTimeCollection)extendedDateTimeInterval.Start, stringBuilder);
             }
             else if (extendedDateTimeInterval.Start is IncompleteExtendedDateTime)
             {
@@ -565,13 +565,13 @@ namespace ExtendedDateTimeFormatTests
 
             stringBuilder.AppendLine("End:".Indent(startingIndent + 1));
 
-            if (extendedDateTimeInterval.End is ExtendedDateTimeExclusiveSet)
+            if (extendedDateTimeInterval.End is ExtendedDateTimePossibilityCollection)
             {
-                WriteExtendedDateTimeExclusiveSet(startingIndent + 2, (ExtendedDateTimeExclusiveSet)extendedDateTimeInterval.End, stringBuilder);
+                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeInterval.End, stringBuilder);
             }
-            else if (extendedDateTimeInterval.End is ExtendedDateTimeInclusiveSet)
+            else if (extendedDateTimeInterval.End is ExtendedDateTimeCollection)
             {
-                WriteExtendedDateTimeInclusiveSet(startingIndent + 2, (ExtendedDateTimeInclusiveSet)extendedDateTimeInterval.End, stringBuilder);
+                WriteExtendedDateTimeCollection(startingIndent + 2, (ExtendedDateTimeCollection)extendedDateTimeInterval.End, stringBuilder);
             }
             else if (extendedDateTimeInterval.End is IncompleteExtendedDateTime)
             {

@@ -32,11 +32,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             }
             else if (startString[0] == '{')
             {
-                extendedDateTimeInterval.Start = ExtendedDateTimeInclusiveSetParser.Parse(startString);
+                extendedDateTimeInterval.Start = ExtendedDateTimeCollectionParser.Parse(startString);
             }
             else if (startString[0] == '[')
             {
-                extendedDateTimeInterval.Start = ExtendedDateTimeExclusiveSetParser.Parse(startString);
+                extendedDateTimeInterval.Start = ExtendedDateTimePossibilityCollectionParser.Parse(startString);
             }
             else if (startString.Contains('u') || startString.Contains('x'))
             {
@@ -57,11 +57,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             }
             else if (endString[0] == '{')
             {
-                extendedDateTimeInterval.End = ExtendedDateTimeInclusiveSetParser.Parse(endString);
+                extendedDateTimeInterval.End = ExtendedDateTimeCollectionParser.Parse(endString);
             }
             else if (endString[0] == '[')
             {
-                extendedDateTimeInterval.End = ExtendedDateTimeExclusiveSetParser.Parse(endString);
+                extendedDateTimeInterval.End = ExtendedDateTimePossibilityCollectionParser.Parse(endString);
             }
             else if (endString.Contains('u') || endString.Contains('x'))
             {

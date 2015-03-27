@@ -11,9 +11,9 @@ namespace System.ExtendedDateTimeFormat
 
         new public string Day { get; set; }
 
-        public ExtendedDateTimeExclusiveSet ToExclusiveSet(bool allowUnspecified = false)
+        public ExtendedDateTimePossibilityCollection ToPossibilityCollection(bool allowUnspecified = false)
         {
-            return IncompleteExtendedDateTimeConverter.ToExclusiveSet(this, allowUnspecified);
+            return IncompleteExtendedDateTimeConverter.ToPossibilityCollection(this, allowUnspecified);
         }
 
         public override string ToString()

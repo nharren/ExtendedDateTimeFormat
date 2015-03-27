@@ -3,29 +3,29 @@ using System.Linq;
 
 namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    internal static class ExtendedDateTimeInclusiveSetParser
+    internal static class ExtendedDateTimePossibilityCollectionParser
     {
-        public static ExtendedDateTimeInclusiveSet Parse(string extendedDateTimeInclusiveSetString)
+        public static ExtendedDateTimePossibilityCollection Parse(string extendedDateTimePossibilityCollectionString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeInclusiveSetString))
+            if (string.IsNullOrWhiteSpace(extendedDateTimePossibilityCollectionString))
             {
                 return null;
             }
 
-            var hasStartBrace = extendedDateTimeInclusiveSetString[0] == '{';
-            var hasEndBrace = extendedDateTimeInclusiveSetString[extendedDateTimeInclusiveSetString.Length - 1] == '}';
+            var hasStartBrace = extendedDateTimePossibilityCollectionString[0] == '[';
+            var hasEndBrace = extendedDateTimePossibilityCollectionString[extendedDateTimePossibilityCollectionString.Length - 1] == ']';
 
             if (!hasStartBrace || !hasEndBrace)
             {
-                throw new ParseException("An inclusive set string must be surrounded by curly braces.", extendedDateTimeInclusiveSetString);
+                throw new ParseException("A possibility collection string must be surrounded by square brackets.", extendedDateTimePossibilityCollectionString);
             }
 
-            var contentsString = extendedDateTimeInclusiveSetString.Substring(1, extendedDateTimeInclusiveSetString.Length - 2);
+            var contentsString = extendedDateTimePossibilityCollectionString.Substring(1, extendedDateTimePossibilityCollectionString.Length - 2);
             var closingChar = (char?)null;
             var setRanges = new Dictionary<int, int>();             // A dictionary of indexes where sets begin and end within the contents string.
             var setStartingIndex = (int?)null;
 
-            for (int i = 0; i < contentsString.Length; i++)         // Locate nested sets.
+            for (int i = 0; i < contentsString.Length; i++)        // Locate nested sets.
             {
                 if (contentsString[i] == '{' && setStartingIndex == null)
                 {
@@ -49,7 +49,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             var currentSetRangeIndex = 0;
             var remainingChars = new List<char>();
-            var inclusiveSet = new ExtendedDateTimeInclusiveSet();
+            var possibilityCollection = new ExtendedDateTimePossibilityCollection();
 
             for (int i = 0; i < contentsString.Length; i++)                                     // Add set contents, including nested sets.
             {
@@ -63,15 +63,15 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     {
                         if (preceedingElementString.Contains(".."))
                         {
-                            inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeRangeParser.Parse(preceedingElementString));
+                            possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeRangeParser.Parse(preceedingElementString));
                         }
                         else if (preceedingElementString.Contains('u') || preceedingElementString.Contains('x'))
                         {
-                            inclusiveSet.Add((IExtendedDateTimeSetType)IncompleteExtendedDateTimeParser.Parse(preceedingElementString));
+                            possibilityCollection.Add((IExtendedDateTimeCollectionChild)IncompleteExtendedDateTimeParser.Parse(preceedingElementString));
                         }
                         else
                         {
-                            inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeParser.Parse(preceedingElementString));
+                            possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse(preceedingElementString));
                         }
                     }
 
@@ -81,11 +81,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     if (setString[0] == '{')
                     {
-                        inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeInclusiveSetParser.Parse(setString));
+                        possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeCollectionParser.Parse(setString));
                     }
                     else
                     {
-                        inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeExclusiveSetParser.Parse(setString));
+                        possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimePossibilityCollectionParser.Parse(setString));
                     }
 
                     i = setRanges[i];
@@ -105,19 +105,19 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (remainingElementString.Contains(".."))
                 {
-                    inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeRangeParser.Parse(remainingElementString));
+                    possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeRangeParser.Parse(remainingElementString));
                 }
                 else if (remainingElementString.Contains('u') || remainingElementString.Contains('x'))
                 {
-                    inclusiveSet.Add((IExtendedDateTimeSetType)IncompleteExtendedDateTimeParser.Parse(remainingElementString));
+                    possibilityCollection.Add((IExtendedDateTimeCollectionChild)IncompleteExtendedDateTimeParser.Parse(remainingElementString));
                 }
                 else
                 {
-                    inclusiveSet.Add((IExtendedDateTimeSetType)ExtendedDateTimeParser.Parse(remainingElementString));
+                    possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse(remainingElementString));
                 }
             }
 
-            return inclusiveSet;
+            return possibilityCollection;
         }
     }
 }

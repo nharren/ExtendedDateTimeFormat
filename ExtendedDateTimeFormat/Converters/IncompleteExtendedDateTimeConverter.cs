@@ -2,27 +2,27 @@
 {
     public static class IncompleteExtendedDateTimeConverter
     {
-        public static ExtendedDateTimeExclusiveSet ToExclusiveSet(IncompleteExtendedDateTime incompleteExtendedDateTime, bool allowUnspecified = false)
+        public static ExtendedDateTimePossibilityCollection ToPossibilityCollection(IncompleteExtendedDateTime incompleteExtendedDateTime, bool allowUnspecified = false)
         {
             if (!allowUnspecified)
             {
                 if (incompleteExtendedDateTime.Year != null && incompleteExtendedDateTime.Year.Contains("u"))
                 {
-                    throw new ConversionException("Conversion to exclusive set only works for dates with masked precision by default. Converting unspecified dates would incur a loss in meaning, specifically that the date is imprecise now, but may not be in the future.");
+                    throw new ConversionException("Conversion to a possibility collection only works for dates with masked precision by default. Converting unspecified dates would incur a loss in meaning, specifically that the date is imprecise now, but may not be in the future.");
                 }
 
                 if (incompleteExtendedDateTime.Month != null && incompleteExtendedDateTime.Month.Contains("u"))
                 {
-                    throw new ConversionException("Conversion to exclusive set only works for dates with masked precision by default. Converting unspecified dates would incur a loss in meaning, specifically that the date is imprecise now, but may not be in the future.");
+                    throw new ConversionException("Conversion to possibility collection only works for dates with masked precision by default. Converting unspecified dates would incur a loss in meaning, specifically that the date is imprecise now, but may not be in the future.");
                 }
 
                 if (incompleteExtendedDateTime.Day != null && incompleteExtendedDateTime.Day.Contains("u"))
                 {
-                    throw new ConversionException("Conversion to exclusive set only works for dates with masked precision by default. Converting unspecified dates would incur a loss in meaning, specifically that the date is imprecise now, but may not be in the future.");
+                    throw new ConversionException("Conversion to possibility collection only works for dates with masked precision by default. Converting unspecified dates would incur a loss in meaning, specifically that the date is imprecise now, but may not be in the future.");
                 }
             }
 
-            var extendedDateTimeExclusiveSet = new ExtendedDateTimeExclusiveSet();
+            var extendedDateTimePossibilityCollection = new ExtendedDateTimePossibilityCollection();
             var extendedDateTimeRange = new ExtendedDateTimeRange();
             var startExtendedDateTime = new ExtendedDateTime();
             var endExtendedDateTime = new ExtendedDateTime();
@@ -30,7 +30,7 @@
             extendedDateTimeRange.Start = startExtendedDateTime;
             extendedDateTimeRange.End = endExtendedDateTime;
 
-            extendedDateTimeExclusiveSet.Add(extendedDateTimeRange);
+            extendedDateTimePossibilityCollection.Add(extendedDateTimeRange);
 
             startExtendedDateTime.DayFlags = endExtendedDateTime.DayFlags = incompleteExtendedDateTime.DayFlags;
             startExtendedDateTime.Hour = endExtendedDateTime.Hour = incompleteExtendedDateTime.Hour;
@@ -45,17 +45,17 @@
 
             if (incompleteExtendedDateTime.Year == null)
             {
-                throw new ConversionException("A date must have a year.");
+                throw new ConversionException("The date must have a year.");
             }
 
             if (incompleteExtendedDateTime.Year.StartsWith("y"))
             {
-                throw new ConversionException("Cannot convert a short-hand long-form date to an exclusive set.");
+                throw new ConversionException("Cannot convert a short-hand long-form date to a possibilities collection.");
             }
 
             if (incompleteExtendedDateTime.Year.Length != 4 && !(incompleteExtendedDateTime.Year.Length == 5 && incompleteExtendedDateTime.Year.StartsWith("-")))
             {
-                throw new ConversionException("A year must be four characters long.");
+                throw new ConversionException("The year must be four characters long.");
             }
 
             for (int i = 0; i < incompleteExtendedDateTime.Year.Length; i++)
@@ -102,12 +102,12 @@
 
             if (incompleteExtendedDateTime.Month == null)
             {
-                return extendedDateTimeExclusiveSet;
+                return extendedDateTimePossibilityCollection;
             }
 
             if (incompleteExtendedDateTime.Month.Length != 2)
             {
-                throw new ConversionException("A month must be two characters long.");
+                throw new ConversionException("The month must be two characters long.");
             }
 
             for (int i = 0; i < 2; i++)
@@ -148,12 +148,12 @@
 
             if (incompleteExtendedDateTime.Day == null)
             {
-                return extendedDateTimeExclusiveSet;
+                return extendedDateTimePossibilityCollection;
             }
 
             if (incompleteExtendedDateTime.Day.Length != 2)
             {
-                throw new ConversionException("A day must be two characters long.");
+                throw new ConversionException("The day must be two characters long.");
             }
 
             var daysInMonth = ExtendedDateTime.DaysInMonth(endExtendedDateTime.Year.Value, endExtendedDateTime.Month.Value);
@@ -220,7 +220,7 @@
 
             if (startExtendedDateTime.Day > 28)    // Day count is greater than some months have (If the day specified is "31" for instance, that would exclude all the Februaries.).
             {
-                extendedDateTimeExclusiveSet.Clear();
+                extendedDateTimePossibilityCollection.Clear();
 
                 for (int year = startExtendedDateTime.Year.Value; year <= endExtendedDateTime.Year.Value; year++)
                 {
@@ -248,7 +248,7 @@
                                 extendedDateTime.Month = month;
                                 extendedDateTime.Day = day;
 
-                                extendedDateTimeExclusiveSet.Add(extendedDateTime);
+                                extendedDateTimePossibilityCollection.Add(extendedDateTime);
                             }
                         }
                     }
@@ -256,7 +256,7 @@
 
             }
 
-            return extendedDateTimeExclusiveSet;
+            return extendedDateTimePossibilityCollection;
         }
     }
 }

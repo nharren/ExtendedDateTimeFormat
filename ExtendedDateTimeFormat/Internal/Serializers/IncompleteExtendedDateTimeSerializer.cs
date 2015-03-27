@@ -35,7 +35,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 if (incompleteExtendedDateTime.Year.Length < 4)
                 {
-                    return "Error: A year must be at least four characters long.";
+                    return "Error: The year must be at least four characters long.";
                 }
 
                 stringBuilder.Append(incompleteExtendedDateTime.Year);
@@ -45,7 +45,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
             {
                 if (incompleteExtendedDateTime.Year == null)
                 {
-                    return "Error: A year exponent cannot exist without a year.";
+                    return "Error: Ae year exponent cannot exist without a year.";
                 }
 
                 if (!isLongFormYear)

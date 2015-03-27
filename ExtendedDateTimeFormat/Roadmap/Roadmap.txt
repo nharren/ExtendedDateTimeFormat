@@ -1,3 +1,4 @@
 1. Optimize (string literals, for instance).
 2. More test strings
 3. XML Documentation
+4. Re-check validation logic against the spec.

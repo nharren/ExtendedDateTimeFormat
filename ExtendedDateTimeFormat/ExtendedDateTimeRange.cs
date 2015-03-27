@@ -2,7 +2,7 @@ using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class ExtendedDateTimeRange : IExtendedDateTimeSetType
+    public class ExtendedDateTimeRange : IExtendedDateTimeCollectionChild
     {
         public ISingleExtendedDateTimeType Start { get; set; }
 

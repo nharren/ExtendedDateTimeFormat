@@ -1,6 +1,6 @@
 ﻿namespace System.ExtendedDateTimeFormat
 {
-    public interface ISingleExtendedDateTimeType : IExtendedDateTimeNestedType
+    public interface ISingleExtendedDateTimeType : IExtendedDateTimeNestingType
     {
     }
 }

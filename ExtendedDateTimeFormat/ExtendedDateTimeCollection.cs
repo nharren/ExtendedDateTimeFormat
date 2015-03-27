@@ -3,11 +3,11 @@ using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class ExtendedDateTimeExclusiveSet : Collection<IExtendedDateTimeSetType>, ISingleExtendedDateTimeType
+    public class ExtendedDateTimeCollection : Collection<IExtendedDateTimeCollectionChild>, IExtendedDateTimeNestingType
     {
         public override string ToString()
         {
-            return ExtendedDateTimeExclusiveSetSerializer.Serialize(this);
+            return ExtendedDateTimeCollectionSerializer.Serialize(this);
         }
     }
 }

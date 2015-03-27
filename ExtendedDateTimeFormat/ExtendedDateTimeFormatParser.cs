@@ -19,11 +19,11 @@ namespace System.ExtendedDateTimeFormat
 
             if (extendedDateTimeFormattedString[0] == '{')
             {
-                return (IExtendedDateTimeIndependentType)ExtendedDateTimeInclusiveSetParser.Parse(extendedDateTimeFormattedString);
+                return (IExtendedDateTimeIndependentType)ExtendedDateTimeCollectionParser.Parse(extendedDateTimeFormattedString);
             }
             else if (extendedDateTimeFormattedString[0] == '[')
             {
-                return (IExtendedDateTimeIndependentType)ExtendedDateTimeExclusiveSetParser.Parse(extendedDateTimeFormattedString);
+                return (IExtendedDateTimeIndependentType)ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimeFormattedString);
             }
             else if (extendedDateTimeFormattedString.Contains('u') || extendedDateTimeFormattedString.Contains('x'))
             {
@@ -45,24 +45,24 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeIntervalParser.Parse(extendedDateTimeIntervalString);
         }
 
-        public static ExtendedDateTimeInclusiveSet ParseInclusiveSet(string extendedDateTimeInclusiveSetString)
+        public static ExtendedDateTimeCollection ParseCollection(string extendedDateTimeCollectionString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeInclusiveSetString))
+            if (string.IsNullOrWhiteSpace(extendedDateTimeCollectionString))
             {
                 return null;
             }
 
-            return ExtendedDateTimeInclusiveSetParser.Parse(extendedDateTimeInclusiveSetString);
+            return ExtendedDateTimeCollectionParser.Parse(extendedDateTimeCollectionString);
         }
 
-        public static ExtendedDateTimeExclusiveSet ParseExclusiveSet(string extendedDateTimeExclusiveSetString)
+        public static ExtendedDateTimePossibilityCollection ParsePossibilityCollection(string extendedDateTimePossibilityCollectionString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeExclusiveSetString))
+            if (string.IsNullOrWhiteSpace(extendedDateTimePossibilityCollectionString))
             {
                 return null;
             }
 
-            return ExtendedDateTimeExclusiveSetParser.Parse(extendedDateTimeExclusiveSetString);
+            return ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimePossibilityCollectionString);
         }
 
         public static IncompleteExtendedDateTime ParseincompleteExtendedDateTime(string incompleteExtendedDateTimeString)
