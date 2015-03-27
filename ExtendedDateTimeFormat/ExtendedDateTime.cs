@@ -74,6 +74,14 @@ namespace System.ExtendedDateTimeFormat
             return days[month] - days[month - 1];
         }
 
+        public static ExtendedDateTime Now
+        {
+            get
+            {
+                return new ExtendedDateTime { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day, Hour = DateTime.Now.Hour, Minute = DateTime.Now.Minute, Second = DateTime.Now.Second, TimeZone = new TimeZone{ HourOffset = TimeZoneInfo.Local.BaseUtcOffset.Hours, MinuteOffset = TimeZoneInfo.Local.BaseUtcOffset.Minutes } };
+            }
+        }
+
         public override string ToString()
         {
             return ExtendedDateTimeSerializer.Serialize(this);

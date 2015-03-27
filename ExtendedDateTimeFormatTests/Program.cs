@@ -174,13 +174,13 @@ namespace ExtendedDateTimeFormatTests
 
                 // Conversion from Unpsecified or Masked To One of a Set
 
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.Parse("15uu-12-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.Parse("196x")).ToExclusiveSet().ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.Parse("1999-uu-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.Parse("-1999-uu-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.Parse("-1999-02-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.Parse("1955-uu-31")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.Parse("1955-uu-3u")).ToExclusiveSet(true).ToString(),
+                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("15uu-12-uu")).ToExclusiveSet(true).ToString(),
+                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("196x")).ToExclusiveSet().ToString(),
+                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1999-uu-uu")).ToExclusiveSet(true).ToString(),
+                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-uu-uu")).ToExclusiveSet(true).ToString(),
+                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-02-uu")).ToExclusiveSet(true).ToString(),
+                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-31")).ToExclusiveSet(true).ToString(),
+                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-3u")).ToExclusiveSet(true).ToString(),
             };
 
             var allStrings = specificationStrings.Concat(malformedStrings).Concat(otherStrings);
@@ -192,6 +192,12 @@ namespace ExtendedDateTimeFormatTests
         {
             var stringBuilder = new StringBuilder();
 
+            stringBuilder.Append("Current Time: ");
+            stringBuilder.AppendLine(ExtendedDateTime.Now.ToString());
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine("------------------------------------------------------------------");
+            stringBuilder.AppendLine();
+
             for (int i = 0; i < testStrings.Count(); i++)
             {
                 var testString = testStrings.ElementAt(i);
@@ -202,7 +208,7 @@ namespace ExtendedDateTimeFormatTests
 
                 try
                 {
-                    var extendedDateTimeObject = ExtendedDateTimeFormatParser.Parse(testString);
+                    var extendedDateTimeObject = ExtendedDateTimeFormatParser.ParseAll(testString);
 
                     if (extendedDateTimeObject is ExtendedDateTimeInterval)
                     {

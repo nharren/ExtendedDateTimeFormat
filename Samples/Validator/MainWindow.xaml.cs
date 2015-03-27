@@ -30,7 +30,7 @@ namespace Validator
         {
             try
             {
-                ExtendedDateTimeFormatParser.Parse(inputBox.Text);
+                ExtendedDateTimeFormatParser.ParseAll(inputBox.Text);
             }
             catch (ParseException pe)
             {
