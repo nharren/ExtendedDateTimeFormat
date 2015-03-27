@@ -67,7 +67,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         }
                         else if (preceedingElementString.Contains('u') || preceedingElementString.Contains('x'))
                         {
-                            exclusiveSet.Add((IExtendedDateTimeSetType)ShortFormExtendedDateTimeParser.Parse(preceedingElementString));
+                            exclusiveSet.Add((IExtendedDateTimeSetType)IncompleteExtendedDateTimeParser.Parse(preceedingElementString));
                         }
                         else
                         {
@@ -109,7 +109,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 }
                 else if (remainingElementString.Contains('u') || remainingElementString.Contains('x'))
                 {
-                    exclusiveSet.Add((IExtendedDateTimeSetType)ShortFormExtendedDateTimeParser.Parse(remainingElementString));
+                    exclusiveSet.Add((IExtendedDateTimeSetType)IncompleteExtendedDateTimeParser.Parse(remainingElementString));
                 }
                 else
                 {

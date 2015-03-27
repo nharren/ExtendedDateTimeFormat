@@ -27,7 +27,7 @@ namespace System.ExtendedDateTimeFormat
             }
             else if (extendedDateTimeFormattedString.Contains('u') || extendedDateTimeFormattedString.Contains('x'))
             {
-                return (IExtendedDateTimeIndependentType)ShortFormExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
+                return (IExtendedDateTimeIndependentType)IncompleteExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
             }
             else
             {
@@ -65,14 +65,14 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeExclusiveSetParser.Parse(extendedDateTimeExclusiveSetString);
         }
 
-        public static ShortFormExtendedDateTime ParseShortFormExtendedDateTime(string shortFormExtendedDateTimeString)
+        public static IncompleteExtendedDateTime ParseincompleteExtendedDateTime(string incompleteExtendedDateTimeString)
         {
-            if (string.IsNullOrWhiteSpace(shortFormExtendedDateTimeString))
+            if (string.IsNullOrWhiteSpace(incompleteExtendedDateTimeString))
             {
                 return null;
             }
 
-            return ShortFormExtendedDateTimeParser.Parse(shortFormExtendedDateTimeString);
+            return IncompleteExtendedDateTimeParser.Parse(incompleteExtendedDateTimeString);
         }
 
         public static ExtendedDateTime ParseExtendedDateTime(string extendedDateTimeString)

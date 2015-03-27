@@ -3,7 +3,7 @@ using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class ExtendedDateTimeInclusiveSet : Collection<IExtendedDateTimeSetType>, IExtendedDateTimeType
+    public class ExtendedDateTimeInclusiveSet : Collection<IExtendedDateTimeSetType>, IExtendedDateTimeNestedType
     {
         public override string ToString()
         {

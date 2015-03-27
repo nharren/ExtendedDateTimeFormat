@@ -3,18 +3,18 @@ using System.Linq;
 
 namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    internal static class ShortFormExtendedDateTimeParser
+    internal static class IncompleteExtendedDateTimeParser
     {
-        public static ShortFormExtendedDateTime Parse(string shortFormExtendedDateTimeString)
+        public static IncompleteExtendedDateTime Parse(string incompleteExtendedDateTimeString)
         {
-            if (string.IsNullOrWhiteSpace(shortFormExtendedDateTimeString))
+            if (string.IsNullOrWhiteSpace(incompleteExtendedDateTimeString))
             {
                 return null;
             }
 
             var currentScope = 0;
             var inheritedScopeFlagDictionary = new Dictionary<int, ExtendedDateTimeFlags>();
-            var shortFormExtendedDateTime = new ShortFormExtendedDateTime();
+            var incompleteExtendedDateTime = new IncompleteExtendedDateTime();
             var componentBuffer = new List<char>();
             var isDatePart = true;
             var dateComponentIndex = 0;
@@ -27,9 +27,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             inheritedScopeFlagDictionary[currentScope] = 0;
 
-            for (int i = 0; i < shortFormExtendedDateTimeString.Length; i++)
+            for (int i = 0; i < incompleteExtendedDateTimeString.Length; i++)
             {
-                var extendedDateTimeCharacter = shortFormExtendedDateTimeString[i];
+                var extendedDateTimeCharacter = incompleteExtendedDateTimeString[i];
 
                 if (isDatePart)                                                                  // Parsing date portion of extended date time.
                 {
@@ -37,14 +37,14 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     {
                         if (componentBuffer.Count > 0)
                         {
-                            CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                            CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
 
                             componentBuffer.Clear();
                         }
 
                         currentScope++;
 
-                        scopeFlagDictionary[currentScope] = GetScopeFlags(currentScope, shortFormExtendedDateTimeString);
+                        scopeFlagDictionary[currentScope] = GetScopeFlags(currentScope, incompleteExtendedDateTimeString);
 
                         inheritedScopeFlagDictionary[currentScope] = scopeFlagDictionary[currentScope] | inheritedScopeFlagDictionary[currentScope - 1];          // An inner scope inherits flags of the outer scope.
                     }
@@ -52,7 +52,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     {
                         if (componentBuffer.Count > 0)
                         {
-                            CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                            CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
 
                             componentBuffer.Clear();
                         }
@@ -64,7 +64,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                             i++;
                         }
 
-                        if (i + 1 < shortFormExtendedDateTimeString.Length && shortFormExtendedDateTimeString[i + 1] == '-')        // We have already committed the buffer.
+                        if (i + 1 < incompleteExtendedDateTimeString.Length && incompleteExtendedDateTimeString[i + 1] == '-')        // We have already committed the buffer.
                         {
                             i++;
                         }
@@ -100,13 +100,13 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else if (extendedDateTimeCharacter == '-')
                     {
-                        if (i == 0 || (i > 0 && shortFormExtendedDateTimeString[i - 1] == 'y'))           // Hyphen is a negative sign.
+                        if (i == 0 || (i > 0 && incompleteExtendedDateTimeString[i - 1] == 'y'))           // Hyphen is a negative sign.
                         {
                             componentBuffer.Add(extendedDateTimeCharacter);
                         }
                         else                                                                              // Hyphen is component separator.
                         {
-                            CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                            CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
 
                             componentBuffer.Clear();
 
@@ -115,7 +115,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else if (extendedDateTimeCharacter == 'T')
                     {
-                        CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                        CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
 
                         componentBuffer.Clear();
 
@@ -146,13 +146,13 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else if (extendedDateTimeCharacter == ':' && !timeZonePart)
                     {
-                        CommitTimeComponent(ref timeComponentIndex, timeZonePart, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                        CommitTimeComponent(ref timeComponentIndex, timeZonePart, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
 
                         componentBuffer.Clear();
                     }
                     else if (extendedDateTimeCharacter == 'Z' || extendedDateTimeCharacter == '+' || extendedDateTimeCharacter == '-')         // Time zone component
                     {
-                        CommitTimeComponent(ref timeComponentIndex, timeZonePart, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                        CommitTimeComponent(ref timeComponentIndex, timeZonePart, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
 
                         componentBuffer.Clear();
 
@@ -171,11 +171,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (isDatePart)
                 {
-                    CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                    CommitDateComponent(ref dateComponentIndex, ref hasSeasonComponent, inheritedScopeFlagDictionary[currentScope] | componentFlags, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
                 }
                 else
                 {
-                    CommitTimeComponent(ref timeComponentIndex, timeZonePart, new string(componentBuffer.ToArray()), shortFormExtendedDateTime);
+                    CommitTimeComponent(ref timeComponentIndex, timeZonePart, new string(componentBuffer.ToArray()), incompleteExtendedDateTime);
                 }
             }
 
@@ -184,10 +184,10 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 throw new ParseException("There are more open than close parentheses.", new string(componentBuffer.ToArray()));
             }
 
-            return shortFormExtendedDateTime;
+            return incompleteExtendedDateTime;
         }
 
-        private static void CommitTimeComponent(ref int timeComponentIndex, bool timeZonePart, string componentString, ShortFormExtendedDateTime shortFormExtendedDateTime)
+        private static void CommitTimeComponent(ref int timeComponentIndex, bool timeZonePart, string componentString, IncompleteExtendedDateTime incompleteExtendedDateTime)
         {
             if (timeComponentIndex == 0 && !timeZonePart)                                                               // We expect hours to appear first.
             {
@@ -200,7 +200,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The hour must have two digits.", componentString);
                 }
 
-                shortFormExtendedDateTime.Hour = int.Parse(componentString);
+                incompleteExtendedDateTime.Hour = int.Parse(componentString);
 
                 timeComponentIndex++;
             }
@@ -215,7 +215,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The minute have two digits.", componentString);
                 }
 
-                shortFormExtendedDateTime.Minute = int.Parse(componentString);
+                incompleteExtendedDateTime.Minute = int.Parse(componentString);
 
                 timeComponentIndex++;
             }
@@ -230,17 +230,17 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The second must have two digits.", componentString);
                 }
 
-                shortFormExtendedDateTime.Second = int.Parse(componentString);
+                incompleteExtendedDateTime.Second = int.Parse(componentString);
 
                 timeComponentIndex++;
             }
             else if (timeZonePart)
             {
-                shortFormExtendedDateTime.TimeZone = new TimeZone();
+                incompleteExtendedDateTime.TimeZone = new TimeZone();
 
                 if (componentString.StartsWith("Z"))
                 {
-                    shortFormExtendedDateTime.TimeZone.HourOffset = 0;
+                    incompleteExtendedDateTime.TimeZone.HourOffset = 0;
                 }
                 else if (componentString.StartsWith("+") || componentString.StartsWith("-"))         // It must be a non-UTC time zone offset.
                 {
@@ -270,7 +270,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The time zone hour offset must have two digits.", hourOffsetString);
                     }
 
-                    shortFormExtendedDateTime.TimeZone.HourOffset = int.Parse(hourOffsetString);
+                    incompleteExtendedDateTime.TimeZone.HourOffset = int.Parse(hourOffsetString);
 
                     if (timeZoneOffsetComponentStrings.Length == 2)                                  // Optional time zone minutes offset.
                     {
@@ -285,10 +285,10 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                             throw new ParseException("The time zone minute offset must have two digits.", minuteOffsetString);
                         }
 
-                        shortFormExtendedDateTime.TimeZone.MinuteOffset = int.Parse(minuteOffsetString);
+                        incompleteExtendedDateTime.TimeZone.MinuteOffset = int.Parse(minuteOffsetString);
                     }
 
-                    if (!shortFormExtendedDateTime.TimeZone.IsValidOffset())
+                    if (!incompleteExtendedDateTime.TimeZone.IsValidOffset())
                     {
                         throw new ParseException("The time zone has an unknown UTC offset.", componentString);
                     }
@@ -305,7 +305,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             }
         }
 
-        private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, string componentString, ShortFormExtendedDateTime shortFormExtendedDateTime)
+        private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, string componentString, IncompleteExtendedDateTime incompleteExtendedDateTime)
         {
             if (dateComponentIndex == 0)                                                          // We expect a year to appear first.
             {
@@ -331,7 +331,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else if (isLongFormYear && componentString[i] == 'e')                         // Component indicates exponent.
                     {
-                        shortFormExtendedDateTime.Year = new string(characterList.ToArray());
+                        incompleteExtendedDateTime.Year = new string(characterList.ToArray());
 
                         characterList.Clear();
 
@@ -339,7 +339,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else if (componentString[i] == 'p' && isExponent)                            // Component indicates precision.
                     {
-                        shortFormExtendedDateTime.YearExponent = int.Parse(new string(characterList.ToArray()));
+                        incompleteExtendedDateTime.YearExponent = int.Parse(new string(characterList.ToArray()));
 
                         characterList.Clear();
 
@@ -356,19 +356,19 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 {
                     if (isExponent)
                     {
-                        shortFormExtendedDateTime.YearExponent = int.Parse(new string(characterList.ToArray()));
+                        incompleteExtendedDateTime.YearExponent = int.Parse(new string(characterList.ToArray()));
                     }
                     else if (isPrecision)
                     {
-                        shortFormExtendedDateTime.YearPrecision = int.Parse(new string(characterList.ToArray()));
+                        incompleteExtendedDateTime.YearPrecision = int.Parse(new string(characterList.ToArray()));
                     }
                     else
                     {
-                        shortFormExtendedDateTime.Year = new string(characterList.ToArray());
+                        incompleteExtendedDateTime.Year = new string(characterList.ToArray());
                     }
                 }
 
-                shortFormExtendedDateTime.YearFlags = flags;
+                incompleteExtendedDateTime.YearFlags = flags;
 
                 dateComponentIndex++;
             }
@@ -380,7 +380,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     {
                         var seasonComponentStrings = componentString.Split('^');
 
-                        shortFormExtendedDateTime.SeasonQualifier = seasonComponentStrings[1];
+                        incompleteExtendedDateTime.SeasonQualifier = seasonComponentStrings[1];
 
                         componentString = seasonComponentStrings[0];
                     }
@@ -401,9 +401,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The season must be between 21 and 24.", componentString);
                     }
 
-                    shortFormExtendedDateTime.Season = (Season)seasonInteger;
+                    incompleteExtendedDateTime.Season = (Season)seasonInteger;
 
-                    shortFormExtendedDateTime.SeasonFlags = flags;
+                    incompleteExtendedDateTime.SeasonFlags = flags;
 
                     hasSeasonComponent = true;
                 }
@@ -414,9 +414,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The month must have two characters.", componentString);
                     }
 
-                    shortFormExtendedDateTime.Month = componentString;
+                    incompleteExtendedDateTime.Month = componentString;
 
-                    shortFormExtendedDateTime.MonthFlags = flags;
+                    incompleteExtendedDateTime.MonthFlags = flags;
                 }
 
                 dateComponentIndex++;
@@ -433,9 +433,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The day must have two characters.", componentString);
                 }
 
-                shortFormExtendedDateTime.Day = componentString;
+                incompleteExtendedDateTime.Day = componentString;
 
-                shortFormExtendedDateTime.DayFlags = flags;
+                incompleteExtendedDateTime.DayFlags = flags;
 
                 dateComponentIndex++;
             }

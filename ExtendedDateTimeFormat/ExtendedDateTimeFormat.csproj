@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\ConversionException.cs" />
-    <Compile Include="Converters\ShortFormExtendedDateTimeConverter.cs" />
+    <Compile Include="Converters\IncompleteExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
     <Compile Include="ExtendedDateTimeExclusiveSet.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeExclusiveSetParser.cs" />
@@ -54,7 +54,7 @@
     <Compile Include="Internal\Parsers\ExtendedDateTimeParser.cs" />
     <Compile Include="ExtendedDateTimeRange.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeRangeParser.cs" />
-    <Compile Include="Internal\Parsers\ShortFormExtendedDateTimeParser.cs">
+    <Compile Include="Internal\Parsers\IncompleteExtendedDateTimeParser.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Internal\Serializers\ExtendedDateTimeExclusiveSetSerializer.cs" />
@@ -63,14 +63,14 @@
     <Compile Include="Internal\Serializers\ExtendedDateTimeRangeSerializer.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimeSerializer.cs" />
     <Compile Include="IExtendedDateTimeIndependentType.cs" />
-    <Compile Include="IExtendedDateTimeType.cs" />
+    <Compile Include="IExtendedDateTimeNestedType.cs" />
     <Compile Include="IExtendedDateTimeSetType.cs" />
     <Compile Include="ISingleExtendedDateTimeType.cs" />
     <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Season.cs" />
-    <Compile Include="Internal\Serializers\ShortFormExtendedDateTimeSerializer.cs" />
-    <Compile Include="ShortFormExtendedDateTime.cs" />
+    <Compile Include="Internal\Serializers\IncompleteExtendedDateTimeSerializer.cs" />
+    <Compile Include="IncompleteExtendedDateTime.cs" />
     <Compile Include="TimeZone.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,7 +81,6 @@
     <None Include="License\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Diagrams\Primary Classes.svg" />
     <Content Include="Roadmap\Roadmap.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

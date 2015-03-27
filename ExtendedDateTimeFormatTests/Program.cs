@@ -174,13 +174,13 @@ namespace ExtendedDateTimeFormatTests
 
                 // Conversion from Unpsecified or Masked To One of a Set
 
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("15uu-12-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("196x")).ToExclusiveSet().ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1999-uu-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-uu-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-02-uu")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-31")).ToExclusiveSet(true).ToString(),
-                ((ShortFormExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-3u")).ToExclusiveSet(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("15uu-12-uu")).ToExclusiveSet(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("196x")).ToExclusiveSet().ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1999-uu-uu")).ToExclusiveSet(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-uu-uu")).ToExclusiveSet(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("-1999-02-uu")).ToExclusiveSet(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-31")).ToExclusiveSet(true).ToString(),
+                ((IncompleteExtendedDateTime)ExtendedDateTimeFormatParser.ParseAll("1955-uu-3u")).ToExclusiveSet(true).ToString(),
             };
 
             var allStrings = specificationStrings.Concat(malformedStrings).Concat(otherStrings);
@@ -222,9 +222,9 @@ namespace ExtendedDateTimeFormatTests
                     {
                         WriteExtendedDateTimeInclusiveSet(1, (ExtendedDateTimeInclusiveSet)extendedDateTimeObject, stringBuilder);
                     }
-                    else if (extendedDateTimeObject is ShortFormExtendedDateTime)
+                    else if (extendedDateTimeObject is IncompleteExtendedDateTime)
                     {
-                        WriteShortFormExtendedDateTime(1, (ShortFormExtendedDateTime)extendedDateTimeObject, stringBuilder);
+                        WriteincompleteExtendedDateTime(1, (IncompleteExtendedDateTime)extendedDateTimeObject, stringBuilder);
                     }
                     else if (extendedDateTimeObject is ExtendedDateTime)
                     {
@@ -247,103 +247,103 @@ namespace ExtendedDateTimeFormatTests
             Process.Start("Results.txt");
         }
 
-        private static void WriteShortFormExtendedDateTime(int startingIndent, ShortFormExtendedDateTime shortFormExtendedDateTime, StringBuilder stringBuilder)
+        private static void WriteincompleteExtendedDateTime(int startingIndent, IncompleteExtendedDateTime incompleteExtendedDateTime, StringBuilder stringBuilder)
         {
-            stringBuilder.AppendLine("[ShortFormExtendedDateTime]".Indent(startingIndent) + " (\"" + shortFormExtendedDateTime.ToString() + "\")");
+            stringBuilder.AppendLine("[IncompleteExtendedDateTime]".Indent(startingIndent) + " (\"" + incompleteExtendedDateTime.ToString() + "\")");
 
-            if (shortFormExtendedDateTime.Year != null)
+            if (incompleteExtendedDateTime.Year != null)
             {
-                stringBuilder.AppendLine("Year: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.Year);
+                stringBuilder.AppendLine("Year: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.Year);
             }
 
-            if (shortFormExtendedDateTime.YearFlags != 0)
+            if (incompleteExtendedDateTime.YearFlags != 0)
             {
-                stringBuilder.AppendLine("YearFlags: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.YearFlags.ToString());
+                stringBuilder.AppendLine("YearFlags: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.YearFlags.ToString());
             }
 
-            if (shortFormExtendedDateTime.Month != null)
+            if (incompleteExtendedDateTime.Month != null)
             {
-                stringBuilder.AppendLine("Month: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.Month);
+                stringBuilder.AppendLine("Month: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.Month);
             }
 
-            if (shortFormExtendedDateTime.MonthFlags != 0)
+            if (incompleteExtendedDateTime.MonthFlags != 0)
             {
-                stringBuilder.AppendLine("MonthFlags: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.MonthFlags.ToString());
+                stringBuilder.AppendLine("MonthFlags: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.MonthFlags.ToString());
             }
 
-            if (shortFormExtendedDateTime.Day != null)
+            if (incompleteExtendedDateTime.Day != null)
             {
-                stringBuilder.AppendLine("Day: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.Day);
+                stringBuilder.AppendLine("Day: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.Day);
             }
 
-            if (shortFormExtendedDateTime.DayFlags != 0)
+            if (incompleteExtendedDateTime.DayFlags != 0)
             {
-                stringBuilder.AppendLine("DayFlags: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.DayFlags.ToString());
+                stringBuilder.AppendLine("DayFlags: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.DayFlags.ToString());
             }
 
-            if (shortFormExtendedDateTime.Hour != null)
+            if (incompleteExtendedDateTime.Hour != null)
             {
-                stringBuilder.AppendLine("Hour: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.Hour.ToString());
+                stringBuilder.AppendLine("Hour: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.Hour.ToString());
             }
 
-            if (shortFormExtendedDateTime.Minute != null)
+            if (incompleteExtendedDateTime.Minute != null)
             {
-                stringBuilder.AppendLine("Minute: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.Minute.ToString());
+                stringBuilder.AppendLine("Minute: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.Minute.ToString());
             }
 
-            if (shortFormExtendedDateTime.Second != null)
+            if (incompleteExtendedDateTime.Second != null)
             {
-                stringBuilder.AppendLine("Second: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.Second.ToString());
+                stringBuilder.AppendLine("Second: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.Second.ToString());
             }
 
-            if (shortFormExtendedDateTime.Season != Season.Undefined)
+            if (incompleteExtendedDateTime.Season != Season.Undefined)
             {
-                stringBuilder.AppendLine("Season: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.Season.ToString());
+                stringBuilder.AppendLine("Season: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.Season.ToString());
             }
 
-            if (shortFormExtendedDateTime.SeasonFlags != 0)
+            if (incompleteExtendedDateTime.SeasonFlags != 0)
             {
-                stringBuilder.AppendLine("SeasonFlags: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.SeasonFlags.ToString());
+                stringBuilder.AppendLine("SeasonFlags: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.SeasonFlags.ToString());
             }
 
-            if (shortFormExtendedDateTime.SeasonQualifier != null)
+            if (incompleteExtendedDateTime.SeasonQualifier != null)
             {
-                stringBuilder.AppendLine("SeasonQualifier: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.SeasonQualifier);
+                stringBuilder.AppendLine("SeasonQualifier: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.SeasonQualifier);
             }
 
-            if (shortFormExtendedDateTime.YearExponent != null)
+            if (incompleteExtendedDateTime.YearExponent != null)
             {
-                stringBuilder.AppendLine("YearExponent: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.YearExponent.ToString());
+                stringBuilder.AppendLine("YearExponent: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.YearExponent.ToString());
             }
 
-            if (shortFormExtendedDateTime.YearPrecision != null)
+            if (incompleteExtendedDateTime.YearPrecision != null)
             {
-                stringBuilder.AppendLine("YearPrecision: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.YearPrecision.ToString());
+                stringBuilder.AppendLine("YearPrecision: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.YearPrecision.ToString());
             }
 
-            if (shortFormExtendedDateTime.IsOpen)
+            if (incompleteExtendedDateTime.IsOpen)
             {
-                stringBuilder.AppendLine("IsOpen: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.IsOpen.ToString());
+                stringBuilder.AppendLine("IsOpen: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.IsOpen.ToString());
             }
 
-            if (shortFormExtendedDateTime.IsUnknown)
+            if (incompleteExtendedDateTime.IsUnknown)
             {
-                stringBuilder.AppendLine("IsUnknown: ".Indent(startingIndent + 1) + shortFormExtendedDateTime.IsUnknown.ToString());
+                stringBuilder.AppendLine("IsUnknown: ".Indent(startingIndent + 1) + incompleteExtendedDateTime.IsUnknown.ToString());
             }
 
-            if (shortFormExtendedDateTime.TimeZone != null)
+            if (incompleteExtendedDateTime.TimeZone != null)
             {
                 stringBuilder.AppendLine("TimeZone:".Indent(startingIndent + 1));
                 stringBuilder.AppendLine("[TimeZone]".Indent(startingIndent + 2));
 
-                if (shortFormExtendedDateTime.TimeZone.HourOffset != null)
+                if (incompleteExtendedDateTime.TimeZone.HourOffset != null)
                 {
-                    stringBuilder.AppendLine("HourOffset:".Indent(startingIndent + 3) + shortFormExtendedDateTime.TimeZone.HourOffset.ToString());
+                    stringBuilder.AppendLine("HourOffset:".Indent(startingIndent + 3) + incompleteExtendedDateTime.TimeZone.HourOffset.ToString());
                 }
 
-                if (shortFormExtendedDateTime.TimeZone.MinuteOffset != null)
+                if (incompleteExtendedDateTime.TimeZone.MinuteOffset != null)
                 {
-                    stringBuilder.AppendLine("MinuteOffset:".Indent(startingIndent + 3) + shortFormExtendedDateTime.TimeZone.MinuteOffset.ToString());
+                    stringBuilder.AppendLine("MinuteOffset:".Indent(startingIndent + 3) + incompleteExtendedDateTime.TimeZone.MinuteOffset.ToString());
                 }
             }
         }
@@ -467,9 +467,9 @@ namespace ExtendedDateTimeFormatTests
                 {
                     WriteExtendedDateTimeRange(startingIndent + 1, (ExtendedDateTimeRange)item, stringBuilder);
                 }
-                else if (item is ShortFormExtendedDateTime)
+                else if (item is IncompleteExtendedDateTime)
                 {
-                    WriteShortFormExtendedDateTime(startingIndent + 1, (ShortFormExtendedDateTime)item, stringBuilder);
+                    WriteincompleteExtendedDateTime(startingIndent + 1, (IncompleteExtendedDateTime)item, stringBuilder);
                 }
                 else if (item is ExtendedDateTime)
                 {
@@ -496,9 +496,9 @@ namespace ExtendedDateTimeFormatTests
                 {
                     WriteExtendedDateTimeRange(startingIndent + 1, (ExtendedDateTimeRange)item, stringBuilder);
                 }
-                else if (item is ShortFormExtendedDateTime)
+                else if (item is IncompleteExtendedDateTime)
                 {
-                    WriteShortFormExtendedDateTime(startingIndent + 1, (ShortFormExtendedDateTime)item, stringBuilder);
+                    WriteincompleteExtendedDateTime(startingIndent + 1, (IncompleteExtendedDateTime)item, stringBuilder);
                 }
                 else if (item is ExtendedDateTime)
                 {
@@ -516,9 +516,9 @@ namespace ExtendedDateTimeFormatTests
             {
                 WriteExtendedDateTimeExclusiveSet(startingIndent + 2, (ExtendedDateTimeExclusiveSet)extendedDateTimeRange.Start, stringBuilder);
             }
-            else if (extendedDateTimeRange.Start is ShortFormExtendedDateTime)
+            else if (extendedDateTimeRange.Start is IncompleteExtendedDateTime)
             {
-                WriteShortFormExtendedDateTime(startingIndent + 2, (ShortFormExtendedDateTime)extendedDateTimeRange.Start, stringBuilder);
+                WriteincompleteExtendedDateTime(startingIndent + 2, (IncompleteExtendedDateTime)extendedDateTimeRange.Start, stringBuilder);
             }
             else if (extendedDateTimeRange.Start is ExtendedDateTime)
             {
@@ -531,9 +531,9 @@ namespace ExtendedDateTimeFormatTests
             {
                 WriteExtendedDateTimeExclusiveSet(startingIndent + 2, (ExtendedDateTimeExclusiveSet)extendedDateTimeRange.End, stringBuilder);
             }
-            else if (extendedDateTimeRange.End is ShortFormExtendedDateTime)
+            else if (extendedDateTimeRange.End is IncompleteExtendedDateTime)
             {
-                WriteShortFormExtendedDateTime(startingIndent + 2, (ShortFormExtendedDateTime)extendedDateTimeRange.End, stringBuilder);
+                WriteincompleteExtendedDateTime(startingIndent + 2, (IncompleteExtendedDateTime)extendedDateTimeRange.End, stringBuilder);
             }
             else if (extendedDateTimeRange.End is ExtendedDateTime)
             {
@@ -554,9 +554,9 @@ namespace ExtendedDateTimeFormatTests
             {
                 WriteExtendedDateTimeInclusiveSet(startingIndent + 2, (ExtendedDateTimeInclusiveSet)extendedDateTimeInterval.Start, stringBuilder);
             }
-            else if (extendedDateTimeInterval.Start is ShortFormExtendedDateTime)
+            else if (extendedDateTimeInterval.Start is IncompleteExtendedDateTime)
             {
-                WriteShortFormExtendedDateTime(startingIndent + 2, (ShortFormExtendedDateTime)extendedDateTimeInterval.Start, stringBuilder);
+                WriteincompleteExtendedDateTime(startingIndent + 2, (IncompleteExtendedDateTime)extendedDateTimeInterval.Start, stringBuilder);
             }
             else if (extendedDateTimeInterval.Start is ExtendedDateTime)
             {
@@ -573,9 +573,9 @@ namespace ExtendedDateTimeFormatTests
             {
                 WriteExtendedDateTimeInclusiveSet(startingIndent + 2, (ExtendedDateTimeInclusiveSet)extendedDateTimeInterval.End, stringBuilder);
             }
-            else if (extendedDateTimeInterval.End is ShortFormExtendedDateTime)
+            else if (extendedDateTimeInterval.End is IncompleteExtendedDateTime)
             {
-                WriteShortFormExtendedDateTime(startingIndent + 2, (ShortFormExtendedDateTime)extendedDateTimeInterval.End, stringBuilder);
+                WriteincompleteExtendedDateTime(startingIndent + 2, (IncompleteExtendedDateTime)extendedDateTimeInterval.End, stringBuilder);
             }
             else if (extendedDateTimeInterval.End is ExtendedDateTime)
             {
