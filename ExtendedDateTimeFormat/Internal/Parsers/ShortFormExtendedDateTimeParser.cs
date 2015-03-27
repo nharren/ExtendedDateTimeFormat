@@ -73,7 +73,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                         if (currentScope < 0)
                         {
-                            throw new ParseException("There are more closed scopes than opened.", new string(componentBuffer.ToArray()));
+                            throw new ParseException("There are more close than open parentheses.", new string(componentBuffer.ToArray()));
                         }
                     }
                     else if (char.IsDigit(extendedDateTimeCharacter) || extendedDateTimeCharacter == 'u' || extendedDateTimeCharacter == 'x')                            // Add digit to component buffer.
@@ -181,7 +181,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             if (currentScope > 0)
             {
-                throw new ParseException("There are more opened scopes than closed.", new string(componentBuffer.ToArray()));
+                throw new ParseException("There are more open than close parentheses.", new string(componentBuffer.ToArray()));
             }
 
             return shortFormExtendedDateTime;
@@ -286,6 +286,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         }
 
                         shortFormExtendedDateTime.TimeZone.MinuteOffset = int.Parse(minuteOffsetString);
+                    }
+
+                    if (!shortFormExtendedDateTime.TimeZone.IsValidOffset())
+                    {
+                        throw new ParseException("The time zone has an unknown UTC offset.", componentString);
                     }
 
                     if (timeZoneOffsetComponentStrings.Length > 2)

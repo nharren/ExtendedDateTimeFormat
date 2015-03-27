@@ -73,7 +73,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                         if (currentScope < 0)
                         {
-                            throw new ParseException("There are more closed scopes than opened.", new string(componentBuffer.ToArray()));
+                            throw new ParseException("There are more close than open parentheses.", new string(componentBuffer.ToArray()));
                         }
                     }
                     else if (char.IsDigit(extendedDateTimeCharacter))                            // Add digit to component buffer.
@@ -181,7 +181,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             if (currentScope > 0)
             {
-                throw new ParseException("There are more opened scopes than closed.", new string(componentBuffer.ToArray()));
+                throw new ParseException("There are more open than close parentheses.", new string(componentBuffer.ToArray()));
             }
 
             return extendedDateTime;
@@ -195,9 +195,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 {
                     throw new ParseException("The hour must be a number.", componentString);
                 }
-                else if (componentString.Length != 2)
+                else if (componentString.Length != 2 && !(componentString.Length == 3 && componentString.StartsWith("-")))
                 {
-                    throw new ParseException("The hour must have exactly two digits.", componentString);
+                    throw new ParseException("The hour must be two digits long.", componentString);
                 }
 
                 extendedDateTime.Hour = int.Parse(componentString);
@@ -212,7 +212,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 }
                 else if (componentString.Length != 2)
                 {
-                    throw new ParseException("The minute must contain exactly two digits.", componentString);
+                    throw new ParseException("The minute must be two digits long.", componentString);
                 }
 
                 extendedDateTime.Minute = int.Parse(componentString);
@@ -227,7 +227,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 }
                 else if (componentString.Length != 2)
                 {
-                    throw new ParseException("The second must have two digits.", componentString);
+                    throw new ParseException("The second must be two digits long.", componentString);
                 }
 
                 extendedDateTime.Second = int.Parse(componentString);
@@ -291,6 +291,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     if (timeZoneOffsetComponentStrings.Length > 2)
                     {
                         throw new ParseException("The time zone offset can have at most two components: hours and minutes.", componentString);
+                    }
+
+                    if (!extendedDateTime.TimeZone.IsValidOffset())
+                    {
+                        throw new ParseException("The time zone has an unknown UTC offset.", componentString);
                     }
                 }
             }

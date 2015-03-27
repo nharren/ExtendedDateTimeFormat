@@ -1,5 +1,3 @@
 1. Optimize (string literals, for instance).
 2. More test strings
-3. Validate time zone offsets against list of known offsets: http://en.wikipedia.org/wiki/List_of_UTC_time_offsets
-4. Validators
-5. XML Documentation
+3. XML Documentation
