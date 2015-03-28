@@ -2,16 +2,16 @@
 
 namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
-    internal static class IncompleteExtendedDateTimeSerializer
+    internal static class PartialExtendedDateTimeSerializer
     {
-        public static string Serialize(IncompleteExtendedDateTime incompleteExtendedDateTime)
+        public static string Serialize(PartialExtendedDateTime partialExtendedDateTime)
         {
-            if (incompleteExtendedDateTime.IsUnknown)
+            if (partialExtendedDateTime.IsUnknown)
             {
                 return "unknown";
             }
 
-            if (incompleteExtendedDateTime.IsOpen)
+            if (partialExtendedDateTime.IsOpen)
             {
                 return "open";
             }
@@ -19,13 +19,13 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
             var stringBuilder = new StringBuilder();
             var isLongFormYear = false;
 
-            if (incompleteExtendedDateTime.Year != null)
+            if (partialExtendedDateTime.Year != null)
             {
                 var yearValue = 0;
 
-                if (int.TryParse(incompleteExtendedDateTime.Year, out yearValue))
+                if (int.TryParse(partialExtendedDateTime.Year, out yearValue))
                 {
-                    if (yearValue > 9999 || yearValue < -9999 || incompleteExtendedDateTime.YearExponent.HasValue)       // The year must be in long form.
+                    if (yearValue > 9999 || yearValue < -9999 || partialExtendedDateTime.YearExponent.HasValue)       // The year must be in long form.
                     {
                         stringBuilder.Append('y');
 
@@ -33,17 +33,17 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                     }
                 }
 
-                if (incompleteExtendedDateTime.Year.Length < 4)
+                if (partialExtendedDateTime.Year.Length < 4)
                 {
                     return "Error: The year must be at least four characters long.";
                 }
 
-                stringBuilder.Append(incompleteExtendedDateTime.Year);
+                stringBuilder.Append(partialExtendedDateTime.Year);
             }
 
-            if (incompleteExtendedDateTime.YearExponent.HasValue)
+            if (partialExtendedDateTime.YearExponent.HasValue)
             {
-                if (incompleteExtendedDateTime.Year == null)
+                if (partialExtendedDateTime.Year == null)
                 {
                     return "Error: Ae year exponent cannot exist without a year.";
                 }
@@ -54,46 +54,46 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 }
 
                 stringBuilder.Append('e');
-                stringBuilder.Append(incompleteExtendedDateTime.YearExponent.Value);
+                stringBuilder.Append(partialExtendedDateTime.YearExponent.Value);
             }
 
-            if (incompleteExtendedDateTime.YearPrecision.HasValue)
+            if (partialExtendedDateTime.YearPrecision.HasValue)
             {
-                if (!incompleteExtendedDateTime.YearExponent.HasValue)
+                if (!partialExtendedDateTime.YearExponent.HasValue)
                 {
                     return "Error: Year precision cannot exist without an exponent.";
                 }
 
                 stringBuilder.Append('p');
-                stringBuilder.Append(incompleteExtendedDateTime.YearPrecision);
+                stringBuilder.Append(partialExtendedDateTime.YearPrecision);
             }
 
-            if (incompleteExtendedDateTime.YearFlags != 0)
+            if (partialExtendedDateTime.YearFlags != 0)
             {
-                if (incompleteExtendedDateTime.Year == null)
+                if (partialExtendedDateTime.Year == null)
                 {
                     return "Error: Year flags cannot exist without a year.";
                 }
 
-                if (incompleteExtendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
+                if (partialExtendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
                 {
                     stringBuilder.Append('?');
                 }
 
-                if (incompleteExtendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
+                if (partialExtendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
                 {
                     stringBuilder.Append('~');
                 }
             }
 
-            if (incompleteExtendedDateTime.Month != null)
+            if (partialExtendedDateTime.Month != null)
             {
-                if (incompleteExtendedDateTime.Year == null)
+                if (partialExtendedDateTime.Year == null)
                 {
                     return "Error: A month cannot exist without a year.";
                 }
 
-                if (incompleteExtendedDateTime.Season != 0)
+                if (partialExtendedDateTime.Season != 0)
                 {
                     return "Error: A month and season cannot both be defined.";
                 }
@@ -102,7 +102,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 var monthValue = 0;
 
-                if (int.TryParse(incompleteExtendedDateTime.Month, out monthValue))
+                if (int.TryParse(partialExtendedDateTime.Month, out monthValue))
                 {
                     if (monthValue < 1 || monthValue > 12)
                     {
@@ -110,87 +110,87 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                     }
                 }
 
-                if (incompleteExtendedDateTime.Month.Length != 2)
+                if (partialExtendedDateTime.Month.Length != 2)
                 {
                     return "Error: A month must be two characters long.";
                 }
 
-                stringBuilder.Append(incompleteExtendedDateTime.Month);
+                stringBuilder.Append(partialExtendedDateTime.Month);
             }
 
-            if (incompleteExtendedDateTime.MonthFlags != 0)
+            if (partialExtendedDateTime.MonthFlags != 0)
             {
-                if (incompleteExtendedDateTime.Month == null)
+                if (partialExtendedDateTime.Month == null)
                 {
                     return "Error: Month flags cannot exist without a month.";
                 }
 
-                if (incompleteExtendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
+                if (partialExtendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
                 {
                     stringBuilder.Append('?');
                 }
 
-                if (incompleteExtendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
+                if (partialExtendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
                 {
                     stringBuilder.Append('~');
                 }
             }
 
-            if (incompleteExtendedDateTime.Season != Season.Undefined)
+            if (partialExtendedDateTime.Season != Season.Undefined)
             {
-                if (incompleteExtendedDateTime.Year == null)
+                if (partialExtendedDateTime.Year == null)
                 {
                     return "Error: A season cannot exist without a year.";
                 }
 
-                if (incompleteExtendedDateTime.Month != null)
+                if (partialExtendedDateTime.Month != null)
                 {
                     return "Error: A month and season cannot both be defined.";
                 }
 
                 stringBuilder.Append('-');
 
-                stringBuilder.Append((int)incompleteExtendedDateTime.Season);
+                stringBuilder.Append((int)partialExtendedDateTime.Season);
             }
 
-            if (incompleteExtendedDateTime.SeasonQualifier != null)
+            if (partialExtendedDateTime.SeasonQualifier != null)
             {
-                if (incompleteExtendedDateTime.Season != Season.Undefined)
+                if (partialExtendedDateTime.Season != Season.Undefined)
                 {
                     return "Error: A season qualifier cannot exist without a season.";
                 }
 
                 stringBuilder.Append('^');
 
-                stringBuilder.Append(incompleteExtendedDateTime.SeasonQualifier);
+                stringBuilder.Append(partialExtendedDateTime.SeasonQualifier);
             }
 
-            if (incompleteExtendedDateTime.SeasonFlags != 0)
+            if (partialExtendedDateTime.SeasonFlags != 0)
             {
-                if (incompleteExtendedDateTime.Season == Season.Undefined)
+                if (partialExtendedDateTime.Season == Season.Undefined)
                 {
                     return "Error: Season flags cannot exist without a season.";
                 }
 
-                if (incompleteExtendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
+                if (partialExtendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
                 {
                     stringBuilder.Append('?');
                 }
 
-                if (incompleteExtendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
+                if (partialExtendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
                 {
                     stringBuilder.Append('~');
                 }
             }
 
-            if (incompleteExtendedDateTime.Day != null)
+            if (partialExtendedDateTime.Day != null)
             {
-                if (incompleteExtendedDateTime.Month == null)
+                if (partialExtendedDateTime.Month == null)
                 {
                     return "Error: A day cannot exist without a month.";
                 }
 
-                if (incompleteExtendedDateTime.Season != Season.Undefined)
+                if (partialExtendedDateTime.Season != Season.Undefined)
                 {
                     return "Error: A day and season cannot both be defined.";
                 }
@@ -199,7 +199,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 var dayValue = 0;
 
-                if (int.TryParse(incompleteExtendedDateTime.Day, out dayValue))
+                if (int.TryParse(partialExtendedDateTime.Day, out dayValue))
                 {
                     if (dayValue < 1 || dayValue > 31)
                     {
@@ -207,99 +207,99 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                     }
                 }
 
-                if (incompleteExtendedDateTime.Day.Length != 2)
+                if (partialExtendedDateTime.Day.Length != 2)
                 {
                     return "Error: A day must be at least two characters long.";
                 }
 
-                stringBuilder.Append(incompleteExtendedDateTime.Day);
+                stringBuilder.Append(partialExtendedDateTime.Day);
             }
 
-            if (incompleteExtendedDateTime.DayFlags != 0)
+            if (partialExtendedDateTime.DayFlags != 0)
             {
-                if (incompleteExtendedDateTime.Day == null)
+                if (partialExtendedDateTime.Day == null)
                 {
                     return "Error: Day flags cannot exist without a day.";
                 }
 
-                if (incompleteExtendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
+                if (partialExtendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
                 {
                     stringBuilder.Append('?');
                 }
 
-                if (incompleteExtendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
+                if (partialExtendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
                 {
                     stringBuilder.Append('~');
                 }
             }
 
-            if (incompleteExtendedDateTime.Hour.HasValue)
+            if (partialExtendedDateTime.Hour.HasValue)
             {
-                if (incompleteExtendedDateTime.Day == null)
+                if (partialExtendedDateTime.Day == null)
                 {
                     return "Error: An hour cannot exist without a day.";
                 }
 
-                if (incompleteExtendedDateTime.Hour.Value < 0 || incompleteExtendedDateTime.Hour.Value > 23)
+                if (partialExtendedDateTime.Hour.Value < 0 || partialExtendedDateTime.Hour.Value > 23)
                 {
                     return "Error: An hour must be a number from 0 to 23.";
                 }
 
                 stringBuilder.Append('T');
-                stringBuilder.Append(incompleteExtendedDateTime.Hour.Value.ToString("D2"));
+                stringBuilder.Append(partialExtendedDateTime.Hour.Value.ToString("D2"));
             }
 
-            if (incompleteExtendedDateTime.Minute.HasValue)
+            if (partialExtendedDateTime.Minute.HasValue)
             {
-                if (!incompleteExtendedDateTime.Hour.HasValue)
+                if (!partialExtendedDateTime.Hour.HasValue)
                 {
                     return "Error: An minute cannot exist without an hour.";
                 }
 
-                if (incompleteExtendedDateTime.Minute.Value < 0 || incompleteExtendedDateTime.Minute.Value > 59)
+                if (partialExtendedDateTime.Minute.Value < 0 || partialExtendedDateTime.Minute.Value > 59)
                 {
                     return "Error: A minute must be a number from 0 to 59.";
                 }
 
                 stringBuilder.Append(':');
-                stringBuilder.Append(incompleteExtendedDateTime.Minute.Value.ToString("D2"));
+                stringBuilder.Append(partialExtendedDateTime.Minute.Value.ToString("D2"));
             }
 
-            if (incompleteExtendedDateTime.Second.HasValue)
+            if (partialExtendedDateTime.Second.HasValue)
             {
-                if (!incompleteExtendedDateTime.Minute.HasValue)
+                if (!partialExtendedDateTime.Minute.HasValue)
                 {
                     return "Error: An second cannot exist without an minute.";
                 }
 
-                if (incompleteExtendedDateTime.Second.Value < 0 || incompleteExtendedDateTime.Second.Value > 59)
+                if (partialExtendedDateTime.Second.Value < 0 || partialExtendedDateTime.Second.Value > 59)
                 {
                     return "Error: A second must be a number from 0 to 59.";
                 }
 
                 stringBuilder.Append(':');
-                stringBuilder.Append(incompleteExtendedDateTime.Second.Value.ToString("D2"));
+                stringBuilder.Append(partialExtendedDateTime.Second.Value.ToString("D2"));
             }
 
-            if (incompleteExtendedDateTime.TimeZone != null)
+            if (partialExtendedDateTime.TimeZone != null)
             {
-                if (!incompleteExtendedDateTime.Second.HasValue)
+                if (!partialExtendedDateTime.Second.HasValue)
                 {
                     return "Error: A timezone cannot exist without a second.";
                 }
 
-                if (!incompleteExtendedDateTime.TimeZone.HourOffset.HasValue)
+                if (!partialExtendedDateTime.TimeZone.HourOffset.HasValue)
                 {
                     return "Error: A timezone must have a hour offset.";
                 }
 
-                if (incompleteExtendedDateTime.TimeZone.HourOffset == 0 && (incompleteExtendedDateTime.TimeZone.MinuteOffset == 0 || !incompleteExtendedDateTime.TimeZone.MinuteOffset.HasValue))
+                if (partialExtendedDateTime.TimeZone.HourOffset == 0 && (partialExtendedDateTime.TimeZone.MinuteOffset == 0 || !partialExtendedDateTime.TimeZone.MinuteOffset.HasValue))
                 {
                     stringBuilder.Append("Z");
                 }
                 else
                 {
-                    if (incompleteExtendedDateTime.TimeZone.HourOffset < 0)
+                    if (partialExtendedDateTime.TimeZone.HourOffset < 0)
                     {
                         stringBuilder.Append("+");
                     }
@@ -308,24 +308,24 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                         stringBuilder.Append("-");
                     }
 
-                    if (incompleteExtendedDateTime.TimeZone.HourOffset.Value < -13 || incompleteExtendedDateTime.TimeZone.HourOffset.Value > 14)
+                    if (partialExtendedDateTime.TimeZone.HourOffset.Value < -13 || partialExtendedDateTime.TimeZone.HourOffset.Value > 14)
                     {
                         return "Error: A timezone hour offset must be a number from -13 to 14.";
                     }
 
-                    stringBuilder.Append(Math.Abs(incompleteExtendedDateTime.TimeZone.HourOffset.Value).ToString("D2"));
+                    stringBuilder.Append(Math.Abs(partialExtendedDateTime.TimeZone.HourOffset.Value).ToString("D2"));
                 }
 
-                if (incompleteExtendedDateTime.TimeZone.MinuteOffset.HasValue)
+                if (partialExtendedDateTime.TimeZone.MinuteOffset.HasValue)
                 {
                     stringBuilder.Append(":");
 
-                    if (incompleteExtendedDateTime.TimeZone.HourOffset.Value < 0 || incompleteExtendedDateTime.TimeZone.HourOffset.Value > 45)
+                    if (partialExtendedDateTime.TimeZone.HourOffset.Value < 0 || partialExtendedDateTime.TimeZone.HourOffset.Value > 45)
                     {
                         return "Error: A timezone hour offset must be a number from 0 to 45.";
                     }
 
-                    stringBuilder.Append(incompleteExtendedDateTime.TimeZone.MinuteOffset.Value.ToString("D2"));
+                    stringBuilder.Append(partialExtendedDateTime.TimeZone.MinuteOffset.Value.ToString("D2"));
                 }
             }
 

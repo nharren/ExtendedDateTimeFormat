@@ -1585,7 +1585,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ParseIncompleteExtendedDateTime(string incompleteExtendedDateTimeString): IncompleteExtendedDateTime",
+											"text": "+ParsePartialExtendedDateTime(string partialExtendedDateTimeString): PartialExtendedDateTime",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -3972,12 +3972,12 @@
 							"showShadow": true,
 							"containerChangeable": false,
 							"containerExtending": false,
-							"left": 832,
+							"left": 828,
 							"top": 1336,
 							"width": 153,
 							"height": 116,
 							"autoResize": false,
-							"text": "\"Unknown\" and \"Open\" are static, empty singleton instances which set their respective read-only properties \"IsUnknown\" and \"IsOpen\" to true.",
+							"text": "\"Unknown\" and \"Open\" are static, empty instances which set their respective read-only properties \"IsUnknown\" and \"IsOpen\" to true.",
 							"wordWrap": true
 						},
 						{
@@ -5274,7 +5274,7 @@
 								"$ref": "AAAAAAFMMOQeC0KT+8E="
 							},
 							"lineStyle": 1,
-							"points": "985:1409;1090:1430"
+							"points": "981:1408;1090:1430"
 						},
 						{
 							"_type": "UMLInterfaceView",
@@ -5675,7 +5675,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "IncompleteExtendedDateTime",
+											"text": "PartialExtendedDateTime",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5
 										},
@@ -9665,7 +9665,6 @@
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
-									"type": "",
 									"isReadOnly": false,
 									"isOrdered": false,
 									"isUnique": false,
@@ -9763,6 +9762,7 @@
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
+									"type": "",
 									"isReadOnly": false,
 									"isOrdered": false,
 									"isUnique": false,
@@ -9809,6 +9809,7 @@
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
+									"type": "",
 									"isReadOnly": false,
 									"isOrdered": false,
 									"isUnique": false,
@@ -9840,7 +9841,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFMKc85plmvl0A="
 							},
-							"name": "ParseIncompleteExtendedDateTime",
+							"name": "ParsePartialExtendedDateTime",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
@@ -9851,7 +9852,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFMXN5gKAdYG/g="
 									},
-									"name": "string incompleteExtendedDateTimeString",
+									"name": "string partialExtendedDateTimeString",
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
@@ -9904,6 +9905,7 @@
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
+									"type": "",
 									"isReadOnly": false,
 									"isOrdered": false,
 									"isUnique": false,
@@ -10986,7 +10988,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxnI9/BN2hrc="
 					},
-					"name": "IncompleteExtendedDateTime",
+					"name": "PartialExtendedDateTime",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",

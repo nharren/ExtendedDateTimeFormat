@@ -5,7 +5,7 @@ namespace System.ExtendedDateTimeFormat
 {
     public static class ExtendedDateTimeFormatParser
     {
-        public static IExtendedDateTimeIndependentType ParseAll(string extendedDateTimeFormattedString)
+        public static IExtendedDateTimeIndependentType Parse(string extendedDateTimeFormattedString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeFormattedString))
             {
@@ -27,7 +27,7 @@ namespace System.ExtendedDateTimeFormat
             }
             else if (extendedDateTimeFormattedString.Contains('u') || extendedDateTimeFormattedString.Contains('x'))
             {
-                return (IExtendedDateTimeIndependentType)IncompleteExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
+                return (IExtendedDateTimeIndependentType)PartialExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
             }
             else
             {
@@ -65,14 +65,14 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimePossibilityCollectionString);
         }
 
-        public static IncompleteExtendedDateTime ParseincompleteExtendedDateTime(string incompleteExtendedDateTimeString)
+        public static PartialExtendedDateTime ParsepartialExtendedDateTime(string partialExtendedDateTimeString)
         {
-            if (string.IsNullOrWhiteSpace(incompleteExtendedDateTimeString))
+            if (string.IsNullOrWhiteSpace(partialExtendedDateTimeString))
             {
                 return null;
             }
 
-            return IncompleteExtendedDateTimeParser.Parse(incompleteExtendedDateTimeString);
+            return PartialExtendedDateTimeParser.Parse(partialExtendedDateTimeString);
         }
 
         public static ExtendedDateTime ParseExtendedDateTime(string extendedDateTimeString)

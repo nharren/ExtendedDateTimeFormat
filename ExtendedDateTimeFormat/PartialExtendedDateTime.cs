@@ -3,7 +3,7 @@ using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class IncompleteExtendedDateTime : ExtendedDateTime
+    public class PartialExtendedDateTime : ExtendedDateTime
     {
         new public string Year { get; set; }
 
@@ -13,12 +13,12 @@ namespace System.ExtendedDateTimeFormat
 
         public ExtendedDateTimePossibilityCollection ToPossibilityCollection(bool allowUnspecified = false)
         {
-            return IncompleteExtendedDateTimeConverter.ToPossibilityCollection(this, allowUnspecified);
+            return PartialExtendedDateTimeConverter.ToPossibilityCollection(this, allowUnspecified);
         }
 
         public override string ToString()
         {
-            return IncompleteExtendedDateTimeSerializer.Serialize(this);
+            return PartialExtendedDateTimeSerializer.Serialize(this);
         }
     }
 }

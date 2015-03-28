@@ -40,7 +40,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             }
             else if (startString.Contains('u') || startString.Contains('x'))
             {
-                extendedDateTimeInterval.Start = IncompleteExtendedDateTimeParser.Parse(startString);
+                extendedDateTimeInterval.Start = PartialExtendedDateTimeParser.Parse(startString);
             }
             else
             {
@@ -65,7 +65,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             }
             else if (endString.Contains('u') || endString.Contains('x'))
             {
-                extendedDateTimeInterval.End = IncompleteExtendedDateTimeParser.Parse(endString);
+                extendedDateTimeInterval.End = PartialExtendedDateTimeParser.Parse(endString);
             }
             else
             {
