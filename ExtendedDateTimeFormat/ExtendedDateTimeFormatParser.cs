@@ -65,7 +65,7 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimePossibilityCollectionString);
         }
 
-        public static PartialExtendedDateTime ParsepartialExtendedDateTime(string partialExtendedDateTimeString)
+        public static PartialExtendedDateTime ParsePartialExtendedDateTime(string partialExtendedDateTimeString)
         {
             if (string.IsNullOrWhiteSpace(partialExtendedDateTimeString))
             {
