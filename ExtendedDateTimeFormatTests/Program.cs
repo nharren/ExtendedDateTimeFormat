@@ -153,7 +153,12 @@ namespace ExtendedDateTimeFormatTests
                 // Masked Precision or Unspecified in Long-Form Year
                 "y28374uuu",
                 "y2334xx",
-                "y32uxe12p2"
+                "y32uxe12p2",
+
+                // Collections in Intervals
+                "{1995,1996,1998}/{2000,2006,2007}",
+                "{1995,1997}/2009",
+                "2004/{2010,2012}",
 
                 // TODO: Enter in more malformed strings.
             };

@@ -22,6 +22,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             var endString = intervalPartStrings[1];
             var extendedDateTimeInterval = new ExtendedDateTimeInterval();
 
+            if (startString[0] == '{')
+            {
+                throw new ParseException("An interval cannot contain a collection.", startString);
+            }
+
             if (startString == "unknown")
             {
                 extendedDateTimeInterval.Start = ExtendedDateTime.Unknown;
@@ -29,10 +34,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             else if (startString == "open")
             {
                 extendedDateTimeInterval.Start = ExtendedDateTime.Open;
-            }
-            else if (startString[0] == '{')
-            {
-                extendedDateTimeInterval.Start = ExtendedDateTimeCollectionParser.Parse(startString);
             }
             else if (startString[0] == '[')
             {
@@ -47,6 +48,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 extendedDateTimeInterval.Start = ExtendedDateTimeParser.Parse(startString);
             }
 
+            if (endString[0] == '{')
+            {
+                throw new ParseException("An interval cannot contain a collection.", startString);
+            }
+
             if (endString == "unknown")
             {
                 extendedDateTimeInterval.End = ExtendedDateTime.Unknown;
@@ -54,10 +60,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             else if (endString == "open")
             {
                 extendedDateTimeInterval.End = ExtendedDateTime.Open;
-            }
-            else if (endString[0] == '{')
-            {
-                extendedDateTimeInterval.End = ExtendedDateTimeCollectionParser.Parse(endString);
             }
             else if (endString[0] == '[')
             {

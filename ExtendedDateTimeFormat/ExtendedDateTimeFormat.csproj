@@ -63,7 +63,6 @@
     <Compile Include="Internal\Serializers\ExtendedDateTimeRangeSerializer.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimeSerializer.cs" />
     <Compile Include="IExtendedDateTimeIndependentType.cs" />
-    <Compile Include="IExtendedDateTimeNestingType.cs" />
     <Compile Include="IExtendedDateTimeCollectionChild.cs" />
     <Compile Include="ISingleExtendedDateTimeType.cs" />
     <Compile Include="ParseException.cs" />
