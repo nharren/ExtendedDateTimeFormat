@@ -67,11 +67,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         }
                         else if (preceedingElementString.Contains('u') || preceedingElementString.Contains('x'))
                         {
-                            possibilityCollection.Add((IExtendedDateTimeCollectionChild)PartialExtendedDateTimeParser.Parse(preceedingElementString));
+                            possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<PartialExtendedDateTime>(preceedingElementString));
                         }
                         else
                         {
-                            possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse(preceedingElementString));
+                            possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<ExtendedDateTime>(preceedingElementString));
                         }
                     }
 
@@ -109,11 +109,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 }
                 else if (remainingElementString.Contains('u') || remainingElementString.Contains('x'))
                 {
-                    possibilityCollection.Add((IExtendedDateTimeCollectionChild)PartialExtendedDateTimeParser.Parse(remainingElementString));
+                    possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<PartialExtendedDateTime>(remainingElementString));
                 }
                 else
                 {
-                    possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse(remainingElementString));
+                    possibilityCollection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<ExtendedDateTime>(remainingElementString));
                 }
             }
 

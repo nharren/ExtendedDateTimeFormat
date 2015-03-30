@@ -4,7 +4,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
     internal static class ExtendedDateTimeSerializer
     {
-        public static string Serialize(ExtendedDateTime extendedDateTime)
+        public static string Serialize<T>(ExtendedDateTime extendedDateTime) where T : ExtendedDateTime
         {
             if (extendedDateTime.IsUnknown)
             {
@@ -19,23 +19,52 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
             var stringBuilder = new StringBuilder();
             var isLongFormYear = false;
 
-            if (extendedDateTime.Year.HasValue)
+            if (!IsYearNull<T>(extendedDateTime))
             {
-                if (extendedDateTime.Year.Value > 9999 || extendedDateTime.Year.Value < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
-                {
-                    stringBuilder.Append('y');
+                stringBuilder.Append("{ys}");
 
-                    isLongFormYear = true;
-                }
-
-                if (extendedDateTime.YearExponent.HasValue)
+                if (typeof(T) == typeof(PartialExtendedDateTime))
                 {
-                    stringBuilder.Append(extendedDateTime.Year.Value.ToString());
+                    var partialExtendedDateTime = (PartialExtendedDateTime)extendedDateTime;
+                    var yearValue = 0;
+
+                    if (int.TryParse(partialExtendedDateTime.Year, out yearValue))
+                    {
+                        if (yearValue > 9999 || yearValue < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
+                        {
+                            stringBuilder.Append('y');
+
+                            isLongFormYear = true;
+                        }
+                    }
+
+                    if (partialExtendedDateTime.Year.Length < 4)
+                    {
+                        return "Error: The year must be at least four characters long.";
+                    }
+
+                    stringBuilder.Append(partialExtendedDateTime.Year.ToString());
                 }
                 else
                 {
-                    stringBuilder.Append(extendedDateTime.Year.Value.ToString("D4"));
+                    if (extendedDateTime.Year.Value > 9999 || extendedDateTime.Year.Value < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
+                    {
+                        stringBuilder.Append('y');
+
+                        isLongFormYear = true;
+                    }
+
+                    if (extendedDateTime.YearExponent.HasValue)
+                    {
+                        stringBuilder.Append(extendedDateTime.Year.Value.ToString());
+                    }
+                    else
+                    {
+                        stringBuilder.Append(extendedDateTime.Year.Value.ToString("D4"));
+                    }
                 }
+
+                stringBuilder.Append("{ye}");
             }
             else
             {
@@ -44,7 +73,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.YearExponent.HasValue)
             {
-                if (!extendedDateTime.Year.HasValue)
+                if (IsYearNull<T>(extendedDateTime))
                 {
                     return "Error: A year exponent cannot exist without a year.";
                 }
@@ -60,7 +89,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.YearPrecision.HasValue)
             {
-                if (!extendedDateTime.Year.HasValue)
+                if (IsYearNull<T>(extendedDateTime))
                 {
                     return "Error: Year precision cannot exist without a year.";
                 }
@@ -74,27 +103,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 stringBuilder.Append(extendedDateTime.YearPrecision);
             }
 
-            if (extendedDateTime.YearFlags != 0)
+            if (!IsMonthNull<T>(extendedDateTime))
             {
-                if (!extendedDateTime.Year.HasValue)
-                {
-                    return "Error: Year flags cannot exist without a year.";
-                }
-
-                if (extendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
-                {
-                    stringBuilder.Append('?');
-                }
-
-                if (extendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
-                {
-                    stringBuilder.Append('~');
-                }
-            }
-
-            if (extendedDateTime.Month.HasValue)
-            {
-                if (!extendedDateTime.Year.HasValue)
+                if (IsYearNull<T>(extendedDateTime))
                 {
                     return "Error: A month cannot exist without a year.";
                 }
@@ -106,82 +117,77 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 stringBuilder.Append('-');
 
-                if (extendedDateTime.Month.Value < 1 || extendedDateTime.Month.Value > 12)
+                stringBuilder.Append("{ms}");
+
+                if (typeof(T) == typeof(PartialExtendedDateTime))
                 {
-                    return "Error: A month must be a number from 1 to 12.";
+                    var monthValue = 0;
+                    var partialExtendedDateTime = (PartialExtendedDateTime)extendedDateTime;
+
+                    if (int.TryParse(partialExtendedDateTime.Month, out monthValue))
+                    {
+                        if (monthValue < 1 || monthValue > 12)
+                        {
+                            return "Error: A month must be a number from 1 to 12.";
+                        }
+                    }
+
+                    if (partialExtendedDateTime.Month.Length != 2)
+                    {
+                        return "Error: A month must be two characters long.";
+                    }
+
+                    stringBuilder.Append(partialExtendedDateTime.Month);
+                }
+                else
+                {
+                    if (extendedDateTime.Month.Value < 1 || extendedDateTime.Month.Value > 12)
+                    {
+                        return "Error: A month must be a number from 1 to 12.";
+                    }
+
+                    stringBuilder.Append(extendedDateTime.Month.Value.ToString("D2"));
                 }
 
-                stringBuilder.Append(extendedDateTime.Month.Value.ToString("D2"));
-            }
-
-            if (extendedDateTime.MonthFlags != 0)
-            {
-                if (!extendedDateTime.Month.HasValue)
-                {
-                    return "Error: Month flags cannot exist without a month.";
-                }
-
-                if (extendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
-                {
-                    stringBuilder.Append('?');
-                }
-
-                if (extendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
-                {
-                    stringBuilder.Append('~');
-                }
+                stringBuilder.Append("{me}");
             }
 
             if (extendedDateTime.Season != Season.Undefined)
             {
-                if (!extendedDateTime.Year.HasValue)
+                if (IsYearNull<T>(extendedDateTime))
                 {
                     return "Error: A season cannot exist without a year.";
                 }
 
-                if (extendedDateTime.Month.HasValue)
+                if (!IsMonthNull<T>(extendedDateTime))
                 {
                     return "Error: A month and season cannot both be defined.";
                 }
 
                 stringBuilder.Append('-');
 
+                stringBuilder.Append("{ss}");
+
                 stringBuilder.Append((int)extendedDateTime.Season);
+
+                if (extendedDateTime.SeasonQualifier != null)
+                {
+                    if (extendedDateTime.Season == Season.Undefined)
+                    {
+                        return "Error: A season qualifier cannot exist without a season.";
+                    }
+
+                    stringBuilder.Append('^');
+
+                    stringBuilder.Append(extendedDateTime.SeasonQualifier);
+                }
+
+                stringBuilder.Append("{se}");
             }
 
-            if (extendedDateTime.SeasonQualifier != null)
+            if (!IsDayNull<T>(extendedDateTime))
             {
-                if (extendedDateTime.Season == Season.Undefined)
-                {
-                    return "Error: A season qualifier cannot exist without a season.";
-                }
-
-                stringBuilder.Append('^');
-
-                stringBuilder.Append(extendedDateTime.SeasonQualifier);
-            }
-
-            if (extendedDateTime.SeasonFlags != 0)
-            {
-                if (extendedDateTime.Season == Season.Undefined)
-                {
-                    return "Error: Season flags cannot exist without a season.";
-                }
-
-                if (extendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
-                {
-                    stringBuilder.Append('?');
-                }
-
-                if (extendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
-                {
-                    stringBuilder.Append('~');
-                }
-            }
-
-            if (extendedDateTime.Day.HasValue)
-            {
-                if (!extendedDateTime.Month.HasValue)
+                if (IsMonthNull<T>(extendedDateTime))
                 {
                     return "Error: A day cannot exist without a month.";
                 }
@@ -193,42 +199,54 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 stringBuilder.Append('-');
 
-                if (extendedDateTime.Day.Value < 1 || extendedDateTime.Day.Value > 31)
+                stringBuilder.Append("{ds}");
+
+                if (typeof(T) == typeof(PartialExtendedDateTime))
                 {
-                    return "Error: A month must be a number from 1 to 31.";
+                    var partialExtendedDateTime = (PartialExtendedDateTime)extendedDateTime;
+
+                    var dayValue = 0;
+
+                    if (int.TryParse(partialExtendedDateTime.Day, out dayValue))
+                    {
+                        if (dayValue < 1 || dayValue > 31)
+                        {
+                            return "Error: A month must be a number from 1 to 31.";
+                        }
+                    }
+
+                    if (partialExtendedDateTime.Day.Length != 2)
+                    {
+                        return "Error: A day must be at least two characters long.";
+                    }
+
+                    stringBuilder.Append(partialExtendedDateTime.Day);
                 }
-
-                var daysInMonth = ExtendedDateTime.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
-
-                if (extendedDateTime.Day.Value > daysInMonth)
+                else
                 {
-                    return "Error: The day exceeds the number of days in the specified month.";
-                }
+                    if (extendedDateTime.Day.Value < 1 || extendedDateTime.Day.Value > 31)
+                    {
+                        return "Error: A month must be a number from 1 to 31.";
+                    }
 
-                stringBuilder.Append(extendedDateTime.Day.Value.ToString("D2"));
+                    var daysInMonth = ExtendedDateTime.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
+
+                    if (extendedDateTime.Day.Value > daysInMonth)
+                    {
+                        return "Error: The day exceeds the number of days in the specified month.";
+                    }
+
+                    stringBuilder.Append(extendedDateTime.Day.Value.ToString("D2"));
+                }
             }
 
-            if (extendedDateTime.DayFlags != 0)
-            {
-                if (!extendedDateTime.Day.HasValue)
-                {
-                    return "Error: Day flags cannot exist without a day.";
-                }
+            stringBuilder.Append("{de}");
 
-                if (extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
-                {
-                    stringBuilder.Append('?');
-                }
-
-                if (extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Approximate))
-                {
-                    stringBuilder.Append('~');
-                }
-            }
+            InsertFlags(extendedDateTime, ref stringBuilder);
 
             if (extendedDateTime.Hour.HasValue)
             {
-                if (!extendedDateTime.Day.HasValue)
+                if (IsDayNull<T>(extendedDateTime))
                 {
                     return "Error: An hour cannot exist without a day.";
                 }
@@ -323,6 +341,471 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
             }
 
             return stringBuilder.ToString();
+        }
+
+        private static void InsertFlags(ExtendedDateTime extendedDateTime, ref StringBuilder stringBuilder)
+        {
+            var da = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
+            var du = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
+            var ma = extendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
+            var mu = extendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
+            var sa = extendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
+            var su = extendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
+            var ya = extendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
+            var yu = extendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
+
+            var de = string.Empty;
+            var ds = string.Empty;
+            var me = string.Empty;
+            var ms = string.Empty;
+            var se = string.Empty;
+            var ss = string.Empty;
+            var ye = string.Empty;
+            var ys = string.Empty;
+
+            if (yu && ya && mu && ma && du && da)
+            {
+                de = "?~";
+            }
+            else if (yu && ya && mu && ma && du)
+            {
+                me = "~";
+                de = "?";
+            }
+            else if (yu && ya && mu && ma && da)
+            {
+                me = "?";
+                de = "~";
+            }
+            else if (yu && ya && mu && du && da)
+            {
+                ms = "(";
+                me = ")?";
+                de = "?~";
+            }
+            else if (yu && ya && ma && du && da)
+            {
+                ms = "(";
+                me = ")~";
+                de = "?~";
+            }
+            else if (yu && mu && ma && du && da)
+            {
+                ys = "(";
+                ye = ")?";
+                de = "?~";
+            }
+            else if (ya && mu && ma && du && da)
+            {
+                ys = "(";
+                ye = ")~";
+                de = "?~";
+            }
+            else if (yu && ya && mu && ma)
+            {
+                me = "?~";
+            }
+            else if (yu && ya && ma && da)
+            {
+                ye = "?";
+                de = "~";
+            }
+            else if (yu && mu && du && da)
+            {
+                ys = "(";
+                ds = "(";
+                de = ")~)?";
+            }
+            else if (ya && mu && du && da)
+            {
+                ye = ")";
+                ms = "(";
+                ds = "(";
+                de = ")~)?";
+            }
+            else if (yu && ya && mu && du)
+            {
+                ye = "~";
+                de = "?";
+            }
+            else if (yu && ya && du && da)
+            {
+                de = "?~";
+                ms = "(";
+                me = ")";
+            }
+            else if (yu && ma && du && da)
+            {
+                ye = "?";
+                ms = "(";
+                ds = "(";
+                de = ")?)~";
+            }
+            else if (ya && mu && du && da)
+            {
+                ye = "~";
+                ms = "(";
+                me = ")?";
+                ds = "(";
+                de = ")?~";
+            }
+            else if (yu && ya && mu && da)
+            {
+                ye = "?";
+                ms = "(";
+                me = ")?";
+                de = "?";
+            }
+            else if (yu && mu && ma && du)
+            {
+                ys = "(";
+                ms = "(";
+                me = ")~";
+                de = ")?";
+            }
+            else if (mu && ma && du && da)
+            {
+                ys = "(";
+                ye = ")";
+            }
+            else if (yu && ya && ma && du)
+            {
+                ye = "?";
+                me = "~";
+                ds = "(";
+                de = ")?";
+            }
+            else if (yu && mu && ma && da)
+            {
+                ye = "?";
+                ms = "(";
+                me = "?";
+                de = ")~";
+            }
+            else if (ya && mu && ma && da)
+            {
+                ys = "(";
+                ms = "(";
+                me = ")?";
+                de = ")~";
+            }
+            else if (yu && ya && su && sa)
+            {
+                se = "?~";
+            }
+            else if (yu && ya && mu)
+            {
+                ye = "~";
+                me = "?";
+            }
+            else if (yu && mu && du)
+            {
+                de = "?";
+            }
+            else if (ya && mu && ma)
+            {
+                ys = "(";
+                ye = ")~";
+                me = "?~";
+            }
+            else if (ya && du && da)
+            {
+                ys = "(";
+                ye = ")~";
+                ds = "(";
+                de = ")?~";
+            }
+            else if (yu && ya && ma)
+            {
+                ye = "?";
+                me = "~";
+            }
+            else if (yu && mu && da)
+            {
+                me = "?";
+                ds = "(";
+                de = ")~";
+            }
+            else if (ya && mu && du)
+            {
+                ys = "(";
+                ye = ")~";
+                de = "?";
+            }
+            else if (mu && ma && du)
+            {
+                ms = "(";
+                me = "~";
+                de = ")?";
+            }
+            else if (yu && ya && du)
+            {
+                ye = "~";
+                ms = "(";
+                me = ")";
+                de = "?";
+            }
+            else if (yu && ma && du)
+            {
+                ms = "(";
+                me = ")~";
+                de = "?";
+            }
+            else if (ya && mu && da)
+            {
+                ms = "(";
+                me = ")?";
+                de = "~";
+            }
+            else if (mu && ma && da)
+            {
+                ms = "(";
+                me = "?";
+                de = ")~";
+            }
+            else if (yu && ya && da)
+            {
+                ye = "?";
+                ms = "(";
+                me = ")";
+                de = "~";
+            }
+            else if (yu && ma && da)
+            {
+                ys = "(";
+                ye = ")?";
+                de = "~";
+            }
+            else if (ya && ma && du)
+            {
+                me = "~";
+                ds = "(";
+                de = ")?";
+            }
+            else if (mu && du && da)
+            {
+                ms = "(";
+                me = ")?";
+                ds = "(";
+                de = ")?~";
+            }
+            else if (yu && mu && ma)
+            {
+                ye = "?";
+                ms = "(";
+                me = ")?~";
+            }
+            else if (yu && du && da)
+            {
+                ye = "?";
+                ds = "(";
+                de = ")?~";
+            }
+            else if (ya && ma && da)
+            {
+                de = "~";
+            }
+            else if (ma && du && da)
+            {
+                ms = ")";
+                me = ")~";
+                ds = "(";
+                de = ")?~";
+            }
+            else if (yu && ya && su)
+            {
+                ye = "~";
+                se = "?";
+            }
+            else if (yu && ya && sa)
+            {
+                ye = "?";
+                se = "~";
+            }
+            else if (yu && su && sa)
+            {
+                ye = "?";
+                ss = "(";
+                se = ")?~";
+            }
+            else if (ya && sa && su)
+            {
+                ye = "~";
+                ss = "(";
+                se = ")?~";
+            }
+            else if (yu && ya)
+            {
+                ye = "?~";
+            }
+            else if (yu && mu)
+            {
+                me = "?";
+            }
+            else if (yu && ma)
+            {
+                ye = "?";
+                ms = "(";
+                me = ")~";
+            }
+            else if (yu && du)
+            {
+                ms = "(";
+                me = ")";
+                de = "?";
+            }
+            else if (yu && da)
+            {
+                ye = "?";
+                ds = "(";
+                de = ")~";
+            }
+            else if (ya && mu)
+            {
+                ye = "~";
+                ms = "(";
+                me = ")?";
+            }
+            else if (ya && ma)
+            {
+                me = "~";
+            }
+            else if (ya && du)
+            {
+                ye = "~";
+                ds = "(";
+                de = ")?";
+            }
+            else if (ya && da)
+            {
+                ms = "(";
+                me = ")";
+                de = "~";
+            }
+            else if (mu && ma)
+            {
+                ms = "(";
+                me = ")?~";
+            }
+            else if (mu && du)
+            {
+                ys = "(";
+                ye = ")";
+                de = "?";
+            }
+            else if (mu && da)
+            {
+                ms = "(";
+                me = ")?";
+                ds = "(";
+                de = ")~";
+            }
+            else if (ma && du)
+            {
+                ms = "(";
+                me = ")~";
+                ds = "(";
+                de = ")?";
+            }
+            else if (ma && da)
+            {
+                ys = "(";
+                ye = ")";
+                de = "~";
+            }
+            else if (du && da)
+            {
+                ds = "(";
+                de = ")?~";
+            }
+            else if (yu && su)
+            {
+                se = "?";
+            }
+            else if (yu && sa)
+            {
+                ye = "?";
+                ss = "(";
+                se = ")~";
+            }
+            else if (ya && su)
+            {
+                ye = "~";
+                ss = "(";
+                se = ")?";
+            }
+            else if (ya && sa)
+            {
+                se = "~";
+            }
+            else if (su && sa)
+            {
+                ss = "(";
+                se = ")?~";
+            }
+            else if (yu)
+            {
+                ye = "?";
+            }
+            else if (ya)
+            {
+                ye = "~";
+            }
+            else if (su)
+            {
+                ss = "(";
+                se = ")?";
+            }
+            else if (sa)
+            {
+                ss = "(";
+                se = ")~";
+            }
+            else if (mu)
+            {
+                ms = "(";
+                me = ")?";
+            }
+            else if (ma)
+            {
+                ms = "(";
+                me = ")~";
+            }
+            else if (du)
+            {
+                ds = "(";
+                de = ")?";
+            }
+            else if (da)
+            {
+                ds = "(";
+                de = ")~";
+            }
+
+            stringBuilder
+                .Replace("{ds}", ds)
+                .Replace("{de}", de)
+                .Replace("{ms}", ms)
+                .Replace("{me}", me)
+                .Replace("{ss}", ss)
+                .Replace("{se}", se)
+                .Replace("{ys}", ys)
+                .Replace("{ye}", ye);
+        }
+
+        private static bool IsDayNull<T>(ExtendedDateTime extendedDateTime)
+        {
+            return extendedDateTime.Day == null && !(typeof(T) == typeof(PartialExtendedDateTime) && ((PartialExtendedDateTime)extendedDateTime).Day != null);
+        }
+
+        private static bool IsMonthNull<T>(ExtendedDateTime extendedDateTime)
+        {
+            return extendedDateTime.Month == null && !(typeof(T) == typeof(PartialExtendedDateTime) && ((PartialExtendedDateTime)extendedDateTime).Month != null);
+        }
+
+        private static bool IsYearNull<T>(ExtendedDateTime extendedDateTime)
+        {
+            return extendedDateTime.Year == null && !(typeof(T) == typeof(PartialExtendedDateTime) && ((PartialExtendedDateTime)extendedDateTime).Year != null);
         }
     }
 }

@@ -21,8 +21,8 @@
             var startString = rangeParts[0];
             var endString = rangeParts[1];
 
-            extendedDateTimeRange.Start = ExtendedDateTimeParser.Parse(startString);
-            extendedDateTimeRange.End = ExtendedDateTimeParser.Parse(endString);
+            extendedDateTimeRange.Start = ExtendedDateTimeParser.Parse<ExtendedDateTime>(startString);
+            extendedDateTimeRange.End = ExtendedDateTimeParser.Parse<ExtendedDateTime>(endString);
 
             return extendedDateTimeRange;
         }

@@ -18,7 +18,7 @@ namespace System.ExtendedDateTimeFormat
 
         public override string ToString()
         {
-            return PartialExtendedDateTimeSerializer.Serialize(this);
+            return ExtendedDateTimeSerializer.Serialize<PartialExtendedDateTime>(this);
         }
     }
 }

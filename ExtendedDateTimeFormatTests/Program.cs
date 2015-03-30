@@ -177,6 +177,12 @@ namespace ExtendedDateTimeFormatTests
                 "2004-01-01T10:10:10+05:00",
                 "2004-01-01T10:10:10-05:00",
 
+                // Scopes
+
+                "2004-05?-25~",
+                "(1995-11?-22)~",
+                "(1995)?-12-19~",
+
                 // Conversion from Unpsecified or Masked To One of a Set
 
                 ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("15uu-12-uu")).ToPossibilityCollection(true).ToString(),

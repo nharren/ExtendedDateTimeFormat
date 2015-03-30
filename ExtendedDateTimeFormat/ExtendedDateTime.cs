@@ -4,24 +4,8 @@ namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTime : ISingleExtendedDateTimeType
     {
-        private static readonly ExtendedDateTime open = new ExtendedDateTime() { IsOpen = true };
-        private static readonly ExtendedDateTime unknown = new ExtendedDateTime() { IsUnknown = true };
-
-        public static ExtendedDateTime Open
-        {
-            get
-            {
-                return open;
-            }
-        }
-
-        public static ExtendedDateTime Unknown
-        {
-            get
-            {
-                return unknown;
-            }
-        }
+        public static readonly ExtendedDateTime Open = new ExtendedDateTime() { IsOpen = true };
+        public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { IsUnknown = true };
 
         public int? Day { get; set; }
 
@@ -84,7 +68,7 @@ namespace System.ExtendedDateTimeFormat
 
         public override string ToString()
         {
-            return ExtendedDateTimeSerializer.Serialize(this);
+            return ExtendedDateTimeSerializer.Serialize<ExtendedDateTime>(this);
         }
     }
 }
