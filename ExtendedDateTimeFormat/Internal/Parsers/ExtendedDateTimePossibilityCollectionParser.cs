@@ -25,7 +25,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             var setRanges = new Dictionary<int, int>();             // A dictionary of indexes where sets begin and end within the contents string.
             var setStartingIndex = (int?)null;
 
-            for (int i = 0; i < contentsString.Length; i++)        // Locate nested sets.
+            for (int i = 0; i < contentsString.Length; i++)         // Locate nested sets.
             {
                 if (contentsString[i] == '{' && setStartingIndex == null)
                 {

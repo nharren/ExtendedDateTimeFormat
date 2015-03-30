@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace System.ExtendedDateTimeFormat.Converters
 {
+    [SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
     public class ConversionException : Exception
     {
-        public ConversionException(string message) : base(message)
+        public ConversionException(string message)
+            : base(message)
         {
-
         }
     }
 }

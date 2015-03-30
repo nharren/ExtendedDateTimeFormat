@@ -35,16 +35,6 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public static ExtendedDateTimeInterval ParseInterval(string extendedDateTimeIntervalString)
-        {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeIntervalString))
-            {
-                return null;
-            }
-
-            return ExtendedDateTimeIntervalParser.Parse(extendedDateTimeIntervalString);
-        }
-
         public static ExtendedDateTimeCollection ParseCollection(string extendedDateTimeCollectionString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeCollectionString))
@@ -55,14 +45,24 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeCollectionParser.Parse(extendedDateTimeCollectionString);
         }
 
-        public static ExtendedDateTimePossibilityCollection ParsePossibilityCollection(string extendedDateTimePossibilityCollectionString)
+        public static ExtendedDateTime ParseExtendedDateTime(string extendedDateTimeString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimePossibilityCollectionString))
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
             {
                 return null;
             }
 
-            return ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimePossibilityCollectionString);
+            return ExtendedDateTimeParser.Parse<ExtendedDateTime>(extendedDateTimeString);
+        }
+
+        public static ExtendedDateTimeInterval ParseInterval(string extendedDateTimeIntervalString)
+        {
+            if (string.IsNullOrWhiteSpace(extendedDateTimeIntervalString))
+            {
+                return null;
+            }
+
+            return ExtendedDateTimeIntervalParser.Parse(extendedDateTimeIntervalString);
         }
 
         public static PartialExtendedDateTime ParsePartialExtendedDateTime(string partialExtendedDateTimeString)
@@ -75,14 +75,14 @@ namespace System.ExtendedDateTimeFormat
             return (PartialExtendedDateTime)ExtendedDateTimeParser.Parse<PartialExtendedDateTime>(partialExtendedDateTimeString);
         }
 
-        public static ExtendedDateTime ParseExtendedDateTime(string extendedDateTimeString)
+        public static ExtendedDateTimePossibilityCollection ParsePossibilityCollection(string extendedDateTimePossibilityCollectionString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
+            if (string.IsNullOrWhiteSpace(extendedDateTimePossibilityCollectionString))
             {
                 return null;
             }
 
-            return ExtendedDateTimeParser.Parse<ExtendedDateTime>(extendedDateTimeString);
+            return ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimePossibilityCollectionString);
         }
     }
 }

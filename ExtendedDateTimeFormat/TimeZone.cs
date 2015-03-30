@@ -3,23 +3,23 @@ namespace System.ExtendedDateTimeFormat
     public class TimeZone
     {
         internal static readonly int[,] UTCOffsets =                // http://en.wikipedia.org/wiki/List_of_UTC_time_offsets
-        {   
+        {
             {-12,0},
             {-11,0},
-            {-10,0}, 
-            {-9,30}, 
-            {-9,0}, 
-            {-8,0}, 
-            {-7,0}, 
-            {-6,0}, 
-            {-5,0}, 
-            {-4,30}, 
-            {-4,0}, 
-            {-3,30}, 
-            {-3,0}, 
+            {-10,0},
+            {-9,30},
+            {-9,0},
+            {-8,0},
+            {-7,0},
+            {-6,0},
+            {-5,0},
+            {-4,30},
+            {-4,0},
+            {-3,30},
+            {-3,0},
             {-2,0},
-            {-1,0}, 
-            {1,0}, 
+            {-1,0},
+            {1,0},
             {2,0},
             {3,0},
             {3,30},
@@ -35,19 +35,15 @@ namespace System.ExtendedDateTimeFormat
             {8,45},
             {9,0},
             {9,30},
-            {10,0},  
-            {10,30},  
-            {11,0},  
-            {11,30},  
-            {12,0},  
-            {12,45},  
-            {13,0},  
-            {14,0},  
+            {10,0},
+            {10,30},
+            {11,0},
+            {11,30},
+            {12,0},
+            {12,45},
+            {13,0},
+            {14,0},
         };
-
-        public TimeZone()
-        {
-        }
 
         public int? HourOffset { get; set; }
 

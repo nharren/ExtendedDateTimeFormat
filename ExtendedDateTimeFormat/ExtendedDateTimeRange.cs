@@ -4,9 +4,9 @@ namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTimeRange : IExtendedDateTimeCollectionChild
     {
-        public ISingleExtendedDateTimeType Start { get; set; }
-
         public ISingleExtendedDateTimeType End { get; set; }
+
+        public ISingleExtendedDateTimeType Start { get; set; }
 
         public override string ToString()
         {

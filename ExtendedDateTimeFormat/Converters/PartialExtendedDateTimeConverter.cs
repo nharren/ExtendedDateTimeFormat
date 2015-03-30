@@ -253,7 +253,6 @@
                         }
                     }
                 }
-
             }
 
             return extendedDateTimePossibilityCollection;

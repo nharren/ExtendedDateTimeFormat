@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Validator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" Background="White">
+        Title="EDTF Validator" Height="350" Width="525" Background="White">
     <Grid Margin="30">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

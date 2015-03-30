@@ -258,107 +258,6 @@ namespace ExtendedDateTimeFormatTests
             Process.Start("Results.txt");
         }
 
-        private static void WritePartialExtendedDateTime(int startingIndent, PartialExtendedDateTime partialExtendedDateTime, StringBuilder stringBuilder)
-        {
-            stringBuilder.AppendLine("[PartialExtendedDateTime]".Indent(startingIndent) + " (\"" + partialExtendedDateTime.ToString() + "\")");
-
-            if (partialExtendedDateTime.Year != null)
-            {
-                stringBuilder.AppendLine("Year: ".Indent(startingIndent + 1) + partialExtendedDateTime.Year);
-            }
-
-            if (partialExtendedDateTime.YearFlags != 0)
-            {
-                stringBuilder.AppendLine("YearFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.YearFlags.ToString());
-            }
-
-            if (partialExtendedDateTime.Month != null)
-            {
-                stringBuilder.AppendLine("Month: ".Indent(startingIndent + 1) + partialExtendedDateTime.Month);
-            }
-
-            if (partialExtendedDateTime.MonthFlags != 0)
-            {
-                stringBuilder.AppendLine("MonthFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.MonthFlags.ToString());
-            }
-
-            if (partialExtendedDateTime.Day != null)
-            {
-                stringBuilder.AppendLine("Day: ".Indent(startingIndent + 1) + partialExtendedDateTime.Day);
-            }
-
-            if (partialExtendedDateTime.DayFlags != 0)
-            {
-                stringBuilder.AppendLine("DayFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.DayFlags.ToString());
-            }
-
-            if (partialExtendedDateTime.Hour != null)
-            {
-                stringBuilder.AppendLine("Hour: ".Indent(startingIndent + 1) + partialExtendedDateTime.Hour.ToString());
-            }
-
-            if (partialExtendedDateTime.Minute != null)
-            {
-                stringBuilder.AppendLine("Minute: ".Indent(startingIndent + 1) + partialExtendedDateTime.Minute.ToString());
-            }
-
-            if (partialExtendedDateTime.Second != null)
-            {
-                stringBuilder.AppendLine("Second: ".Indent(startingIndent + 1) + partialExtendedDateTime.Second.ToString());
-            }
-
-            if (partialExtendedDateTime.Season != Season.Undefined)
-            {
-                stringBuilder.AppendLine("Season: ".Indent(startingIndent + 1) + partialExtendedDateTime.Season.ToString());
-            }
-
-            if (partialExtendedDateTime.SeasonFlags != 0)
-            {
-                stringBuilder.AppendLine("SeasonFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.SeasonFlags.ToString());
-            }
-
-            if (partialExtendedDateTime.SeasonQualifier != null)
-            {
-                stringBuilder.AppendLine("SeasonQualifier: ".Indent(startingIndent + 1) + partialExtendedDateTime.SeasonQualifier);
-            }
-
-            if (partialExtendedDateTime.YearExponent != null)
-            {
-                stringBuilder.AppendLine("YearExponent: ".Indent(startingIndent + 1) + partialExtendedDateTime.YearExponent.ToString());
-            }
-
-            if (partialExtendedDateTime.YearPrecision != null)
-            {
-                stringBuilder.AppendLine("YearPrecision: ".Indent(startingIndent + 1) + partialExtendedDateTime.YearPrecision.ToString());
-            }
-
-            if (partialExtendedDateTime.IsOpen)
-            {
-                stringBuilder.AppendLine("IsOpen: ".Indent(startingIndent + 1) + partialExtendedDateTime.IsOpen.ToString());
-            }
-
-            if (partialExtendedDateTime.IsUnknown)
-            {
-                stringBuilder.AppendLine("IsUnknown: ".Indent(startingIndent + 1) + partialExtendedDateTime.IsUnknown.ToString());
-            }
-
-            if (partialExtendedDateTime.TimeZone != null)
-            {
-                stringBuilder.AppendLine("TimeZone:".Indent(startingIndent + 1));
-                stringBuilder.AppendLine("[TimeZone]".Indent(startingIndent + 2));
-
-                if (partialExtendedDateTime.TimeZone.HourOffset != null)
-                {
-                    stringBuilder.AppendLine("HourOffset:".Indent(startingIndent + 3) + partialExtendedDateTime.TimeZone.HourOffset.ToString());
-                }
-
-                if (partialExtendedDateTime.TimeZone.MinuteOffset != null)
-                {
-                    stringBuilder.AppendLine("MinuteOffset:".Indent(startingIndent + 3) + partialExtendedDateTime.TimeZone.MinuteOffset.ToString());
-                }
-            }
-        }
-
         private static void WriteExtendedDateTime(int startingIndent, ExtendedDateTime extendedDateTime, StringBuilder stringBuilder)
         {
             stringBuilder.AppendLine("[ExtendedDateTime]".Indent(startingIndent) + " (\"" + extendedDateTime.ToString() + "\")");
@@ -489,6 +388,48 @@ namespace ExtendedDateTimeFormatTests
             }
         }
 
+        private static void WriteExtendedDateTimeInterval(int startingIndent, ExtendedDateTimeInterval extendedDateTimeInterval, StringBuilder stringBuilder)
+        {
+            stringBuilder.AppendLine("[ExtendedDateTimeInterval]".Indent(startingIndent) + " (\"" + extendedDateTimeInterval.ToString() + "\")");
+            stringBuilder.AppendLine("Start:".Indent(startingIndent + 1));
+
+            if (extendedDateTimeInterval.Start is ExtendedDateTimePossibilityCollection)
+            {
+                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeInterval.Start, stringBuilder);
+            }
+            else if (extendedDateTimeInterval.Start is ExtendedDateTimeCollection)
+            {
+                WriteExtendedDateTimeCollection(startingIndent + 2, (ExtendedDateTimeCollection)extendedDateTimeInterval.Start, stringBuilder);
+            }
+            else if (extendedDateTimeInterval.Start is PartialExtendedDateTime)
+            {
+                WritePartialExtendedDateTime(startingIndent + 2, (PartialExtendedDateTime)extendedDateTimeInterval.Start, stringBuilder);
+            }
+            else if (extendedDateTimeInterval.Start is ExtendedDateTime)
+            {
+                WriteExtendedDateTime(startingIndent + 2, (ExtendedDateTime)extendedDateTimeInterval.Start, stringBuilder);
+            }
+
+            stringBuilder.AppendLine("End:".Indent(startingIndent + 1));
+
+            if (extendedDateTimeInterval.End is ExtendedDateTimePossibilityCollection)
+            {
+                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeInterval.End, stringBuilder);
+            }
+            else if (extendedDateTimeInterval.End is ExtendedDateTimeCollection)
+            {
+                WriteExtendedDateTimeCollection(startingIndent + 2, (ExtendedDateTimeCollection)extendedDateTimeInterval.End, stringBuilder);
+            }
+            else if (extendedDateTimeInterval.End is PartialExtendedDateTime)
+            {
+                WritePartialExtendedDateTime(startingIndent + 2, (PartialExtendedDateTime)extendedDateTimeInterval.End, stringBuilder);
+            }
+            else if (extendedDateTimeInterval.End is ExtendedDateTime)
+            {
+                WriteExtendedDateTime(startingIndent + 2, (ExtendedDateTime)extendedDateTimeInterval.End, stringBuilder);
+            }
+        }
+
         private static void WriteExtendedDateTimePossibilityCollection(int startingIndent, ExtendedDateTimePossibilityCollection extendedDateTimePossibilityCollection, StringBuilder stringBuilder)
         {
             stringBuilder.AppendLine("[ExtendedDateTimePossibilityCollection]".Indent(startingIndent) + " (\"" + extendedDateTimePossibilityCollection.ToString() + "\")");
@@ -552,45 +493,104 @@ namespace ExtendedDateTimeFormatTests
             }
         }
 
-        private static void WriteExtendedDateTimeInterval(int startingIndent, ExtendedDateTimeInterval extendedDateTimeInterval, StringBuilder stringBuilder)
+        private static void WritePartialExtendedDateTime(int startingIndent, PartialExtendedDateTime partialExtendedDateTime, StringBuilder stringBuilder)
         {
-            stringBuilder.AppendLine("[ExtendedDateTimeInterval]".Indent(startingIndent) + " (\"" + extendedDateTimeInterval.ToString() + "\")");
-            stringBuilder.AppendLine("Start:".Indent(startingIndent + 1));
+            stringBuilder.AppendLine("[PartialExtendedDateTime]".Indent(startingIndent) + " (\"" + partialExtendedDateTime.ToString() + "\")");
 
-            if (extendedDateTimeInterval.Start is ExtendedDateTimePossibilityCollection)
+            if (partialExtendedDateTime.Year != null)
             {
-                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeInterval.Start, stringBuilder);
-            }
-            else if (extendedDateTimeInterval.Start is ExtendedDateTimeCollection)
-            {
-                WriteExtendedDateTimeCollection(startingIndent + 2, (ExtendedDateTimeCollection)extendedDateTimeInterval.Start, stringBuilder);
-            }
-            else if (extendedDateTimeInterval.Start is PartialExtendedDateTime)
-            {
-                WritePartialExtendedDateTime(startingIndent + 2, (PartialExtendedDateTime)extendedDateTimeInterval.Start, stringBuilder);
-            }
-            else if (extendedDateTimeInterval.Start is ExtendedDateTime)
-            {
-                WriteExtendedDateTime(startingIndent + 2, (ExtendedDateTime)extendedDateTimeInterval.Start, stringBuilder);
+                stringBuilder.AppendLine("Year: ".Indent(startingIndent + 1) + partialExtendedDateTime.Year);
             }
 
-            stringBuilder.AppendLine("End:".Indent(startingIndent + 1));
+            if (partialExtendedDateTime.YearFlags != 0)
+            {
+                stringBuilder.AppendLine("YearFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.YearFlags.ToString());
+            }
 
-            if (extendedDateTimeInterval.End is ExtendedDateTimePossibilityCollection)
+            if (partialExtendedDateTime.Month != null)
             {
-                WriteExtendedDateTimePossibilityCollection(startingIndent + 2, (ExtendedDateTimePossibilityCollection)extendedDateTimeInterval.End, stringBuilder);
+                stringBuilder.AppendLine("Month: ".Indent(startingIndent + 1) + partialExtendedDateTime.Month);
             }
-            else if (extendedDateTimeInterval.End is ExtendedDateTimeCollection)
+
+            if (partialExtendedDateTime.MonthFlags != 0)
             {
-                WriteExtendedDateTimeCollection(startingIndent + 2, (ExtendedDateTimeCollection)extendedDateTimeInterval.End, stringBuilder);
+                stringBuilder.AppendLine("MonthFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.MonthFlags.ToString());
             }
-            else if (extendedDateTimeInterval.End is PartialExtendedDateTime)
+
+            if (partialExtendedDateTime.Day != null)
             {
-                WritePartialExtendedDateTime(startingIndent + 2, (PartialExtendedDateTime)extendedDateTimeInterval.End, stringBuilder);
+                stringBuilder.AppendLine("Day: ".Indent(startingIndent + 1) + partialExtendedDateTime.Day);
             }
-            else if (extendedDateTimeInterval.End is ExtendedDateTime)
+
+            if (partialExtendedDateTime.DayFlags != 0)
             {
-                WriteExtendedDateTime(startingIndent + 2, (ExtendedDateTime)extendedDateTimeInterval.End, stringBuilder);
+                stringBuilder.AppendLine("DayFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.DayFlags.ToString());
+            }
+
+            if (partialExtendedDateTime.Hour != null)
+            {
+                stringBuilder.AppendLine("Hour: ".Indent(startingIndent + 1) + partialExtendedDateTime.Hour.ToString());
+            }
+
+            if (partialExtendedDateTime.Minute != null)
+            {
+                stringBuilder.AppendLine("Minute: ".Indent(startingIndent + 1) + partialExtendedDateTime.Minute.ToString());
+            }
+
+            if (partialExtendedDateTime.Second != null)
+            {
+                stringBuilder.AppendLine("Second: ".Indent(startingIndent + 1) + partialExtendedDateTime.Second.ToString());
+            }
+
+            if (partialExtendedDateTime.Season != Season.Undefined)
+            {
+                stringBuilder.AppendLine("Season: ".Indent(startingIndent + 1) + partialExtendedDateTime.Season.ToString());
+            }
+
+            if (partialExtendedDateTime.SeasonFlags != 0)
+            {
+                stringBuilder.AppendLine("SeasonFlags: ".Indent(startingIndent + 1) + partialExtendedDateTime.SeasonFlags.ToString());
+            }
+
+            if (partialExtendedDateTime.SeasonQualifier != null)
+            {
+                stringBuilder.AppendLine("SeasonQualifier: ".Indent(startingIndent + 1) + partialExtendedDateTime.SeasonQualifier);
+            }
+
+            if (partialExtendedDateTime.YearExponent != null)
+            {
+                stringBuilder.AppendLine("YearExponent: ".Indent(startingIndent + 1) + partialExtendedDateTime.YearExponent.ToString());
+            }
+
+            if (partialExtendedDateTime.YearPrecision != null)
+            {
+                stringBuilder.AppendLine("YearPrecision: ".Indent(startingIndent + 1) + partialExtendedDateTime.YearPrecision.ToString());
+            }
+
+            if (partialExtendedDateTime.IsOpen)
+            {
+                stringBuilder.AppendLine("IsOpen: ".Indent(startingIndent + 1) + partialExtendedDateTime.IsOpen.ToString());
+            }
+
+            if (partialExtendedDateTime.IsUnknown)
+            {
+                stringBuilder.AppendLine("IsUnknown: ".Indent(startingIndent + 1) + partialExtendedDateTime.IsUnknown.ToString());
+            }
+
+            if (partialExtendedDateTime.TimeZone != null)
+            {
+                stringBuilder.AppendLine("TimeZone:".Indent(startingIndent + 1));
+                stringBuilder.AppendLine("[TimeZone]".Indent(startingIndent + 2));
+
+                if (partialExtendedDateTime.TimeZone.HourOffset != null)
+                {
+                    stringBuilder.AppendLine("HourOffset:".Indent(startingIndent + 3) + partialExtendedDateTime.TimeZone.HourOffset.ToString());
+                }
+
+                if (partialExtendedDateTime.TimeZone.MinuteOffset != null)
+                {
+                    stringBuilder.AppendLine("MinuteOffset:".Indent(startingIndent + 3) + partialExtendedDateTime.TimeZone.MinuteOffset.ToString());
+                }
             }
         }
     }

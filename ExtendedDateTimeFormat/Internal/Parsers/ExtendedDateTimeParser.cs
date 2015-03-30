@@ -7,14 +7,14 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
     {
         public static ExtendedDateTime Parse<T>(string extendedDateTimeString) where T : ExtendedDateTime
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeString))                               // Return null if empty string.
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))                                                     // Return null if empty string.
             {
                 return default(T);
             }
 
             ExtendedDateTime extendedDateTime;
 
-            if (typeof(T) == typeof(PartialExtendedDateTime))                                     // Create ExtendedDateTime.
+            if (typeof(T) == typeof(PartialExtendedDateTime))                                                          // Create ExtendedDateTime.
             {
                 extendedDateTime = new PartialExtendedDateTime();
             }
@@ -23,8 +23,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 extendedDateTime = new ExtendedDateTime();
             }
 
-            InsertArtificialScopes(ref extendedDateTimeString);                                   // e.g. 1995-11?-12~   -> {{1995-11}?-12}~ 
-                                                                                                  //      (1995-11?-12)~ -> ({1995-11}?-12)
+            InsertArtificialScopes(ref extendedDateTimeString);                                                        // e.g. 1995-11?-12~   -> {{1995-11}?-12}~    OR   (1995-11?-12)~ -> ({1995-11}?-12)
             var componentBuffer = new List<char>();
 
             var isDatePart = true;
@@ -40,9 +39,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 var extendedDateTimeCharacter = extendedDateTimeString[i];
 
-                if (isDatePart)                                                                  // Parsing date portion of extended date time.
+                if (isDatePart)                                                                                        // Parsing date portion of extended date time.
                 {
-                    if (extendedDateTimeCharacter == '(' || extendedDateTimeCharacter == '{')                                        // Scope increment.
+                    if (extendedDateTimeCharacter == '(' || extendedDateTimeCharacter == '{')                          // Scope increment.
                     {
                         if (componentBuffer.Count > 0)
                         {
@@ -51,7 +50,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                             componentBuffer.Clear();
                         }
                     }
-                    else if (extendedDateTimeCharacter == ')' || extendedDateTimeCharacter == '}')                                    // Scope decrement.
+                    else if (extendedDateTimeCharacter == ')' || extendedDateTimeCharacter == '}')                     // Scope decrement.
                     {
                         if (componentBuffer.Count > 0)
                         {
@@ -64,7 +63,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         {
                             i++;                                                                  // Skip past first flag.
 
-                            if (i + 1 < extendedDateTimeString.Length && GetFlag(extendedDateTimeString[i + 1]) != 0)               
+                            if (i + 1 < extendedDateTimeString.Length && GetFlag(extendedDateTimeString[i + 1]) != 0)
                             {
                                 i++;                                                              // Skip past second flag.
                             }
@@ -605,14 +604,14 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
         private static void InsertArtificialScopes(ref string extendedDateTimeString)
         {
             var characterList = extendedDateTimeString.ToList();
-            
+
             var currentScope = 0;
 
             for (int i = 0; i < characterList.Count; i++)
             {
                 if (characterList[i] == '(')
                 {
-                    currentScope++; 
+                    currentScope++;
                 }
                 else if (characterList[i] == ')')
                 {
@@ -628,21 +627,21 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     currentScope--;
                 }
-                else if (characterList[i] == '?' || characterList[i] == '~')   
+                else if (characterList[i] == '?' || characterList[i] == '~')
                 {
                     var foundScopeEnd = false;
 
                     for (int j = i - 1; j >= 0; j--)
                     {
                         if (characterList[j] == '?' || characterList[j] == '~' && (characterList[j - 1] == ')' || characterList[j - 2] == ')'))
-                         {
-                             if (characterList[j - 1] == ')' || ((characterList[j - 1] == '~' || characterList[j - 1] == '?') && characterList[j - 2] == ')'))   // Found flag belongs to a normal scope.
-                             {
-                                 characterList.Insert(j + 2, '{');             // Insert after hyphen. The curly brace is used instead to identify artificial scopes because normal scopes do not inherit the flags of artificial scopes.
+                        {
+                            if (characterList[j - 1] == ')' || ((characterList[j - 1] == '~' || characterList[j - 1] == '?') && characterList[j - 2] == ')'))   // Found flag belongs to a normal scope.
+                            {
+                                characterList.Insert(j + 2, '{');             // Insert after hyphen. The curly brace is used instead to identify artificial scopes because normal scopes do not inherit the flags of artificial scopes.
 
-                                 foundScopeEnd = true;
-                             }
-                         }   
+                                foundScopeEnd = true;
+                            }
+                        }
                     }
 
                     if (!foundScopeEnd)

@@ -1,11 +1,19 @@
-
 using System.ExtendedDateTimeFormat.Internal.Serializers;
+
 namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTime : ISingleExtendedDateTimeType
     {
         public static readonly ExtendedDateTime Open = new ExtendedDateTime() { IsOpen = true };
         public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { IsUnknown = true };
+
+        public static ExtendedDateTime Now
+        {
+            get
+            {
+                return new ExtendedDateTime { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day, Hour = DateTime.Now.Hour, Minute = DateTime.Now.Minute, Second = DateTime.Now.Second, TimeZone = new TimeZone { HourOffset = TimeZoneInfo.Local.BaseUtcOffset.Hours, MinuteOffset = TimeZoneInfo.Local.BaseUtcOffset.Minutes } };
+            }
+        }
 
         public int? Day { get; set; }
 
@@ -56,14 +64,6 @@ namespace System.ExtendedDateTimeFormat
             int[] days = isLeapYear ? DaysToMonth366 : DaysToMonth365;
 
             return days[month] - days[month - 1];
-        }
-
-        public static ExtendedDateTime Now
-        {
-            get
-            {
-                return new ExtendedDateTime { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day, Hour = DateTime.Now.Hour, Minute = DateTime.Now.Minute, Second = DateTime.Now.Second, TimeZone = new TimeZone{ HourOffset = TimeZoneInfo.Local.BaseUtcOffset.Hours, MinuteOffset = TimeZoneInfo.Local.BaseUtcOffset.Minutes } };
-            }
         }
 
         public override string ToString()
