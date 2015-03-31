@@ -4,7 +4,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
     internal static class ExtendedDateTimeIntervalSerializer
     {
-        public static string Serialize(ExtendedDateTimeInterval extendedDateTimeInterval)
+        internal static string Serialize(ExtendedDateTimeInterval extendedDateTimeInterval)
         {
             var stringBuilder = new StringBuilder();
 

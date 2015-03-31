@@ -4,7 +4,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class ExtendedDateTimeIntervalParser
     {
-        public static ExtendedDateTimeInterval Parse(string extendedDateTimeIntervalString)
+        internal static ExtendedDateTimeInterval Parse(string extendedDateTimeIntervalString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeIntervalString))
             {

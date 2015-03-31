@@ -5,7 +5,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class ExtendedDateTimeParser
     {
-        public static ExtendedDateTime Parse(string extendedDateTimeString)
+        internal static ExtendedDateTime Parse(string extendedDateTimeString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeString))                                                     // Return null if empty string.
             {

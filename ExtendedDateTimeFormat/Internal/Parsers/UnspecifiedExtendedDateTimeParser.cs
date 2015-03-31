@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    public static class UnspecifiedExtendedDateTimeParser
+    internal static class UnspecifiedExtendedDateTimeParser
     {
-        public static UnspecifiedExtendedDateTime Parse(string unspecifiedExtendedDateTimeString)
+        internal static UnspecifiedExtendedDateTime Parse(string unspecifiedExtendedDateTimeString)
         {
             if (unspecifiedExtendedDateTimeString.Length > 10)
             {

@@ -1,8 +1,8 @@
 ﻿namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
-    public static class UnspecifiedExtendedDateTimeSerializer
+    internal static class UnspecifiedExtendedDateTimeSerializer
     {
-        public static string Serialize(UnspecifiedExtendedDateTime unspecifiedExtendedDateTime)
+        internal static string Serialize(UnspecifiedExtendedDateTime unspecifiedExtendedDateTime)
         {
             if (unspecifiedExtendedDateTime.Day != null)
             {

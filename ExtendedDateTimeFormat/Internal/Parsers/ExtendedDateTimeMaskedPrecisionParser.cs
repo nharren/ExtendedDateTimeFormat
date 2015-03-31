@@ -2,7 +2,7 @@
 {
     internal static class ExtendedDateTimeMaskedPrecisionParser
     {
-        public static ExtendedDateTimePossibilityCollection Parse(string extendedDateTimeMaskedPrecisionString)
+        internal static ExtendedDateTimePossibilityCollection Parse(string extendedDateTimeMaskedPrecisionString)
         {
             if (extendedDateTimeMaskedPrecisionString.Length != 4)
             {

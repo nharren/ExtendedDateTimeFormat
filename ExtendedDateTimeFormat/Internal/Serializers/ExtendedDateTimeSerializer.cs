@@ -4,7 +4,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
     internal static class ExtendedDateTimeSerializer
     {
-        public static string Serialize(ExtendedDateTime extendedDateTime)
+        internal static string Serialize(ExtendedDateTime extendedDateTime)
         {
             if (extendedDateTime.IsUnknown)
             {

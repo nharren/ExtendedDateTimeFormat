@@ -1,7 +1,6 @@
 namespace System.ExtendedDateTimeFormat
 {
-    // http://www.codeproject.com/Articles/396851/Ending-the-Great-Debate-on-Enum-Flags
-    [Flags]
+    [Flags]                                      // http://www.codeproject.com/Articles/396851/Ending-the-Great-Debate-on-Enum-Flags
     public enum ExtendedDateTimeFlags
     {
         Uncertain = 1,

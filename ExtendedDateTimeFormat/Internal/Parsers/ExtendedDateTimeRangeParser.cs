@@ -2,7 +2,7 @@
 {
     internal static class ExtendedDateTimeRangeParser
     {
-        public static ExtendedDateTimeRange Parse(string extendedDateTimeRangeString)
+        internal static ExtendedDateTimeRange Parse(string extendedDateTimeRangeString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeRangeString))
             {
