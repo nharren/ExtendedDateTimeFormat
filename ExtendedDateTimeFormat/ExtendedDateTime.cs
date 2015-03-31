@@ -112,14 +112,7 @@ namespace System.ExtendedDateTimeFormat
 
         public object Clone()
         {
-            var clone = (ExtendedDateTime)MemberwiseClone();
-
-            if (TimeZone != null)
-            {
-                clone.TimeZone = new TimeZone { HourOffset = TimeZone.HourOffset, MinuteOffset = TimeZone.MinuteOffset };
-            }
-
-            return clone;
+            return (ExtendedDateTime)MemberwiseClone();
         }
 
         public int CompareTo(ExtendedDateTime other)
@@ -135,11 +128,6 @@ namespace System.ExtendedDateTimeFormat
         public bool Equals(ExtendedDateTime other)
         {
             return Comparer.Compare(this, other) == 0;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Comparer.Compare(this, (ExtendedDateTime)obj) == 0;
         }
 
         public override string ToString()
