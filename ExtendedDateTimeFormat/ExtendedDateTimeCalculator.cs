@@ -6,11 +6,6 @@
         {
             var resultingDateTime = (ExtendedDateTime)e.Clone();
 
-            if (e.TimeZone != null)
-            {
-                resultingDateTime.TimeZone = new TimeZone { HourOffset = e.TimeZone.HourOffset, MinuteOffset = e.TimeZone.MinuteOffset };
-            }
-
             if (resultingDateTime.Second == null && t.Seconds != 0)
             {
                 resultingDateTime.Second = 0;

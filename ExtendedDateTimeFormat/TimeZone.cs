@@ -1,6 +1,6 @@
 namespace System.ExtendedDateTimeFormat
 {
-    public struct TimeZone
+    public class TimeZone
     {
         internal static readonly int[,] UTCOffsets =                // http://en.wikipedia.org/wiki/List_of_UTC_time_offsets
         {
