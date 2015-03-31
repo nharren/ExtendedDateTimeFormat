@@ -85,11 +85,6 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeCalculator.Subtract(e2, e1);
         }
 
-        public static bool operator !=(ExtendedDateTime e1, ExtendedDateTime e2)
-        {
-            return Comparer.Compare(e1, e2) != 0;
-        }
-
         public static ExtendedDateTime operator +(ExtendedDateTime e, TimeSpan t)
         {
             return ExtendedDateTimeCalculator.Add(e, t);
@@ -105,11 +100,6 @@ namespace System.ExtendedDateTimeFormat
             return Comparer.Compare(e1, e2) <= 0;
         }
 
-        public static bool operator ==(ExtendedDateTime e1, ExtendedDateTime e2)
-        {
-            return Comparer.Compare(e1, e2) == 0;
-        }
-
         public static bool operator >(ExtendedDateTime e1, ExtendedDateTime e2)
         {
             return Comparer.Compare(e1, e2) > 0;
@@ -122,7 +112,7 @@ namespace System.ExtendedDateTimeFormat
 
         public object Clone()
         {
-            var clone = this is PartialExtendedDateTime ? (PartialExtendedDateTime)MemberwiseClone() : (ExtendedDateTime)MemberwiseClone();
+            var clone = (ExtendedDateTime)MemberwiseClone();
 
             if (TimeZone != null)
             {
@@ -154,7 +144,7 @@ namespace System.ExtendedDateTimeFormat
 
         public override string ToString()
         {
-            return ExtendedDateTimeSerializer.Serialize<ExtendedDateTime>(this);
+            return ExtendedDateTimeSerializer.Serialize(this);
         }
     }
 }

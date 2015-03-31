@@ -22,9 +22,9 @@ If you will not know beforehand what type of object the string represents, then 
 
 - ExtendedDateTimeInterval: Two dates separated by '/'.
 - ExtendedDateTimeCollection: Multiple dates between '{' and '}'
-- ExtendedDateTimePossibilityCollection: A collection of possible dates between '[' and ']'.
+- ExtendedDateTimePossibilityCollection: A collection of possible dates between '[' and ']'. Masked precision (dates with 'x') is converted to this type.
 - ExtendedDateTime: A datetime.
-- PartialExtendedDateTime: A datetime utilizing masked precision ('x') or unspecification ('u').
+- UnspecifiedExtendedDateTime: A datetime which is partly unspecified (contains 'u' in date).
 
 #### Serializing
 

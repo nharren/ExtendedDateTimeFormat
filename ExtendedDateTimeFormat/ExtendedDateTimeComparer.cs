@@ -10,9 +10,9 @@ namespace System.ExtendedDateTimeFormat
     {
         public int Compare(ExtendedDateTime x, ExtendedDateTime y)
         {
-            if (x is PartialExtendedDateTime || y is PartialExtendedDateTime)
+            if (y == null)
             {
-                throw new InvalidOperationException("Comparisons cannot be made with PartialExtendedDateTimes.");
+                return 1;
             }
 
             if (x.Year == null || y.Year == null)
@@ -20,17 +20,61 @@ namespace System.ExtendedDateTimeFormat
                 throw new InvalidOperationException("Cannot compare extended date times without a year.");
             }
 
-            if (x.Year > y.Year)
+            long longXYear = x.Year.Value;
+            long longYYear = y.Year.Value;
+
+
+            if (x.YearExponent.HasValue)
+            {
+                try
+                {
+                    longXYear *= Convert.ToInt64(Math.Pow(10, x.YearExponent.Value));
+                }
+                catch (Exception)
+                {
+                    if (x.Year.Value < 0)
+                    {
+                        longXYear = long.MinValue;
+                    }
+                    else
+                    {
+                        longXYear = long.MaxValue;
+                    }
+
+                }
+            }
+
+            if (y.YearExponent.HasValue)
+            {
+                try
+                {
+                    longYYear *= Convert.ToInt64(Math.Pow(10, y.YearExponent.Value));
+                }
+                catch (Exception)
+                {
+                    if (y.Year.Value < 0)
+                    {
+                        longYYear = long.MinValue;
+                    }
+                    else
+                    {
+                        longYYear = long.MaxValue;
+                    }
+
+                }
+            }
+
+            if (longXYear > longYYear)
             {
                 return 1;
             }
-            else if (x.Year < y.Year)
+            else if (longXYear < longYYear)
             {
                 return -1;
             }
 
             if (x.Season != Season.Undefined || y.Season != Season.Undefined)
-            {   
+            {
                 if (y.Season == Season.Undefined)
                 {
                     return 1;

@@ -5,25 +5,17 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class ExtendedDateTimeParser
     {
-        public static ExtendedDateTime Parse<T>(string extendedDateTimeString) where T : ExtendedDateTime
+        public static ExtendedDateTime Parse(string extendedDateTimeString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeString))                                                     // Return null if empty string.
             {
-                return default(T);
+                return null;
             }
 
-            ExtendedDateTime extendedDateTime;
-
-            if (typeof(T) == typeof(PartialExtendedDateTime))                                                          // Create ExtendedDateTime.
-            {
-                extendedDateTime = new PartialExtendedDateTime();
-            }
-            else
-            {
-                extendedDateTime = new ExtendedDateTime();
-            }
+            var extendedDateTime = new ExtendedDateTime();;
 
             InsertArtificialScopes(ref extendedDateTimeString);                                                        // e.g. 1995-11?-12~   -> {{1995-11}?-12}~    OR   (1995-11?-12)~ -> ({1995-11}?-12)
+
             var componentBuffer = new List<char>();
 
             var isDatePart = true;
@@ -45,7 +37,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     {
                         if (componentBuffer.Count > 0)
                         {
-                            CommitDateComponent<T>(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
+                            CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
 
                             componentBuffer.Clear();
                         }
@@ -54,7 +46,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     {
                         if (componentBuffer.Count > 0)
                         {
-                            CommitDateComponent<T>(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
+                            CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
 
                             componentBuffer.Clear();
                         }
@@ -87,24 +79,20 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         }
                         else if (componentBuffer.Count > 0)                                      // Hyphen is component separator.
                         {
-                            CommitDateComponent<T>(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
+                            CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
 
                             componentBuffer.Clear();
                         }
                     }
                     else if (extendedDateTimeCharacter == 'T')
                     {
-                        CommitDateComponent<T>(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
+                        CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
 
                         componentBuffer.Clear();
 
                         isDatePart = false;
                     }
                     else if (isSeasonQualifierPart)
-                    {
-                        componentBuffer.Add(extendedDateTimeCharacter);
-                    }
-                    else if (typeof(T) == typeof(PartialExtendedDateTime) && (extendedDateTimeString[i] == 'u' || extendedDateTimeString[i] == 'x'))
                     {
                         componentBuffer.Add(extendedDateTimeCharacter);
                     }
@@ -146,7 +134,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 if (isDatePart)
                 {
-                    CommitDateComponent<T>(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(extendedDateTimeString.Length - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
+                    CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(extendedDateTimeString.Length - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
                 }
                 else
                 {
@@ -157,7 +145,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             return extendedDateTime;
         }
 
-        private static void CommitDateComponent<T>(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, string componentString, ExtendedDateTime extendedDateTime)
+        private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, string componentString, ExtendedDateTime extendedDateTime)
         {
             if (dateComponentIndex == 0)                                                           // We expect a year to appear first.
             {
@@ -198,10 +186,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         isPrecision = true;
                         isExponent = false;
                     }
-                    else if (typeof(T) == typeof(PartialExtendedDateTime) && (componentString[i] == 'u' || componentString[i] == 'x'))
-                    {
-                        digits.Add(componentString[i]);
-                    }
                     else
                     {
                         throw new ParseException("The year is invalid.", new string(componentString.ToArray()));
@@ -220,14 +204,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else
                     {
-                        if (typeof(T) == typeof(PartialExtendedDateTime))
-                        {
-                            ((PartialExtendedDateTime)extendedDateTime).Year = new string(digits.ToArray());
-                        }
-                        else
-                        {
-                            extendedDateTime.Year = int.Parse(new string(digits.ToArray()));
-                        }
+                        extendedDateTime.Year = int.Parse(new string(digits.ToArray()));
                     }
                 }
 
@@ -277,26 +254,19 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The month must have two digits.", componentString);
                     }
 
-                    if (typeof(T) == typeof(PartialExtendedDateTime))
+                    if (componentString.Any(c => !char.IsDigit(c)))
                     {
-                        ((PartialExtendedDateTime)extendedDateTime).Month = componentString;
+                        throw new ParseException("The month must be a number.", componentString);
                     }
-                    else
+
+                    var monthInteger = int.Parse(componentString);
+
+                    if (monthInteger < 1 || monthInteger > 12)
                     {
-                        if (componentString.Any(c => !char.IsDigit(c)))
-                        {
-                            throw new ParseException("The month must be a number.", componentString);
-                        }
-
-                        var monthInteger = int.Parse(componentString);
-
-                        if (monthInteger < 1 || monthInteger > 12)
-                        {
-                            throw new ParseException("The month must be between 1 and 12.", componentString);
-                        }
-
-                        extendedDateTime.Month = monthInteger;
+                        throw new ParseException("The month must be between 1 and 12.", componentString);
                     }
+
+                    extendedDateTime.Month = monthInteger;
 
                     extendedDateTime.MonthFlags = flags;
                 }
@@ -315,33 +285,26 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The day must have two digits.", componentString);
                 }
 
-                if (typeof(T) == typeof(PartialExtendedDateTime))
+                if (componentString.Any(c => !char.IsDigit(c)))
                 {
-                    ((PartialExtendedDateTime)extendedDateTime).Day = componentString;
+                    throw new ParseException("The day must be a number.", componentString);
                 }
-                else
+
+                var dayInteger = int.Parse(componentString);
+
+                if (dayInteger < 1 || dayInteger > 31)
                 {
-                    if (componentString.Any(c => !char.IsDigit(c)))
-                    {
-                        throw new ParseException("The day must be a number.", componentString);
-                    }
-
-                    var dayInteger = int.Parse(componentString);
-
-                    if (dayInteger < 1 || dayInteger > 31)
-                    {
-                        throw new ParseException("The day must be between 1 and 31.", componentString);
-                    }
-
-                    var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
-
-                    if (dayInteger > daysInMonth)
-                    {
-                        throw new ParseException("The month " + extendedDateTime.Month + " in the year " + extendedDateTime.Year + " has only " + daysInMonth + " days.", componentString);
-                    }
-
-                    extendedDateTime.Day = dayInteger;
+                    throw new ParseException("The day must be between 1 and 31.", componentString);
                 }
+
+                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
+
+                if (dayInteger > daysInMonth)
+                {
+                    throw new ParseException("The month " + extendedDateTime.Month + " in the year " + extendedDateTime.Year + " has only " + daysInMonth + " days.", componentString);
+                }
+
+                extendedDateTime.Day = dayInteger;
 
                 extendedDateTime.DayFlags = flags;
 

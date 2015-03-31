@@ -40,12 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\ConversionException.cs" />
-    <Compile Include="Converters\PartialExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
     <Compile Include="ExtendedDateTimeCalculator.cs" />
     <Compile Include="ExtendedDateTimeComparer.cs" />
     <Compile Include="ExtendedDateTimePossibilityCollection.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Internal\Parsers\ExtendedDateTimeMaskedPrecisionParser.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
     <Compile Include="ExtendedDateTimeFlags.cs" />
     <Compile Include="ExtendedDateTimeFormatParser.cs" />
@@ -56,6 +56,7 @@
     <Compile Include="Internal\Parsers\ExtendedDateTimeParser.cs" />
     <Compile Include="ExtendedDateTimeRange.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeRangeParser.cs" />
+    <Compile Include="Internal\Parsers\UnspecifiedExtendedDateTimeParser.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimePossibilityCollectionSerializer.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimeCollectionSerializer.cs" />
     <Compile Include="Internal\Serializers\ExtendedDateTimeIntervalSerializer.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Season.cs" />
-    <Compile Include="PartialExtendedDateTime.cs" />
+    <Compile Include="UnspecifiedExtendedDateTime.cs" />
     <Compile Include="TimeZone.cs" />
   </ItemGroup>
   <ItemGroup>

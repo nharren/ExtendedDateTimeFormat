@@ -39,13 +39,13 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 extendedDateTimeInterval.Start = ExtendedDateTimePossibilityCollectionParser.Parse(startString);
             }
-            else if (startString.Contains('u') || startString.Contains('x'))
+            else if (startString.ContainsBefore('u', '^'))
             {
-                extendedDateTimeInterval.Start = ExtendedDateTimeParser.Parse<PartialExtendedDateTime>(startString);
+                extendedDateTimeInterval.Start = UnspecifiedExtendedDateTimeParser.Parse(startString);
             }
             else
             {
-                extendedDateTimeInterval.Start = ExtendedDateTimeParser.Parse<ExtendedDateTime>(startString);
+                extendedDateTimeInterval.Start = ExtendedDateTimeParser.Parse(startString);
             }
 
             if (endString[0] == '{')
@@ -65,13 +65,13 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 extendedDateTimeInterval.End = ExtendedDateTimePossibilityCollectionParser.Parse(endString);
             }
-            else if (endString.Contains('u') || endString.Contains('x'))
+            else if (endString.ContainsBefore('u', '^'))
             {
-                extendedDateTimeInterval.End = ExtendedDateTimeParser.Parse<PartialExtendedDateTime>(endString);
+                extendedDateTimeInterval.End = UnspecifiedExtendedDateTimeParser.Parse(endString);
             }
             else
             {
-                extendedDateTimeInterval.End = ExtendedDateTimeParser.Parse<ExtendedDateTime>(endString);
+                extendedDateTimeInterval.End = ExtendedDateTimeParser.Parse(endString);
             }
 
             return extendedDateTimeInterval;

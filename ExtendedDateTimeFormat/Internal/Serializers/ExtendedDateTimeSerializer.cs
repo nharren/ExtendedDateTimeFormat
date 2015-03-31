@@ -4,7 +4,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
     internal static class ExtendedDateTimeSerializer
     {
-        public static string Serialize<T>(ExtendedDateTime extendedDateTime) where T : ExtendedDateTime
+        public static string Serialize(ExtendedDateTime extendedDateTime)
         {
             if (extendedDateTime.IsUnknown)
             {
@@ -19,49 +19,24 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
             var stringBuilder = new StringBuilder();
             var isLongFormYear = false;
 
-            if (!IsYearNull<T>(extendedDateTime))
+            if (extendedDateTime.Year.HasValue)
             {
                 stringBuilder.Append("{ys}");
 
-                if (typeof(T) == typeof(PartialExtendedDateTime))
+                if (extendedDateTime.Year.Value > 9999 || extendedDateTime.Year.Value < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
                 {
-                    var partialExtendedDateTime = (PartialExtendedDateTime)extendedDateTime;
-                    var yearValue = 0;
+                    stringBuilder.Append('y');
 
-                    if (int.TryParse(partialExtendedDateTime.Year, out yearValue))
-                    {
-                        if (yearValue > 9999 || yearValue < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
-                        {
-                            stringBuilder.Append('y');
+                    isLongFormYear = true;
+                }
 
-                            isLongFormYear = true;
-                        }
-                    }
-
-                    if (partialExtendedDateTime.Year.Length < 4)
-                    {
-                        return "Error: The year must be at least four characters long.";
-                    }
-
-                    stringBuilder.Append(partialExtendedDateTime.Year.ToString());
+                if (extendedDateTime.YearExponent.HasValue)
+                {
+                    stringBuilder.Append(extendedDateTime.Year.Value.ToString());
                 }
                 else
                 {
-                    if (extendedDateTime.Year.Value > 9999 || extendedDateTime.Year.Value < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
-                    {
-                        stringBuilder.Append('y');
-
-                        isLongFormYear = true;
-                    }
-
-                    if (extendedDateTime.YearExponent.HasValue)
-                    {
-                        stringBuilder.Append(extendedDateTime.Year.Value.ToString());
-                    }
-                    else
-                    {
-                        stringBuilder.Append(extendedDateTime.Year.Value.ToString("D4"));
-                    }
+                    stringBuilder.Append(extendedDateTime.Year.Value.ToString("D4"));
                 }
 
                 stringBuilder.Append("{ye}");
@@ -73,7 +48,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.YearExponent.HasValue)
             {
-                if (IsYearNull<T>(extendedDateTime))
+                if (extendedDateTime == null)
                 {
                     return "Error: A year exponent cannot exist without a year.";
                 }
@@ -89,7 +64,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.YearPrecision.HasValue)
             {
-                if (IsYearNull<T>(extendedDateTime))
+                if (extendedDateTime.Year == null)
                 {
                     return "Error: Year precision cannot exist without a year.";
                 }
@@ -103,9 +78,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 stringBuilder.Append(extendedDateTime.YearPrecision);
             }
 
-            if (!IsMonthNull<T>(extendedDateTime))
+            if (extendedDateTime.Month.HasValue)
             {
-                if (IsYearNull<T>(extendedDateTime))
+                if (extendedDateTime.Year == null)
                 {
                     return "Error: A month cannot exist without a year.";
                 }
@@ -119,47 +94,24 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 stringBuilder.Append("{ms}");
 
-                if (typeof(T) == typeof(PartialExtendedDateTime))
+                if (extendedDateTime.Month.Value < 1 || extendedDateTime.Month.Value > 12)
                 {
-                    var monthValue = 0;
-                    var partialExtendedDateTime = (PartialExtendedDateTime)extendedDateTime;
-
-                    if (int.TryParse(partialExtendedDateTime.Month, out monthValue))
-                    {
-                        if (monthValue < 1 || monthValue > 12)
-                        {
-                            return "Error: A month must be a number from 1 to 12.";
-                        }
-                    }
-
-                    if (partialExtendedDateTime.Month.Length != 2)
-                    {
-                        return "Error: A month must be two characters long.";
-                    }
-
-                    stringBuilder.Append(partialExtendedDateTime.Month);
+                    return "Error: A month must be a number from 1 to 12.";
                 }
-                else
-                {
-                    if (extendedDateTime.Month.Value < 1 || extendedDateTime.Month.Value > 12)
-                    {
-                        return "Error: A month must be a number from 1 to 12.";
-                    }
 
-                    stringBuilder.Append(extendedDateTime.Month.Value.ToString("D2"));
-                }
+                stringBuilder.Append(extendedDateTime.Month.Value.ToString("D2"));
 
                 stringBuilder.Append("{me}");
             }
 
             if (extendedDateTime.Season != Season.Undefined)
             {
-                if (IsYearNull<T>(extendedDateTime))
+                if (extendedDateTime.Year == null)
                 {
                     return "Error: A season cannot exist without a year.";
                 }
 
-                if (!IsMonthNull<T>(extendedDateTime))
+                if (extendedDateTime.Month.HasValue)
                 {
                     return "Error: A month and season cannot both be defined.";
                 }
@@ -185,9 +137,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 stringBuilder.Append("{se}");
             }
 
-            if (!IsDayNull<T>(extendedDateTime))
+            if (extendedDateTime.Day.HasValue)
             {
-                if (IsMonthNull<T>(extendedDateTime))
+                if (extendedDateTime.Month == null)
                 {
                     return "Error: A day cannot exist without a month.";
                 }
@@ -201,43 +153,19 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 stringBuilder.Append("{ds}");
 
-                if (typeof(T) == typeof(PartialExtendedDateTime))
+                if (extendedDateTime.Day.Value < 1 || extendedDateTime.Day.Value > 31)
                 {
-                    var partialExtendedDateTime = (PartialExtendedDateTime)extendedDateTime;
-
-                    var dayValue = 0;
-
-                    if (int.TryParse(partialExtendedDateTime.Day, out dayValue))
-                    {
-                        if (dayValue < 1 || dayValue > 31)
-                        {
-                            return "Error: A month must be a number from 1 to 31.";
-                        }
-                    }
-
-                    if (partialExtendedDateTime.Day.Length != 2)
-                    {
-                        return "Error: A day must be at least two characters long.";
-                    }
-
-                    stringBuilder.Append(partialExtendedDateTime.Day);
+                    return "Error: A month must be a number from 1 to 31.";
                 }
-                else
+
+                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
+
+                if (extendedDateTime.Day.Value > daysInMonth)
                 {
-                    if (extendedDateTime.Day.Value < 1 || extendedDateTime.Day.Value > 31)
-                    {
-                        return "Error: A month must be a number from 1 to 31.";
-                    }
-
-                    var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
-
-                    if (extendedDateTime.Day.Value > daysInMonth)
-                    {
-                        return "Error: The day exceeds the number of days in the specified month.";
-                    }
-
-                    stringBuilder.Append(extendedDateTime.Day.Value.ToString("D2"));
+                    return "Error: The day exceeds the number of days in the specified month.";
                 }
+
+                stringBuilder.Append(extendedDateTime.Day.Value.ToString("D2"));
             }
 
             stringBuilder.Append("{de}");
@@ -246,7 +174,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.Hour.HasValue)
             {
-                if (IsDayNull<T>(extendedDateTime))
+                if (extendedDateTime.Day == null)
                 {
                     return "Error: An hour cannot exist without a day.";
                 }
@@ -791,21 +719,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 .Replace("{se}", se)
                 .Replace("{ys}", ys)
                 .Replace("{ye}", ye);
-        }
-
-        private static bool IsDayNull<T>(ExtendedDateTime extendedDateTime)
-        {
-            return extendedDateTime.Day == null && !(typeof(T) == typeof(PartialExtendedDateTime) && ((PartialExtendedDateTime)extendedDateTime).Day != null);
-        }
-
-        private static bool IsMonthNull<T>(ExtendedDateTime extendedDateTime)
-        {
-            return extendedDateTime.Month == null && !(typeof(T) == typeof(PartialExtendedDateTime) && ((PartialExtendedDateTime)extendedDateTime).Month != null);
-        }
-
-        private static bool IsYearNull<T>(ExtendedDateTime extendedDateTime)
-        {
-            return extendedDateTime.Year == null && !(typeof(T) == typeof(PartialExtendedDateTime) && ((PartialExtendedDateTime)extendedDateTime).Year != null);
         }
     }
 }

@@ -65,13 +65,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         {
                             collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeRangeParser.Parse(preceedingElementString));
                         }
-                        else if (preceedingElementString.Contains('u') || preceedingElementString.Contains('x'))
-                        {
-                            collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<PartialExtendedDateTime>(preceedingElementString));
-                        }
                         else
                         {
-                            collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<ExtendedDateTime>(preceedingElementString));
+                            collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse(preceedingElementString));
                         }
                     }
 
@@ -107,13 +103,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 {
                     collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeRangeParser.Parse(remainingElementString));
                 }
-                else if (remainingElementString.Contains('u') || remainingElementString.Contains('x'))
-                {
-                    collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<PartialExtendedDateTime>(remainingElementString));
-                }
                 else
                 {
-                    collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse<ExtendedDateTime>(remainingElementString));
+                    collection.Add((IExtendedDateTimeCollectionChild)ExtendedDateTimeParser.Parse(remainingElementString));
                 }
             }
 

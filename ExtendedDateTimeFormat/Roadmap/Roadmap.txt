@@ -1,7 +1,6 @@
 1. Optimize (string literals, for instance).
 2. More test strings
 3. XML Documentation
-4. Comparer
-5. Convert to and from DateTime with a conversion exception if a date is uncertain, unknown, etc.
-6. Helper methods for ExtendedDateTimePossibilityCollection such as last possible date, first possible date, and time span of possible dates.
-7. Constructor Overloads to make initialization more convienient.
+4. Convert to and from DateTime with a conversion exception if a date is uncertain, unknown, etc.
+5. Helper methods for ExtendedDateTimePossibilityCollection such as last possible date, first possible date, and time span of possible dates.
+6. Constructor Overloads to make initialization more convienient.
