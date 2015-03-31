@@ -7741,9 +7741,9 @@
 							"left": 2440,
 							"top": 345,
 							"width": 237,
-							"height": 65,
+							"height": 90,
 							"autoResize": false,
-							"text": "This interface exists because a range is not independent (it cannot exist outside of a collection).",
+							"text": "This interface exists because a range is not an independent type (i.e. it cannot exist outside of a collection) but it is also not a single type (a range cannot be nested within a range).",
 							"wordWrap": true
 						},
 						{
@@ -7768,7 +7768,7 @@
 								"$ref": "AAAAAAFMM/1cqHZIhHg="
 							},
 							"lineStyle": 1,
-							"points": "2439:362;2264:340"
+							"points": "2439:370;2264:343"
 						},
 						{
 							"_type": "UMLNoteView",
@@ -7788,9 +7788,9 @@
 							"left": 1776,
 							"top": 896,
 							"width": 285,
-							"height": 48,
+							"height": 51,
 							"autoResize": false,
-							"text": "This interface exists to prevent the nesting of intervals, collections, and ranges.",
+							"text": "This interface exists to prevent the nesting of intervals, ranges, and collections in places they shouldn't nest.",
 							"wordWrap": true
 						},
 						{
@@ -7815,7 +7815,7 @@
 								"$ref": "AAAAAAFMNDbGNKTO1h4="
 							},
 							"lineStyle": 1,
-							"points": "1809:895;1748:881"
+							"points": "1804:895;1747:882"
 						},
 						{
 							"_type": "UMLAssociationView",
@@ -9049,6 +9049,53 @@
 							"headQualifiersCompartment": {
 								"$ref": "AAAAAAFMYuPaHrsxh7U="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAFMbPGBpqpY2oQ=",
+							"_parent": {
+								"$ref": "AAAAAAFFxnMtnhONn6Y="
+							},
+							"visible": true,
+							"enabled": true,
+							"lineColor": "#000000",
+							"fillColor": "#ffffff",
+							"fontColor": "#000000",
+							"font": "Arial;13;0",
+							"showShadow": true,
+							"containerChangeable": false,
+							"containerExtending": false,
+							"left": 1516,
+							"top": 244,
+							"width": 130,
+							"height": 38,
+							"autoResize": false,
+							"text": "Any type which is a valid return type.",
+							"wordWrap": true
+						},
+						{
+							"_type": "UMLNoteLinkView",
+							"_id": "AAAAAAFMbPL2aKysn6c=",
+							"_parent": {
+								"$ref": "AAAAAAFFxnMtnhONn6Y="
+							},
+							"visible": true,
+							"enabled": true,
+							"lineColor": "#000000",
+							"fillColor": "#ffffff",
+							"fontColor": "#000000",
+							"font": "Arial;13;0",
+							"showShadow": true,
+							"containerChangeable": false,
+							"containerExtending": false,
+							"head": {
+								"$ref": "AAAAAAFMM41J949+Pg4="
+							},
+							"tail": {
+								"$ref": "AAAAAAFMbPGBpqpY2oQ="
+							},
+							"lineStyle": 1,
+							"points": "1515:255;1438:246"
 						}
 					]
 				},

@@ -3,8 +3,8 @@
 The [Extended Date Time Format (EDTF)](http://www.loc.gov/standards/datetime/pre-submission.html) is a proposed extension to the standard datetime format (ISO 8601). It includes support for:
 
 - Uncertain or approximate dates (e.g. "Around 1995" or "1995, though it can't be confirmed.'")
-- Sets of possible dates (e.g. "1992, 1994, *or* 1996")
-- Sets of dates (e.g, "1992, 1994, *and* 1996")
+- Sets of possible dates (e.g. "1992, 1994, **or** 1996")
+- Sets of dates (e.g, "1992, 1994, **and** 1996")
 - Intervals (e.g. "From 1992 to 1999");
 - Partially unspecified dates. (e.g. "Only the first two digits of the year have been supplied so far.");
 - Masked precision (e.g. "Some date in the 1950s.")

@@ -185,13 +185,17 @@ namespace ExtendedDateTimeFormatTests
 
                 // Conversion from Unpsecified or Masked To One of a Set
 
-                ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("15uu-12-uu")).ToPossibilityCollection(true).ToString(),
-                ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("196x")).ToPossibilityCollection().ToString(),
-                ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("1999-uu-uu")).ToPossibilityCollection(true).ToString(),
-                ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("-1999-uu-uu")).ToPossibilityCollection(true).ToString(),
-                ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("-1999-02-uu")).ToPossibilityCollection(true).ToString(),
-                ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("1955-uu-31")).ToPossibilityCollection(true).ToString(),
-                ((PartialExtendedDateTime)ExtendedDateTimeFormatParser.Parse("1955-uu-3u")).ToPossibilityCollection(true).ToString(),
+                ExtendedDateTimeFormatParser.ParsePartialExtendedDateTime("15uu-12-uu").ToPossibilityCollection(true).ToString(),
+                ExtendedDateTimeFormatParser.ParsePartialExtendedDateTime("196x").ToPossibilityCollection().ToString(),
+                ExtendedDateTimeFormatParser.ParsePartialExtendedDateTime("1999-uu-uu").ToPossibilityCollection(true).ToString(),
+                ExtendedDateTimeFormatParser.ParsePartialExtendedDateTime("-1999-uu-uu").ToPossibilityCollection(true).ToString(),
+                ExtendedDateTimeFormatParser.ParsePartialExtendedDateTime("-1999-02-uu").ToPossibilityCollection(true).ToString(),
+                ExtendedDateTimeFormatParser.ParsePartialExtendedDateTime("1955-uu-31").ToPossibilityCollection(true).ToString(),
+                ExtendedDateTimeFormatParser.ParsePartialExtendedDateTime("1955-uu-3u").ToPossibilityCollection(true).ToString(),
+
+                // Date Arithmetic
+                (ExtendedDateTimeFormatParser.ParseExtendedDateTime("1955-08-21") - ExtendedDateTimeFormatParser.ParseExtendedDateTime("1900-02-11")).ToString()
+
             };
 
             var allStrings = specificationStrings.Concat(malformedStrings).Concat(otherStrings);
