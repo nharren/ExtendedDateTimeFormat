@@ -1,11 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class ExtendedDateTime : ISingleExtendedDateTimeType, ICloneable
+    public class ExtendedDateTime : ISingleExtendedDateTimeType, ICloneable, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>
     {
         public static readonly ExtendedDateTime Open = new ExtendedDateTime() { IsOpen = true };
+
         public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { IsUnknown = true };
+
+        private static IComparer<ExtendedDateTime> comparer;
+
+        public static IComparer<ExtendedDateTime> Comparer
+        {
+            get
+            {
+                return comparer ?? (comparer = new ExtendedDateTimeComparer());
+            }
+        }
 
         public static ExtendedDateTime Now
         {
@@ -72,14 +85,44 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeCalculator.Subtract(e2, e1);
         }
 
+        public static bool operator !=(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            return Comparer.Compare(e1, e2) != 0;
+        }
+
         public static ExtendedDateTime operator +(ExtendedDateTime e, TimeSpan t)
         {
             return ExtendedDateTimeCalculator.Add(e, t);
         }
 
+        public static bool operator <(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            return Comparer.Compare(e1, e2) < 0;
+        }
+
+        public static bool operator <=(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            return Comparer.Compare(e1, e2) <= 0;
+        }
+
+        public static bool operator ==(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            return Comparer.Compare(e1, e2) == 0;
+        }
+
+        public static bool operator >(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            return Comparer.Compare(e1, e2) > 0;
+        }
+
+        public static bool operator >=(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            return Comparer.Compare(e1, e2) >= 0;
+        }
+
         public object Clone()
         {
-            var clone = (ExtendedDateTime)MemberwiseClone();
+            var clone = this is PartialExtendedDateTime ? (PartialExtendedDateTime)MemberwiseClone() : (ExtendedDateTime)MemberwiseClone();
 
             if (TimeZone != null)
             {
@@ -87,6 +130,26 @@ namespace System.ExtendedDateTimeFormat
             }
 
             return clone;
+        }
+
+        public int CompareTo(ExtendedDateTime other)
+        {
+            return Comparer.Compare(this, other);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return Comparer.Compare(this, (ExtendedDateTime)obj);
+        }
+
+        public bool Equals(ExtendedDateTime other)
+        {
+            return Comparer.Compare(this, other) == 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Comparer.Compare(this, (ExtendedDateTime)obj) == 0;
         }
 
         public override string ToString()

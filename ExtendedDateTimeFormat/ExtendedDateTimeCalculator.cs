@@ -4,6 +4,11 @@
     {
         public static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)
         {
+            if (e is PartialExtendedDateTime)
+            {
+                throw new InvalidOperationException("Adding cannot be used with a PartialExtendedDateTime.");
+            }
+
             var resultingDateTime = (ExtendedDateTime)e.Clone();
 
             if (e.TimeZone != null)
@@ -133,6 +138,11 @@
         }
         public static ExtendedDateTime Subtract(ExtendedDateTime e, TimeSpan t)
         {
+            if (e is PartialExtendedDateTime)
+            {
+                throw new InvalidOperationException("Subtraction cannot be used with a PartialExtendedDateTime.");
+            }
+
             var resultingDateTime = (ExtendedDateTime)e.Clone();
 
             if (e.TimeZone != null)
@@ -233,6 +243,11 @@
 
         public static TimeSpan Subtract(ExtendedDateTime e2, ExtendedDateTime e1)    // Use http://www.timeanddate.com/date/timeduration.html to verify correctness.
         {
+            if (e1 is PartialExtendedDateTime || e2 is PartialExtendedDateTime)
+            {
+                throw new InvalidOperationException("Subtraction cannot be used with a PartialExtendedDateTime.");
+            }
+
             if (e1.Year == null || e2.Year == null)
             {
                 throw new InvalidOperationException("Extended date times must have a year.");
