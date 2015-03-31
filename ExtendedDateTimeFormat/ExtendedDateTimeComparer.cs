@@ -29,6 +29,26 @@ namespace System.ExtendedDateTimeFormat
                 return -1;
             }
 
+            if (x.Season != Season.Undefined || y.Season != Season.Undefined)
+            {   
+                if (y.Season == Season.Undefined)
+                {
+                    return 1;
+                }
+                else if (x.Season == Season.Undefined)
+                {
+                    return -1;
+                }
+                else if (x.Season > y.Season)
+                {
+                    return 1;
+                }
+                else if (x.Season < y.Season)
+                {
+                    return -1;
+                }
+            }
+
             if (x.Month == null && y.Month == null)
             {
                 return 0;
