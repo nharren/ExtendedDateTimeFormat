@@ -43,6 +43,7 @@
     <Compile Include="Converters\ConversionException.cs" />
     <Compile Include="Converters\PartialExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
+    <Compile Include="ExtendedDateTimeCalculator.cs" />
     <Compile Include="ExtendedDateTimePossibilityCollection.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
     <Compile Include="ExtendedDateTimeFlags.cs" />

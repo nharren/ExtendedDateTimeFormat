@@ -156,7 +156,7 @@
                 throw new ConversionException("The day must be two characters long.");
             }
 
-            var daysInMonth = ExtendedDateTime.DaysInMonth(endExtendedDateTime.Year.Value, endExtendedDateTime.Month.Value);
+            var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(endExtendedDateTime.Year.Value, endExtendedDateTime.Month.Value);
 
             for (int i = 0; i < 2; i++)
             {
@@ -228,7 +228,7 @@
                     {
                         for (int day = startExtendedDateTime.Day.Value; day <= endExtendedDateTime.Day.Value; day++)
                         {
-                            daysInMonth = ExtendedDateTime.DaysInMonth(year, month);
+                            daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(year, month);
 
                             if (daysInMonth >= day)
                             {

@@ -229,7 +229,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                         return "Error: A month must be a number from 1 to 31.";
                     }
 
-                    var daysInMonth = ExtendedDateTime.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
+                    var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
 
                     if (extendedDateTime.Day.Value > daysInMonth)
                     {

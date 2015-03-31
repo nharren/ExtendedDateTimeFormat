@@ -333,7 +333,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The day must be between 1 and 31.", componentString);
                     }
 
-                    var daysInMonth = ExtendedDateTime.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
+                    var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
 
                     if (dayInteger > daysInMonth)
                     {
