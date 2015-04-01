@@ -12,5 +12,15 @@ namespace System.ExtendedDateTimeFormat
         {
             return ExtendedDateTimeRangeSerializer.Serialize(this);
         }
+
+        public ExtendedDateTime Earliest()
+        {
+            return Start.Earliest();
+        }
+
+        public ExtendedDateTime Latest()
+        {
+            return End.Latest();
+        }
     }
 }

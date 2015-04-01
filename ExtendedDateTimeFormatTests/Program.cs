@@ -170,7 +170,7 @@ namespace ExtendedDateTimeFormatTests
 
                 // Season With Qualifier and Flags.
 
-                "1664-21^New York?~",
+                "1664-21^New York?~",       // Should fail because whitespace is not allowed in season qualifiers.
                 "1664-(21^New York)?~",
 
                 // Positive and Negative Timezone Offsets
@@ -195,8 +195,6 @@ namespace ExtendedDateTimeFormatTests
 
         private static void TestStrings(IEnumerable<string> testStrings)
         {
-            var stringBuilder = new StringBuilder();
-
             stringBuilder.Append("Current Time: ");
             stringBuilder.AppendLine(ExtendedDateTime.Now.ToString());
             stringBuilder.AppendLine();

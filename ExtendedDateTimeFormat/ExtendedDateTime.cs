@@ -128,5 +128,15 @@ namespace System.ExtendedDateTimeFormat
         {
             return ExtendedDateTimeSerializer.Serialize(this);
         }
+
+        public ExtendedDateTime Earliest()
+        {
+            return this;
+        }
+
+        public ExtendedDateTime Latest()
+        {
+            return this;
+        }
     }
 }
