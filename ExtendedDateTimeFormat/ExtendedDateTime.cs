@@ -24,20 +24,7 @@ namespace System.ExtendedDateTimeFormat
         {
             get
             {
-                return new ExtendedDateTime
-                {
-                    Year = DateTime.Now.Year,
-                    Month = DateTime.Now.Month,
-                    Day = DateTime.Now.Day,
-                    Hour = DateTime.Now.Hour,
-                    Minute = DateTime.Now.Minute,
-                    Second = DateTime.Now.Second,
-                    TimeZone = new TimeZone
-                    {
-                        HourOffset = TimeZoneInfo.Local.BaseUtcOffset.Hours,
-                        MinuteOffset = TimeZoneInfo.Local.BaseUtcOffset.Minutes
-                    }
-                };
+                return DateTime.Now.ToExtendedDateTime(new TimeZone(TimeZoneInfo.Local.BaseUtcOffset.Hours, TimeZoneInfo.Local.BaseUtcOffset.Minutes));
             }
         }
 

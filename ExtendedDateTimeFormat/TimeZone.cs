@@ -45,6 +45,21 @@ namespace System.ExtendedDateTimeFormat
             {14,0},
         };
 
+        public TimeZone()
+        {
+        }
+
+        public TimeZone(int? hourOffset)
+        {
+            HourOffset = hourOffset;
+        }
+
+        public TimeZone(int? hourOffset, int? minuteOffset)
+        {
+            HourOffset = hourOffset;
+            MinuteOffset = minuteOffset;
+        }
+
         public int? HourOffset { get; set; }
 
         public int? MinuteOffset { get; set; }

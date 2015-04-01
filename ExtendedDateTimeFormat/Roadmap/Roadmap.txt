@@ -1,5 +1,4 @@
 1. Optimize (string literals, for instance).
 2. More tests.
 3. XML Documentation.
-4. Convert to and from DateTime with a conversion exception if a date is uncertain, unknown, etc.
-5. Constructor Overloads to make initialization more convienient.
+4. Constructor Overloads to make initialization more convienient.
