@@ -17,33 +17,35 @@ namespace Tests
             {
                 var testString = testStrings.ElementAt(i);
 
-                stringBuilder.AppendLine("<Bold>Input:</Bold>");
-                stringBuilder.Append("\"").Append(testString).AppendLine("\"");
+                stringBuilder.Append("<Underline><Bold>Test ").Append(i + 1).AppendLine("</Bold></Underline>");
                 stringBuilder.AppendLine();
-                stringBuilder.AppendLine("<Bold>Output:</Bold>");
+                stringBuilder.AppendLine("Input:");
+                stringBuilder.Append("\"".Indent(1)).Append(testString).AppendLine("\"");
+                stringBuilder.AppendLine();
+                stringBuilder.AppendLine("Output:");
                 try
                 {
                     var extendedDateTimeObject = ExtendedDateTimeFormatParser.Parse(testString);
 
                     if (extendedDateTimeObject is ExtendedDateTimeInterval)
                     {
-                        WriteExtendedDateTimeInterval(0, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
+                        WriteExtendedDateTimeInterval(1, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
                     }
                     else if (extendedDateTimeObject is ExtendedDateTimePossibilityCollection)
                     {
-                        WriteExtendedDateTimePossibilityCollection(0, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
+                        WriteExtendedDateTimePossibilityCollection(1, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
                     }
                     else if (extendedDateTimeObject is ExtendedDateTimeCollection)
                     {
-                        WriteExtendedDateTimeCollection(0, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
+                        WriteExtendedDateTimeCollection(1, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
                     }
                     else if (extendedDateTimeObject is UnspecifiedExtendedDateTime)
                     {
-                        WriteUnspecifiedExtendedDateTime(0, (UnspecifiedExtendedDateTime)extendedDateTimeObject, stringBuilder);
+                        WriteUnspecifiedExtendedDateTime(1, (UnspecifiedExtendedDateTime)extendedDateTimeObject, stringBuilder);
                     }
                     else if (extendedDateTimeObject is ExtendedDateTime)
                     {
-                        WriteExtendedDateTime(0, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
+                        WriteExtendedDateTime(1, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
                     }
                 }
                 catch (ParseException pe)

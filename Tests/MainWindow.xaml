@@ -14,13 +14,14 @@
         <ListBox Name="list" 
                  Background="#FF2F3437"                 
                  BorderThickness="0"
-                 FontSize="18"
                  ItemsSource="{Binding Tests}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:Test}">
                     <Grid>
                         <TextBlock Foreground="#FFDDDDDD"
                                    Margin="15,4"
+                                   FontWeight="SemiBold"
+                                   FontSize="16"
                                    Text="{Binding Name}" />
                     </Grid>
                 </DataTemplate>
