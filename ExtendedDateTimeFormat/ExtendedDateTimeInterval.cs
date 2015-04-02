@@ -1,7 +1,10 @@
+using System.ComponentModel;
+using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
+    [TypeConverter(typeof(ExtendedDateTimeIntervalConverter))]
     public class ExtendedDateTimeInterval : IExtendedDateTimeIndependentType
     {
         public ISingleExtendedDateTimeType End { get; set; }

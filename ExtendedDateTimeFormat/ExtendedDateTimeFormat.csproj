@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\ConversionException.cs" />
-    <Compile Include="Converters\UnspecifiedExtendedDateTimeConverter.cs" />
+    <Compile Include="Internal\Converters\ConversionException.cs" />
+    <Compile Include="Internal\Converters\ExtendedDateTimeCollectionConverter.cs" />
+    <Compile Include="Internal\Converters\ExtendedDateTimeConverter.cs" />
+    <Compile Include="Internal\Converters\ExtendedDateTimeIntervalConverter.cs" />
+    <Compile Include="Internal\Converters\ExtendedDateTimePossibilityCollectionConverter.cs" />
+    <Compile Include="Internal\Converters\UnspecifiedExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
     <Compile Include="ExtendedDateTimeCalculator.cs" />
     <Compile Include="ExtendedDateTimeComparer.cs" />

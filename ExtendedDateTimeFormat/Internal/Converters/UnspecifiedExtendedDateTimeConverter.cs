@@ -1,14 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.ExtendedDateTimeFormat.Converters
+namespace System.ExtendedDateTimeFormat.Internal.Converters
 {
-    public static class UnspecifiedExtendedDateTimeConverter
+    internal sealed class UnspecifiedExtendedDateTimeConverter : TypeConverter
     {
-        public static ExtendedDateTimePossibilityCollection ToPossibilityCollection(UnspecifiedExtendedDateTime unspecifiedExtendedDateTime)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType == typeof(string))
+            {
+                return true;
+            }
+
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(string))
+            {
+                return true;
+            }
+
+            return base.CanConvertTo(context, destinationType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, Globalization.CultureInfo culture, object value)
+        {
+            if (value == null)
+            {
+                throw GetConvertFromException(value);
+            }
+
+            var source = value as string;
+
+            if (source != null)
+            {
+                return ExtendedDateTimeFormatParser.ParseUnspecifiedExtendedDateTime(source);
+            }
+
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        public override object ConvertTo(ITypeDescriptorContext context, Globalization.CultureInfo culture, object value, Type destinationType)
+        {
+            if (destinationType != null && value is UnspecifiedExtendedDateTime)
+            {
+                var instance = (UnspecifiedExtendedDateTime)value;
+
+                if (destinationType == typeof(string))
+                {
+                    return instance.ToString();
+                }
+            }
+
+            return base.ConvertTo(context, culture, value, destinationType);
+        }
+
+        internal static ExtendedDateTimePossibilityCollection ToPossibilityCollection(UnspecifiedExtendedDateTime unspecifiedExtendedDateTime)
         {
             var extendedDateTimePossibilityCollection = new ExtendedDateTimePossibilityCollection();
             var extendedDateTimeRange = new ExtendedDateTimeRange();

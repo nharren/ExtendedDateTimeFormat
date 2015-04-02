@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
+    [TypeConverter(typeof(ExtendedDateTimeConverter))]
     public class ExtendedDateTime : ISingleExtendedDateTimeType, ICloneable, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>
     {
         public static readonly ExtendedDateTime Open = new ExtendedDateTime() { IsOpen = true };

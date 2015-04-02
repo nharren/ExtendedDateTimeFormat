@@ -195,6 +195,8 @@ namespace ExtendedDateTimeFormatTests
 
         private static void TestStrings(IEnumerable<string> testStrings)
         {
+            var stringBuilder = new StringBuilder();
+
             stringBuilder.Append("Current Time: ");
             stringBuilder.AppendLine(ExtendedDateTime.Now.ToString());
             stringBuilder.AppendLine();

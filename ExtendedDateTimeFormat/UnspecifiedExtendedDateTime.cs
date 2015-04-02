@@ -1,8 +1,10 @@
-using System.ExtendedDateTimeFormat.Converters;
+using System.ComponentModel;
+using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
+    [TypeConverter(typeof(UnspecifiedExtendedDateTimeConverter))]
     public class UnspecifiedExtendedDateTime : ISingleExtendedDateTimeType
     {
         public string Day { get; set; }
