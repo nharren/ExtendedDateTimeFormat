@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ExtendedDateTimeFormatTests
+namespace Tests
 {
     public static class StringExtensions
     {

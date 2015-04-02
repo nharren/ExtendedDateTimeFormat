@@ -1,4 +1,6 @@
-1. Optimize (string literals, for instance).
-2. More tests.
+1. Optimizations (string literals, for instance).
+2. More tests!
 3. XML Documentation.
 4. Constructor Overloads to make initialization more convienient.
+5. Make serializable (Value serializer classes?)
+6. Make ExtendedDateTime a value type? Make properties read-only?
