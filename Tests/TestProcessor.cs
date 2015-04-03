@@ -144,20 +144,9 @@ namespace Tests
                 stringBuilder.AppendLine("IsUnknown: ".Indent(startingIndent + 1) + extendedDateTime.IsUnknown.ToString());
             }
 
-            if (extendedDateTime.TimeZone != null)
+            if (extendedDateTime.UtcOffset != null)
             {
-                stringBuilder.AppendLine("TimeZone:".Indent(startingIndent + 1));
-                stringBuilder.AppendLine("[TimeZone]".Indent(startingIndent + 2));
-
-                if (extendedDateTime.TimeZone.HourOffset != null)
-                {
-                    stringBuilder.AppendLine("HourOffset: ".Indent(startingIndent + 3) + extendedDateTime.TimeZone.HourOffset.ToString());
-                }
-
-                if (extendedDateTime.TimeZone.MinuteOffset != null)
-                {
-                    stringBuilder.AppendLine("MinuteOffset: ".Indent(startingIndent + 3) + extendedDateTime.TimeZone.MinuteOffset.ToString());
-                }
+                stringBuilder.AppendLine("UtcOffset: ".Indent(startingIndent + 1) + extendedDateTime.UtcOffset.ToString());
             }
         }
 

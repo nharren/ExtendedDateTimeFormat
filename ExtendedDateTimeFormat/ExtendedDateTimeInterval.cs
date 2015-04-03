@@ -7,6 +7,17 @@ namespace System.ExtendedDateTimeFormat
     [TypeConverter(typeof(ExtendedDateTimeIntervalConverter))]
     public class ExtendedDateTimeInterval : IExtendedDateTimeIndependentType
     {
+        public ExtendedDateTimeInterval(ISingleExtendedDateTimeType start, ISingleExtendedDateTimeType end)
+        {
+            Start = start;
+            End = end;
+        }
+        
+        public ExtendedDateTimeInterval()
+        {
+
+        }
+
         public ISingleExtendedDateTimeType End { get; set; }
 
         public ISingleExtendedDateTimeType Start { get; set; }

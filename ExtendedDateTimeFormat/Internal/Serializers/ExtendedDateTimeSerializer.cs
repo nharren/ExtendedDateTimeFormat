@@ -220,25 +220,25 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 stringBuilder.Append(extendedDateTime.Second.Value.ToString("D2"));
             }
 
-            if (extendedDateTime.TimeZone != null)
+            if (extendedDateTime.UtcOffset != null)
             {
                 if (!extendedDateTime.Second.HasValue)
                 {
-                    return "Error: A timezone cannot exist without a second.";
+                    return "Error: A UTC offset cannot exist without a second.";
                 }
 
-                if (!extendedDateTime.TimeZone.HourOffset.HasValue)
+                if (extendedDateTime.UtcOffset.Value.Hours == 0)
                 {
                     return "Error: A timezone must have a hour offset.";
                 }
 
-                if (extendedDateTime.TimeZone.HourOffset == 0 && (extendedDateTime.TimeZone.MinuteOffset == 0 || !extendedDateTime.TimeZone.MinuteOffset.HasValue))
+                if (extendedDateTime.UtcOffset.Value.Hours == 0 && extendedDateTime.UtcOffset.Value.Minutes == 0)
                 {
                     stringBuilder.Append("Z");
                 }
                 else
                 {
-                    if (extendedDateTime.TimeZone.HourOffset < 0)
+                    if (extendedDateTime.UtcOffset.Value.Hours < 0)
                     {
                         stringBuilder.Append("-");
                     }
@@ -247,24 +247,24 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                         stringBuilder.Append("+");
                     }
 
-                    if (extendedDateTime.TimeZone.HourOffset.Value < -13 || extendedDateTime.TimeZone.HourOffset.Value > 14)
+                    if (extendedDateTime.UtcOffset.Value.Hours < -13 || extendedDateTime.UtcOffset.Value.Hours > 14)
                     {
                         return "Error: A timezone hour offset must be a number from -13 to 14.";
                     }
 
-                    stringBuilder.Append(Math.Abs(extendedDateTime.TimeZone.HourOffset.Value).ToString("D2"));
+                    stringBuilder.Append(Math.Abs(extendedDateTime.UtcOffset.Value.Hours).ToString("D2"));
                 }
 
-                if (extendedDateTime.TimeZone.MinuteOffset.HasValue)
+                if (extendedDateTime.UtcOffset.Value.Minutes != 0)
                 {
                     stringBuilder.Append(":");
 
-                    if (extendedDateTime.TimeZone.MinuteOffset.Value < 0 || extendedDateTime.TimeZone.MinuteOffset.Value > 45)
+                    if (extendedDateTime.UtcOffset.Value.Minutes < 0 || extendedDateTime.UtcOffset.Value.Minutes > 45)
                     {
                         return "Error: A timezone minute offset must be a number from 0 to 45.";
                     }
 
-                    stringBuilder.Append(extendedDateTime.TimeZone.MinuteOffset.Value.ToString("D2"));
+                    stringBuilder.Append(extendedDateTime.UtcOffset.Value.Minutes.ToString("D2"));
                 }
             }
 

@@ -4,6 +4,18 @@ namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTimeRange : IExtendedDateTimeCollectionChild
     {
+
+        public ExtendedDateTimeRange(ISingleExtendedDateTimeType start, ISingleExtendedDateTimeType end)
+        {
+            Start = start;
+            End = end;
+        }
+
+        public ExtendedDateTimeRange()
+        {
+
+        }
+
         public ISingleExtendedDateTimeType End { get; set; }
 
         public ISingleExtendedDateTimeType Start { get; set; }

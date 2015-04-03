@@ -1,6 +1,9 @@
-1. Optimizations (string literals, for instance).
-2. More tests!
-3. XML Documentation.
-4. Constructor Overloads to make initialization more convienient.
-5. Make serializable (Value serializer classes?)
-6. Make ExtendedDateTime a value type? Make properties read-only?
+1. Optimize (e.g. string literals, redundant code, etc.).
+2. Add more comprehensive tests.
+3. Test serializability (does it require implementing value serializers?)
+
+Undecided:
+1. XML Documentation: Any value added?
+2. Should ExtendedDateTime be a value type? 
+3. Should the ExtendedDateTime properties be read-only?
+4. Add LocalExtendedDateTime for ExtendedDateTimes that have time components but no time zone specified?

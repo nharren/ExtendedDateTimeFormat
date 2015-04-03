@@ -15,11 +15,82 @@ namespace System.ExtendedDateTimeFormat
 
         private static IComparer<ExtendedDateTime> comparer;
 
+        public ExtendedDateTime(int year, int month, int day, int hours, int minutes, int seconds, TimeSpan utcOffset) : this(year, month, day, hours, minutes, utcOffset)
+        {
+            if (seconds < 0 || seconds > 59)
+            {
+                throw new ArgumentException("seconds");
+            }
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hours, int minutes, TimeSpan utcOffset) : this(year, month, day, hours, utcOffset)
+        {
+            if (minutes < 0 || minutes > 59)
+            {
+                throw new ArgumentException("minutes");
+            }
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hours, TimeSpan utcOffset) : this(year, month, day)
+        {
+            if (hours < 0 || hours > 59)
+            {
+                throw new ArgumentException("hours");
+            }
+
+            if (utcOffset.Ticks != 0 || utcOffset.Milliseconds != 0 || utcOffset.Seconds != 0 || utcOffset.Days != 0)
+            {
+                throw new ArgumentOutOfRangeException("utcOffset");
+            }
+
+            UtcOffset = utcOffset;
+        }
+
+        public ExtendedDateTime(int year, int month, int day) : this(year, month)
+        {
+            if (day < 1 || day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
+            {
+                throw new ArgumentOutOfRangeException("day");
+            }
+
+            Day = day;
+        }
+
+        public ExtendedDateTime(int year, int month) : this(year)
+        {
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentOutOfRangeException("month");
+            }
+
+            Month = month;
+        }
+
+        public ExtendedDateTime(int year)
+        {
+            if (year < -9999 || year > 9999)
+            {
+                throw new ArgumentOutOfRangeException("year");
+            }
+
+            Year = year;
+        }
+
+        public ExtendedDateTime()
+        {
+
+        }
+
         public static IComparer<ExtendedDateTime> Comparer
         {
             get
             {
-                return comparer ?? (comparer = new ExtendedDateTimeComparer());
+                if (comparer == null)
+                {
+                    comparer = new ExtendedDateTimeComparer();
+                }
+
+                return comparer;
             }
         }
 
@@ -27,7 +98,7 @@ namespace System.ExtendedDateTimeFormat
         {
             get
             {
-                return DateTime.Now.ToExtendedDateTime(new TimeZone(TimeZoneInfo.Local.BaseUtcOffset.Hours, TimeZoneInfo.Local.BaseUtcOffset.Minutes));
+                return DateTimeOffset.Now.ToExtendedDateTime();
             }
         }
 
@@ -55,7 +126,7 @@ namespace System.ExtendedDateTimeFormat
 
         public int? Second { get; set; }
 
-        public TimeZone TimeZone { get; set; }
+        public TimeSpan? UtcOffset { get; set; }
 
         public int? Year { get; set; }
 
@@ -102,14 +173,7 @@ namespace System.ExtendedDateTimeFormat
 
         public object Clone()
         {
-            var clone = (ExtendedDateTime)MemberwiseClone();
-
-            if (TimeZone != null)
-            {
-                clone.TimeZone = new TimeZone { HourOffset = TimeZone.HourOffset, MinuteOffset = TimeZone.MinuteOffset };
-            }
-
-            return clone;
+            return (ExtendedDateTime)MemberwiseClone();;
         }
 
         public int CompareTo(ExtendedDateTime other)

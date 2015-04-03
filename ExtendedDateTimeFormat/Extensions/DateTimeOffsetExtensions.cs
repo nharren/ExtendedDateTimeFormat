@@ -1,8 +1,8 @@
 ﻿namespace System.ExtendedDateTimeFormat
 {
-    public static class DateTimeExtensions
+    public static class DateTimeOffsetExtensions
     {
-        public static ExtendedDateTime ToExtendedDateTime(this DateTime d)
+        public static ExtendedDateTime ToExtendedDateTime(this DateTimeOffset d)
         {
             return new ExtendedDateTime
             {
@@ -11,7 +11,8 @@
                 Day = d.Day,
                 Hour = d.Hour,
                 Minute = d.Minute,
-                Second = d.Second
+                Second = d.Second,
+                UtcOffset = d.Offset
             };
         }
     }

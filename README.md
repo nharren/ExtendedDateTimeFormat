@@ -40,7 +40,7 @@ To get an overview of the basic structure of this library, see the "Primary Clas
 
 A list of things you can do to help improve this library can be found in "Roadmap.txt" in the "Roadmap" folder.
 
-Alternatively, if you see something you would like to fix or a feature you would like to implement, feel free to do so (no permission is required).
+Alternatively, if you see something you would like to fix or a feature you would like to implement, feel free to do so.
 
 ## License
 

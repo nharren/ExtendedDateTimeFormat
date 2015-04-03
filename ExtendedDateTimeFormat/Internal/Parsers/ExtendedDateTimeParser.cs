@@ -12,7 +12,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 return null;
             }
 
-            var extendedDateTime = new ExtendedDateTime();;
+            var extendedDateTime = new ExtendedDateTime();
 
             InsertArtificialScopes(ref extendedDateTimeString);                                                        // e.g. 1995-11?-12~   -> {{1995-11}?-12}~    OR   (1995-11?-12)~ -> ({1995-11}?-12)
 
@@ -365,11 +365,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             }
             else if (timeZonePart)
             {
-                extendedDateTime.TimeZone = new TimeZone();
-
                 if (componentString.StartsWith("Z"))
                 {
-                    extendedDateTime.TimeZone.HourOffset = 0;
+                    extendedDateTime.UtcOffset = TimeSpan.Zero;
                 }
                 else if (componentString.StartsWith("+") || componentString.StartsWith("-"))         // It must be a non-UTC time zone offset.
                 {
@@ -399,7 +397,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The time zone hour offset must have exactly two digits.", hourOffsetString);
                     }
 
-                    extendedDateTime.TimeZone.HourOffset = int.Parse(hourOffsetString);
+                    extendedDateTime.UtcOffset = TimeSpan.FromHours(double.Parse(hourOffsetString));
 
                     if (timeZoneOffsetComponentStrings.Length == 2)                                  // Optional time zone minutes offset.
                     {
@@ -414,17 +412,12 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                             throw new ParseException("The time zone minute offset must have exactly two digits.", minuteOffsetString);
                         }
 
-                        extendedDateTime.TimeZone.MinuteOffset = int.Parse(minuteOffsetString);
+                        extendedDateTime.UtcOffset += TimeSpan.FromMinutes(double.Parse(minuteOffsetString));
                     }
 
                     if (timeZoneOffsetComponentStrings.Length > 2)
                     {
                         throw new ParseException("The time zone offset can have at most two components: hours and minutes.", componentString);
-                    }
-
-                    if (!extendedDateTime.TimeZone.IsValidOffset())
-                    {
-                        throw new ParseException("The time zone has an unknown UTC offset.", componentString);
                     }
                 }
             }
