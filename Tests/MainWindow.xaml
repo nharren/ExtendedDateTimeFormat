@@ -11,12 +11,18 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <ListBox Name="list" 
                  Background="#FF2F3437"                 
                  BorderThickness="0"
+                 SelectionMode="Single"
+                 SelectionChanged="list_SelectionChanged"
                  ItemsSource="{Binding Tests}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:Test}">
+                <DataTemplate DataType="{x:Type local:ITest}">
                     <Grid>
                         <TextBlock Foreground="#FFDDDDDD"
                                    Margin="15,4"
@@ -30,12 +36,19 @@
         <ScrollViewer Grid.Column="1"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <TextBlock Padding="50"
+            <TextBlock Name="resultsBox" 
+                       Padding="50"
                        FontSize="18"
                        FontFamily="Consolas"
                        Background="#FF42474B"
-                       Foreground="#FFDDDDDD"
-                       local:TextBlockInput.FormattedText="{Binding SelectedItem.Results, ElementName=list, Mode=OneWay}" />
+                       Foreground="#FFDDDDDD" />
         </ScrollViewer>
+        <ProgressBar Minimum="0"
+                     Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     Visibility="Collapsed"
+                     Height="35"
+                     Maximum="100"
+                     Name="progress" />
     </Grid>
 </Window>

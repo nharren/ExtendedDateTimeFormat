@@ -53,6 +53,8 @@ namespace System.ExtendedDateTimeFormat
             {
                 throw new ArgumentException("second");
             }
+
+            Second = second;
         }
 
         /// <summary>
@@ -73,6 +75,8 @@ namespace System.ExtendedDateTimeFormat
             {
                 throw new ArgumentException("minute");
             }
+
+            Minute = minute;
         }
 
         /// <summary>
@@ -92,6 +96,8 @@ namespace System.ExtendedDateTimeFormat
             {
                 throw new ArgumentException("hour");
             }
+
+            Hour = hour;
 
             if (utcOffset.Milliseconds != 0 || utcOffset.Seconds != 0 || utcOffset.Days != 0)
             {
@@ -177,6 +183,11 @@ namespace System.ExtendedDateTimeFormat
             if (Day == null)
             {
                 Precision = ExtendedDateTimePrecision.Month;
+            }
+
+            if (Month == null)
+            {
+                Precision = ExtendedDateTimePrecision.Year;
             }
         }
 

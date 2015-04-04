@@ -41,27 +41,12 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.YearExponent.HasValue)
             {
-                if (extendedDateTime == null)
-                {
-                    return "Error: A year exponent cannot exist without a year.";
-                }
-
-                if (!isLongFormYear)
-                {
-                    return "Error: A year exponent can only exist on a long-form year.";
-                }
-
                 stringBuilder.Append('e');
                 stringBuilder.Append(extendedDateTime.YearExponent.Value);
             }
 
             if (extendedDateTime.YearPrecision.HasValue)
             {
-                if (!extendedDateTime.YearExponent.HasValue)
-                {
-                    return "Error: Year precision cannot exist without an exponent.";
-                }
-
                 stringBuilder.Append('p');
                 stringBuilder.Append(extendedDateTime.YearPrecision);
             }
@@ -200,14 +185,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.UtcOffset != null)
             {
-                if (!extendedDateTime.Second.HasValue)
+                if (!extendedDateTime.Hour.HasValue)
                 {
-                    return "Error: A UTC offset cannot exist without a second.";
-                }
-
-                if (extendedDateTime.UtcOffset.Value.Hours == 0)
-                {
-                    return "Error: A timezone must have a hour offset.";
+                    return "Error: A UTC offset cannot exist without an hour.";
                 }
 
                 if (extendedDateTime.UtcOffset.Value.Hours == 0 && extendedDateTime.UtcOffset.Value.Minutes == 0)

@@ -1,63 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ExtendedDateTimeFormat;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Tests
 {
-    public static class TestProcessor
+    public class ParsingTest : ITest
     {
-        public static string Process(List<string> testStrings)
+        private BackgroundWorker backgroundWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
+        private string name;
+
+        public ParsingTest(string name, IEnumerable<string> strings)
         {
-            var stringBuilder = new StringBuilder();
+            this.name = name;
+            this.Strings = strings;
+        }
 
-            for (int i = 0; i < testStrings.Count(); i++)
+        public string Name
+        {
+            get
             {
-                var testString = testStrings.ElementAt(i);
-
-                stringBuilder.Append("<Underline><Bold>Test ").Append(i + 1).AppendLine("</Bold></Underline>");
-                stringBuilder.AppendLine();
-                stringBuilder.AppendLine("Input:");
-                stringBuilder.Append("\"".Indent(1)).Append(testString).AppendLine("\"");
-                stringBuilder.AppendLine();
-                stringBuilder.AppendLine("Output:");
-                try
-                {
-                    var extendedDateTimeObject = ExtendedDateTimeFormatParser.Parse(testString);
-
-                    if (extendedDateTimeObject is ExtendedDateTimeInterval)
-                    {
-                        WriteExtendedDateTimeInterval(1, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
-                    }
-                    else if (extendedDateTimeObject is ExtendedDateTimePossibilityCollection)
-                    {
-                        WriteExtendedDateTimePossibilityCollection(1, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
-                    }
-                    else if (extendedDateTimeObject is ExtendedDateTimeCollection)
-                    {
-                        WriteExtendedDateTimeCollection(1, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
-                    }
-                    else if (extendedDateTimeObject is UnspecifiedExtendedDateTime)
-                    {
-                        WriteUnspecifiedExtendedDateTime(1, (UnspecifiedExtendedDateTime)extendedDateTimeObject, stringBuilder);
-                    }
-                    else if (extendedDateTimeObject is ExtendedDateTime)
-                    {
-                        WriteExtendedDateTime(1, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
-                    }
-                }
-                catch (ParseException pe)
-                {
-                    stringBuilder.Append("ParseException: ");
-                    stringBuilder.AppendLine(pe.Message);
-                }
-
-                stringBuilder.AppendLine().AppendLine();
+                return name;
             }
+        }
 
-            return stringBuilder.ToString();
+        public IEnumerable<string> Strings { get; set; }
+
+        public BackgroundWorker Worker
+        {
+            get
+            {
+                return backgroundWorker;
+            }
+        }
+
+        public void Begin()
+        {
+            Worker.DoWork += (o, e) =>
+            {
+                var stringBuilder = new StringBuilder();
+                var stringsCount = Strings.Count();
+
+                for (int i = 0; i < stringsCount; i++)
+                {
+                    var testString = Strings.ElementAt(i);
+
+                    stringBuilder.Append("<Bold>Test ").Append(i + 1).AppendLine("</Bold>");
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine("Input:");
+                    stringBuilder.Append("\"".Indent(1)).Append(testString).AppendLine("\"");
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine("Output:");
+                    try
+                    {
+                        var extendedDateTimeObject = ExtendedDateTimeFormatParser.Parse(testString);
+
+                        if (extendedDateTimeObject is ExtendedDateTimeInterval)
+                        {
+                            WriteExtendedDateTimeInterval(1, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
+                        }
+                        else if (extendedDateTimeObject is ExtendedDateTimePossibilityCollection)
+                        {
+                            WriteExtendedDateTimePossibilityCollection(1, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
+                        }
+                        else if (extendedDateTimeObject is ExtendedDateTimeCollection)
+                        {
+                            WriteExtendedDateTimeCollection(1, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
+                        }
+                        else if (extendedDateTimeObject is UnspecifiedExtendedDateTime)
+                        {
+                            WriteUnspecifiedExtendedDateTime(1, (UnspecifiedExtendedDateTime)extendedDateTimeObject, stringBuilder);
+                        }
+                        else if (extendedDateTimeObject is ExtendedDateTime)
+                        {
+                            WriteExtendedDateTime(1, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
+                        }
+                    }
+                    catch (ParseException pe)
+                    {
+                        stringBuilder.Append("ParseException: ");
+                        stringBuilder.AppendLine(pe.Message);
+                    }
+
+                    Worker.ReportProgress((int)((i / stringsCount) * 100));
+
+                    stringBuilder.AppendLine().AppendLine();
+                }
+
+                e.Result = stringBuilder.ToString();
+            };
+
+            Worker.RunWorkerAsync();
         }
 
         private static void WriteExtendedDateTime(int startingIndent, ExtendedDateTime extendedDateTime, StringBuilder stringBuilder)
