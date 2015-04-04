@@ -55,7 +55,7 @@
     </ApplicationDefinition>
     <Compile Include="HashCodeTest.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="ITest.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="TestStrings.cs" />
     <Compile Include="ParsingTest.cs" />
     <Compile Include="TextBlockInput.cs" />

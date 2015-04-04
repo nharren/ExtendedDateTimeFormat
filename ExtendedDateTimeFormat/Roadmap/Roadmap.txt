@@ -6,8 +6,6 @@
 6. Split date parser and time parser.
 
 Undecided:
-1. XML Documentation: Any value added?
-2. Should ExtendedDateTime be a value type? 
-3. Should the ExtendedDateTime properties be read-only?
-4. Add LocalExtendedDateTime for ExtendedDateTimes that have time components but no time zone specified?
-5. Should throw exceptions when serializing to string? Is it possible for ExtendedDateTime state to always be valid so ExtendedDateTime would always serialize to string?
+1. Should ExtendedDateTime be a value type? Value types must have a public, paramaterless constructor which would leave the ExtendedDateTime in an invalid state unless a default date were chosen.
+2. Add LocalExtendedDateTime for ExtendedDateTimes that have time components but no time zone specified?
+3. Should throw exceptions when serializing to string? Is it possible for ExtendedDateTime state to always be valid so ExtendedDateTime would always serialize to string?

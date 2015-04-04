@@ -20,9 +20,9 @@
                  BorderThickness="0"
                  SelectionMode="Single"
                  SelectionChanged="list_SelectionChanged"
-                 ItemsSource="{Binding Tests}">
+                 ItemsSource="{Binding TestCollection}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:ITest}">
+                <DataTemplate DataType="{x:Type local:Test}">
                     <Grid>
                         <TextBlock Foreground="#FFDDDDDD"
                                    Margin="15,4"

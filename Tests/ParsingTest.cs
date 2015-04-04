@@ -6,76 +6,58 @@ using System.Text;
 
 namespace Tests
 {
-    public class ParsingTest : ITest
+    public class ParsingTest : Test
     {
-        private BackgroundWorker backgroundWorker = new BackgroundWorker { WorkerReportsProgress = true };
-
-        private string name;
-
         public ParsingTest(string name, IEnumerable<string> strings)
         {
-            this.name = name;
-            this.Strings = strings;
-        }
-
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
+            Name = name;
+            Strings = strings;
         }
 
         public IEnumerable<string> Strings { get; set; }
 
-        public BackgroundWorker Worker
-        {
-            get
-            {
-                return backgroundWorker;
-            }
-        }
-
-        public void Begin()
+        public override void Begin()
         {
             Worker.DoWork += (o, e) =>
             {
                 var stringBuilder = new StringBuilder();
                 var stringsCount = Strings.Count();
 
+                var indent = 4;
+
                 for (int i = 0; i < stringsCount; i++)
                 {
                     var testString = Strings.ElementAt(i);
 
-                    stringBuilder.Append("<Bold>Test ").Append(i + 1).AppendLine("</Bold>");
+                    stringBuilder.Append("<Bold>Test ".Indent(indent)).Append(i + 1).AppendLine("</Bold>");
                     stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("Input:");
-                    stringBuilder.Append("\"".Indent(1)).Append(testString).AppendLine("\"");
+                    stringBuilder.AppendLine("Input:".Indent(indent));
+                    stringBuilder.Append("\"".Indent(indent + 1)).Append(testString).AppendLine("\"");
                     stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("Output:");
+                    stringBuilder.AppendLine("Output:".Indent(indent));
                     try
                     {
                         var extendedDateTimeObject = ExtendedDateTimeFormatParser.Parse(testString);
 
                         if (extendedDateTimeObject is ExtendedDateTimeInterval)
                         {
-                            WriteExtendedDateTimeInterval(1, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
+                            WriteExtendedDateTimeInterval(indent + 1, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
                         }
                         else if (extendedDateTimeObject is ExtendedDateTimePossibilityCollection)
                         {
-                            WriteExtendedDateTimePossibilityCollection(1, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
+                            WriteExtendedDateTimePossibilityCollection(indent + 1, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
                         }
                         else if (extendedDateTimeObject is ExtendedDateTimeCollection)
                         {
-                            WriteExtendedDateTimeCollection(1, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
+                            WriteExtendedDateTimeCollection(indent + 1, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
                         }
                         else if (extendedDateTimeObject is UnspecifiedExtendedDateTime)
                         {
-                            WriteUnspecifiedExtendedDateTime(1, (UnspecifiedExtendedDateTime)extendedDateTimeObject, stringBuilder);
+                            WriteUnspecifiedExtendedDateTime(indent + 1, (UnspecifiedExtendedDateTime)extendedDateTimeObject, stringBuilder);
                         }
                         else if (extendedDateTimeObject is ExtendedDateTime)
                         {
-                            WriteExtendedDateTime(1, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
+                            WriteExtendedDateTime(indent + 1, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
                         }
                     }
                     catch (ParseException pe)

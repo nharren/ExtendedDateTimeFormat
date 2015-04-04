@@ -7,40 +7,23 @@ using System.Text;
 
 namespace Tests
 {
-    public class HashCodeTest : ITest
+    public class HashCodeTest : Test
     {
-        private BackgroundWorker worker = new BackgroundWorker { WorkerReportsProgress = true };
-
         public HashCodeTest(ExtendedDateTime start, ExtendedDateTime end, int daySkip)
         {
             Start = start;
             End = end;
             DaySkip = daySkip;
+            Name = "Hash Codes";
         }
 
         public int DaySkip { get; set; }
 
         public ExtendedDateTime End { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                return "Hash Codes";
-            }
-        }
-
-        public BackgroundWorker Worker
-        {
-            get
-            {
-                return worker;
-            }
-        }
-
         public ExtendedDateTime Start { get; set; }
 
-        public void Begin()
+        public override void Begin()
         {
             Worker.DoWork += (o, e) =>
             {

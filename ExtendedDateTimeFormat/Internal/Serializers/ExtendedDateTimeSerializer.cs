@@ -17,15 +17,12 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
             }
 
             var stringBuilder = new StringBuilder();
-            var isLongFormYear = false;
 
             stringBuilder.Append("{ys}");
 
             if (extendedDateTime.Year > 9999 || extendedDateTime.Year < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
             {
                 stringBuilder.Append('y');
-
-                isLongFormYear = true;
             }
 
             if (extendedDateTime.YearExponent.HasValue)

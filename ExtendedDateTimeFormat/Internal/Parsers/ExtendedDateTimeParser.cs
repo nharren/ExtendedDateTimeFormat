@@ -3,8 +3,16 @@ using System.Linq;
 
 namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
+    /// <summary>
+    /// Contains methods used to parse an extended datetime string into an extended datetime.
+    /// </summary>
     internal static class ExtendedDateTimeParser
     {
+        /// <summary>
+        /// Converts an extended datetime string into an extended datetime.
+        /// </summary>
+        /// <param name="extendedDateTimeString">The extended datetime string to parse.</param>
+        /// <returns>The object representation of the string.</returns>
         internal static ExtendedDateTime Parse(string extendedDateTimeString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeString))                                                    
@@ -14,7 +22,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             var extendedDateTime = new ExtendedDateTime();
 
-            InsertArtificialScopes(ref extendedDateTimeString);                                                        // e.g. 1995-11?-12~   -> {{1995-11}?-12}~    OR   (1995-11?-12)~ -> ({1995-11}?-12)
+            InsertArtificialScopes(ref extendedDateTimeString);                                                        // e.g. 1995-11?-12~ => {{1995-11}?-12}~
 
             var componentBuffer = new List<char>();
 
@@ -29,129 +37,123 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             for (int i = 0; i < extendedDateTimeString.Length; i++)
             {
-                var extendedDateTimeCharacter = extendedDateTimeString[i];
+                var character = extendedDateTimeString[i];
 
                 if (isDatePart)                                                                                        // Parsing date portion of extended date time.
                 {
-                    if (extendedDateTimeCharacter == '(' || extendedDateTimeCharacter == '{')                          // Scope increment.
+                    if (character == '(' || character == '{')                                                          // Scope increment for natural and artificial scopes.
                     {
-                        if (componentBuffer.Count > 0)
-                        {
-                            CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
-
-                            componentBuffer.Clear();
-                        }
+                        CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), componentBuffer, extendedDateTime);
                     }
-                    else if (extendedDateTimeCharacter == ')' || extendedDateTimeCharacter == '}')                     // Scope decrement.
+                    else if (character == ')' || character == '}')                                                     // Scope decrement for natural and artificial scopes.
                     {
-                        if (componentBuffer.Count > 0)
-                        {
-                            CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
-
-                            componentBuffer.Clear();
-                        }
+                        CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), componentBuffer, extendedDateTime);
 
                         if (i + 1 < extendedDateTimeString.Length && GetFlag(extendedDateTimeString[i + 1]) != 0)
                         {
-                            i++;                                                                  // Skip past first flag.
+                            i++;                                                                                       // Skip past first flag if exists.
 
                             if (i + 1 < extendedDateTimeString.Length && GetFlag(extendedDateTimeString[i + 1]) != 0)
                             {
-                                i++;                                                              // Skip past second flag.
+                                i++;                                                                                   // Skip past second flag if exists.
                             }
                         }
                     }
-                    else if (char.IsDigit(extendedDateTimeCharacter) || extendedDateTimeCharacter == 'y' || extendedDateTimeCharacter == 'e' || extendedDateTimeCharacter == 'p')
+                    else if (char.IsDigit(character) || character == 'y' || character == 'e' || character == 'p')
                     {
-                        componentBuffer.Add(extendedDateTimeCharacter);
+                        componentBuffer.Add(character);
                     }
-                    else if (extendedDateTimeCharacter == '^')                                   // Add season qualifier indicator to component buffer.
+                    else if (character == '^')                                                                         // Add season qualifier indicator to component buffer.
                     {
-                        componentBuffer.Add(extendedDateTimeCharacter);
+                        componentBuffer.Add(character);
 
                         isSeasonQualifierPart = true;
                     }
-                    else if (extendedDateTimeCharacter == '-')
+                    else if (character == '-')
                     {
-                        if (i == 0 || (i > 0 && extendedDateTimeString[i - 1] == 'y'))           // Hyphen is a negative sign.
+                        if (i == 0 || (i > 0 && extendedDateTimeString[i - 1] == 'y'))                                 // Hyphen is a negative sign.
                         {
-                            componentBuffer.Add(extendedDateTimeCharacter);
+                            componentBuffer.Add(character);
                         }
-                        else if (componentBuffer.Count > 0)                                      // Hyphen is component separator.
+                        else                                                                                           // Hyphen is a component separator.
                         {
-                            CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
-
-                            componentBuffer.Clear();
+                            CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), componentBuffer, extendedDateTime);
                         }
                     }
-                    else if (extendedDateTimeCharacter == 'T')
+                    else if (character == 'T')
                     {
-                        CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
-
-                        componentBuffer.Clear();
+                        CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(i - 1, extendedDateTimeString), componentBuffer, extendedDateTime);
 
                         isDatePart = false;
                     }
                     else if (isSeasonQualifierPart)
                     {
-                        componentBuffer.Add(extendedDateTimeCharacter);
+                        componentBuffer.Add(character);
                     }
                     else
                     {
-                        throw new ParseException("The character \'" + extendedDateTimeCharacter + "\' could not be recognized.", new string(componentBuffer.ToArray()));
+                        throw new ParseException("The character \'" + character + "\' could not be recognized.", new string(componentBuffer.ToArray()));
                     }
                 }
                 else                                                                                                           // Parsing time portion of extended date time.
                 {
-                    if (char.IsDigit(extendedDateTimeCharacter) || (extendedDateTimeCharacter == ':' && isTimeZonePart))         // Add digit to component buffer.
+                    if (char.IsDigit(character) || (character == ':' && isTimeZonePart))                                       // Add digit to component buffer.
                     {
-                        componentBuffer.Add(extendedDateTimeCharacter);
+                        componentBuffer.Add(character);
                     }
-                    else if (extendedDateTimeCharacter == ':' && !isTimeZonePart)
+                    else if (character == ':' && !isTimeZonePart)
                     {
-                        CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, new string(componentBuffer.ToArray()), extendedDateTime);
-
-                        componentBuffer.Clear();
+                        CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, componentBuffer, extendedDateTime);
                     }
-                    else if (extendedDateTimeCharacter == 'Z' || extendedDateTimeCharacter == '+' || extendedDateTimeCharacter == '-')     // Time zone component
+                    else if (character == 'Z' || character == '+' || character == '-')                                         // Time zone component
                     {
-                        CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, new string(componentBuffer.ToArray()), extendedDateTime);
+                        CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, componentBuffer, extendedDateTime);
 
-                        componentBuffer.Clear();
-
-                        componentBuffer.Add(extendedDateTimeCharacter);
+                        componentBuffer.Add(character);
 
                         isTimeZonePart = true;
                     }
                     else
                     {
-                        throw new ParseException("The character \'" + extendedDateTimeCharacter + "\' could not be recognized.", new string(componentBuffer.ToArray()));
+                        throw new ParseException("The character \'" + character + "\' could not be recognized.", new string(componentBuffer.ToArray()));
                     }
                 }
             }
 
-            if (componentBuffer.Count > 0)
+            if (isDatePart)
             {
-                if (isDatePart)
-                {
-                    CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(extendedDateTimeString.Length - 1, extendedDateTimeString), new string(componentBuffer.ToArray()), extendedDateTime);
-                }
-                else
-                {
-                    CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, new string(componentBuffer.ToArray()), extendedDateTime);
-                }
+                CommitDateComponent(ref currentDateComponent, ref hasSeasonComponent, GetScopeFlags(extendedDateTimeString.Length - 1, extendedDateTimeString), componentBuffer, extendedDateTime);
+            }
+            else
+            {
+                CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, componentBuffer, extendedDateTime);
             }
 
             return extendedDateTime;
         }
 
-        private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, string componentString, ExtendedDateTime extendedDateTime)
+        /// <summary>
+        /// Converts the characters in the component buffer into a date component.
+        /// </summary>
+        /// <param name="dateComponentIndex">The index, in the date part of the datetime, of the date component.</param>
+        /// <param name="hasSeasonComponent">Whether or not a season is present in the extended datetime string.</param>
+        /// <param name="flags">The flags which apply to the component.</param>
+        /// <param name="componentBuffer">The characters to convert to a date component.</param>
+        /// <param name="extendedDateTime">The extended datetime on which to set the value of the component.</param>
+        private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, List<char> componentBuffer, ExtendedDateTime extendedDateTime)
         {
+            if (componentBuffer.Count == 0)
+            {
+                return;
+            } 
+
+            var componentString = new string(componentBuffer.ToArray());
+
             if (dateComponentIndex == 0)                                                           // We expect a year to appear first.
             {
                 if (componentString.Length < 4)
                 {
-                    throw new ParseException("The year must have at least four digits.", new string(componentString.ToArray()));
+                    throw new ParseException("The year must have at least four digits.", componentString);
                 }
 
                 var isLongFormYear = false;
@@ -188,7 +190,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else
                     {
-                        throw new ParseException("The year is invalid.", new string(componentString.ToArray()));
+                        throw new ParseException("The year is invalid.", componentString);
                     }
                 }
 
@@ -313,11 +315,27 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             else if (dateComponentIndex > 2)
             {
                 throw new ParseException("The date can have at most three components.", componentString);
-            }
+            }         
+            
+            componentBuffer.Clear(); 
         }
 
-        private static void CommitTimeComponent(ref int timeComponentIndex, bool timeZonePart, string componentString, ExtendedDateTime extendedDateTime)
+        /// <summary>
+        /// Converts the characters in the component buffer into a time component.
+        /// </summary>
+        /// <param name="timeComponentIndex">The index, in the time part of the datetime, of the time component.</param>
+        /// <param name="timeZonePart">Whether or not the component is in the timezone part.</param>
+        /// <param name="componentBuffer">The characters to convert to a time component.</param>
+        /// <param name="extendedDateTime">The extended datetime on which to set the value of the component.</param>
+        private static void CommitTimeComponent(ref int timeComponentIndex, bool timeZonePart, List<char> componentBuffer, ExtendedDateTime extendedDateTime)
         {
+            if (componentBuffer.Count == 0)
+            {
+                return;
+            }
+
+            var componentString = new string(componentBuffer.ToArray());
+
             if (timeComponentIndex == 0 && !timeZonePart)                                                               // We expect hours to appear first.
             {
                 if (componentString.Any(c => !char.IsDigit(c)))
@@ -425,8 +443,15 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             {
                 throw new ParseException("The time can have at most three components excluding the time zone.", componentString);
             }
+
+            componentBuffer.Clear();
         }
 
+        /// <summary>
+        /// Gets a flag from its character representation.
+        /// </summary>
+        /// <param name="character">The flag character</param>
+        /// <returns>The flag.</returns>
         private static ExtendedDateTimeFlags GetFlag(char character)
         {
             if (character == '?')
@@ -441,8 +466,19 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             return 0;
         }
 
+        /// <summary>
+        /// Gets the flags on components within a natural or artificial scope.
+        /// </summary>
+        /// <param name="characterIndex">The index of a character within the target scope.</param>
+        /// <param name="extendedDateTimeString">The extended datetime string to survey for the scope flags.</param>
+        /// <returns>The flags of the scope which contains the target character.</returns>
         private static ExtendedDateTimeFlags GetScopeFlags(int characterIndex, string extendedDateTimeString)
         {
+            if (characterIndex < 0)
+            {
+                return 0;
+            }
+
             var scopeFlags = (ExtendedDateTimeFlags)0;
 
             if (extendedDateTimeString[characterIndex] == '?' || extendedDateTimeString[characterIndex] == '~')              // Set starting point to close parenthesis or before.
@@ -557,6 +593,10 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             return scopeFlags;
         }
 
+        /// <summary>
+        /// Converts implicit scopes into artificially explicit scopes to aid in parsing.
+        /// </summary>
+        /// <param name="extendedDateTimeString">The extended datetime string to convert.</param>
         private static void InsertArtificialScopes(ref string extendedDateTimeString)
         {
             var characterList = extendedDateTimeString.ToList();
