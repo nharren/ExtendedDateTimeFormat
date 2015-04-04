@@ -1,9 +1,13 @@
 1. Optimize (e.g. string literals, redundant code, etc.).
 2. Add more comprehensive tests.
 3. Test serializability (does it require implementing value serializers?)
+4. Consider TimeZone offset in ExtendedDateTime calculations.
+5. Make Local UTC Offset the default UTC Offset.
+6. Split date parser and time parser.
 
 Undecided:
 1. XML Documentation: Any value added?
 2. Should ExtendedDateTime be a value type? 
 3. Should the ExtendedDateTime properties be read-only?
 4. Add LocalExtendedDateTime for ExtendedDateTimes that have time components but no time zone specified?
+5. Should throw exceptions when serializing to string? Is it possible for ExtendedDateTime state to always be valid so ExtendedDateTime would always serialize to string?

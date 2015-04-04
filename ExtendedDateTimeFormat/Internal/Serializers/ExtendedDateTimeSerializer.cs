@@ -19,32 +19,25 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
             var stringBuilder = new StringBuilder();
             var isLongFormYear = false;
 
-            if (extendedDateTime.Year.HasValue)
+            stringBuilder.Append("{ys}");
+
+            if (extendedDateTime.Year > 9999 || extendedDateTime.Year < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
             {
-                stringBuilder.Append("{ys}");
+                stringBuilder.Append('y');
 
-                if (extendedDateTime.Year.Value > 9999 || extendedDateTime.Year.Value < -9999 || extendedDateTime.YearExponent.HasValue)       // The year must be in long form.
-                {
-                    stringBuilder.Append('y');
+                isLongFormYear = true;
+            }
 
-                    isLongFormYear = true;
-                }
-
-                if (extendedDateTime.YearExponent.HasValue)
-                {
-                    stringBuilder.Append(extendedDateTime.Year.Value.ToString());
-                }
-                else
-                {
-                    stringBuilder.Append(extendedDateTime.Year.Value.ToString("D4"));
-                }
-
-                stringBuilder.Append("{ye}");
+            if (extendedDateTime.YearExponent.HasValue)
+            {
+                stringBuilder.Append(extendedDateTime.Year.ToString());
             }
             else
             {
-                return "Error: An extended date time string must have a year.";
+                stringBuilder.Append(extendedDateTime.Year.ToString("D4"));
             }
+
+            stringBuilder.Append("{ye}");
 
             if (extendedDateTime.YearExponent.HasValue)
             {
@@ -64,11 +57,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.YearPrecision.HasValue)
             {
-                if (extendedDateTime.Year == null)
-                {
-                    return "Error: Year precision cannot exist without a year.";
-                }
-
                 if (!extendedDateTime.YearExponent.HasValue)
                 {
                     return "Error: Year precision cannot exist without an exponent.";
@@ -80,11 +68,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.Month.HasValue)
             {
-                if (extendedDateTime.Year == null)
-                {
-                    return "Error: A month cannot exist without a year.";
-                }
-
                 if (extendedDateTime.Season != 0)
                 {
                     return "Error: A month and season cannot both be defined.";
@@ -106,11 +89,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.Season != Season.Undefined)
             {
-                if (extendedDateTime.Year == null)
-                {
-                    return "Error: A season cannot exist without a year.";
-                }
-
                 if (extendedDateTime.Month.HasValue)
                 {
                     return "Error: A month and season cannot both be defined.";
@@ -158,7 +136,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                     return "Error: A month must be a number from 1 to 31.";
                 }
 
-                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
+                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year, extendedDateTime.Month.Value);
 
                 if (extendedDateTime.Day.Value > daysInMonth)
                 {

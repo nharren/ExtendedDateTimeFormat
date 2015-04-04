@@ -21,8 +21,23 @@
             var startString = rangeParts[0];
             var endString = rangeParts[1];
 
-            extendedDateTimeRange.Start = ExtendedDateTimeParser.Parse(startString);
-            extendedDateTimeRange.End = ExtendedDateTimeParser.Parse(endString);
+            if (string.IsNullOrEmpty(rangeParts[0]))
+            {
+                extendedDateTimeRange.Start = ExtendedDateTime.Minimum;
+            }
+            else
+            {
+                extendedDateTimeRange.Start = ExtendedDateTimeParser.Parse(startString);
+            }
+
+            if (string.IsNullOrEmpty(rangeParts[1]))
+            {
+                extendedDateTimeRange.Start = ExtendedDateTime.Maximum;
+            }
+            else
+            {
+                extendedDateTimeRange.End = ExtendedDateTimeParser.Parse(endString);
+            }            
 
             return extendedDateTimeRange;
         }

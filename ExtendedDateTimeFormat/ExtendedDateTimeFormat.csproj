@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtendedDateTimePrecision.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Internal\Converters\ConversionException.cs" />
     <Compile Include="Internal\Converters\ExtendedDateTimeCollectionConverter.cs" />

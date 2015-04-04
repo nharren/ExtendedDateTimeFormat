@@ -183,8 +183,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
                 monthEndBuffer.Add(unspecifiedExtendedDateTime.Month[1]);
             }
 
-            var monthStart = int.Parse(new string(monthStartBuffer.ToArray()));
-            var monthEnd = int.Parse(new string(monthEndBuffer.ToArray()));
+            var monthStart = byte.Parse(new string(monthStartBuffer.ToArray()));
+            var monthEnd = byte.Parse(new string(monthEndBuffer.ToArray()));
 
             if (unspecifiedExtendedDateTime.Day == null)                                              // Day
             {
@@ -290,8 +290,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
                 dayEndBuffer.Add(unspecifiedExtendedDateTime.Day[1]);
             }
 
-            var dayStart = int.Parse(new string(dayStartBuffer.ToArray()));
-            var dayEnd = int.Parse(new string(dayEndBuffer.ToArray()));
+            var dayStart = byte.Parse(new string(dayStartBuffer.ToArray()));
+            var dayEnd = byte.Parse(new string(dayEndBuffer.ToArray()));
 
             var rangeBuffer = new List<ExtendedDateTime>();                            // Collects consecutive dates, which are then converted into an ExtendedDateTimeRange.
 
@@ -299,9 +299,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
 
             for (int year = yearStart; year <= yearEnd; year++)
             {
-                for (int month = monthStart; month <= monthEnd; month++)
+                for (byte month = monthStart; month <= monthEnd; month++)
                 {
-                    for (int day = dayStart; day <= dayEnd; day++)
+                    for (byte day = dayStart; day <= dayEnd; day++)
                     {
                         if (day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
                         {

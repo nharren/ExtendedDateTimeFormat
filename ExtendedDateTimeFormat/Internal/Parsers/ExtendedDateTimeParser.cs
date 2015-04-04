@@ -7,9 +7,9 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
     {
         internal static ExtendedDateTime Parse(string extendedDateTimeString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeString))                                                     // Return null if empty string.
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))                                                    
             {
-                return null;
+                throw new ArgumentNullException("extendedDateTimeString");
             }
 
             var extendedDateTime = new ExtendedDateTime();
@@ -259,7 +259,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The month must be a number.", componentString);
                     }
 
-                    var monthInteger = int.Parse(componentString);
+                    var monthInteger = byte.Parse(componentString);
 
                     if (monthInteger < 1 || monthInteger > 12)
                     {
@@ -290,14 +290,14 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The day must be a number.", componentString);
                 }
 
-                var dayInteger = int.Parse(componentString);
+                var dayInteger = byte.Parse(componentString);
 
                 if (dayInteger < 1 || dayInteger > 31)
                 {
                     throw new ParseException("The day must be between 1 and 31.", componentString);
                 }
 
-                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year.Value, extendedDateTime.Month.Value);
+                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year, extendedDateTime.Month.Value);
 
                 if (dayInteger > daysInMonth)
                 {
@@ -329,7 +329,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The hour must be two digits long.", componentString);
                 }
 
-                extendedDateTime.Hour = int.Parse(componentString);
+                extendedDateTime.Hour = byte.Parse(componentString);
 
                 timeComponentIndex++;
             }
@@ -344,7 +344,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The minute must be two digits long.", componentString);
                 }
 
-                extendedDateTime.Minute = int.Parse(componentString);
+                extendedDateTime.Minute = byte.Parse(componentString);
 
                 timeComponentIndex++;
             }
@@ -359,7 +359,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The second must be two digits long.", componentString);
                 }
 
-                extendedDateTime.Second = int.Parse(componentString);
+                extendedDateTime.Second = byte.Parse(componentString);
 
                 timeComponentIndex++;
             }

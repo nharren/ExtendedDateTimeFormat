@@ -64,10 +64,7 @@ namespace Tests
         {
             stringBuilder.AppendLine("[ExtendedDateTime]".Indent(startingIndent));
 
-            if (extendedDateTime.Year != null)
-            {
-                stringBuilder.AppendLine("Year: ".Indent(startingIndent + 1) + extendedDateTime.Year);
-            }
+            stringBuilder.AppendLine("Year: ".Indent(startingIndent + 1) + extendedDateTime.Year);
 
             if (extendedDateTime.YearFlags != 0)
             {

@@ -15,13 +15,8 @@ namespace System.ExtendedDateTimeFormat
                 return 1;
             }
 
-            if (x.Year == null || y.Year == null)
-            {
-                throw new InvalidOperationException("Cannot compare extended date times without a year.");
-            }
-
-            long longXYear = x.Year.Value;
-            long longYYear = y.Year.Value;
+            long longXYear = x.Year;
+            long longYYear = y.Year;
 
 
             if (x.YearExponent.HasValue)
@@ -32,7 +27,7 @@ namespace System.ExtendedDateTimeFormat
                 }
                 catch (Exception)
                 {
-                    if (x.Year.Value < 0)
+                    if (x.Year < 0)
                     {
                         longXYear = long.MinValue;
                     }
@@ -52,7 +47,7 @@ namespace System.ExtendedDateTimeFormat
                 }
                 catch (Exception)
                 {
-                    if (y.Year.Value < 0)
+                    if (y.Year < 0)
                     {
                         longYYear = long.MinValue;
                     }

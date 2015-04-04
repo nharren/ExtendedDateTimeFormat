@@ -18,11 +18,6 @@ namespace System.ExtendedDateTimeFormat
                 candidates.Add(item.Earliest());
             }
 
-            if (candidates.Contains(null))                                   // If a range start is open-ended, then the earliest possible date is the dawn of time, but we return null.
-            {
-                return null;
-            }
-
             candidates.Sort();
 
             return candidates[0];
@@ -35,11 +30,6 @@ namespace System.ExtendedDateTimeFormat
             foreach (var item in Items)
             {
                 candidates.Add(item.Latest());
-            }
-
-            if (candidates.Contains(null))                                   // If a range end is open-ended, then the latest possible date is the end of time, but we return null.
-            {
-                return null;
             }
 
             candidates.Sort();

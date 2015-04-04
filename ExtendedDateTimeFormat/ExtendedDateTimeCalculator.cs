@@ -4,97 +4,174 @@
     {
         public static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)
         {
-            var resultingDateTime = (ExtendedDateTime)e.Clone();
+            int? second = e.Second;
+            int? minute = e.Minute;
+            int? hour = e.Hour;
+            int? day = e.Day;
+            int? month = e.Month;
+            int year = e.Year;
 
-            if (resultingDateTime.Second == null && t.Seconds != 0)
+            if (t.Seconds != 0)
             {
-                resultingDateTime.Second = 0;
-            }
-
-            resultingDateTime.Second += t.Seconds;
-
-            while (resultingDateTime.Second > 59)
-            {
-                resultingDateTime.Second -= 60;
-
-                if (resultingDateTime.Minute == null)
+                if (e.Second == null)
                 {
-                    resultingDateTime.Minute = 0;
+                    second = 0;
                 }
 
-                resultingDateTime.Minute++;
-            }
-
-            if (resultingDateTime.Minute == null && t.Minutes != 0)
-            {
-                resultingDateTime.Minute = 0;
-            }
-
-            resultingDateTime.Minute += t.Minutes;
-
-            while (resultingDateTime.Minute > 59)
-            {
-                resultingDateTime.Minute -= 60;
-
-                if (resultingDateTime.Hour == null)
+                if (minute == null)
                 {
-                    resultingDateTime.Hour = 0;
+                    minute = 0;
                 }
 
-                resultingDateTime.Hour++;
+                if (hour == null)
+                {
+                    hour = 0;
+                }
+
+                if (day == null)
+                {
+                    day = 0;
+                }
+
+                if (month == null)
+                {
+                    month = 0;
+                }
+
+                second += t.Seconds;
+            }
+
+            while (second > 59)
+            {
+                second -= 60;
+
+                minute++;
+            }
+
+            if (t.Minutes != 0)
+            {
+                if (minute == null)
+                {
+                    minute = 0;
+                }
+
+                if (hour == null)
+                {
+                    hour = 0;
+                }
+
+                if (day == null)
+                {
+                    day = 0;
+                }
+
+                if (month == null)
+                {
+                    month = 0;
+                }
+
+                minute += t.Minutes;
+            }
+
+            while (minute > 59)
+            {
+                minute -= 60;
+
+                hour++;
+            }
+
+            if (t.Hours != 0)
+            {
+                if (hour == null)
+                {
+                    hour = 0;
+                }
+
+                if (day == null)
+                {
+                    day = 0;
+                }
+
+                if (month == null)
+                {
+                    month = 0;
+                }
+
+                hour += t.Hours;
             }
 
             var daysToAdd = 0;
 
-            if (resultingDateTime.Hour == null && t.Hours != 0)
+            while (hour > 23)
             {
-                resultingDateTime.Hour = 0;
-            }
-
-            resultingDateTime.Hour += t.Hours;
-
-            while (resultingDateTime.Hour > 23)
-            {
-                resultingDateTime.Hour -= 24;
+                hour -= 24;
 
                 daysToAdd++;
             }
 
-            if (resultingDateTime.Day == null && t.Days != 0)
+            if (t.Days != 0)
             {
-                resultingDateTime.Day = 0;
-            }
+                if (day == null)
+                {
+                    day = 0;
+                }
 
-            if (resultingDateTime.Month == null && t.Days != 0)
-            {
-                resultingDateTime.Month = 0;
-            }
+                if (month == null)
+                {
+                    month = 0;
+                }
 
-            daysToAdd += t.Days;
+                daysToAdd += t.Days;
+            }
 
             for (int i = 0; i < daysToAdd; i++)
             {
-                if (DaysInMonth(resultingDateTime.Year.Value, resultingDateTime.Month.Value) < resultingDateTime.Day + 1)
+                if (DaysInMonth(year, month.Value) < day + 1)  
                 {
-                    if (resultingDateTime.Month == 12)
+                    if (month == 12)
                     {
-                        resultingDateTime.Year++;
-                        resultingDateTime.Month = 1;
+                        year++;
+                        month = 1;
                     }
                     else
                     {
-                        resultingDateTime.Month++;
+                        month++;
                     }
 
-                    resultingDateTime.Day = 1;
+                    day = 1;
                 }
                 else
                 {
-                    resultingDateTime.Day++;
+                    day++;
                 }
             }
 
-            return resultingDateTime;
+            if (month == null)
+            {
+                return new ExtendedDateTime(year, yearFlags: e.YearFlags);
+            }
+            
+            if (day == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, yearFlags: e.YearFlags, monthFlags: e.MonthFlags);
+            }
+
+            if (hour == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, (byte)day, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
+            }
+
+            if (minute == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
+            }
+
+            if (second == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
+            }
+
+            return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, (byte)second, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
         }
 
         public static int DaysInMonth(int year, int month)                                 // This removes the range restriction present in the DateTime.DaysInMonth() method.
@@ -126,126 +203,199 @@
         {                                                                                  // This removes the range restriction present in the DateTime.IsLeapYear() method.
             return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
         }
+
         public static ExtendedDateTime Subtract(ExtendedDateTime e, TimeSpan t)
         {
-            var resultingDateTime = (ExtendedDateTime)e.Clone();
+            int? second = e.Second;
+            int? minute = e.Minute;
+            int? hour = e.Hour;
+            int? day = e.Day;
+            int? month = e.Month;
+            int year = e.Year;
 
-            if (resultingDateTime.Second == null && t.Seconds != 0)
+            if (t.Seconds != 0)
             {
-                resultingDateTime.Second = 0;
-            }
-
-            resultingDateTime.Second -= t.Seconds;
-
-            while (resultingDateTime.Second < 0)
-            {
-                resultingDateTime.Second += 60;
-
-                if (resultingDateTime.Minute == null)
+                if (e.Second == null)
                 {
-                    resultingDateTime.Minute = 0;
+                    second = 0;
                 }
 
-                resultingDateTime.Minute--;
-            }
-
-            if (resultingDateTime.Minute == null && t.Minutes != 0)
-            {
-                resultingDateTime.Minute = 0;
-            }
-
-            resultingDateTime.Minute -= t.Minutes;
-
-            while (resultingDateTime.Minute < 0)
-            {
-                resultingDateTime.Minute += 60;
-
-                if (resultingDateTime.Hour == null)
+                if (minute == null)
                 {
-                    resultingDateTime.Hour = 0;
+                    minute = 0;
                 }
 
-                resultingDateTime.Hour--;
+                if (hour == null)
+                {
+                    hour = 0;
+                }
+
+                if (day == null)
+                {
+                    day = 0;
+                }
+
+                if (month == null)
+                {
+                    month = 0;
+                }
+
+                second -= t.Seconds;
+            }
+
+            while (second < 0)
+            {
+                second += 60;
+
+                minute--;
+            }
+
+            if (t.Minutes != 0)
+            {
+                if (minute == null)
+                {
+                    minute = 0;
+                }
+
+                if (hour == null)
+                {
+                    hour = 0;
+                }
+
+                if (day == null)
+                {
+                    day = 0;
+                }
+
+                if (month == null)
+                {
+                    month = 0;
+                }
+
+                minute -= t.Minutes;
+            }
+
+            while (minute < 0)
+            {
+                minute += 60;
+
+                hour--;
+            }
+
+            if (t.Hours != 0)
+            {
+                if (hour == null)
+                {
+                    hour = 0;
+                }
+
+                if (day == null)
+                {
+                    day = 0;
+                }
+
+                if (month == null)
+                {
+                    month = 0;
+                }
+
+                hour -= t.Hours;
             }
 
             var daysToSubtract = 0;
 
-            if (resultingDateTime.Hour == null && t.Hours != 0)
+            while (hour < 0)
             {
-                resultingDateTime.Hour = 0;
-            }
-
-            resultingDateTime.Hour -= t.Hours;
-
-            while (resultingDateTime.Hour < 0)
-            {
-                resultingDateTime.Hour += 24;
+                hour += 24;
 
                 daysToSubtract++;
             }
 
-            if (resultingDateTime.Day == null && t.Days != 0)
+            if (t.Days != 0)
             {
-                resultingDateTime.Day = 0;
-            }
+                if (day == null)
+                {
+                    day = 0;
+                }
 
-            if (resultingDateTime.Month == null && t.Days != 0)
-            {
-                resultingDateTime.Month = 0;
-            }
+                if (month == null)
+                {
+                    month = 0;
+                }
 
-            daysToSubtract += t.Days;
+                daysToSubtract -= t.Days;
+            }
 
             for (int i = 0; i < daysToSubtract; i++)
             {
-                if (resultingDateTime.Day - 1 < 1)
+                if (day - 1 < 1)
                 {
-                    if (resultingDateTime.Month == 1)
+                    if (month == 1)
                     {
-                        resultingDateTime.Year--;
-                        resultingDateTime.Month = 12;
+                        year--;
+                        month = 12;
                     }
                     else
                     {
-                        resultingDateTime.Month--;
+                        month--;
                     }
 
-                    resultingDateTime.Day = DaysInMonth(resultingDateTime.Year.Value, resultingDateTime.Month.Value);
+                    day = DaysInMonth(year, month.Value);
                 }
                 else
                 {
-                    resultingDateTime.Day--;
+                    day--;
                 }
             }
 
-            return resultingDateTime;
+            if (month == null)
+            {
+                return new ExtendedDateTime(year, yearFlags: e.YearFlags);
+            }
+
+            if (day == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, yearFlags: e.YearFlags, monthFlags: e.MonthFlags);
+            }
+
+            if (hour == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, (byte)day, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
+            }
+
+            if (minute == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
+            }
+
+            if (second == null)
+            {
+                return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
+            }
+
+            return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, (byte)second, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
         }
 
         public static TimeSpan Subtract(ExtendedDateTime e2, ExtendedDateTime e1)    // Use http://www.timeanddate.com/date/timeduration.html to verify correctness.
         {
-            if (e1.Year == null || e2.Year == null)
-            {
-                throw new InvalidOperationException("Extended date times must have a year.");
-            }
-
             var daysRemainingInStartYear = 0;                      // The day is the highest quantity of time spans because the duration of a day is consistent, whereas the duration of months and years change (months can have different numbers of days and leap years are a day longer than other years).
 
             if (e1.Day != null)
             {
-                daysRemainingInStartYear += DaysInMonth(e1.Year.Value, e1.Month.Value) - e1.Day.Value;
+                daysRemainingInStartYear += DaysInMonth(e1.Year, e1.Month.Value) - e1.Day.Value;
             }
 
             if (e1.Month != null)
             {
                 for (int i = e1.Month.Value + 1; i <= 12; i++)
                 {
-                    daysRemainingInStartYear += DaysInMonth(e1.Year.Value, i);
+                    daysRemainingInStartYear += DaysInMonth(e1.Year, i);
                 }
             }
 
             var daysInYearsBetween = 0;
 
-            for (int i = e1.Year.Value + 1; i < e2.Year.Value; i++)
+            for (int i = e1.Year + 1; i < e2.Year; i++)
             {
                 daysInYearsBetween += IsLeapYear(i) ? 366 : 365;
             }
@@ -309,7 +459,7 @@
             {
                 for (int i = e2.Month.Value - 1; i >= 1; i--)
                 {
-                    daysIntoEndYear += DaysInMonth(e1.Year.Value, i);
+                    daysIntoEndYear += DaysInMonth(e1.Year, i);
                 }
             }
 
