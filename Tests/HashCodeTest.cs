@@ -15,6 +15,7 @@ namespace Tests
             End = end;
             DaySkip = daySkip;
             Name = "Hash Codes";
+            Category = "Hashing";
         }
 
         public int DaySkip { get; set; }

@@ -12,6 +12,7 @@ namespace Tests
         {
             Name = name;
             Strings = strings;
+            Category = "Parsing";
         }
 
         public IEnumerable<string> Strings { get; set; }
@@ -23,7 +24,7 @@ namespace Tests
                 var stringBuilder = new StringBuilder();
                 var stringsCount = Strings.Count();
 
-                var indent = 4;
+                var indent = 0;
 
                 for (int i = 0; i < stringsCount; i++)
                 {
