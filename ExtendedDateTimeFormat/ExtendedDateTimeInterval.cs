@@ -21,6 +21,16 @@ namespace System.ExtendedDateTimeFormat
 
         public ISingleExtendedDateTimeType Start { get; set; }
 
+        public ExtendedDateTime Earliest()
+        {
+            return Start.Earliest();
+        }
+
+        public ExtendedDateTime Latest()
+        {
+            return End.Latest();
+        }
+
         public override string ToString()
         {
             return ExtendedDateTimeIntervalSerializer.Serialize(this);

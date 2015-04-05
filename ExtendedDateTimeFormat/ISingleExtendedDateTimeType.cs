@@ -1,6 +1,6 @@
 ﻿namespace System.ExtendedDateTimeFormat
 {
-    public interface ISingleExtendedDateTimeType : IExtendedDateTimeCollectionChild, IExtendedDateTimeIndependentType, IExtendedDateTimeExtremityProvider
+    public interface ISingleExtendedDateTimeType : IExtendedDateTimeCollectionChild, IExtendedDateTimeIndependentType
     {
     }
 }
