@@ -199,6 +199,157 @@
             throw new ArgumentOutOfRangeException("month", "A month must be between 1 and 12.");
         }
 
+        public static double TotalYears(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            var span = BaseSubtract(e1, e2);
+
+            return span[0] + (span[1] + (span[2] + (span[3] + (span[4] + span[5] / 60) / 60) / 24) / span[6]) / 12;
+        }
+
+        private static double[] BaseSubtract(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            var yearsBetween = e2.Year - e1.Year;               // We already accounted for the remainder of the start year, so we subtract one from the difference so that this year isnt counted.
+
+            var monthsRemainingInStartYear = 0;
+
+            if (e1.Month != null)
+            {
+                yearsBetween--;
+
+                monthsRemainingInStartYear = 12 - e1.Month.Value;
+            }
+
+            var daysRemainingInStartMonth = 0;
+
+            if (e1.Day != null)
+            {
+                monthsRemainingInStartYear--;                            // When we "finish" the days in the month, we are effectively removing a month.
+
+                daysRemainingInStartMonth = DaysInMonth(e1.Year, e1.Month.Value) - e1.Day.Value;
+            }
+
+            var hoursRemainingInStartDay = 0;
+
+            if (e1.Hour != null)
+            {
+                daysRemainingInStartMonth--;
+
+                hoursRemainingInStartDay = 24 - e1.Hour.Value;
+            }
+
+            var minutesRemainingInStartHour = 0;
+
+            if (e1.Minute != null)
+            {
+                hoursRemainingInStartDay--;
+
+                minutesRemainingInStartHour = 60 - e1.Minute.Value;
+            }
+
+            var secondsRemainingInStartMinute = 0;
+
+            if (e1.Second != null)
+            {
+                minutesRemainingInStartHour--;
+
+                secondsRemainingInStartMinute = 60 - e1.Second.Value;
+            }
+
+            var secondsIntoEndMinute = 0;
+
+            if (e2.Second != null)
+            {
+                secondsIntoEndMinute = e2.Second.Value;
+            }
+
+            var minutesIntoEndHour = 0;
+
+            if (e2.Minute != null)
+            {
+                minutesIntoEndHour = e2.Minute.Value;
+            }
+
+            var hoursIntoEndDay = 0;
+
+            if (e2.Hour != null)
+            {
+                hoursIntoEndDay = e2.Hour.Value;
+            }
+
+            var daysIntoEndMonth = 0;
+
+            if (e2.Day != null)
+            {
+                daysIntoEndMonth = e2.Day.Value;
+            }
+
+            var monthsIntoEndYear = 0;
+
+            if (e2.Month != null)
+            {
+                monthsIntoEndYear = e2.Month.Value;
+            }
+
+            double seconds = secondsRemainingInStartMinute + secondsIntoEndMinute;
+            double minutes = minutesRemainingInStartHour + minutesIntoEndHour;
+            double hours = hoursRemainingInStartDay + hoursIntoEndDay;
+            double days = daysRemainingInStartMonth + daysIntoEndMonth;
+            double months = monthsRemainingInStartYear + monthsIntoEndYear;
+            double years = yearsBetween;
+
+            if (seconds > 59)
+            {
+                seconds -= 60;
+                minutes++;
+            }
+
+            if (minutes > 59)
+            {
+                minutes -= 60;
+                hours++;
+            }
+
+            if (hours > 23)
+            {
+                hours -= 24;
+                days++;
+            }
+
+            var monthIncrement = e2.Month.Value;
+            var yearIncrement = e2.Year;
+
+            var daysInMonth = DaysInMonth(yearIncrement, monthIncrement);
+
+            while (days > daysInMonth)
+            {
+                days -= daysInMonth;
+
+                if (monthIncrement + 1 > 12)
+                {
+                    months -= 12;
+                    years++;
+                    yearIncrement++;
+                    monthIncrement = 1;
+                }
+                else
+                {
+                    months++;
+                    monthIncrement++;
+                }
+
+                daysInMonth = DaysInMonth(yearIncrement, monthIncrement);
+            }
+
+            return new double[] { years, months, days, hours, minutes, seconds, daysInMonth};
+        }
+
+        public static double TotalMonths(ExtendedDateTime e1, ExtendedDateTime e2)
+        {
+            var span = BaseSubtract(e1, e2);
+
+            return span[0] * 12 + span[1] + (span[2] + (span[3] + (span[4] + span[5] / 60) / 60) / 24) / span[6];
+        }
+
         public static bool IsLeapYear(int year)                                            // http://www.timeanddate.com/date/leapyear.html
         {                                                                                  // This removes the range restriction present in the DateTime.IsLeapYear() method.
             return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);

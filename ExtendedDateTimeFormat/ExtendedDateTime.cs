@@ -44,7 +44,7 @@ namespace System.ExtendedDateTimeFormat
         public ExtendedDateTime(int year, byte month, byte day, byte hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
             : this(year, month, day, yearFlags, monthFlags, dayFlags)
         {
-            if (hour < 0 || hour > 59)
+            if (hour < 0 || hour > 23)
             {
                 throw new ArgumentException("hour");
             }
@@ -124,7 +124,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        internal ExtendedDateTime()
+        internal ExtendedDateTime()                                     // Used for parsing; not public to prevent an invalid state.
         {
         }
 

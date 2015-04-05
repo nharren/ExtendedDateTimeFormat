@@ -55,6 +55,8 @@ namespace Tests
             TestCollection.Add(new SerializationTest("All Specification Features", TestStrings.SpecificationStrings));
             TestCollection.Add(new SerializationTest("Other Strings", TestStrings.OtherStrings));
             TestCollection.Add(new HashCodeTest(new ExtendedDateTime(1600, 1, 1, 0, 0, 0, TimeSpan.Zero), new ExtendedDateTime(2000, 1, 1, 0, 0, 0, TimeSpan.Zero), 100));
+            TestCollection.Add(new CalculationTest("Total Months", Calculations.TotalMonthsCalculations));
+            TestCollection.Add(new CalculationTest("Total Years", Calculations.TotalYearsCalculations));
 
             foreach (var test in TestCollection)
             {

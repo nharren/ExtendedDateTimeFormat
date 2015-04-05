@@ -53,6 +53,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calculation.cs" />
+    <Compile Include="Calculations.cs" />
+    <Compile Include="CalculationTest.cs" />
     <Compile Include="HashCodeTest.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="StringExtensions.cs" />
