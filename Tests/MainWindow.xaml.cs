@@ -34,6 +34,26 @@ namespace Tests
             TestCollection.Add(new ParsingTest("All Specification Features", TestStrings.SpecificationStrings));
             TestCollection.Add(new ParsingTest("Malformed Strings", TestStrings.MalformedStrings));
             TestCollection.Add(new ParsingTest("Other Strings", TestStrings.OtherStrings));
+            TestCollection.Add(new SerializationTest("Date", TestStrings.DateStrings));
+            TestCollection.Add(new SerializationTest("Date and Time", TestStrings.DateAndTimeStrings));
+            TestCollection.Add(new SerializationTest("Intervals", TestStrings.IntervalStrings));
+            TestCollection.Add(new SerializationTest("L0 Features", TestStrings.LevelZeroStrings));
+            TestCollection.Add(new SerializationTest("Uncertain and Approximate", TestStrings.UncertainOrApproximateStrings));
+            TestCollection.Add(new SerializationTest("Unspecified Dates", TestStrings.UnspecifiedStrings));
+            TestCollection.Add(new SerializationTest("L1 Extended Intervals", TestStrings.L1ExtendedIntervalStrings));
+            TestCollection.Add(new SerializationTest("Years Exceeding Four Digits", TestStrings.YearExceedingFourDigitsStrings));
+            TestCollection.Add(new SerializationTest("Seasons", TestStrings.SeasonStrings));
+            TestCollection.Add(new SerializationTest("L1 Extensions", TestStrings.LevelOneExtensionStrings));
+            TestCollection.Add(new SerializationTest("Partially Uncertain and Approximate", TestStrings.PartialUncertainOrApproximateStrings));
+            TestCollection.Add(new SerializationTest("Partially Unspecified Dates", TestStrings.PartialUnspecifiedStrings));
+            TestCollection.Add(new SerializationTest("One of a Set", TestStrings.OneOfASetStrings));
+            TestCollection.Add(new SerializationTest("Multiple Dates", TestStrings.MultipleDateStrings));
+            TestCollection.Add(new SerializationTest("Masked Precision", TestStrings.MaskedPrecisionStrings));
+            TestCollection.Add(new SerializationTest("L2 Extended Intervals", TestStrings.LevelTwoExtendedIntervalStrings));
+            TestCollection.Add(new SerializationTest("Exponential Years", TestStrings.ExponentialFormOfYearsExeedingFourDigitsStrings));
+            TestCollection.Add(new SerializationTest("L2 Extensions", TestStrings.LevelTwoExtensionStrings));
+            TestCollection.Add(new SerializationTest("All Specification Features", TestStrings.SpecificationStrings));
+            TestCollection.Add(new SerializationTest("Other Strings", TestStrings.OtherStrings));
             TestCollection.Add(new HashCodeTest(new ExtendedDateTime(1600, 1, 1, 0, 0, 0, TimeSpan.Zero), new ExtendedDateTime(2000, 1, 1, 0, 0, 0, TimeSpan.Zero), 100));
 
             foreach (var test in TestCollection)

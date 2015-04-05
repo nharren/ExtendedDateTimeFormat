@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="HashCodeTest.cs" />
+    <Compile Include="SerializationTest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestStrings.cs" />

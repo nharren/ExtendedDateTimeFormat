@@ -6,9 +6,19 @@ namespace System.ExtendedDateTimeFormat
     {
         public int Compare(ExtendedDateTime x, ExtendedDateTime y)
         {
-            if (y == null)
+            if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
+            {
+                return 0;
+            }
+
+            if (ReferenceEquals(y, null))
             {
                 return 1;
+            }
+
+            if (ReferenceEquals(x, null))
+            {
+                return -1;
             }
 
             long longXYear = x.Year;

@@ -27,71 +27,37 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.YearExponent.HasValue)
             {
-                stringBuilder.Append(extendedDateTime.Year.ToString());
+                stringBuilder.Append(extendedDateTime.Year);
             }
             else
             {
-                stringBuilder.Append(extendedDateTime.Year.ToString("D4"));
+                stringBuilder.AppendFormat("{0:D4}", extendedDateTime.Year);
             }
 
             stringBuilder.Append("{ye}");
 
             if (extendedDateTime.YearExponent.HasValue)
             {
-                stringBuilder.Append('e');
-                stringBuilder.Append(extendedDateTime.YearExponent.Value);
+                stringBuilder.Append('e').Append(extendedDateTime.YearExponent);
             }
 
             if (extendedDateTime.YearPrecision.HasValue)
             {
-                stringBuilder.Append('p');
-                stringBuilder.Append(extendedDateTime.YearPrecision);
+                stringBuilder.Append('p').Append(extendedDateTime.YearPrecision);
             }
 
             if (extendedDateTime.Month.HasValue)
             {
-                if (extendedDateTime.Season != 0)
-                {
-                    return "Error: A month and season cannot both be defined.";
-                }
-
-                stringBuilder.Append('-');
-
-                stringBuilder.Append("{ms}");
-
-                if (extendedDateTime.Month.Value < 1 || extendedDateTime.Month.Value > 12)
-                {
-                    return "Error: A month must be a number from 1 to 12.";
-                }
-
-                stringBuilder.Append(extendedDateTime.Month.Value.ToString("D2"));
-
-                stringBuilder.Append("{me}");
+                stringBuilder.Append("-{ms}").AppendFormat("{0:D2}", extendedDateTime.Month).Append("{me}");
             }
 
             if (extendedDateTime.Season != Season.Undefined)
             {
-                if (extendedDateTime.Month.HasValue)
-                {
-                    return "Error: A month and season cannot both be defined.";
-                }
-
-                stringBuilder.Append('-');
-
-                stringBuilder.Append("{ss}");
-
-                stringBuilder.Append((int)extendedDateTime.Season);
+                stringBuilder.Append("-{ss}").Append((int)extendedDateTime.Season);
 
                 if (extendedDateTime.SeasonQualifier != null)
                 {
-                    if (extendedDateTime.Season == Season.Undefined)
-                    {
-                        return "Error: A season qualifier cannot exist without a season.";
-                    }
-
-                    stringBuilder.Append('^');
-
-                    stringBuilder.Append(extendedDateTime.SeasonQualifier);
+                    stringBuilder.Append('^').Append(extendedDateTime.SeasonQualifier);
                 }
 
                 stringBuilder.Append("{se}");
@@ -99,33 +65,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.Day.HasValue)
             {
-                if (extendedDateTime.Month == null)
-                {
-                    return "Error: A day cannot exist without a month.";
-                }
-
-                if (extendedDateTime.Season != Season.Undefined)
-                {
-                    return "Error: A day and season cannot both be defined.";
-                }
-
-                stringBuilder.Append('-');
-
-                stringBuilder.Append("{ds}");
-
-                if (extendedDateTime.Day.Value < 1 || extendedDateTime.Day.Value > 31)
-                {
-                    return "Error: A month must be a number from 1 to 31.";
-                }
-
-                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year, extendedDateTime.Month.Value);
-
-                if (extendedDateTime.Day.Value > daysInMonth)
-                {
-                    return "Error: The day exceeds the number of days in the specified month.";
-                }
-
-                stringBuilder.Append(extendedDateTime.Day.Value.ToString("D2"));
+                stringBuilder.Append("-{ds}").AppendFormat("{0:D2}", extendedDateTime.Day);
             }
 
             stringBuilder.Append("{de}");
@@ -134,99 +74,49 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
             if (extendedDateTime.Hour.HasValue)
             {
-                if (extendedDateTime.Day == null)
-                {
-                    return "Error: An hour cannot exist without a day.";
-                }
-
-                if (extendedDateTime.Hour.Value < 0 || extendedDateTime.Hour.Value > 24)
-                {
-                    return "Error: An hour must be a number from 0 to 24.";
-                }
-
-                stringBuilder.Append('T');
-                stringBuilder.Append(extendedDateTime.Hour.Value.ToString("D2"));
+                stringBuilder.AppendFormat("T{0:D2}", extendedDateTime.Hour);
             }
 
             if (extendedDateTime.Minute.HasValue)
             {
-                if (!extendedDateTime.Hour.HasValue)
-                {
-                    return "Error: An minute cannot exist without an hour.";
-                }
-
-                if (extendedDateTime.Minute.Value < 0 || extendedDateTime.Minute.Value > 59)
-                {
-                    return "Error: A minute must be a number from 0 to 59.";
-                }
-
-                stringBuilder.Append(':');
-                stringBuilder.Append(extendedDateTime.Minute.Value.ToString("D2"));
+                stringBuilder.AppendFormat(":{0:D2}", extendedDateTime.Minute);
             }
 
             if (extendedDateTime.Second.HasValue)
             {
-                if (!extendedDateTime.Minute.HasValue)
-                {
-                    return "Error: An second cannot exist without an minute.";
-                }
-
-                if (extendedDateTime.Second.Value < 0 || extendedDateTime.Second.Value > 59)
-                {
-                    return "Error: A second must be a number from 0 to 59.";
-                }
-
-                stringBuilder.Append(':');
-                stringBuilder.Append(extendedDateTime.Second.Value.ToString("D2"));
+                stringBuilder.AppendFormat(":{0:D2}", extendedDateTime.Second);
             }
 
             if (extendedDateTime.UtcOffset != null)
             {
-                if (!extendedDateTime.Hour.HasValue)
-                {
-                    return "Error: A UTC offset cannot exist without an hour.";
-                }
-
                 if (extendedDateTime.UtcOffset.Value.Hours == 0 && extendedDateTime.UtcOffset.Value.Minutes == 0)
                 {
-                    stringBuilder.Append("Z");
+                    stringBuilder.Append('Z');
                 }
                 else
                 {
                     if (extendedDateTime.UtcOffset.Value.Hours < 0)
                     {
-                        stringBuilder.Append("-");
+                        stringBuilder.Append('-');
                     }
                     else
                     {
-                        stringBuilder.Append("+");
+                        stringBuilder.Append('+');
                     }
 
-                    if (extendedDateTime.UtcOffset.Value.Hours < -13 || extendedDateTime.UtcOffset.Value.Hours > 14)
-                    {
-                        return "Error: A timezone hour offset must be a number from -13 to 14.";
-                    }
-
-                    stringBuilder.Append(Math.Abs(extendedDateTime.UtcOffset.Value.Hours).ToString("D2"));
+                    stringBuilder.AppendFormat("{0:D2}", Math.Abs(extendedDateTime.UtcOffset.Value.Hours));
                 }
 
                 if (extendedDateTime.UtcOffset.Value.Minutes != 0)
                 {
-                    stringBuilder.Append(":");
-
-                    if (extendedDateTime.UtcOffset.Value.Minutes < 0 || extendedDateTime.UtcOffset.Value.Minutes > 45)
-                    {
-                        return "Error: A timezone minute offset must be a number from 0 to 45.";
-                    }
-
-                    stringBuilder.Append(extendedDateTime.UtcOffset.Value.Minutes.ToString("D2"));
+                    stringBuilder.AppendFormat(":{0:D2}", extendedDateTime.UtcOffset.Value.Minutes);
                 }
             }
 
             return stringBuilder.ToString();
         }
 
-        private static void InsertFlags(ExtendedDateTime extendedDateTime, ref StringBuilder stringBuilder)
+        private static void InsertFlags(ExtendedDateTime extendedDateTime, ref StringBuilder stringBuilder)      // Combinations generated from http://www.mathsisfun.com/combinatorics/combinations-permutations-calculator.html
         {
             var da = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
             var du = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
