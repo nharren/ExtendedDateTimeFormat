@@ -25,7 +25,7 @@ namespace System.ExtendedDateTimeFormat
             {
                 return (IExtendedDateTimeIndependentType)ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimeFormattedString);
             }
-            else if (extendedDateTimeFormattedString.ContainsBefore('u','^'))
+            else if (extendedDateTimeFormattedString.ContainsBefore('u', '^'))
             {
                 return (IExtendedDateTimeIndependentType)UnspecifiedExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
             }

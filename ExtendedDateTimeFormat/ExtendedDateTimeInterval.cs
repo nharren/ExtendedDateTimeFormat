@@ -12,10 +12,9 @@ namespace System.ExtendedDateTimeFormat
             Start = start;
             End = end;
         }
-        
+
         public ExtendedDateTimeInterval()
         {
-
         }
 
         public ISingleExtendedDateTimeType End { get; set; }

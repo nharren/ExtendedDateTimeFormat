@@ -27,20 +27,20 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ListBox Name="list" 
-                 Background="#FF2F3437"                 
+        <ListBox Name="list"
+                 Background="#FF2F3437"
                  BorderThickness="0"
                  SelectionMode="Single"
                  SelectionChanged="list_SelectionChanged"
                  ItemsSource="{Binding Source={StaticResource TestCollectionViewSource}}">
-                <ListBox.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.ContainerStyle>
-                            <Style TargetType="{x:Type GroupItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <Expander Header="{Binding Name}"
+            <ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Expander Header="{Binding Name}"
                                                   Foreground="#FFDDDDDD"
                                                   Padding="10,4"
                                                   FontWeight="SemiBold"
@@ -370,14 +370,14 @@
                                                 </ControlTemplate>
                                             </Expander.Template>
                                             <ItemsPresenter />
-                                            </Expander>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </GroupStyle.ContainerStyle>
-                    </GroupStyle>
-                </ListBox.GroupStyle>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListBox.GroupStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:Test}">
                     <Grid>
@@ -393,7 +393,7 @@
         <ScrollViewer Grid.Column="1"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <TextBlock Name="resultsBox" 
+            <TextBlock Name="resultsBox"
                        Padding="50"
                        FontSize="18"
                        FontFamily="Consolas"

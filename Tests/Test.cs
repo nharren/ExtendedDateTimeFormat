@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Tests
 {
@@ -15,8 +10,11 @@ namespace Tests
         }
 
         public string Name { get; protected set; }
+
         public string Category { get; protected set; }
+
         public BackgroundWorker Worker { get; private set; }
+
         public abstract void Begin();
     }
 }

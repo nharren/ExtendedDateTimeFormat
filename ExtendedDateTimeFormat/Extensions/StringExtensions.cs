@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace System.ExtendedDateTimeFormat
+﻿namespace System.ExtendedDateTimeFormat
 {
     public static class StringExtensions
     {
@@ -16,7 +10,7 @@ namespace System.ExtendedDateTimeFormat
                 {
                     return true;
                 }
-                
+
                 if (s[i] == c2)
                 {
                     return false;

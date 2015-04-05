@@ -4,7 +4,6 @@ namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTimeRange : IExtendedDateTimeCollectionChild
     {
-
         public ExtendedDateTimeRange(ISingleExtendedDateTimeType start, ISingleExtendedDateTimeType end)
         {
             Start = start;
@@ -13,7 +12,6 @@ namespace System.ExtendedDateTimeFormat
 
         public ExtendedDateTimeRange()
         {
-
         }
 
         public ISingleExtendedDateTimeType End { get; set; }

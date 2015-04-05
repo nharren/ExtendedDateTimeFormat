@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace System.ExtendedDateTimeFormat.Internal.Parsers
+﻿namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class ExtendedDateTimeIntervalParser
     {

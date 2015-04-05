@@ -3,19 +3,11 @@ using System.Linq;
 
 namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
-    /// <summary>
-    /// Contains methods used to parse an extended datetime string into an extended datetime.
-    /// </summary>
     internal static class ExtendedDateTimeParser
     {
-        /// <summary>
-        /// Converts an extended datetime string into an extended datetime.
-        /// </summary>
-        /// <param name="extendedDateTimeString">The extended datetime string to parse.</param>
-        /// <returns>The object representation of the string.</returns>
         internal static ExtendedDateTime Parse(string extendedDateTimeString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeString))                                                    
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
             {
                 throw new ArgumentNullException("extendedDateTimeString");
             }
@@ -132,20 +124,12 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             return extendedDateTime;
         }
 
-        /// <summary>
-        /// Converts the characters in the component buffer into a date component.
-        /// </summary>
-        /// <param name="dateComponentIndex">The index, in the date part of the datetime, of the date component.</param>
-        /// <param name="hasSeasonComponent">Whether or not a season is present in the extended datetime string.</param>
-        /// <param name="flags">The flags which apply to the component.</param>
-        /// <param name="componentBuffer">The characters to convert to a date component.</param>
-        /// <param name="extendedDateTime">The extended datetime on which to set the value of the component.</param>
         private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, List<char> componentBuffer, ExtendedDateTime extendedDateTime)
         {
             if (componentBuffer.Count == 0)
             {
                 return;
-            } 
+            }
 
             var componentString = new string(componentBuffer.ToArray());
 
@@ -315,18 +299,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             else if (dateComponentIndex > 2)
             {
                 throw new ParseException("The date can have at most three components.", componentString);
-            }         
-            
-            componentBuffer.Clear(); 
+            }
+
+            componentBuffer.Clear();
         }
 
-        /// <summary>
-        /// Converts the characters in the component buffer into a time component.
-        /// </summary>
-        /// <param name="timeComponentIndex">The index, in the time part of the datetime, of the time component.</param>
-        /// <param name="timeZonePart">Whether or not the component is in the timezone part.</param>
-        /// <param name="componentBuffer">The characters to convert to a time component.</param>
-        /// <param name="extendedDateTime">The extended datetime on which to set the value of the component.</param>
         private static void CommitTimeComponent(ref int timeComponentIndex, bool timeZonePart, List<char> componentBuffer, ExtendedDateTime extendedDateTime)
         {
             if (componentBuffer.Count == 0)
@@ -447,11 +424,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             componentBuffer.Clear();
         }
 
-        /// <summary>
-        /// Gets a flag from its character representation.
-        /// </summary>
-        /// <param name="character">The flag character</param>
-        /// <returns>The flag.</returns>
         private static ExtendedDateTimeFlags GetFlag(char character)
         {
             if (character == '?')
@@ -466,12 +438,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             return 0;
         }
 
-        /// <summary>
-        /// Gets the flags on components within a natural or artificial scope.
-        /// </summary>
-        /// <param name="characterIndex">The index of a character within the target scope.</param>
-        /// <param name="extendedDateTimeString">The extended datetime string to survey for the scope flags.</param>
-        /// <returns>The flags of the scope which contains the target character.</returns>
         private static ExtendedDateTimeFlags GetScopeFlags(int characterIndex, string extendedDateTimeString)
         {
             if (characterIndex < 0)
@@ -593,10 +559,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             return scopeFlags;
         }
 
-        /// <summary>
-        /// Converts implicit scopes into artificially explicit scopes to aid in parsing.
-        /// </summary>
-        /// <param name="extendedDateTimeString">The extended datetime string to convert.</param>
         private static void InsertArtificialScopes(ref string extendedDateTimeString)
         {
             var characterList = extendedDateTimeString.ToList();

@@ -7,7 +7,8 @@ namespace System.ExtendedDateTimeFormat
     [TypeConverter(typeof(UnspecifiedExtendedDateTimeConverter))]
     public class UnspecifiedExtendedDateTime : ISingleExtendedDateTimeType
     {
-        public UnspecifiedExtendedDateTime(string year, string month, string day) : this(year, month)
+        public UnspecifiedExtendedDateTime(string year, string month, string day)
+            : this(year, month)
         {
             if (day.Length != 2)
             {
@@ -15,7 +16,8 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public UnspecifiedExtendedDateTime(string year, string month) : this(year) 
+        public UnspecifiedExtendedDateTime(string year, string month)
+            : this(year)
         {
             if (month.Length != 2)
             {
@@ -33,7 +35,6 @@ namespace System.ExtendedDateTimeFormat
 
         public UnspecifiedExtendedDateTime()
         {
-
         }
 
         public string Day { get; set; }

@@ -126,7 +126,7 @@
 
             for (int i = 0; i < daysToAdd; i++)
             {
-                if (DaysInMonth(year, month.Value) < day + 1)  
+                if (DaysInMonth(year, month.Value) < day + 1)
                 {
                     if (month == 12)
                     {
@@ -150,7 +150,7 @@
             {
                 return new ExtendedDateTime(year, yearFlags: e.YearFlags);
             }
-            
+
             if (day == null)
             {
                 return new ExtendedDateTime(year, (byte)month, yearFlags: e.YearFlags, monthFlags: e.MonthFlags);
@@ -376,7 +376,7 @@
             return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, (byte)second, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
         }
 
-        public static TimeSpan Subtract(ExtendedDateTime e2, ExtendedDateTime e1)    // Use http://www.timeanddate.com/date/timeduration.html to verify correctness.
+        public static TimeSpan Subtract(ExtendedDateTime e2, ExtendedDateTime e1)          // Use http://www.timeanddate.com/date/timeduration.html to verify correctness.
         {
             var daysRemainingInStartYear = 0;                      // The day is the highest quantity of time spans because the duration of a day is consistent, whereas the duration of months and years change (months can have different numbers of days and leap years are a day longer than other years).
 

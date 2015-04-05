@@ -37,7 +37,7 @@
             else
             {
                 extendedDateTimeRange.End = ExtendedDateTimeParser.Parse(endString);
-            }            
+            }
 
             return extendedDateTimeRange;
         }

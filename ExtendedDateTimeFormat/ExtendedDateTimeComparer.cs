@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace System.ExtendedDateTimeFormat
 {
@@ -17,7 +13,6 @@ namespace System.ExtendedDateTimeFormat
 
             long longXYear = x.Year;
             long longYYear = y.Year;
-
 
             if (x.YearExponent.HasValue)
             {
@@ -35,7 +30,6 @@ namespace System.ExtendedDateTimeFormat
                     {
                         longXYear = long.MaxValue;
                     }
-
                 }
             }
 
@@ -55,7 +49,6 @@ namespace System.ExtendedDateTimeFormat
                     {
                         longYYear = long.MaxValue;
                     }
-
                 }
             }
 

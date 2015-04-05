@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace System.ExtendedDateTimeFormat.Internal.Parsers
+﻿namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class UnspecifiedExtendedDateTimeParser
     {
@@ -19,7 +13,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             if (components.Length > 3)
             {
-                throw new ParseException("An unspecified extended date time can have at most two components.", unspecifiedExtendedDateTimeString);   
+                throw new ParseException("An unspecified extended date time can have at most two components.", unspecifiedExtendedDateTimeString);
             }
 
             var unspecifiedExtendedDateTime = new UnspecifiedExtendedDateTime();
@@ -38,7 +32,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 return unspecifiedExtendedDateTime;
             }
 
-            unspecifiedExtendedDateTime.Day = components [2];
+            unspecifiedExtendedDateTime.Day = components[2];
 
             return unspecifiedExtendedDateTime;
         }

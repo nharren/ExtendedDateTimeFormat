@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tests
 {
     public static class TestStrings
     {
-        public static readonly string[] DateStrings = 
+        public static readonly string[] DateStrings =
         {
             "2001-02-03",
             "2008-12",
@@ -124,19 +121,19 @@ namespace Tests
             "[1667, 1760-12]"
         };
 
-        public static readonly string[] MultipleDateStrings = 
+        public static readonly string[] MultipleDateStrings =
         {
             "{1667,1668, 1670..1672}",
             "{1960, 1961-12}"
         };
 
-        public static readonly string[] MaskedPrecisionStrings = 
+        public static readonly string[] MaskedPrecisionStrings =
         {
             "196x",
             "19xx"
         };
 
-        public static readonly string[] LevelTwoExtendedIntervalStrings = 
+        public static readonly string[] LevelTwoExtendedIntervalStrings =
         {
             "2004-06-(01)~/2004-06-(20)~",
             "2004-06-uu/2004-07-03"

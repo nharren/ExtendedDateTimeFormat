@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System.ExtendedDateTimeFormat.Internal.Converters
 {
@@ -82,7 +79,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
             var yearEndBuffer = new List<char>();
 
             for (int i = 0; i < 4; i++)
-			{
+            {
                 if (unspecifiedExtendedDateTime.Year[0] == 'u')
                 {
                     if (i == 0)
@@ -92,19 +89,18 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
 
                     yearStartBuffer.Add('9');
                     yearEndBuffer.Add('9');
-                    
                 }
                 else if (unspecifiedExtendedDateTime.Year[i] == 'u')
-	            {
+                {
                     yearStartBuffer.Add('0');
                     yearEndBuffer.Add('9');
-	            }
+                }
                 else
-	            {   
+                {
                     yearStartBuffer.Add(unspecifiedExtendedDateTime.Year[i]);
                     yearEndBuffer.Add(unspecifiedExtendedDateTime.Year[i]);
-	            }
-			}
+                }
+            }
 
             var yearStart = int.Parse(new string(yearStartBuffer.ToArray()));
             var yearEnd = int.Parse(new string(yearEndBuffer.ToArray()));
@@ -135,20 +131,20 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
                 isFirstMonthDigitUnspecified = true;
             }
             else
-	        {
+            {
                 monthStartBuffer.Add(unspecifiedExtendedDateTime.Month[0]);
                 monthEndBuffer.Add(unspecifiedExtendedDateTime.Month[0]);
-	        }       
-            
+            }
+
             if (unspecifiedExtendedDateTime.Month[1] == 'u')
             {
                 if (isFirstMonthDigitUnspecified)
-	            {
+                {
                     monthStartBuffer.Add('1');
                     monthEndBuffer.Add('2');
-	            }
+                }
                 else
-	            {
+                {
                     var firstDigit = int.Parse(unspecifiedExtendedDateTime.Month[0].ToString());
 
                     if (firstDigit == 0)
@@ -165,19 +161,19 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
                     {
                         throw new ConversionException("A month must be between 1 and 12.");
                     }
-	            }
+                }
             }
             else
             {
                 if (isFirstMonthDigitUnspecified)
-	            {
+                {
                     var secondDigit = int.Parse(unspecifiedExtendedDateTime.Month[1].ToString());
 
                     if (secondDigit > 2)                                                                // Month must be in the range of 01 to 09
                     {
                         monthEndBuffer[0] = '0';
                     }
-	            }
+                }
 
                 monthStartBuffer.Add(unspecifiedExtendedDateTime.Month[1]);
                 monthEndBuffer.Add(unspecifiedExtendedDateTime.Month[1]);
@@ -282,7 +278,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
 
                     if (secondDigit > daysInEndMonth.ToString()[1])                                                // Decrement the first digit of the end day.
                     {
-                        dayEndBuffer[0] = (int.Parse(dayEndBuffer[0].ToString()) - 1).ToString()[0];               
+                        dayEndBuffer[0] = (int.Parse(dayEndBuffer[0].ToString()) - 1).ToString()[0];
                     }
                 }
 

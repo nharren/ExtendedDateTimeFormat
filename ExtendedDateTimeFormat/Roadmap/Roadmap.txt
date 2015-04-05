@@ -2,7 +2,7 @@
 2. Add more comprehensive tests.
 3. Test serializability (does it require implementing value serializers?)
 4. Consider TimeZone offset in ExtendedDateTime calculations.
-5. Make Local UTC Offset the default UTC Offset.
+5. Make Local UTC Offset the default UTC Offset when parsing extended datetimes without a specified offset.
 6. Split date parser and time parser.
 
 Undecided:
