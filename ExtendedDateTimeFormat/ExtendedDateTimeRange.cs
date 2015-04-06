@@ -10,7 +10,7 @@ namespace System.ExtendedDateTimeFormat
             End = end;
         }
 
-        public ExtendedDateTimeRange()
+        internal ExtendedDateTimeRange()
         {
         }
 

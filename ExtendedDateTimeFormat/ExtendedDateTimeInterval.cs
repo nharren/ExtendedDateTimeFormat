@@ -13,7 +13,7 @@ namespace System.ExtendedDateTimeFormat
             End = end;
         }
 
-        public ExtendedDateTimeInterval()
+        internal ExtendedDateTimeInterval()
         {
         }
 

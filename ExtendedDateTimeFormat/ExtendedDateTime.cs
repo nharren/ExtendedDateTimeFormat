@@ -187,11 +187,26 @@ namespace System.ExtendedDateTimeFormat
 
         public static ExtendedDateTime FromScientificNotation(int significand, byte exponent, byte precision)
         {
+            if (exponent == null)
+            {
+                throw new ArgumentOutOfRangeException("exponent", "An exponent must be positive.");
+            }
+
+            if (precision == null)
+            {
+                throw new ArgumentOutOfRangeException("precision", "A precision must be positive.");
+            }
+
             return new ExtendedDateTime { Year = significand, YearExponent = exponent, YearPrecision = precision, Precision = ExtendedDateTimePrecision.Year };
         }
 
         public static ExtendedDateTime FromScientificNotation(int significand, byte exponent)
         {
+            if (exponent == null)
+            {
+                throw new ArgumentOutOfRangeException("exponent","An exponent must be positive.");
+            }
+
             return new ExtendedDateTime { Year = significand, YearExponent = exponent, Precision = ExtendedDateTimePrecision.Year };
         }
 
