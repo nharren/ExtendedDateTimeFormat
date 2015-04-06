@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ExtendedDateTimeFormat;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Tests
 {
-    public class SerializationTest : Test
+    public class XmlSerializationTest : Test
     {
-        public SerializationTest(string name, IEnumerable<string> strings)
+    public XmlSerializationTest(string name, IEnumerable<string> strings)                      // Strings will be converted into objects and then into xml.
         {
             Name = name;
             Strings = strings;
-            Category = "Serialization";
+            Category = "Xml Serialization";
         }
 
         public IEnumerable<string> Strings { get; set; }
@@ -31,8 +33,6 @@ namespace Tests
                 {
                     var testString = Strings.ElementAt(i);
 
-                    stringBuilder.Append("<Bold>Test ".Indent(indent)).Append(i + 1).AppendLine("</Bold>");
-                    stringBuilder.AppendLine();
                     stringBuilder.AppendLine("Input:".Indent(indent));
 
                     try
@@ -62,12 +62,19 @@ namespace Tests
 
                         stringBuilder.AppendLine();
                         stringBuilder.AppendLine("Output:".Indent(indent));
-                        stringBuilder.Append("\"".Indent(indent + 1)).Append(extendedDateTimeObject).AppendLine("\"");
+
+
+                        using (var sw = new StringWriter(stringBuilder))
+	                    {
+		                    var xmlSerializer = new XmlSerializer(extendedDateTimeObject.GetType());
+
+                            xmlSerializer.Serialize(sw, extendedDateTimeObject); 
+	                    }
                     }
-                    catch (ParseException pe)
+                    catch (Exception ex)
                     {
-                        stringBuilder.Append("ParseException: ");
-                        stringBuilder.AppendLine(pe.Message);
+                        stringBuilder.Append("Exception: ");
+                        stringBuilder.AppendLine(ex.Message);
                     }
 
                     stringBuilder.AppendLine().AppendLine();

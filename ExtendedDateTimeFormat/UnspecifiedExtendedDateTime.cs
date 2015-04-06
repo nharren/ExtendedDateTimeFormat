@@ -33,7 +33,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public UnspecifiedExtendedDateTime()
+        internal UnspecifiedExtendedDateTime()
         {
         }
 

@@ -51,7 +51,7 @@ namespace Tests
 
                 var frequencyGroupedHashCodes = hashCodes.GroupBy(hc => hc.Value.Count);
 
-                stringBuilder.AppendLine("<Bold>Input:</Bold>").AppendLine();
+                stringBuilder.AppendLine("Input:").AppendLine();
 
                 stringBuilder.Append("Start Date: ").Append(Start).AppendLine();
 
@@ -61,7 +61,7 @@ namespace Tests
 
                 stringBuilder.AppendLine();
 
-                stringBuilder.AppendLine("<Bold>Results:</Bold>").AppendLine();
+                stringBuilder.AppendLine("Results:").AppendLine();
 
                 stringBuilder.Append("Frequency".PadRight(11)).AppendLine("   Count");
 

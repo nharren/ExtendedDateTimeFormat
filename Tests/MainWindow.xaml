@@ -382,7 +382,7 @@
                 <DataTemplate DataType="{x:Type local:Test}">
                     <Grid>
                         <TextBlock Foreground="#FFDDDDDD"
-                                   Margin="21,4"
+                                   Margin="42,4"
                                    FontWeight="SemiBold"
                                    FontSize="16"
                                    Text="{Binding Name}" />

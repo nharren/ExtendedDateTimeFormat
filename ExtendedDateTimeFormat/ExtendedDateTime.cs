@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System.ExtendedDateTimeFormat
 {
+    [Serializable]
     [TypeConverter(typeof(ExtendedDateTimeConverter))]
-    public class ExtendedDateTime : ISingleExtendedDateTimeType, ICloneable, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>
+    public class ExtendedDateTime : ISingleExtendedDateTimeType, ICloneable, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable
     {
         public static readonly ExtendedDateTime Maximum = new ExtendedDateTime(9999, 12, 31, 23, 59, 59, TimeSpan.FromHours(14));
 
@@ -128,6 +133,16 @@ namespace System.ExtendedDateTimeFormat
         {
         }
 
+        protected ExtendedDateTime(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+            { 
+                throw new System.ArgumentNullException("info");
+            }
+
+            ExtendedDateTimeFormatParser.ParseExtendedDateTime((string)info.GetValue("String", typeof(string)), this);
+        }
+
         public static IComparer<ExtendedDateTime> Comparer
         {
             get
@@ -187,12 +202,12 @@ namespace System.ExtendedDateTimeFormat
 
         public static ExtendedDateTime FromScientificNotation(int significand, byte exponent, byte precision)
         {
-            if (exponent == null)
+            if (exponent < 1)
             {
                 throw new ArgumentOutOfRangeException("exponent", "An exponent must be positive.");
             }
 
-            if (precision == null)
+            if (precision < 1)
             {
                 throw new ArgumentOutOfRangeException("precision", "A precision must be positive.");
             }
@@ -202,7 +217,7 @@ namespace System.ExtendedDateTimeFormat
 
         public static ExtendedDateTime FromScientificNotation(int significand, byte exponent)
         {
-            if (exponent == null)
+            if (exponent < 1)
             {
                 throw new ArgumentOutOfRangeException("exponent","An exponent must be positive.");
             }
@@ -354,14 +369,34 @@ namespace System.ExtendedDateTimeFormat
             return hash;
         }
 
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("String", this.ToString());
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
         public ExtendedDateTime Latest()
         {
             return this;
         }
 
+        public void ReadXml(XmlReader reader)
+        {
+            ExtendedDateTimeFormatParser.ParseExtendedDateTime(reader.ReadString(), this);
+        }
+
         public override string ToString()
         {
             return ExtendedDateTimeSerializer.Serialize(this);
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteString(this.ToString());
         }
     }
 }

@@ -57,12 +57,13 @@
     <Compile Include="Calculations.cs" />
     <Compile Include="CalculationTest.cs" />
     <Compile Include="HashCodeTest.cs" />
-    <Compile Include="SerializationTest.cs" />
+    <Compile Include="StringSerializationTest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestStrings.cs" />
     <Compile Include="ParsingTest.cs" />
     <Compile Include="TextBlockInput.cs" />
+    <Compile Include="XmlSerializationTest.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

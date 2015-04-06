@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ExtendedDateTimeFormat;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Tests
 {
-    public class ParsingTest : Test
+    public class StringSerializationTest : Test
     {
-        public ParsingTest(string name, IEnumerable<string> strings)
+        public StringSerializationTest(string name, IEnumerable<string> strings)
         {
             Name = name;
             Strings = strings;
-            Category = "Parsing";
+            Category = "String Serialization";
         }
 
         public IEnumerable<string> Strings { get; set; }
@@ -30,9 +32,7 @@ namespace Tests
                     var testString = Strings.ElementAt(i);
 
                     stringBuilder.AppendLine("Input:".Indent(indent));
-                    stringBuilder.Append("\"".Indent(indent + 1)).Append(testString).AppendLine("\"");
-                    stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("Output:".Indent(indent));
+
                     try
                     {
                         var extendedDateTimeObject = ExtendedDateTimeFormatParser.Parse(testString);
@@ -57,6 +57,10 @@ namespace Tests
                         {
                             WriteExtendedDateTime(indent + 1, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
                         }
+
+                        stringBuilder.AppendLine();
+                        stringBuilder.AppendLine("Output:".Indent(indent));
+                        stringBuilder.Append("\"".Indent(indent + 1)).Append(extendedDateTimeObject).AppendLine("\"");
                     }
                     catch (ParseException pe)
                     {
@@ -64,9 +68,9 @@ namespace Tests
                         stringBuilder.AppendLine(pe.Message);
                     }
 
-                    Worker.ReportProgress((int)((i / stringsCount) * 100));
-
                     stringBuilder.AppendLine().AppendLine();
+
+                    Worker.ReportProgress((int)((i / stringsCount) * 100));
                 }
 
                 e.Result = stringBuilder.ToString();

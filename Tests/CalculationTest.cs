@@ -25,9 +25,9 @@ namespace Tests
 
                 foreach (var calculation in Calculations)
                 {
-                    stringBuilder.AppendLine("<Bold>Description:</Bold>").AppendLine();
+                    stringBuilder.AppendLine("Description:").AppendLine();
                     stringBuilder.AppendLine(calculation.Description);
-                    stringBuilder.AppendLine().Append("<Bold>Result:</Bold> ").AppendLine(calculation.Execute()).AppendLine().AppendLine(); 
+                    stringBuilder.AppendLine().Append("Result: ").AppendLine(calculation.Execute()).AppendLine().AppendLine(); 
                 }
 
                 e.Result = stringBuilder.ToString();

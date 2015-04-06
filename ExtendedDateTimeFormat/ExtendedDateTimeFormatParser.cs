@@ -59,6 +59,16 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeParser.Parse(extendedDateTimeString);
         }
 
+        internal static ExtendedDateTime ParseExtendedDateTime(string extendedDateTimeString, ExtendedDateTime container)
+        {
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
+            {
+                return null;
+            }
+
+            return ExtendedDateTimeParser.Parse(extendedDateTimeString, container);
+        }
+
         public static ExtendedDateTimeInterval ParseInterval(string extendedDateTimeIntervalString)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeIntervalString))
