@@ -253,6 +253,11 @@
             throw new ArgumentOutOfRangeException("month", "A month must be between 1 and 12.");
         }
 
+        public static int DaysInYear(int year)
+        {
+            return IsLeapYear(year) ? 366 : 365;
+        }
+
         public static bool IsLeapYear(int year)                                            // http://www.timeanddate.com/date/leapyear.html
         {                                                                                  // This removes the range restriction present in the DateTime.IsLeapYear() method.
             return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
@@ -271,6 +276,7 @@
             int? day = e.Day;
             int? month = e.Month;
             int year = e.Year;
+            var utcOffset = e.UtcOffset;
 
             if (t.Seconds != 0)
             {
@@ -346,6 +352,8 @@
                 if (hour == null)
                 {
                     hour = 0;
+
+                    utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
                 }
 
                 if (day == null)
