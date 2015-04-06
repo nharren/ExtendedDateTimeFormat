@@ -3,7 +3,6 @@
     public enum ExtendedDateTimePrecision
     {
         Year,
-        Season,
         Month,
         Day,
         Hour,

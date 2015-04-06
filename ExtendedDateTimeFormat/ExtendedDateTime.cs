@@ -33,6 +33,7 @@ namespace System.ExtendedDateTimeFormat
             }
 
             Second = second;
+            Precision = ExtendedDateTimePrecision.Second;
         }
 
         public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
@@ -44,6 +45,7 @@ namespace System.ExtendedDateTimeFormat
             }
 
             Minute = minute;
+            Precision = ExtendedDateTimePrecision.Minute;
         }
 
         public ExtendedDateTime(int year, byte month, byte day, byte hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
@@ -62,6 +64,7 @@ namespace System.ExtendedDateTimeFormat
             }
 
             UtcOffset = utcOffset;
+            Precision = ExtendedDateTimePrecision.Hour;
         }
 
         public ExtendedDateTime(int year, byte month, byte day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
@@ -74,6 +77,7 @@ namespace System.ExtendedDateTimeFormat
 
             Day = day;
             DayFlags = dayFlags;
+            Precision = ExtendedDateTimePrecision.Day;
         }
 
         public ExtendedDateTime(int year, byte month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0)
@@ -86,6 +90,7 @@ namespace System.ExtendedDateTimeFormat
 
             Month = month;
             MonthFlags = monthFlags;
+            Precision = ExtendedDateTimePrecision.Month;
         }
 
         public ExtendedDateTime(int year, ExtendedDateTimeFlags yearFlags = 0)
@@ -98,35 +103,7 @@ namespace System.ExtendedDateTimeFormat
 
             Year = year;
             YearFlags = yearFlags;
-
-            if (Second != null)
-            {
-                Precision = ExtendedDateTimePrecision.Second;
-            }
-            else
-            {
-                Precision = ExtendedDateTimePrecision.Minute;
-            }
-
-            if (Minute == null)
-            {
-                Precision = ExtendedDateTimePrecision.Hour;
-            }
-
-            if (Hour == null)
-            {
-                Precision = ExtendedDateTimePrecision.Day;
-            }
-
-            if (Day == null)
-            {
-                Precision = ExtendedDateTimePrecision.Month;
-            }
-
-            if (Month == null)
-            {
-                Precision = ExtendedDateTimePrecision.Year;
-            }
+            Precision = ExtendedDateTimePrecision.Year;
         }
 
         internal ExtendedDateTime()                                     // Used for parsing; not public to prevent an invalid state.
@@ -232,7 +209,7 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentException("A season cannot be input as undefined.");
             }
 
-            return new ExtendedDateTime { Year = year, YearFlags = yearFlags, Season = season, SeasonQualifier = seasonQualifier, SeasonFlags = seasonFlags, Precision = ExtendedDateTimePrecision.Season };
+            return new ExtendedDateTime { Year = year, YearFlags = yearFlags, Season = season, SeasonQualifier = seasonQualifier, SeasonFlags = seasonFlags, Precision = ExtendedDateTimePrecision.Year };
         }
 
         public static ExtendedDateTime operator -(ExtendedDateTime e, TimeSpan t)

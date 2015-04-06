@@ -77,6 +77,7 @@ namespace Tests
             TestCollection.Add(new HashCodeTest(new ExtendedDateTime(1600, 1, 1, 0, 0, 0, TimeSpan.Zero), new ExtendedDateTime(2000, 1, 1, 0, 0, 0, TimeSpan.Zero), 100));
             TestCollection.Add(new CalculationTest("Total Months", Calculations.TotalMonthsCalculations));
             TestCollection.Add(new CalculationTest("Total Years", Calculations.TotalYearsCalculations));
+            TestCollection.Add(new CalculationTest("Differences", Calculations.DifferenceCalculations));
 
             foreach (var test in TestCollection)
             {

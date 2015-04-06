@@ -443,107 +443,179 @@
             return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, (byte)second, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
         }
 
-        public static TimeSpan Subtract(ExtendedDateTime e2, ExtendedDateTime e1)          // Use http://www.timeanddate.com/date/timeduration.html to verify correctness.
+        public static ExtendedDateTime[] NormalizePrecision(ExtendedDateTime[] extendedDateTimes)
         {
-            if (e1 == null)
-            {
-                throw new ArgumentNullException("e1");
-            }
+            var minPrecision = ExtendedDateTimePrecision.Day;
+            var maxPrecision = ExtendedDateTimePrecision.Year;
 
-            if (e2 == null)
-            {
-                throw new ArgumentNullException("e2");
-            }
+            var clones = new ExtendedDateTime[extendedDateTimes.Length];
 
-            var daysRemainingInStartYear = 0;                      // The day is the highest quantity of time spans because the duration of a day is consistent, whereas the duration of months and years change (months can have different numbers of days and leap years are a day longer than other years).
-
-            if (e1.Day != null)
-            {
-                daysRemainingInStartYear += DaysInMonth(e1.Year, e1.Month.Value) - e1.Day.Value;
-            }
-
-            if (e1.Month != null)
-            {
-                for (int i = e1.Month.Value + 1; i <= 12; i++)
+            for (int i = 0; i < extendedDateTimes.Length; i++)
+			{
+                if (extendedDateTimes[i].Precision < minPrecision)
                 {
-                    daysRemainingInStartYear += DaysInMonth(e1.Year, i);
+                    minPrecision = extendedDateTimes[i].Precision;
+                }
+                else if (extendedDateTimes[i].Precision > maxPrecision)
+                {
+                    maxPrecision = extendedDateTimes[i].Precision;
+                }
+
+                clones[i] = (ExtendedDateTime)extendedDateTimes[i].Clone();
+			}
+
+            if (maxPrecision == minPrecision)
+            {
+                return clones;
+            }
+
+            foreach (var extendedDateTime in clones)
+            {
+                while (extendedDateTime.Precision != maxPrecision)
+                {
+                    switch (extendedDateTime.Precision + 1)
+                    {
+                        case ExtendedDateTimePrecision.Year:
+                            break;
+                        case ExtendedDateTimePrecision.Month:
+                            extendedDateTime.Month = 1;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Month;
+                            break;
+                        case ExtendedDateTimePrecision.Day:
+                            extendedDateTime.Day = 1;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Day;
+                            break;
+                        case ExtendedDateTimePrecision.Hour:
+                            extendedDateTime.Hour = 0;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Hour;
+                            extendedDateTime.UtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+                            break;
+                        case ExtendedDateTimePrecision.Minute:
+                            extendedDateTime.Minute = 0;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Minute;
+                            break;
+                        case ExtendedDateTimePrecision.Second:
+                            extendedDateTime.Second = 0;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Second;
+                            break;
+                    }
                 }
             }
 
-            var daysInYearsBetween = 0;
+            return clones;
+        }
 
-            for (int i = e1.Year + 1; i < e2.Year; i++)
+        public static TimeSpan Subtract(ExtendedDateTime e4, ExtendedDateTime e3)          // Use http://www.timeanddate.com/date/timeduration.html to verify correctness.
+        {
+            if (e4 == null)
             {
-                daysInYearsBetween += IsLeapYear(i) ? 366 : 365;
+                throw new ArgumentNullException("e4");
             }
 
-            var hoursRemainingInStartDay = 0;
-
-            if (e1.Hour != null)
+            if (e3 == null)
             {
-                daysRemainingInStartYear--;
-
-                hoursRemainingInStartDay = 24 - e1.Hour.Value;
+                throw new ArgumentNullException("e3");
             }
 
-            var minutesRemainingInStartHour = 0;
+            var normalizedDateTimes = NormalizePrecision(new ExtendedDateTime[] { e4, e3 });
 
-            if (e1.Minute != null)
+            var e2 = normalizedDateTimes[0];
+            var e1 = normalizedDateTimes[1];
+
+            var seconds = 0;
+            var minutes = 0;
+            var hours = 0;
+            var days = 0;
+
+
+            if (e1.Year != e2.Year)
             {
-                hoursRemainingInStartDay--;
-
-                minutesRemainingInStartHour = 60 - e1.Minute.Value;
-            }
-
-            var secondsRemainingInStartMinute = 0;
-
-            if (e1.Second != null)
-            {
-                minutesRemainingInStartHour--;
-
-                secondsRemainingInStartMinute = 60 - e1.Second.Value;
-            }
-
-            var secondsIntoEndMinute = 0;
-
-            if (e2.Second != null)
-            {
-                secondsIntoEndMinute = e2.Second.Value;
-            }
-
-            var minutesIntoEndHour = 0;
-
-            if (e2.Minute != null)
-            {
-                minutesIntoEndHour = e2.Minute.Value;
-            }
-
-            var hoursIntoEndDay = 0;
-
-            if (e2.Hour != null)
-            {
-                hoursIntoEndDay = e2.Hour.Value;
-            }
-
-            var daysIntoEndYear = 0;
-
-            if (e2.Day != null)
-            {
-                daysIntoEndYear = e2.Day.Value;
-            }
-
-            if (e2.Month != null)
-            {
-                for (int i = e2.Month.Value - 1; i >= 1; i--)
+                for (int i = e1.Year + 1; i < e2.Year; i++)
                 {
-                    daysIntoEndYear += DaysInMonth(e1.Year, i);
+                    days += IsLeapYear(i) ? 366 : 365;
                 }
             }
 
-            var seconds = secondsRemainingInStartMinute + secondsIntoEndMinute;
-            var minutes = minutesRemainingInStartHour + minutesIntoEndHour;
-            var hours = hoursRemainingInStartDay + hoursIntoEndDay;
-            var days = daysRemainingInStartYear + daysInYearsBetween + daysIntoEndYear;
+            if (e1.Month != e2.Month)
+            {
+                if (e1.Month != null)
+                {
+                    for (int i = e1.Month.Value + 1; i <= 12; i++)
+                    {
+                        days += DaysInMonth(e1.Year, i);
+                    }
+                }
+
+                if (e2.Month != null)
+                {
+                    for (int i = e2.Month.Value - 1; i >= 1; i--)
+                    {
+                        days += DaysInMonth(e2.Year, i);
+                    }
+                }
+
+                
+            }
+
+            if (e1.Day != e2.Day)
+            {
+                if (e1.Day != null)
+                {
+                    days += DaysInMonth(e1.Year, e1.Month.Value) - e1.Day.Value;
+                }
+
+                if (e2.Day != null)
+                {
+                    days += e2.Day.Value;
+                }
+
+            }
+
+
+            if (e1.Hour != e2.Hour)
+            {
+                if (e1.Hour != null)
+                {
+                    days--;
+
+                    hours += 24 - e1.Hour.Value;
+                }
+
+                if (e2.Hour != null)
+                {
+                    hours += e2.Hour.Value;
+                }
+            }
+
+            if (e1.Minute != e2.Minute)
+            {
+                if (e1.Minute != null)
+                {
+                    hours--;
+
+                    minutes += 60 - e1.Minute.Value;
+                }
+
+                if (e2.Minute != null)
+                {
+                    minutes += e2.Minute.Value;
+                }
+            }
+
+            if (e1.Second != e2.Second)
+            {
+                if (e1.Second != null)
+                {
+                    minutes--;
+
+                    seconds += 60 - e1.Second.Value;
+                }
+
+                if (e2.Second != null)
+                {
+                    seconds += e2.Second.Value;
+                }
+            }
 
             if (seconds > 59)
             {
@@ -793,7 +865,7 @@
                 daysInMonth = DaysInMonth(yearIncrement, monthIncrement);
             }
 
-            return new double[] { years, months, days, hours, minutes, seconds, daysInMonth};
+            return new double[] { years, months, days, hours, minutes, seconds, daysInMonth };
         }
     }
 }
