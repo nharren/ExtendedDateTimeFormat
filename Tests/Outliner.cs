@@ -1,91 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ExtendedDateTimeFormat;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace Tests
 {
-    public class XmlSerializationTest : Test
+    public static class Outliner
     {
-    public XmlSerializationTest(string name, IEnumerable<string> strings)                      // Strings will be converted into objects and then into xml.
+        public static string Outline(this IExtendedDateTimeIndependentType extendedDateTimeIndependentType)
         {
-            Name = name;
-            Strings = strings;
-            Category = "Serialization to XML";
-        }
+            var stringBuilder = new StringBuilder();
 
-        public IEnumerable<string> Strings { get; set; }
-
-        public override void Begin()
-        {
-            Worker.DoWork += (o, e) =>
+            try
             {
-                var stringBuilder = new StringBuilder();
-                var stringsCount = Strings.Count();
-
-                var indent = 0;
-
-                for (int i = 0; i < stringsCount; i++)
+                if (extendedDateTimeIndependentType is ExtendedDateTimeInterval)
                 {
-                    var testString = Strings.ElementAt(i);
-
-                    stringBuilder.AppendLine("Input:".Indent(indent));
-
-                    try
-                    {
-                        var extendedDateTimeObject = ExtendedDateTimeFormatParser.Parse(testString);
-
-                        if (extendedDateTimeObject is ExtendedDateTimeInterval)
-                        {
-                            WriteExtendedDateTimeInterval(indent + 1, (ExtendedDateTimeInterval)extendedDateTimeObject, stringBuilder);
-                        }
-                        else if (extendedDateTimeObject is ExtendedDateTimePossibilityCollection)
-                        {
-                            WriteExtendedDateTimePossibilityCollection(indent + 1, (ExtendedDateTimePossibilityCollection)extendedDateTimeObject, stringBuilder);
-                        }
-                        else if (extendedDateTimeObject is ExtendedDateTimeCollection)
-                        {
-                            WriteExtendedDateTimeCollection(indent + 1, (ExtendedDateTimeCollection)extendedDateTimeObject, stringBuilder);
-                        }
-                        else if (extendedDateTimeObject is UnspecifiedExtendedDateTime)
-                        {
-                            WriteUnspecifiedExtendedDateTime(indent + 1, (UnspecifiedExtendedDateTime)extendedDateTimeObject, stringBuilder);
-                        }
-                        else if (extendedDateTimeObject is ExtendedDateTime)
-                        {
-                            WriteExtendedDateTime(indent + 1, (ExtendedDateTime)extendedDateTimeObject, stringBuilder);
-                        }
-
-                        stringBuilder.AppendLine();
-                        stringBuilder.AppendLine("Output:".Indent(indent));
-
-
-                        using (var sw = new StringWriter(stringBuilder))
-	                    {
-		                    var xmlSerializer = new XmlSerializer(extendedDateTimeObject.GetType());
-
-                            xmlSerializer.Serialize(sw, extendedDateTimeObject); 
-	                    }
-                    }
-                    catch (Exception ex)
-                    {
-                        stringBuilder.Append("Exception: ");
-                        stringBuilder.AppendLine(ex.Message);
-                    }
-
-                    stringBuilder.AppendLine().AppendLine();
-
-                    Worker.ReportProgress((int)((i / stringsCount) * 100));
+                    WriteExtendedDateTimeInterval(0, (ExtendedDateTimeInterval)extendedDateTimeIndependentType, stringBuilder);
                 }
+                else if (extendedDateTimeIndependentType is ExtendedDateTimePossibilityCollection)
+                {
+                    WriteExtendedDateTimePossibilityCollection(0, (ExtendedDateTimePossibilityCollection)extendedDateTimeIndependentType, stringBuilder);
+                }
+                else if (extendedDateTimeIndependentType is ExtendedDateTimeCollection)
+                {
+                    WriteExtendedDateTimeCollection(0, (ExtendedDateTimeCollection)extendedDateTimeIndependentType, stringBuilder);
+                }
+                else if (extendedDateTimeIndependentType is UnspecifiedExtendedDateTime)
+                {
+                    WriteUnspecifiedExtendedDateTime(0, (UnspecifiedExtendedDateTime)extendedDateTimeIndependentType, stringBuilder);
+                }
+                else if (extendedDateTimeIndependentType is ExtendedDateTime)
+                {
+                    WriteExtendedDateTime(0, (ExtendedDateTime)extendedDateTimeIndependentType, stringBuilder);
+                }
+            }
+            catch (ParseException pe)
+            {
+                stringBuilder.Append("ParseException: ").Append(pe.Message);
+            }
 
-                e.Result = stringBuilder.ToString();
-            };
-
-            Worker.RunWorkerAsync();
+            return stringBuilder.ToString();
         }
 
         private static void WriteExtendedDateTime(int startingIndent, ExtendedDateTime extendedDateTime, StringBuilder stringBuilder)

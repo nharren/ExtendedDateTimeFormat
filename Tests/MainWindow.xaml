@@ -390,10 +390,21 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <ScrollViewer Name="resultItemsScrollViewer"
+                      Grid.Column="1"
+                      Visibility="Collapsed">
+            <ItemsControl Name="resultItems"
+                          Padding="50"
+                          FontSize="18"     
+                          FontFamily="Consolas"
+                          Background="#FF42474B"
+                          Foreground="#FFDDDDDD" />
+        </ScrollViewer>
         <ScrollViewer Grid.Column="1"
+                      Name="resultBoxScrollViewer"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <TextBlock Name="resultsBox"
+            <TextBlock Name="resultBox"
                        Padding="50"
                        FontSize="18"
                        FontFamily="Consolas"

@@ -451,7 +451,7 @@
             var clones = new ExtendedDateTime[extendedDateTimes.Length];
 
             for (int i = 0; i < extendedDateTimes.Length; i++)
-			{
+            {
                 if (extendedDateTimes[i].Precision < minPrecision)
                 {
                     minPrecision = extendedDateTimes[i].Precision;
@@ -462,7 +462,7 @@
                 }
 
                 clones[i] = (ExtendedDateTime)extendedDateTimes[i].Clone();
-			}
+            }
 
             if (maxPrecision == minPrecision)
             {
@@ -527,113 +527,106 @@
             var hours = 0;
             var days = 0;
 
-
-            if (e1.Year != e2.Year)
+            if (e1.Second != e2.Second)
             {
-                for (int i = e1.Year + 1; i < e2.Year; i++)
-                {
-                    days += IsLeapYear(i) ? 366 : 365;
-                }
-            }
-
-            if (e1.Month != e2.Month)
-            {
-                if (e1.Month != null)
-                {
-                    for (int i = e1.Month.Value + 1; i <= 12; i++)
-                    {
-                        days += DaysInMonth(e1.Year, i);
-                    }
-                }
-
-                if (e2.Month != null)
-                {
-                    for (int i = e2.Month.Value - 1; i >= 1; i--)
-                    {
-                        days += DaysInMonth(e2.Year, i);
-                    }
-                }
-
-                
-            }
-
-            if (e1.Day != e2.Day)
-            {
-                if (e1.Day != null)
-                {
-                    days += DaysInMonth(e1.Year, e1.Month.Value) - e1.Day.Value;
-                }
-
-                if (e2.Day != null)
-                {
-                    days += e2.Day.Value;
-                }
-
-            }
-
-
-            if (e1.Hour != e2.Hour)
-            {
-                if (e1.Hour != null)
-                {
-                    days--;
-
-                    hours += 24 - e1.Hour.Value;
-                }
-
-                if (e2.Hour != null)
-                {
-                    hours += e2.Hour.Value;
-                }
+                seconds += e2.Second.Value - e1.Second.Value;
             }
 
             if (e1.Minute != e2.Minute)
             {
-                if (e1.Minute != null)
-                {
-                    hours--;
-
-                    minutes += 60 - e1.Minute.Value;
-                }
-
-                if (e2.Minute != null)
-                {
-                    minutes += e2.Minute.Value;
-                }
+                minutes += e2.Minute.Value - e1.Minute.Value;
             }
 
-            if (e1.Second != e2.Second)
+            if (e1.Hour != e2.Hour)
             {
-                if (e1.Second != null)
-                {
-                    minutes--;
-
-                    seconds += 60 - e1.Second.Value;
-                }
-
-                if (e2.Second != null)
-                {
-                    seconds += e2.Second.Value;
-                }
+                hours += e2.Hour.Value - e1.Hour.Value;
             }
 
-            if (seconds > 59)
+            if (e1.Day != e2.Day)
+            {
+                days += e2.Day.Value - e1.Day.Value;
+            }
+
+            if (e1.Month != e2.Month)
+            {
+                if (e1.Year == e2.Year)
+                {
+                    for (int i = e1.Month.Value; i < e2.Month.Value; i++)
+                    {
+                        days += DaysInMonth(e1.Year, i);
+                    }
+                }
+                else
+                {
+                    if (e1.Day == e2.Day)
+                    {
+                        for (int i = e1.Month.Value; i <= 12; i++)              // Covert months remaining in start year into days. We have not counted the start month in terms of days, so we start at the start month.
+                        {
+                            days += DaysInMonth(e1.Year, i);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = e1.Month.Value + 1; i <= 12; i++)          // Covert months remaining in start year into days. We have counted the start month in terms of days, so we start at the next month.
+                        {
+                            days += DaysInMonth(e1.Year, i);
+                        }
+                    }
+
+                    for (int i = e2.Month.Value - 1; i >= 1; i--)           // Convert months into the end year into days. We have counted the end month in terms of days, so we start at the previous month.
+                    {
+                        days += DaysInMonth(e2.Year, i);
+                    } 
+
+                    for (int i = e1.Year + 1; i < e2.Year; i++)                // We have counted the start year in terms of months, so we start at the next year.
+                    {
+                        days += IsLeapYear(i) ? 366 : 365;
+                    }
+                }
+            }
+            else
+            {
+                if (e1.Year != e2.Year)
+                {
+                    for (int i = e1.Year; i < e2.Year; i++)                // We have not counted the start year in terms of months, so we start at the start year.
+                    {
+                        days += IsLeapYear(i) ? 366 : 365;
+                    }
+                } 
+            }
+
+            if (seconds < 0)
+            {
+                seconds += 60;
+                minutes--;
+            }
+            else if (seconds > 59)
             {
                 seconds -= 60;
                 minutes++;
             }
 
-            if (minutes > 59)
+            if (minutes < 0)
+            {
+                minutes += 60;
+                hours--;
+            }
+            else if (minutes > 59)
             {
                 minutes -= 60;
                 hours++;
             }
 
-            if (hours > 23)
+            if (hours < 0)
+            {
+                hours += 24;
+                days--;
+            }
+            else if (hours > 23)
             {
                 hours -= 24;
                 days++;
-            }
+            }      
 
             return new TimeSpan(days, hours, minutes, seconds);
         }

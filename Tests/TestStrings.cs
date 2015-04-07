@@ -188,7 +188,7 @@ namespace Tests
                 // TODO: Enter in more malformed strings.
             };
 
-        public static readonly List<string> OtherStrings = new List<string>
+        public static readonly List<string> MiscellaneousStrings = new List<string>
             {
                 "[1539..1540,1543]/1623-07-04",
 
