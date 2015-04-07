@@ -5,7 +5,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class ExtendedDateTimePossibilityCollectionParser
     {
-        internal static ExtendedDateTimePossibilityCollection Parse(string extendedDateTimePossibilityCollectionString)
+        internal static ExtendedDateTimePossibilityCollection Parse(string extendedDateTimePossibilityCollectionString, ExtendedDateTimePossibilityCollection possibilityCollection = null)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimePossibilityCollectionString))
             {
@@ -49,7 +49,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             var currentSetRangeIndex = 0;
             var remainingChars = new List<char>();
-            var possibilityCollection = new ExtendedDateTimePossibilityCollection();
+
+            if (possibilityCollection == null)
+            {
+                possibilityCollection = new ExtendedDateTimePossibilityCollection(); 
+            }
 
             for (int i = 0; i < contentsString.Length; i++)                                     // Add set contents, including nested sets.
             {

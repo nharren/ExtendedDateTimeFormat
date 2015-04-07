@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ExtendedDateTimePrecision.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="IExtendedDateTimeExtremityProvider.cs" />
     <Compile Include="Internal\Converters\ConversionException.cs" />
     <Compile Include="Internal\Converters\ExtendedDateTimeCollectionConverter.cs" />
     <Compile Include="Internal\Converters\ExtendedDateTimeConverter.cs" />
@@ -50,11 +51,10 @@
     <Compile Include="Internal\Converters\UnspecifiedExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
     <Compile Include="ExtendedDateTimeCalculator.cs" />
-    <Compile Include="ExtendedDateTimeComparer.cs" />
+    <Compile Include="Internal\Comparers\ExtendedDateTimeComparer.cs" />
     <Compile Include="ExtendedDateTimePossibilityCollection.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="IExtendedDateTimeExtremityProvider.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeMaskedPrecisionParser.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
     <Compile Include="ExtendedDateTimeFlags.cs" />

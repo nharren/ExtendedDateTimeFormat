@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ExtendedDateTimeFormat.Internal.Comparers;
 using System.ExtendedDateTimeFormat.Internal.Converters;
+using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 using System.Runtime.Serialization;
 using System.Xml;
@@ -106,7 +108,7 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Year;
         }
 
-        internal ExtendedDateTime()                                     // Used for parsing; not public to prevent an invalid state.
+        internal ExtendedDateTime()                                     // Used for parsing; Internal to prevent an invalid state.
         {
         }
 
@@ -117,7 +119,7 @@ namespace System.ExtendedDateTimeFormat
                 throw new System.ArgumentNullException("info");
             }
 
-            ExtendedDateTimeFormatParser.ParseExtendedDateTime((string)info.GetValue("String", typeof(string)), this);
+            Parse((string)info.GetValue("edtStr", typeof(string)), this);
         }
 
         public static IComparer<ExtendedDateTime> Comparer
@@ -353,7 +355,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("String", this.ToString());
+            info.AddValue("edtStr", this.ToString());
         }
 
         public XmlSchema GetSchema()
@@ -368,7 +370,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void ReadXml(XmlReader reader)
         {
-            ExtendedDateTimeFormatParser.ParseExtendedDateTime(reader.ReadString(), this);
+            Parse(reader.ReadString(), this);
         }
 
         public override string ToString()
@@ -379,6 +381,26 @@ namespace System.ExtendedDateTimeFormat
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteString(this.ToString());
+        }
+
+        public static ExtendedDateTime Parse(string extendedDateTimeString)
+        {
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
+            {
+                return null;
+            }
+
+            return ExtendedDateTimeParser.Parse(extendedDateTimeString);
+        }
+
+        internal static ExtendedDateTime Parse(string extendedDateTimeString, ExtendedDateTime container)
+        {
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
+            {
+                return null;
+            }
+
+            return ExtendedDateTimeParser.Parse(extendedDateTimeString, container);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     internal static class ExtendedDateTimeIntervalParser
     {
-        internal static ExtendedDateTimeInterval Parse(string extendedDateTimeIntervalString)
+        internal static ExtendedDateTimeInterval Parse(string extendedDateTimeIntervalString, ExtendedDateTimeInterval extendedDateTimeInterval = null)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeIntervalString))
             {
@@ -18,7 +18,11 @@
 
             var startString = intervalPartStrings[0];
             var endString = intervalPartStrings[1];
-            var extendedDateTimeInterval = new ExtendedDateTimeInterval();
+
+            if (extendedDateTimeInterval == null)
+            {
+                extendedDateTimeInterval = new ExtendedDateTimeInterval(); 
+            }
 
             if (startString[0] == '{')
             {

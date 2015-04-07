@@ -2,7 +2,7 @@
 {
     internal static class UnspecifiedExtendedDateTimeParser
     {
-        internal static UnspecifiedExtendedDateTime Parse(string unspecifiedExtendedDateTimeString)
+        internal static UnspecifiedExtendedDateTime Parse(string unspecifiedExtendedDateTimeString, UnspecifiedExtendedDateTime unspecifiedExtendedDateTime = null)
         {
             if (unspecifiedExtendedDateTimeString.Length > 10)
             {
@@ -16,7 +16,10 @@
                 throw new ParseException("An unspecified extended date time can have at most two components.", unspecifiedExtendedDateTimeString);
             }
 
-            var unspecifiedExtendedDateTime = new UnspecifiedExtendedDateTime();
+            if (unspecifiedExtendedDateTime == null)
+            {
+                unspecifiedExtendedDateTime = new UnspecifiedExtendedDateTime(); 
+            }
 
             unspecifiedExtendedDateTime.Year = components[0];
 

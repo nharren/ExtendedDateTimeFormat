@@ -35,7 +35,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
 
             if (source != null)
             {
-                return ExtendedDateTimeFormatParser.ParsePossibilityCollection(source);
+                return ExtendedDateTimePossibilityCollection.Parse(source);
             }
 
             return base.ConvertFrom(context, culture, value);

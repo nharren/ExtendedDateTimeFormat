@@ -2,7 +2,7 @@
 {
     internal static class ExtendedDateTimeRangeParser
     {
-        internal static ExtendedDateTimeRange Parse(string extendedDateTimeRangeString)
+        internal static ExtendedDateTimeRange Parse(string extendedDateTimeRangeString, ExtendedDateTimeRange extendedDateTimeRange = null)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeRangeString))
             {
@@ -16,7 +16,10 @@
                 throw new ParseException("A range string must have exactly one \"..\".", extendedDateTimeRangeString);
             }
 
-            var extendedDateTimeRange = new ExtendedDateTimeRange();
+            if (extendedDateTimeRange == null)
+            {
+                extendedDateTimeRange = new ExtendedDateTimeRange(); 
+            }
 
             var startString = rangeParts[0];
             var endString = rangeParts[1];

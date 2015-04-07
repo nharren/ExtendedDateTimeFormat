@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace System.ExtendedDateTimeFormat
+namespace System.ExtendedDateTimeFormat.Internal.Comparers
 {
-    public class ExtendedDateTimeComparer : IComparer<ExtendedDateTime>
+    internal class ExtendedDateTimeComparer : IComparer<ExtendedDateTime>
     {
         public int Compare(ExtendedDateTime x, ExtendedDateTime y)
         {
