@@ -113,7 +113,7 @@ namespace System.ExtendedDateTimeFormat
         protected ExtendedDateTime(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
-            { 
+            {
                 throw new System.ArgumentNullException("info");
             }
 
@@ -176,6 +176,11 @@ namespace System.ExtendedDateTimeFormat
         public ExtendedDateTimeFlags YearFlags { get; internal set; }
 
         public int? YearPrecision { get; internal set; }
+
+        public static ExtendedDateTime FromLongYear(int year)
+        {
+            return new ExtendedDateTime { Year = year };
+        }
 
         public static ExtendedDateTime FromScientificNotation(int significand, byte exponent, byte precision)
         {

@@ -11,7 +11,7 @@ namespace Tests
 {
     public class XmlSerializationTest : Test
     {
-    public XmlSerializationTest(string name, IEnumerable<string> strings)                      // Strings will be converted into objects and then into xml.
+        public XmlSerializationTest(string name, IEnumerable<string> strings)                      // Strings will be converted into objects and then into xml.
         {
             Name = name;
             Strings = strings;
@@ -65,11 +65,11 @@ namespace Tests
 
 
                         using (var sw = new StringWriter(stringBuilder))
-	                    {
-		                    var xmlSerializer = new XmlSerializer(extendedDateTimeObject.GetType());
+                        {
+                            var xmlSerializer = new XmlSerializer(extendedDateTimeObject.GetType());
 
-                            xmlSerializer.Serialize(sw, extendedDateTimeObject); 
-	                    }
+                            xmlSerializer.Serialize(sw, extendedDateTimeObject);
+                        }
                     }
                     catch (Exception ex)
                     {

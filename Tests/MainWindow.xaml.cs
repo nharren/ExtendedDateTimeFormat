@@ -38,12 +38,12 @@ namespace Tests
             TestCollection.Add(new StringSerializationTest("Date and Time", StringSerializationTestEntries.DateAndTimeEntries));
             TestCollection.Add(new StringSerializationTest("Intervals", StringSerializationTestEntries.IntervalEntries));
             TestCollection.Add(new StringSerializationTest("L0 Features", StringSerializationTestEntries.LevelZeroEntries));
-            //TestCollection.Add(new StringSerializationTest("Uncertain and Approximate", TestStrings.UncertainOrApproximateStrings));
-            //TestCollection.Add(new StringSerializationTest("Unspecified Dates", TestStrings.UnspecifiedStrings));
-            //TestCollection.Add(new StringSerializationTest("L1 Extended Intervals", TestStrings.L1ExtendedIntervalStrings));
-            //TestCollection.Add(new StringSerializationTest("Years Exceeding Four Digits", TestStrings.YearExceedingFourDigitsStrings));
-            //TestCollection.Add(new StringSerializationTest("Seasons", TestStrings.SeasonStrings));
-            //TestCollection.Add(new StringSerializationTest("L1 Extensions", TestStrings.LevelOneExtensionStrings));
+            TestCollection.Add(new StringSerializationTest("Uncertain and Approximate", StringSerializationTestEntries.UncertainOrApproximateEntries));
+            TestCollection.Add(new StringSerializationTest("Unspecified Dates", StringSerializationTestEntries.UnspecifiedEntries));
+            TestCollection.Add(new StringSerializationTest("L1 Extended Intervals", StringSerializationTestEntries.L1ExtendedIntervalEntries));
+            TestCollection.Add(new StringSerializationTest("Years Exceeding Four Digits", StringSerializationTestEntries.YearExceedingFourDigitsEntries));
+            TestCollection.Add(new StringSerializationTest("Seasons", StringSerializationTestEntries.SeasonEntries));
+            TestCollection.Add(new StringSerializationTest("L1 Extensions", StringSerializationTestEntries.LevelOneExtensionEntries));
             //TestCollection.Add(new StringSerializationTest("Partially Uncertain and Approximate", TestStrings.PartialUncertainOrApproximateStrings));
             //TestCollection.Add(new StringSerializationTest("Partially Unspecified Dates", TestStrings.PartialUnspecifiedStrings));
             //TestCollection.Add(new StringSerializationTest("One of a Set", TestStrings.OneOfASetStrings));

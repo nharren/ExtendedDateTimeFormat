@@ -20,19 +20,7 @@ namespace Tests
 
         public override void Begin()
         {
-            Worker.DoWork += (o, e) =>
-            {
-                var entryCount = Entries.Count();
-
-                for (int i = 0; i < entryCount; i++)
-                {
-                    Worker.ReportProgress((int)((i / entryCount) * 100));
-                }
-            };
-
             Worker.RunWorkerAsync();
-        }
-
-      
+        }     
     }
 }

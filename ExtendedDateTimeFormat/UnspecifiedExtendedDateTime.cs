@@ -14,6 +14,8 @@ namespace System.ExtendedDateTimeFormat
             {
                 throw new ArgumentException("The day must be two characters long.");
             }
+
+            Day = day;
         }
 
         public UnspecifiedExtendedDateTime(string year, string month)
@@ -23,6 +25,8 @@ namespace System.ExtendedDateTimeFormat
             {
                 throw new ArgumentException("The month must be two characters long.");
             }
+
+            Month = month;
         }
 
         public UnspecifiedExtendedDateTime(string year)
@@ -31,6 +35,8 @@ namespace System.ExtendedDateTimeFormat
             {
                 throw new ArgumentException("The year must be four characters long except if the year is negative, in which case the year must be five characters long.");
             }
+
+            Year = year;
         }
 
         internal UnspecifiedExtendedDateTime()
