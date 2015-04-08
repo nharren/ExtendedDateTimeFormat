@@ -16,7 +16,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
                 if (i != extendedDateTimeCollection.Count - 1)                              // Don't put comma after last element.
                 {
-                    stringBuilder.Append(", ");
+                    stringBuilder.Append(",");
                 }
             }
 

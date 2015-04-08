@@ -4,3 +4,4 @@
 4. Make Local UTC Offset the default UTC Offset when parsing extended datetimes without a specified offset.
 5. Replace IExtremityProvider with implementations of IEnumerable<ExtendedDateTime> on each object.
 6. Upgrade tests from string output to UserControls for each entry with green or red highlighting indicating pass/fail. 
+7. Implement more features from ISO-8601:2004(E)

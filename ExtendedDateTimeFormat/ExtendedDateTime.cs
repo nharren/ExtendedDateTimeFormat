@@ -24,10 +24,55 @@ namespace System.ExtendedDateTimeFormat
 
         public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { IsUnknown = true };
 
-        private static IComparer<ExtendedDateTime> comparer;
+        private static ExtendedDateTimeComparer comparer;
 
         public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, byte second, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, day, hour, minute, utcOffset, yearFlags, monthFlags, dayFlags)
+            : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            DayFlags = dayFlags;
+            MonthFlags = monthFlags;
+            YearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
+            : this(year, month, day, hour, minute, utcOffset)
+        {
+            DayFlags = dayFlags;
+            MonthFlags = monthFlags;
+            YearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, byte month, byte day, byte hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
+            : this(year, month, day, hour, utcOffset)
+        {
+            DayFlags = dayFlags;
+            MonthFlags = monthFlags;
+            YearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, byte month, byte day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
+            : this(year, month, day)
+        {
+            DayFlags = dayFlags;
+            MonthFlags = monthFlags;
+            YearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, byte month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0)
+            : this(year, month)
+        {
+            MonthFlags = monthFlags;
+            YearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, ExtendedDateTimeFlags yearFlags)
+            : this(year)
+        {
+            YearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, byte second, TimeSpan utcOffset)
+            : this(year, month, day, hour, minute, utcOffset)
         {
             if (second < 0 || second > 59)
             {
@@ -38,8 +83,8 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Second;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, day, hour, utcOffset, yearFlags, monthFlags, dayFlags)
+        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, TimeSpan utcOffset)
+            : this(year, month, day, hour, utcOffset)
         {
             if (minute < 0 || minute > 59)
             {
@@ -50,8 +95,8 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Minute;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, day, yearFlags, monthFlags, dayFlags)
+        public ExtendedDateTime(int year, byte month, byte day, byte hour, TimeSpan utcOffset)
+            : this(year, month, day)
         {
             if (hour < 0 || hour > 23)
             {
@@ -69,8 +114,8 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Hour;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, yearFlags, monthFlags)
+        public ExtendedDateTime(int year, byte month, byte day)
+            : this(year, month)
         {
             if (day < 1 || day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
             {
@@ -78,12 +123,11 @@ namespace System.ExtendedDateTimeFormat
             }
 
             Day = day;
-            DayFlags = dayFlags;
             Precision = ExtendedDateTimePrecision.Day;
         }
 
-        public ExtendedDateTime(int year, byte month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0)
-            : this(year, yearFlags)
+        public ExtendedDateTime(int year, byte month)
+            : this(year)
         {
             if (month < 1 || month > 12)
             {
@@ -91,11 +135,10 @@ namespace System.ExtendedDateTimeFormat
             }
 
             Month = month;
-            MonthFlags = monthFlags;
             Precision = ExtendedDateTimePrecision.Month;
         }
 
-        public ExtendedDateTime(int year, ExtendedDateTimeFlags yearFlags = 0)
+        public ExtendedDateTime(int year)
             : this()
         {
             if (year < -9999 || year > 9999)
@@ -104,7 +147,6 @@ namespace System.ExtendedDateTimeFormat
             }
 
             Year = year;
-            YearFlags = yearFlags;
             Precision = ExtendedDateTimePrecision.Year;
         }
 
@@ -122,7 +164,7 @@ namespace System.ExtendedDateTimeFormat
             Parse((string)info.GetValue("edtStr", typeof(string)), this);
         }
 
-        public static IComparer<ExtendedDateTime> Comparer
+        public static ExtendedDateTimeComparer Comparer
         {
             get
             {
@@ -264,6 +306,16 @@ namespace System.ExtendedDateTimeFormat
             return Comparer.Compare(e1, e2) >= 0;
         }
 
+        public static ExtendedDateTime Parse(string extendedDateTimeString)
+        {
+            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
+            {
+                return null;
+            }
+
+            return ExtendedDateTimeParser.Parse(extendedDateTimeString);
+        }
+
         public object Clone()
         {
             return MemberwiseClone();
@@ -314,6 +366,11 @@ namespace System.ExtendedDateTimeFormat
         public bool Equals(ExtendedDateTime other)
         {
             return Comparer.Compare(this, other) == 0;
+        }
+
+        public bool Equals(ExtendedDateTime other, bool ignorePrecision)
+        {
+            return Comparer.Compare(this, other, ignorePrecision) == 0;
         }
 
         public override int GetHashCode()
@@ -381,16 +438,6 @@ namespace System.ExtendedDateTimeFormat
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteString(this.ToString());
-        }
-
-        public static ExtendedDateTime Parse(string extendedDateTimeString)
-        {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeString))
-            {
-                return null;
-            }
-
-            return ExtendedDateTimeParser.Parse(extendedDateTimeString);
         }
 
         internal static ExtendedDateTime Parse(string extendedDateTimeString, ExtendedDateTime container)
