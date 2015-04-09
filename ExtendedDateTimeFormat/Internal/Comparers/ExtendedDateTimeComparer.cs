@@ -6,11 +6,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Comparers
     {
         public int Compare(ExtendedDateTime x, ExtendedDateTime y)
         {
-            return Compare(x, y, false);
-        }
-
-        public int Compare(ExtendedDateTime x, ExtendedDateTime y, bool ignorePrecision)
-        {
             if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
             {
                 return 0;
@@ -26,21 +21,10 @@ namespace System.ExtendedDateTimeFormat.Internal.Comparers
                 return -1;
             }
 
-            var a = (ExtendedDateTime)null;
-            var b = (ExtendedDateTime)null;
+            var normalizedPrecisions = ExtendedDateTimeCalculator.NormalizePrecision(new ExtendedDateTime[] { x, y });
 
-            if (ignorePrecision)
-            {
-                var normalizedPrecisions = ExtendedDateTimeCalculator.NormalizePrecision(new ExtendedDateTime[] { x, y });
-
-                a = normalizedPrecisions[0];
-                b = normalizedPrecisions[1];
-            }
-            else
-            {
-                a = x;
-                b = y;
-            }
+            var a = normalizedPrecisions[0];
+            var b = normalizedPrecisions[1];
 
             long longXYear = a.Year;
             long longYYear = b.Year;

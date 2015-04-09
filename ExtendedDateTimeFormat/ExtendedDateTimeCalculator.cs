@@ -262,22 +262,49 @@ namespace System.ExtendedDateTimeFormat
 
         public static bool IsLeapYear(int year)                                            // http://www.timeanddate.com/date/leapyear.html
         {
-            if (year % 4 == 0)
+            return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+        }
+
+        public static ExtendedDateTime[] NormalizePrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
+        {
+            var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
+
+            var clones = extendedDateTimes.Select(e => (ExtendedDateTime)e.Clone()).ToArray();
+
+            foreach (var extendedDateTime in clones)
             {
-                if (year % 100 == 0)
+                while (extendedDateTime.Precision < maxPrecision)
                 {
-                    if (year % 400 == 0)
+                    switch (extendedDateTime.Precision + 1)
                     {
-                        return true;
+                        case ExtendedDateTimePrecision.Year:
+                            break;
+                        case ExtendedDateTimePrecision.Month:
+                            extendedDateTime.Month = 1;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Month;
+                            break;
+                        case ExtendedDateTimePrecision.Day:
+                            extendedDateTime.Day = 1;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Day;
+                            break;
+                        case ExtendedDateTimePrecision.Hour:
+                            extendedDateTime.Hour = 0;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Hour;
+                            extendedDateTime.UtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+                            break;
+                        case ExtendedDateTimePrecision.Minute:
+                            extendedDateTime.Minute = 0;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Minute;
+                            break;
+                        case ExtendedDateTimePrecision.Second:
+                            extendedDateTime.Second = 0;
+                            extendedDateTime.Precision = ExtendedDateTimePrecision.Second;
+                            break;
                     }
-
-                    return false;
                 }
+            }
 
-                return true;
-            }            
-                                                                
-            return false;
+            return clones;
         }
 
         public static ExtendedDateTime Subtract(ExtendedDateTime e, TimeSpan t)
@@ -460,50 +487,18 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, (byte)second, e.UtcOffset.Value, yearFlags: e.YearFlags, monthFlags: e.MonthFlags, dayFlags: e.DayFlags);
         }
 
-        public static ExtendedDateTime[] NormalizePrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
-        {
-            var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
-
-            var clones = extendedDateTimes.Select(e => (ExtendedDateTime)e.Clone()).ToArray();
-
-            foreach (var extendedDateTime in clones)
-            {
-                while (extendedDateTime.Precision != maxPrecision)
-                {
-                    switch (extendedDateTime.Precision + 1)
-                    {
-                        case ExtendedDateTimePrecision.Year:
-                            break;
-                        case ExtendedDateTimePrecision.Month:
-                            extendedDateTime.Month = 1;
-                            extendedDateTime.Precision = ExtendedDateTimePrecision.Month;
-                            break;
-                        case ExtendedDateTimePrecision.Day:
-                            extendedDateTime.Day = 1;
-                            extendedDateTime.Precision = ExtendedDateTimePrecision.Day;
-                            break;
-                        case ExtendedDateTimePrecision.Hour:
-                            extendedDateTime.Hour = 0;
-                            extendedDateTime.Precision = ExtendedDateTimePrecision.Hour;
-                            extendedDateTime.UtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
-                            break;
-                        case ExtendedDateTimePrecision.Minute:
-                            extendedDateTime.Minute = 0;
-                            extendedDateTime.Precision = ExtendedDateTimePrecision.Minute;
-                            break;
-                        case ExtendedDateTimePrecision.Second:
-                            extendedDateTime.Second = 0;
-                            extendedDateTime.Precision = ExtendedDateTimePrecision.Second;
-                            break;
-                    }
-                }
-            }
-
-            return clones;
-        }
-
         public static TimeSpan Subtract(ExtendedDateTime e2, ExtendedDateTime e1)          // Use http://www.calculator.net/date-calculator.html to verify. (Beware of calculators which use the julian calender, as this will produce different results.)
         {
+            if (e1 == null)
+            {
+                throw new ArgumentNullException("e1");
+            }
+
+            if (e2 == null)
+            {
+                throw new ArgumentNullException("e2");
+            }
+
             var invert = e1 > e2;
 
             var normalizedDates = NormalizePrecision(new ExtendedDateTime[] { e2, e1 }, ExtendedDateTimePrecision.Second);
@@ -512,38 +507,42 @@ namespace System.ExtendedDateTimeFormat
             var e3 = invert ? normalizedDates[0] : normalizedDates[1];
 
             var days = 0;
-            var hours = 0;
-            var minutes = 0;
-            var seconds = 0;
 
-            for (int year = e3.Year; year < e4.Year; year++)                          // Add the years between the dates, including the starting year and excluding the ending year.
+            for (int year = e3.Year; year < e4.Year; year++)                             // Add the years between the dates, including the starting year and excluding the ending year.
             {
                 days += DaysInYear(year);
             }
 
-            for (int i = e3.Month.Value - 1; i >= 1; i--)                             // Subtract the months in the starting year that are before the starting month.
+            for (int i = e3.Month.Value - 1; i >= 1; i--)                                // Subtract the months before the starting month.
             {
                 days -= DaysInMonth(e3.Year, i);
             }
 
-            for (int i = e3.Day.Value - 1; i >= 1; i--)                               // Subtract the days in the starting month that are before the starting day.
+            for (int i = e3.Day.Value; i >= 1; i--)                                      // Subtract the starting day and the days before.
             {
                 days--;
             }
 
-            for (int i = e3.Hour.Value - 1; i >= 0; i--)                              // Subtract the hours in the starting day that are before the starting hour.
+            var hours = 24 - (e3.Hour.Value + 1);                                        // Add the hours remaining in the starting day excluding the starting hour.
+            var minutes = 60 - (e3.Minute.Value + 1);                                    // Add the minutes remaining in the starting hour excluding the starting minute.
+            var seconds = 60 - e3.Second.Value;                                          // Add the seconds remaining in the starting minute.
+
+            if (seconds > 59)
             {
-                hours--;
+                seconds -= 60;
+                minutes++;
             }
 
-            for (int i = e3.Minute.Value - 1; i >= 0; i--)                            // Subtract the minutes in the starting hour that are before the starting minute.
+            if (minutes > 59)
             {
-                minutes--;
+                minutes -= 60;
+                hours++;
             }
 
-            for (int i = e3.Second.Value - 1; i >= 0; i--)                            // Subtract the seconds in the starting minute that are before the starting second.
+            if (hours > 23)
             {
-                seconds--;
+                hours -= 24;
+                days++;
             }
 
             for (int i = e4.Month.Value - 1; i >= 1; i--)                             // Add the months in the ending year that are before the ending month.
@@ -623,6 +622,201 @@ namespace System.ExtendedDateTimeFormat
             return result;
         }
 
+        public static ExtendedDateTime ToPrecision(ExtendedDateTime extendedDateTime, ExtendedDateTimePrecision precision, bool roundUp)
+        {
+            var originalDate = NormalizePrecision(new ExtendedDateTime[] { extendedDateTime }, precision)[0];         // Ensure the original date is at the specified precision.
+            var roundedDate = (ExtendedDateTime)null;
+
+            switch (precision)
+            {
+                case ExtendedDateTimePrecision.Year:
+
+                    roundedDate = new ExtendedDateTime(originalDate.Year);
+
+                    if (roundUp && ExtendedDateTime.Comparer.Compare(originalDate, roundedDate) != 0)
+                    {
+                        return new ExtendedDateTime(originalDate.Year + 1);
+                    }
+
+                    return roundedDate;
+
+                case ExtendedDateTimePrecision.Month:
+
+                    roundedDate = new ExtendedDateTime(originalDate.Year, originalDate.Month.Value);
+
+                    if (roundUp && ExtendedDateTime.Comparer.Compare(originalDate, roundedDate) != 0)
+                    {
+                        var year = originalDate.Year;
+                        var month = originalDate.Month.Value + 1;
+
+                        if (month > 12)
+                        {
+                            month = 1;
+                            year++;
+                        }
+
+                        return new ExtendedDateTime(year, (byte)month);
+                    }
+
+                    return roundedDate;
+
+                case ExtendedDateTimePrecision.Day:
+
+                    roundedDate = new ExtendedDateTime(originalDate.Year, originalDate.Month.Value, originalDate.Day.Value);
+
+                    if (roundUp && ExtendedDateTime.Comparer.Compare(originalDate, roundedDate) != 0)
+                    {
+                        var year = originalDate.Year;
+                        var month = originalDate.Month.Value;
+                        var day = originalDate.Day.Value + 1;
+
+                        if (day > DaysInMonth(year, month))
+                        {
+                            day = 1;
+                            month++;
+                        }
+
+                        if (month > 12)
+                        {
+                            month = 1;
+                            year++;
+                        }
+
+                        return new ExtendedDateTime(year, (byte)month, (byte)day);
+                    }
+
+                    return roundedDate;
+
+                case ExtendedDateTimePrecision.Hour:
+
+                    roundedDate = new ExtendedDateTime(originalDate.Year, originalDate.Month.Value, originalDate.Day.Value, originalDate.Hour.Value, originalDate.UtcOffset.Value);
+
+                    if (roundUp && ExtendedDateTime.Comparer.Compare(originalDate, roundedDate) != 0)
+                    {
+                        var year = originalDate.Year;
+                        var month = originalDate.Month.Value;
+                        var day = originalDate.Day.Value;
+                        var hour = originalDate.Hour.Value + 1;
+
+                        if (hour > 23)
+                        {
+                            hour = 0;
+                            day++;
+                        }
+
+                        if (day > DaysInMonth(year, month))
+                        {
+                            day = 1;
+                            month++;
+                        }
+
+                        if (month > 12)
+                        {
+                            month = 1;
+                            year++;
+                        }
+
+                        return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, originalDate.UtcOffset.Value);
+                    }
+
+                    return roundedDate;
+
+                case ExtendedDateTimePrecision.Minute:
+
+                    roundedDate = new ExtendedDateTime(originalDate.Year, originalDate.Month.Value, originalDate.Day.Value, originalDate.Hour.Value, originalDate.Minute.Value, originalDate.UtcOffset.Value);
+
+                    if (roundUp && ExtendedDateTime.Comparer.Compare(originalDate, roundedDate) != 0)
+                    {
+                        var year = originalDate.Year;
+                        var month = originalDate.Month.Value;
+                        var day = originalDate.Day.Value;
+                        var hour = originalDate.Hour.Value;
+                        var minute = originalDate.Minute.Value + 1;
+
+                        if (minute > 59)
+                        {
+                            minute = 0;
+                            hour++;
+                        }
+
+                        if (hour > 23)
+                        {
+                            hour = 0;
+                            day++;
+                        }
+
+                        if (day > DaysInMonth(year, month))
+                        {
+                            day = 1;
+                            month++;
+                        }
+
+                        if (month > 12)
+                        {
+                            month = 1;
+                            year++;
+                        }
+
+                        return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, originalDate.UtcOffset.Value);
+                    }
+
+                    return roundedDate;
+
+                case ExtendedDateTimePrecision.Second:
+
+                    roundedDate = new ExtendedDateTime(originalDate.Year, originalDate.Month.Value, originalDate.Day.Value, originalDate.Hour.Value, originalDate.Minute.Value, originalDate.Second.Value, originalDate.UtcOffset.Value);
+
+                    if (roundUp && ExtendedDateTime.Comparer.Compare(originalDate, roundedDate) != 0)
+                    {
+                        var year = originalDate.Year;
+                        var month = originalDate.Month.Value;
+                        var day = originalDate.Day.Value;
+                        var hour = originalDate.Hour.Value;
+                        var minute = originalDate.Minute.Value;
+                        var second = originalDate.Second.Value + 1;
+
+                        if (second > 59)
+                        {
+                            second = 0;
+                            minute++;
+                        }
+
+                        if (minute > 59)
+                        {
+                            minute = 0;
+                            hour++;
+                        }
+
+                        if (hour > 23)
+                        {
+                            hour = 0;
+                            day++;
+                        }
+
+                        if (day > DaysInMonth(year, month))
+                        {
+                            day = 1;
+                            month++;
+                        }
+
+                        if (month > 12)
+                        {
+                            month = 1;
+                            year++;
+                        }
+
+                        return new ExtendedDateTime(year, (byte)month, (byte)day, (byte)hour, (byte)minute, (byte)second, originalDate.UtcOffset.Value);
+                    }
+
+                    return roundedDate;
+
+                default:
+
+                    break;
+            }
+
+            return roundedDate;
+        }
         public static double TotalMonths(ExtendedDateTime e1, ExtendedDateTime e2)
         {
             if (e1 == null)
@@ -669,139 +863,36 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentNullException("e2");
             }
 
-            var yearsBetween = e2.Year - e1.Year;               // We already accounted for the remainder of the start year, so we subtract one from the difference so that this year isnt counted.
+            var invert = e2 > e1;
 
-            var monthsRemainingInStartYear = 0;
+            var e3 = invert ? e1 : e2;
+            var e4 = invert ? e2 : e1;
 
-            if (e1.Month != null)
+            var difference = e4 - e3;
+
+            var years = 0;
+            var months = 0;
+            var days = difference.Days;
+
+            for (int year = e3.Year + 1; year < e4.Year; year++)                         // Add the years between the dates, excluding the starting year and ending year.
             {
-                yearsBetween--;
-
-                monthsRemainingInStartYear = 12 - e1.Month.Value;
+                days -= DaysInYear(year);
+                years++;
             }
 
-            var daysRemainingInStartMonth = 0;
-
-            if (e1.Day != null)
+            for (int i = e3.Month.Value + 1; i <= 12; i++)                               // Add the months remaining in the starting year, excluding the starting month.
             {
-                monthsRemainingInStartYear--;                            // When we "finish" the days in the month, we are effectively removing a month.
-
-                daysRemainingInStartMonth = DaysInMonth(e1.Year, e1.Month.Value) - e1.Day.Value;
+                days -= DaysInMonth(e3.Year, i);
+                months++;
             }
 
-            var hoursRemainingInStartDay = 0;
-
-            if (e1.Hour != null)
+            for (int i = e4.Month.Value - 1; i >= 1; i--)                                // Add the months in the ending year that are before the ending month.
             {
-                daysRemainingInStartMonth--;
-
-                hoursRemainingInStartDay = 24 - e1.Hour.Value;
+                days -= DaysInMonth(e4.Year, i);
+                months++;
             }
 
-            var minutesRemainingInStartHour = 0;
-
-            if (e1.Minute != null)
-            {
-                hoursRemainingInStartDay--;
-
-                minutesRemainingInStartHour = 60 - e1.Minute.Value;
-            }
-
-            var secondsRemainingInStartMinute = 0;
-
-            if (e1.Second != null)
-            {
-                minutesRemainingInStartHour--;
-
-                secondsRemainingInStartMinute = 60 - e1.Second.Value;
-            }
-
-            var secondsIntoEndMinute = 0;
-
-            if (e2.Second != null)
-            {
-                secondsIntoEndMinute = e2.Second.Value;
-            }
-
-            var minutesIntoEndHour = 0;
-
-            if (e2.Minute != null)
-            {
-                minutesIntoEndHour = e2.Minute.Value;
-            }
-
-            var hoursIntoEndDay = 0;
-
-            if (e2.Hour != null)
-            {
-                hoursIntoEndDay = e2.Hour.Value;
-            }
-
-            var daysIntoEndMonth = 0;
-
-            if (e2.Day != null)
-            {
-                daysIntoEndMonth = e2.Day.Value;
-            }
-
-            var monthsIntoEndYear = 0;
-
-            if (e2.Month != null)
-            {
-                monthsIntoEndYear = e2.Month.Value;
-            }
-
-            double seconds = secondsRemainingInStartMinute + secondsIntoEndMinute;
-            double minutes = minutesRemainingInStartHour + minutesIntoEndHour;
-            double hours = hoursRemainingInStartDay + hoursIntoEndDay;
-            double days = daysRemainingInStartMonth + daysIntoEndMonth;
-            double months = monthsRemainingInStartYear + monthsIntoEndYear;
-            double years = yearsBetween;
-
-            if (seconds > 59)
-            {
-                seconds -= 60;
-                minutes++;
-            }
-
-            if (minutes > 59)
-            {
-                minutes -= 60;
-                hours++;
-            }
-
-            if (hours > 23)
-            {
-                hours -= 24;
-                days++;
-            }
-
-            var monthIncrement = e2.Month.Value;
-            var yearIncrement = e2.Year;
-
-            var daysInMonth = DaysInMonth(yearIncrement, monthIncrement);
-
-            while (days > daysInMonth)
-            {
-                days -= daysInMonth;
-
-                if (monthIncrement + 1 > 12)
-                {
-                    months -= 12;
-                    years++;
-                    yearIncrement++;
-                    monthIncrement = 1;
-                }
-                else
-                {
-                    months++;
-                    monthIncrement++;
-                }
-
-                daysInMonth = DaysInMonth(yearIncrement, monthIncrement);
-            }
-
-            return new double[] { years, months, days, hours, minutes, seconds, daysInMonth };
+            return invert ? new double[] { -years, -months, -days, -difference.Hours, -difference.Minutes, -difference.Seconds, DaysInMonth(e4.Year, e4.Month.Value) } : new double[] { years, months, days, difference.Hours, difference.Minutes, difference.Seconds, DaysInMonth(e4.Year, e4.Month.Value) };
         }
     }
 }

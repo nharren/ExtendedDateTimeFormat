@@ -368,11 +368,6 @@ namespace System.ExtendedDateTimeFormat
             return Comparer.Compare(this, other) == 0;
         }
 
-        public bool Equals(ExtendedDateTime other, bool ignorePrecision)
-        {
-            return Comparer.Compare(this, other, ignorePrecision) == 0;
-        }
-
         public override int GetHashCode()
         {
             int hash = Year;        // Year maximum = 32 bits.
@@ -428,6 +423,11 @@ namespace System.ExtendedDateTimeFormat
         public void ReadXml(XmlReader reader)
         {
             Parse(reader.ReadString(), this);
+        }
+
+        public ExtendedDateTime ToPrecision(ExtendedDateTimePrecision precision, bool roundUp)
+        {
+            return ExtendedDateTimeCalculator.ToPrecision(this, precision, roundUp);
         }
 
         public override string ToString()
