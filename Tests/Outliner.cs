@@ -55,7 +55,7 @@ namespace Tests
                 stringBuilder.AppendLine("YearFlags: ".Indent(startingIndent + 1) + extendedDateTime.YearFlags.ToString());
             }
 
-            if (extendedDateTime.Month != null)
+            if (extendedDateTime.Month != 1 || extendedDateTime.Precision > ExtendedDateTimePrecision.Year)
             {
                 stringBuilder.AppendLine("Month: ".Indent(startingIndent + 1) + extendedDateTime.Month);
             }
@@ -65,7 +65,7 @@ namespace Tests
                 stringBuilder.AppendLine("MonthFlags: ".Indent(startingIndent + 1) + extendedDateTime.MonthFlags.ToString());
             }
 
-            if (extendedDateTime.Day != null)
+            if (extendedDateTime.Day != 1 || extendedDateTime.Precision > ExtendedDateTimePrecision.Month)
             {
                 stringBuilder.AppendLine("Day: ".Indent(startingIndent + 1) + extendedDateTime.Day);
             }
@@ -75,17 +75,17 @@ namespace Tests
                 stringBuilder.AppendLine("DayFlags: ".Indent(startingIndent + 1) + extendedDateTime.DayFlags.ToString());
             }
 
-            if (extendedDateTime.Hour != null)
+            if (extendedDateTime.Hour != 0 || extendedDateTime.Precision > ExtendedDateTimePrecision.Day)
             {
                 stringBuilder.AppendLine("Hour: ".Indent(startingIndent + 1) + extendedDateTime.Hour.ToString());
             }
 
-            if (extendedDateTime.Minute != null)
+            if (extendedDateTime.Minute != 0 || extendedDateTime.Precision > ExtendedDateTimePrecision.Hour)
             {
                 stringBuilder.AppendLine("Minute: ".Indent(startingIndent + 1) + extendedDateTime.Minute.ToString());
             }
 
-            if (extendedDateTime.Second != null)
+            if (extendedDateTime.Second != 0 || extendedDateTime.Precision > ExtendedDateTimePrecision.Minute)
             {
                 stringBuilder.AppendLine("Second: ".Indent(startingIndent + 1) + extendedDateTime.Second.ToString());
             }
@@ -125,7 +125,7 @@ namespace Tests
                 stringBuilder.AppendLine("IsUnknown: ".Indent(startingIndent + 1) + extendedDateTime.IsUnknown.ToString());
             }
 
-            if (extendedDateTime.UtcOffset != null)
+            if (extendedDateTime.Precision > ExtendedDateTimePrecision.Day)
             {
                 stringBuilder.AppendLine("UtcOffset: ".Indent(startingIndent + 1) + extendedDateTime.UtcOffset.ToString());
             }

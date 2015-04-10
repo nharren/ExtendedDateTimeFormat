@@ -21,23 +21,18 @@ namespace System.ExtendedDateTimeFormat.Internal.Comparers
                 return -1;
             }
 
-            var normalizedPrecisions = ExtendedDateTimeCalculator.NormalizePrecision(new ExtendedDateTime[] { x, y });
+            long longXYear = x.Year;
+            long longYYear = y.Year;
 
-            var a = normalizedPrecisions[0];
-            var b = normalizedPrecisions[1];
-
-            long longXYear = a.Year;
-            long longYYear = b.Year;
-
-            if (a.YearExponent.HasValue)
+            if (x.YearExponent.HasValue)
             {
                 try
                 {
-                    longXYear *= Convert.ToInt64(Math.Pow(10, a.YearExponent.Value));
+                    longXYear *= Convert.ToInt64(Math.Pow(10, x.YearExponent.Value));
                 }
                 catch (Exception)
                 {
-                    if (a.Year < 0)
+                    if (x.Year < 0)
                     {
                         longXYear = long.MinValue;
                     }
@@ -48,15 +43,15 @@ namespace System.ExtendedDateTimeFormat.Internal.Comparers
                 }
             }
 
-            if (b.YearExponent.HasValue)
+            if (y.YearExponent.HasValue)
             {
                 try
                 {
-                    longYYear *= Convert.ToInt64(Math.Pow(10, b.YearExponent.Value));
+                    longYYear *= Convert.ToInt64(Math.Pow(10, y.YearExponent.Value));
                 }
                 catch (Exception)
                 {
-                    if (b.Year < 0)
+                    if (y.Year < 0)
                     {
                         longYYear = long.MinValue;
                     }
@@ -76,127 +71,67 @@ namespace System.ExtendedDateTimeFormat.Internal.Comparers
                 return -1;
             }
 
-            if (a.Season != Season.Undefined || b.Season != Season.Undefined)
+            if (x.Season != Season.Undefined || y.Season != Season.Undefined)
             {
-                if (b.Season == Season.Undefined)
+                if (y.Season == Season.Undefined)
                 {
                     return 1;
                 }
-                else if (a.Season == Season.Undefined)
+                else if (x.Season == Season.Undefined)
                 {
                     return -1;
                 }
-                else if (a.Season > b.Season)
+                else if (x.Season > y.Season)
                 {
                     return 1;
                 }
-                else if (a.Season < b.Season)
+                else if (x.Season < y.Season)
                 {
                     return -1;
                 }
             }
 
-            if (a.Month == null && b.Month == null)
-            {
-                return 0;
-            }
-            else if (b.Month == null)
+            if (x.Month > y.Month)
             {
                 return 1;
             }
-            else if (a.Month == null)
-            {
-                return -1;
-            }
-            else if (a.Month > b.Month)
-            {
-                return 1;
-            }
-            else if (a.Month < b.Month)
+            else if (x.Month < y.Month)
             {
                 return -1;
             }
 
-            if (a.Day == null && b.Day == null)
-            {
-                return 0;
-            }
-            else if (b.Day == null)
+            if (x.Day > y.Day)
             {
                 return 1;
             }
-            else if (a.Day == null)
-            {
-                return -1;
-            }
-            else if (a.Day > b.Day)
-            {
-                return 1;
-            }
-            else if (a.Day < b.Day)
+            else if (x.Day < y.Day)
             {
                 return -1;
             }
 
-            if (a.Hour == null && b.Hour == null)
-            {
-                return 0;
-            }
-            else if (b.Hour == null)
+            if (x.Hour > y.Hour)
             {
                 return 1;
             }
-            else if (a.Hour == null)
-            {
-                return -1;
-            }
-            else if (a.Hour > b.Hour)
-            {
-                return 1;
-            }
-            else if (a.Hour < b.Hour)
+            else if (x.Hour < y.Hour)
             {
                 return -1;
             }
 
-            if (a.Minute == null && b.Minute == null)
-            {
-                return 0;
-            }
-            else if (b.Minute == null)
+            if (x.Minute > y.Minute)
             {
                 return 1;
             }
-            else if (a.Minute == null)
-            {
-                return -1;
-            }
-            else if (a.Minute > b.Minute)
-            {
-                return 1;
-            }
-            else if (a.Minute < b.Minute)
+            else if (x.Minute < y.Minute)
             {
                 return -1;
             }
 
-            if (a.Second == null && b.Second == null)
-            {
-                return 0;
-            }
-            else if (b.Second == null)
+            if (x.Second > y.Second)
             {
                 return 1;
             }
-            else if (a.Second == null)
-            {
-                return -1;
-            }
-            else if (a.Second > b.Second)
-            {
-                return 1;
-            }
-            else if (a.Second < b.Second)
+            else if (x.Second < y.Second)
             {
                 return -1;
             }

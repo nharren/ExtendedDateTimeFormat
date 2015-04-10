@@ -5,3 +5,4 @@
 5. Replace IExtremityProvider with implementations of IEnumerable<ExtendedDateTime> on each object.
 6. Upgrade tests from string output to UserControls for each entry with green or red highlighting indicating pass/fail. 
 7. Implement more features from ISO-8601:2004(E)
+8. Move scientific notation to separate class.

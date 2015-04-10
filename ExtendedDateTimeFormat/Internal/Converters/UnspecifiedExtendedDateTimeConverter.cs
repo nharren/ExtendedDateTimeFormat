@@ -179,8 +179,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
                 monthEndBuffer.Add(unspecifiedExtendedDateTime.Month[1]);
             }
 
-            var monthStart = byte.Parse(new string(monthStartBuffer.ToArray()));
-            var monthEnd = byte.Parse(new string(monthEndBuffer.ToArray()));
+            var monthStart = int.Parse(new string(monthStartBuffer.ToArray()));
+            var monthEnd = int.Parse(new string(monthEndBuffer.ToArray()));
 
             if (unspecifiedExtendedDateTime.Day == null)                                              // Day
             {
@@ -286,50 +286,50 @@ namespace System.ExtendedDateTimeFormat.Internal.Converters
                 dayEndBuffer.Add(unspecifiedExtendedDateTime.Day[1]);
             }
 
-            var dayStart = byte.Parse(new string(dayStartBuffer.ToArray()));
-            var dayEnd = byte.Parse(new string(dayEndBuffer.ToArray()));
+            var dayStart = int.Parse(new string(dayStartBuffer.ToArray()));
+            var dayEnd = int.Parse(new string(dayEndBuffer.ToArray()));
 
             var rangeBuffer = new List<ExtendedDateTime>();                            // Collects consecutive dates, which are then converted into an ExtendedDateTimeRange.
 
             extendedDateTimePossibilityCollection.Clear();
 
-            for (int year = yearStart; year <= yearEnd; year++)
+            for (var year = yearStart; year <= yearEnd; year++)
             {
-                for (byte month = monthStart; month <= monthEnd; month++)
+                for (var month = monthStart; month <= monthEnd; month++)
                 {
-                    for (byte day = dayStart; day <= dayEnd; day++)
+                    for (var day = dayStart; day <= dayEnd; day++)
                     {
                         if (day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
                         {
                             if (rangeBuffer.Count == 1)
                             {
-                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTime { Year = year, Month = month, Day = day });
+                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTime(year, month, day));
 
                                 rangeBuffer.Clear();
                             }
                             else if (rangeBuffer.Count > 0)
                             {
-                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTimeRange { Start = rangeBuffer.First(), End = rangeBuffer.Last() });
+                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTimeRange(rangeBuffer.First(), rangeBuffer.Last()));
 
                                 rangeBuffer.Clear();
                             }
                         }
                         else
                         {
-                            rangeBuffer.Add(new ExtendedDateTime { Year = year, Month = month, Day = day });
+                            rangeBuffer.Add(new ExtendedDateTime(year, month, day));
                         }
 
                         if (day == dayEnd)
                         {
                             if (rangeBuffer.Count == 1)
                             {
-                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTime { Year = year, Month = month, Day = day });
+                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTime(year, month, day));
 
                                 rangeBuffer.Clear();
                             }
                             else if (rangeBuffer.Count > 0)
                             {
-                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTimeRange { Start = rangeBuffer.First(), End = rangeBuffer.Last() });
+                                extendedDateTimePossibilityCollection.Add(new ExtendedDateTimeRange(rangeBuffer.First(), rangeBuffer.Last()));
 
                                 rangeBuffer.Clear();
                             }

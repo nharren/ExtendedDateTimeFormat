@@ -248,7 +248,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                         throw new ParseException("The month must be a number.", componentString);
                     }
 
-                    var monthInteger = byte.Parse(componentString);
+                    var monthInteger = int.Parse(componentString);
 
                     if (monthInteger < 1 || monthInteger > 12)
                     {
@@ -279,14 +279,14 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The day must be a number.", componentString);
                 }
 
-                var dayInteger = byte.Parse(componentString);
+                var dayInteger = int.Parse(componentString);
 
                 if (dayInteger < 1 || dayInteger > 31)
                 {
                     throw new ParseException("The day must be between 1 and 31.", componentString);
                 }
 
-                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year, extendedDateTime.Month.Value);
+                var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(extendedDateTime.Year, extendedDateTime.Month);
 
                 if (dayInteger > daysInMonth)
                 {
@@ -327,7 +327,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The hour must be two digits long.", componentString);
                 }
 
-                extendedDateTime.Hour = byte.Parse(componentString);
+                extendedDateTime.Hour = int.Parse(componentString);
 
                 timeComponentIndex++;
             }
@@ -342,7 +342,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The minute must be two digits long.", componentString);
                 }
 
-                extendedDateTime.Minute = byte.Parse(componentString);
+                extendedDateTime.Minute = int.Parse(componentString);
 
                 timeComponentIndex++;
             }
@@ -357,7 +357,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     throw new ParseException("The second must be two digits long.", componentString);
                 }
 
-                extendedDateTime.Second = byte.Parse(componentString);
+                extendedDateTime.Second = int.Parse(componentString);
 
                 timeComponentIndex++;
             }

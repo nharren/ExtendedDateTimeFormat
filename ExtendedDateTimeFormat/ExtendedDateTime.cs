@@ -26,7 +26,13 @@ namespace System.ExtendedDateTimeFormat
 
         private static ExtendedDateTimeComparer comparer;
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, byte second, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
+        private int day = 1;
+
+        private int month = 1;
+
+        private TimeSpan utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
             : this(year, month, day, hour, minute, second, utcOffset)
         {
             DayFlags = dayFlags;
@@ -34,7 +40,7 @@ namespace System.ExtendedDateTimeFormat
             YearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
             : this(year, month, day, hour, minute, utcOffset)
         {
             DayFlags = dayFlags;
@@ -42,7 +48,7 @@ namespace System.ExtendedDateTimeFormat
             YearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
             : this(year, month, day, hour, utcOffset)
         {
             DayFlags = dayFlags;
@@ -50,7 +56,7 @@ namespace System.ExtendedDateTimeFormat
             YearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
+        public ExtendedDateTime(int year, int month, int day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
             : this(year, month, day)
         {
             DayFlags = dayFlags;
@@ -58,7 +64,7 @@ namespace System.ExtendedDateTimeFormat
             YearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, byte month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0)
+        public ExtendedDateTime(int year, int month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0)
             : this(year, month)
         {
             MonthFlags = monthFlags;
@@ -71,7 +77,7 @@ namespace System.ExtendedDateTimeFormat
             YearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, byte second, TimeSpan utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset)
             : this(year, month, day, hour, minute, utcOffset)
         {
             if (second < 0 || second > 59)
@@ -83,7 +89,7 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Second;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, byte minute, TimeSpan utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset)
             : this(year, month, day, hour, utcOffset)
         {
             if (minute < 0 || minute > 59)
@@ -95,7 +101,7 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Minute;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day, byte hour, TimeSpan utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset)
             : this(year, month, day)
         {
             if (hour < 0 || hour > 23)
@@ -114,7 +120,7 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Hour;
         }
 
-        public ExtendedDateTime(int year, byte month, byte day)
+        public ExtendedDateTime(int year, int month, int day)
             : this(year, month)
         {
             if (day < 1 || day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
@@ -126,7 +132,7 @@ namespace System.ExtendedDateTimeFormat
             Precision = ExtendedDateTimePrecision.Day;
         }
 
-        public ExtendedDateTime(int year, byte month)
+        public ExtendedDateTime(int year, int month)
             : this(year)
         {
             if (month < 1 || month > 12)
@@ -184,20 +190,39 @@ namespace System.ExtendedDateTimeFormat
                 return DateTimeOffset.Now.ToExtendedDateTime();
             }
         }
-
-        public byte? Day { get; internal set; }
+        public int Day
+        {
+            get
+            {
+                return day;
+            }
+            internal set
+            {
+                day = value;
+            }
+        }
 
         public ExtendedDateTimeFlags DayFlags { get; internal set; }
 
-        public byte? Hour { get; internal set; }
+        public int Hour { get; internal set; }
 
         public bool IsOpen { get; internal set; }
 
         public bool IsUnknown { get; internal set; }
 
-        public byte? Minute { get; internal set; }
+        public int Minute { get; internal set; }
 
-        public byte? Month { get; internal set; }
+        public int Month
+        {
+            get
+            {
+                return month;
+            }
+            internal set
+            {
+                month = value;
+            }
+        }
 
         public ExtendedDateTimeFlags MonthFlags { get; internal set; }
 
@@ -209,9 +234,19 @@ namespace System.ExtendedDateTimeFormat
 
         public string SeasonQualifier { get; internal set; }
 
-        public byte? Second { get; internal set; }
+        public int Second { get; internal set; }
 
-        public TimeSpan? UtcOffset { get; internal set; }
+        public TimeSpan UtcOffset
+        {
+            get
+            {
+                return utcOffset;
+            }
+            internal set
+            {
+                utcOffset = value;
+            }
+        }
 
         public int Year { get; internal set; }
 
@@ -226,7 +261,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime { Year = year };
         }
 
-        public static ExtendedDateTime FromScientificNotation(int significand, byte exponent, byte precision)
+        public static ExtendedDateTime FromScientificNotation(int significand, int exponent, int precision)
         {
             if (exponent < 1)
             {
@@ -241,7 +276,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime { Year = significand, YearExponent = exponent, YearPrecision = precision, Precision = ExtendedDateTimePrecision.Year };
         }
 
-        public static ExtendedDateTime FromScientificNotation(int significand, byte exponent)
+        public static ExtendedDateTime FromScientificNotation(int significand, int exponent)
         {
             if (exponent < 1)
             {
@@ -370,39 +405,7 @@ namespace System.ExtendedDateTimeFormat
 
         public override int GetHashCode()
         {
-            int hash = Year;        // Year maximum = 32 bits.
-
-            if (Month.HasValue)     // Month maximum = 4 bits.
-            {
-                hash ^= (Month.Value << 28);
-            }
-
-            if (Day.HasValue)       // Day maximum = 5 bits.
-            {
-                hash ^= (Day.Value << 22);
-            }
-
-            if (Hour.HasValue)      // Hour maximum = 6 bits.
-            {
-                hash ^= (Hour.Value << 14);
-            }
-
-            if (Minute.HasValue)    // Minute maximum = 6 bits.
-            {
-                hash ^= (Minute.Value << 8);
-            }
-
-            if (Second.HasValue)    // Hour maximum = 6 bits.
-            {
-                hash ^= (Second.Value << 6);
-            }
-
-            if (UtcOffset != null)
-            {
-                hash ^= UtcOffset.Value.GetHashCode();
-            }
-
-            return hash;
+            return Year ^ Month ^ Day ^ Hour ^ Minute ^ Second;
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

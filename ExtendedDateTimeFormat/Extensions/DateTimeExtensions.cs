@@ -4,7 +4,7 @@
     {
         public static ExtendedDateTime ToExtendedDateTime(this DateTime d)
         {
-            return new ExtendedDateTime(d.Year, (byte)d.Month, (byte)d.Day, (byte)d.Hour, (byte)d.Minute, (byte)d.Second, TimeZoneInfo.Local.BaseUtcOffset);
+            return new ExtendedDateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, TimeZoneInfo.Local.BaseUtcOffset);
         }
     }
 }

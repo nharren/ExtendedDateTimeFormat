@@ -46,7 +46,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 stringBuilder.Append('p').Append(extendedDateTime.YearPrecision);
             }
 
-            if (extendedDateTime.Month.HasValue)
+            if (extendedDateTime.Month != 1 || extendedDateTime.Precision > ExtendedDateTimePrecision.Year)
             {
                 stringBuilder.Append("-{ms}").AppendFormat("{0:D2}", extendedDateTime.Month).Append("{me}");
             }
@@ -63,39 +63,39 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                 stringBuilder.Append("{se}");
             }
 
-            if (extendedDateTime.Day.HasValue)
+            if (extendedDateTime.Day != 1 || extendedDateTime.Precision > ExtendedDateTimePrecision.Month)
             {
                 stringBuilder.Append("-{ds}").AppendFormat("{0:D2}", extendedDateTime.Day);
             }
 
             stringBuilder.Append("{de}");
 
-            InsertFlags(extendedDateTime, ref stringBuilder);
+            InsertFlags(extendedDateTime, stringBuilder);
 
-            if (extendedDateTime.Hour.HasValue)
+            if (extendedDateTime.Hour != 0 || extendedDateTime.Precision > ExtendedDateTimePrecision.Day)
             {
                 stringBuilder.AppendFormat("T{0:D2}", extendedDateTime.Hour);
             }
 
-            if (extendedDateTime.Minute.HasValue)
+            if (extendedDateTime.Minute != 0 || extendedDateTime.Precision > ExtendedDateTimePrecision.Hour)
             {
                 stringBuilder.AppendFormat(":{0:D2}", extendedDateTime.Minute);
             }
 
-            if (extendedDateTime.Second.HasValue)
+            if (extendedDateTime.Second != 0 || extendedDateTime.Precision > ExtendedDateTimePrecision.Minute)
             {
                 stringBuilder.AppendFormat(":{0:D2}", extendedDateTime.Second);
             }
 
-            if (extendedDateTime.UtcOffset != null)
+            if (extendedDateTime.Precision > ExtendedDateTimePrecision.Day)
             {
-                if (extendedDateTime.UtcOffset.Value.Hours == 0 && extendedDateTime.UtcOffset.Value.Minutes == 0)
+                if (extendedDateTime.UtcOffset.Hours == 0 && extendedDateTime.UtcOffset.Minutes == 0)
                 {
                     stringBuilder.Append('Z');
                 }
                 else
                 {
-                    if (extendedDateTime.UtcOffset.Value.Hours < 0)
+                    if (extendedDateTime.UtcOffset.Hours < 0)
                     {
                         stringBuilder.Append('-');
                     }
@@ -104,19 +104,19 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
                         stringBuilder.Append('+');
                     }
 
-                    stringBuilder.AppendFormat("{0:D2}", Math.Abs(extendedDateTime.UtcOffset.Value.Hours));
+                    stringBuilder.AppendFormat("{0:D2}", Math.Abs(extendedDateTime.UtcOffset.Hours));
                 }
 
-                if (extendedDateTime.UtcOffset.Value.Minutes != 0)
+                if (extendedDateTime.UtcOffset.Minutes != 0)
                 {
-                    stringBuilder.AppendFormat(":{0:D2}", extendedDateTime.UtcOffset.Value.Minutes);
+                    stringBuilder.AppendFormat(":{0:D2}", extendedDateTime.UtcOffset.Minutes);
                 }
             }
 
             return stringBuilder.ToString();
         }
 
-        private static void InsertFlags(ExtendedDateTime extendedDateTime, ref StringBuilder stringBuilder)      // Combinations generated from http://www.mathsisfun.com/combinatorics/combinations-permutations-calculator.html
+        private static void InsertFlags(ExtendedDateTime extendedDateTime, StringBuilder stringBuilder)      // Combinations generated from http://www.mathsisfun.com/combinatorics/combinations-permutations-calculator.html
         {
             var da = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
             var du = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
