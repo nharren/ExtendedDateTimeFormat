@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.ExtendedDateTimeFormat;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tests
 {
     public static class StringSerializationTestEntries
     {
-        public static StringSerializationTestEntry[] DateEntries = 
+        public static StringSerializationTestEntry[] DateEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTime(2001, 2, 3), "2001-02-03"),
             new StringSerializationTestEntry(new ExtendedDateTime(2008, 12), "2008-12"),
@@ -18,14 +16,14 @@ namespace Tests
             new StringSerializationTestEntry(new ExtendedDateTime(0), "0000")
         };
 
-        public static StringSerializationTestEntry[] DateAndTimeEntries = 
+        public static StringSerializationTestEntry[] DateAndTimeEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTime(2001, 2, 3, 9, 30, 1, TimeZoneInfo.Local.BaseUtcOffset), "2001-02-03T09:30:01-08"),
             new StringSerializationTestEntry(new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.Zero), "2004-01-01T10:10:10Z"),
             new StringSerializationTestEntry(new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.FromHours(5)), "2004-01-01T10:10:10+05")
         };
 
-        public static StringSerializationTestEntry[] IntervalEntries = 
+        public static StringSerializationTestEntry[] IntervalEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1964), new ExtendedDateTime(2008)), "1964/2008"),
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6), new ExtendedDateTime(2006, 8)), "2004-06/2006-08"),
@@ -39,7 +37,7 @@ namespace Tests
             .Concat(DateAndTimeEntries)
             .Concat(IntervalEntries);
 
-        public static StringSerializationTestEntry[] UncertainOrApproximateEntries = 
+        public static StringSerializationTestEntry[] UncertainOrApproximateEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain), "1984?"),
             new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), "2004-06?"),
@@ -48,7 +46,7 @@ namespace Tests
             new StringSerializationTestEntry(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate), "1984?~")
         };
 
-        public static StringSerializationTestEntry[] UnspecifiedEntries = 
+        public static StringSerializationTestEntry[] UnspecifiedEntries =
         {
             new StringSerializationTestEntry(new UnspecifiedExtendedDateTime("199u"), "199u"),
             new StringSerializationTestEntry(new UnspecifiedExtendedDateTime("19uu"), "19uu"),
@@ -57,7 +55,7 @@ namespace Tests
             new StringSerializationTestEntry(new UnspecifiedExtendedDateTime("1999", "uu", "uu"), "1999-uu-uu")
         };
 
-        public static StringSerializationTestEntry[] L1ExtendedIntervalEntries = 
+        public static StringSerializationTestEntry[] L1ExtendedIntervalEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(ExtendedDateTime.Unknown, new ExtendedDateTime(2006)), "unknown/2006"),
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1), ExtendedDateTime.Unknown), "2004-06-01/unknown"),
@@ -70,14 +68,14 @@ namespace Tests
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), new ExtendedDateTime(2004, 8, 8, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate)), "1984-06-02?/2004-08-08~"),
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), ExtendedDateTime.Unknown), "1984-06-02?/unknown")
         };
-            
-        public static StringSerializationTestEntry[] YearExceedingFourDigitsEntries = 
+
+        public static StringSerializationTestEntry[] YearExceedingFourDigitsEntries =
         {
             new StringSerializationTestEntry(ExtendedDateTime.FromLongYear(170000002), "y170000002"),
             new StringSerializationTestEntry(ExtendedDateTime.FromLongYear(-170000002), "y-170000002")
         };
 
-        public static StringSerializationTestEntry[] SeasonEntries = 
+        public static StringSerializationTestEntry[] SeasonEntries =
         {
             new StringSerializationTestEntry(ExtendedDateTime.FromSeason(2001, Season.Spring), "2001-21"),
             new StringSerializationTestEntry(ExtendedDateTime.FromSeason(2001, Season.Summer), "2001-22"),
@@ -91,7 +89,7 @@ namespace Tests
             .Concat(YearExceedingFourDigitsEntries)
             .Concat(SeasonEntries);
 
-        public static StringSerializationTestEntry[] PartialUncertainOrApproximateEntries = 
+        public static StringSerializationTestEntry[] PartialUncertainOrApproximateEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Uncertain), "2004?-06-11"),
             new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Approximate, monthFlags: ExtendedDateTimeFlags.Approximate), "2004-06~-11"),
@@ -106,7 +104,7 @@ namespace Tests
             new StringSerializationTestEntry(ExtendedDateTime.FromSeason(2011, Season.Autumn, yearFlags: ExtendedDateTimeFlags.Approximate, seasonFlags: ExtendedDateTimeFlags.Approximate), "2011-23~")
         };
 
-        public static StringSerializationTestEntry[] PartialUnspecifiedEntries = 
+        public static StringSerializationTestEntry[] PartialUnspecifiedEntries =
         {
             new StringSerializationTestEntry(new UnspecifiedExtendedDateTime("156u", "12", "25"), "156u-12-25"),
             new StringSerializationTestEntry(new UnspecifiedExtendedDateTime("15uu", "12", "25"), "15uu-12-25"),
@@ -114,7 +112,7 @@ namespace Tests
             new StringSerializationTestEntry(new UnspecifiedExtendedDateTime("1560", "uu", "25"), "1560-uu-25")
         };
 
-        public static StringSerializationTestEntry[] OneOfASetEntries = 
+        public static StringSerializationTestEntry[] OneOfASetEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTimePossibilityCollection { new ExtendedDateTime(1667), new ExtendedDateTime(1668), new ExtendedDateTimeRange(new ExtendedDateTime(1670), new ExtendedDateTime(1672)) }, "[1667,1668,1670..1672]"),
             new StringSerializationTestEntry(new ExtendedDateTimePossibilityCollection { new ExtendedDateTimeRange(null, new ExtendedDateTime(1760, 12, 3)) }, "[..1760-12-03]"),
@@ -123,19 +121,19 @@ namespace Tests
             new StringSerializationTestEntry(new ExtendedDateTimePossibilityCollection { new ExtendedDateTime(1667), new ExtendedDateTime(1760, 12) }, "[1667,1760-12]")
         };
 
-        public static StringSerializationTestEntry[] MultipleDateEntries = 
+        public static StringSerializationTestEntry[] MultipleDateEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTimeCollection { new ExtendedDateTime(1667), new ExtendedDateTime(1668), new ExtendedDateTimeRange(new ExtendedDateTime(1670), new ExtendedDateTime(1672)) }, "{1667,1668,1670..1672}"),
             new StringSerializationTestEntry(new ExtendedDateTimeCollection { new ExtendedDateTime(1960), new ExtendedDateTime(1961, 12) }, "{1960,1961-12}"),
         };
 
-        public static StringSerializationTestEntry[] L2ExtendedIntervalEntries = 
+        public static StringSerializationTestEntry[] L2ExtendedIntervalEntries =
         {
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1, dayFlags: ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, 6, 20, dayFlags: ExtendedDateTimeFlags.Approximate)), "2004-06-(01)~/2004-06-(20)~"),
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new UnspecifiedExtendedDateTime("2004", "06", "uu"), new ExtendedDateTime(2004, 7, 3)), "2004-06-uu/2004-07-03")
         };
 
-        public static StringSerializationTestEntry[] ExponentialFormOfYearsExceedingFourDigitsEntries = 
+        public static StringSerializationTestEntry[] ExponentialFormOfYearsExceedingFourDigitsEntries =
         {
             new StringSerializationTestEntry(ExtendedDateTime.FromScientificNotation(17, 7), "y17e7"),
             new StringSerializationTestEntry(ExtendedDateTime.FromScientificNotation(-17, 7), "y-17e7"),
@@ -149,7 +147,7 @@ namespace Tests
             .Concat(L2ExtendedIntervalEntries)
             .Concat(ExponentialFormOfYearsExceedingFourDigitsEntries);
 
-        public static readonly IEnumerable<StringSerializationTestEntry> SpecificationStrings = L0Entries
+        public static readonly IEnumerable<StringSerializationTestEntry> SpecificationFeatures = L0Entries
             .Concat(L1ExtensionEntries)
             .Concat(L2ExtensionEntries);
     }

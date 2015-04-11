@@ -23,6 +23,11 @@ namespace System.ExtendedDateTimeFormat
         {
         }
 
+        public TimeSpan Span()
+        {
+            return End.Latest() - Start.Earliest();
+        }
+
         protected ExtendedDateTimeInterval(SerializationInfo info, StreamingContext context)
         {
             if (info == null)

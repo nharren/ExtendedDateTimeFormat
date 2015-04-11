@@ -18,7 +18,7 @@
 
             if (extendedDateTimeRange == null)
             {
-                extendedDateTimeRange = new ExtendedDateTimeRange(); 
+                extendedDateTimeRange = new ExtendedDateTimeRange();
             }
 
             var startString = rangeParts[0];
@@ -35,7 +35,7 @@
 
             if (string.IsNullOrEmpty(rangeParts[1]))
             {
-                extendedDateTimeRange.Start = ExtendedDateTime.Maximum;
+                extendedDateTimeRange.End = ExtendedDateTime.Maximum;
             }
             else
             {

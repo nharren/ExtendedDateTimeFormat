@@ -12,8 +12,23 @@ namespace System.ExtendedDateTimeFormat
     {
         public ExtendedDateTimeRange(ISingleExtendedDateTimeType start, ISingleExtendedDateTimeType end)
         {
-            Start = start;
-            End = end;
+            if (start == null)
+            {
+                Start = ExtendedDateTime.Minimum;
+            }
+            else
+            {
+                Start = start;
+            }
+
+            if (end == null)
+            {
+                End = ExtendedDateTime.Maximum;
+            }
+            else
+            {
+                End = end;
+            }
         }
 
         internal ExtendedDateTimeRange()

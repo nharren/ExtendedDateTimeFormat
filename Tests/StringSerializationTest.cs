@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ExtendedDateTimeFormat;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Tests
 {
@@ -13,7 +8,7 @@ namespace Tests
         {
             Name = name;
             Entries = entries;
-            Category = "Serialization to String";
+            Category = "Serializing to String";
         }
 
         public IEnumerable<StringSerializationTestEntry> Entries { get; set; }
@@ -21,6 +16,6 @@ namespace Tests
         public override void Begin()
         {
             Worker.RunWorkerAsync();
-        }     
+        }
     }
 }

@@ -124,7 +124,7 @@ namespace System.ExtendedDateTimeFormat
                 }
             }
 
-            if (DaysInMonth(year, month) > e.Day)
+            if (e.Day > DaysInMonth(year, month))
             {
                 throw new InvalidOperationException("The day is greater than the number of days in the resulting month.");
             }
@@ -420,7 +420,7 @@ namespace System.ExtendedDateTimeFormat
                 }
             }
 
-            if (DaysInMonth(year, month) > e.Day)
+            if (e.Day > DaysInMonth(year, month))
             {
                 throw new InvalidOperationException("The day is greater than the number of days in the resulting month.");
             }

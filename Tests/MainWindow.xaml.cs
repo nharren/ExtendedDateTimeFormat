@@ -13,27 +13,25 @@ namespace Tests
         public MainWindow()
         {
             TestCollection = new List<Test>();
-            TestCollection.Add(new ParsingTest("Date", TestStrings.DateStrings));
-            TestCollection.Add(new ParsingTest("Date and Time", TestStrings.DateAndTimeStrings));
-            TestCollection.Add(new ParsingTest("Intervals", TestStrings.IntervalStrings));
-            TestCollection.Add(new ParsingTest("L0 Features", TestStrings.LevelZeroStrings));
-            TestCollection.Add(new ParsingTest("Uncertain and Approximate", TestStrings.UncertainOrApproximateStrings));
-            TestCollection.Add(new ParsingTest("Unspecified Dates", TestStrings.UnspecifiedStrings));
-            TestCollection.Add(new ParsingTest("L1 Extended Intervals", TestStrings.L1ExtendedIntervalStrings));
-            TestCollection.Add(new ParsingTest("Years Exceeding Four Digits", TestStrings.YearExceedingFourDigitsStrings));
-            TestCollection.Add(new ParsingTest("Seasons", TestStrings.SeasonStrings));
-            TestCollection.Add(new ParsingTest("L1 Extensions", TestStrings.LevelOneExtensionStrings));
-            TestCollection.Add(new ParsingTest("Partially Uncertain and Approximate", TestStrings.PartialUncertainOrApproximateStrings));
-            TestCollection.Add(new ParsingTest("Partially Unspecified Dates", TestStrings.PartialUnspecifiedStrings));
-            TestCollection.Add(new ParsingTest("One of a Set", TestStrings.OneOfASetStrings));
-            TestCollection.Add(new ParsingTest("Multiple Dates", TestStrings.MultipleDateStrings));
-            TestCollection.Add(new ParsingTest("Masked Precision", TestStrings.MaskedPrecisionStrings));
-            TestCollection.Add(new ParsingTest("L2 Extended Intervals", TestStrings.LevelTwoExtendedIntervalStrings));
-            TestCollection.Add(new ParsingTest("Exponential Years", TestStrings.ExponentialFormOfYearsExeedingFourDigitsStrings));
-            TestCollection.Add(new ParsingTest("L2 Extensions", TestStrings.LevelTwoExtensionStrings));
-            TestCollection.Add(new ParsingTest("All Specification Features", TestStrings.SpecificationStrings));
-            TestCollection.Add(new ParsingTest("Malformed", TestStrings.MalformedStrings));
-            TestCollection.Add(new ParsingTest("Miscellaneous", TestStrings.MiscellaneousStrings));
+            TestCollection.Add(new ParsingTest("Date", ParsingTestEntries.DateEntries));
+            TestCollection.Add(new ParsingTest("Date and Time", ParsingTestEntries.DateAndTimeEntries));
+            TestCollection.Add(new ParsingTest("Intervals", ParsingTestEntries.IntervalEntries));
+            TestCollection.Add(new ParsingTest("L0 Features", ParsingTestEntries.L0Entries));
+            TestCollection.Add(new ParsingTest("Uncertain and Approximate", ParsingTestEntries.UncertainOrApproximateEntries));
+            TestCollection.Add(new ParsingTest("Unspecified Dates", ParsingTestEntries.UnspecifiedEntries));
+            TestCollection.Add(new ParsingTest("L1 Extended Intervals", ParsingTestEntries.L1ExtendedIntervalEntries));
+            TestCollection.Add(new ParsingTest("Years Exceeding Four Digits", ParsingTestEntries.YearExceedingFourDigitsEntries));
+            TestCollection.Add(new ParsingTest("Seasons", ParsingTestEntries.SeasonEntries));
+            TestCollection.Add(new ParsingTest("L1 Extensions", ParsingTestEntries.L1ExtensionEntries));
+            TestCollection.Add(new ParsingTest("Partially Uncertain and Approximate", ParsingTestEntries.PartialUncertainOrApproximateEntries));
+            TestCollection.Add(new ParsingTest("Partially Unspecified Dates", ParsingTestEntries.PartialUnspecifiedEntries));
+            TestCollection.Add(new ParsingTest("One of a Set", ParsingTestEntries.OneOfASetEntries));
+            TestCollection.Add(new ParsingTest("Multiple Dates", ParsingTestEntries.MultipleDateEntries));
+            TestCollection.Add(new ParsingTest("Masked Precision", ParsingTestEntries.MaskedPrecisionEntries));
+            TestCollection.Add(new ParsingTest("L2 Extended Intervals", ParsingTestEntries.L2ExtendedIntervalEntries));
+            TestCollection.Add(new ParsingTest("Exponential Years", ParsingTestEntries.ExponentialFormOfYearsExceedingFourDigitsEntries));
+            TestCollection.Add(new ParsingTest("L2 Extensions", ParsingTestEntries.L2ExtensionEntries));
+            TestCollection.Add(new ParsingTest("All Specification Features", ParsingTestEntries.SpecificationFeatures));
             TestCollection.Add(new StringSerializationTest("Date", StringSerializationTestEntries.DateEntries));
             TestCollection.Add(new StringSerializationTest("Date and Time", StringSerializationTestEntries.DateAndTimeEntries));
             TestCollection.Add(new StringSerializationTest("Intervals", StringSerializationTestEntries.IntervalEntries));
@@ -51,7 +49,7 @@ namespace Tests
             TestCollection.Add(new StringSerializationTest("L2 Extended Intervals", StringSerializationTestEntries.L2ExtendedIntervalEntries));
             TestCollection.Add(new StringSerializationTest("Exponential Years", StringSerializationTestEntries.ExponentialFormOfYearsExceedingFourDigitsEntries));
             TestCollection.Add(new StringSerializationTest("L2 Extensions", StringSerializationTestEntries.L2ExtensionEntries));
-            TestCollection.Add(new StringSerializationTest("All Specification Features", StringSerializationTestEntries.SpecificationStrings));
+            TestCollection.Add(new StringSerializationTest("All Specification Features", StringSerializationTestEntries.SpecificationFeatures));
             TestCollection.Add(new XmlSerializationTest("Date", TestStrings.DateStrings));
             TestCollection.Add(new XmlSerializationTest("Date and Time", TestStrings.DateAndTimeStrings));
             TestCollection.Add(new XmlSerializationTest("Intervals", TestStrings.IntervalStrings));
@@ -93,19 +91,24 @@ namespace Tests
                 {
                     progress.Visibility = Visibility.Collapsed;
 
-                    if (test.GetType() != typeof(StringSerializationTest))
-                    {
-                        resultBoxScrollViewer.Visibility = Visibility.Visible;
-                        resultItemsScrollViewer.Visibility = Visibility.Collapsed;
-                        resultBox.Text = (string)e.Result;
-                    }
-                    else
+                    if (test is StringSerializationTest)
                     {
                         resultBoxScrollViewer.Visibility = Visibility.Collapsed;
                         resultItemsScrollViewer.Visibility = Visibility.Visible;
                         resultItems.ItemsSource = ((StringSerializationTest)test).Entries;
                     }
-
+                    else if (test is ParsingTest)
+                    {
+                        resultBoxScrollViewer.Visibility = Visibility.Collapsed;
+                        resultItemsScrollViewer.Visibility = Visibility.Visible;
+                        resultItems.ItemsSource = ((ParsingTest)test).Entries;
+                    }
+                    else
+                    {
+                        resultBoxScrollViewer.Visibility = Visibility.Visible;
+                        resultItemsScrollViewer.Visibility = Visibility.Collapsed;
+                        resultBox.Text = (string)e.Result;
+                    }
                 };
             }
 

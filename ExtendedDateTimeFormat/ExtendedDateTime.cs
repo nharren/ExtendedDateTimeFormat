@@ -405,7 +405,7 @@ namespace System.ExtendedDateTimeFormat
 
         public override int GetHashCode()
         {
-            return Year ^ Month ^ Day ^ Hour ^ Minute ^ Second;
+            return Year ^ (Month << 28) ^ (Day << 22) ^ (Hour << 14) ^ (Minute << 8) ^ (Second << 6) ^ UtcOffset.GetHashCode();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

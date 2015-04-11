@@ -124,6 +124,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, componentBuffer, extendedDateTime);
             }
 
+            if (!isTimeZonePart)
+            {
+                extendedDateTime.UtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+            }
+
             return extendedDateTime;
         }
 
@@ -257,6 +262,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     extendedDateTime.Month = monthInteger;
 
+                    extendedDateTime.Precision++;
+
                     extendedDateTime.MonthFlags = flags;
                 }
 
@@ -295,6 +302,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                 extendedDateTime.Day = dayInteger;
 
+                extendedDateTime.Precision++;
+
                 extendedDateTime.DayFlags = flags;
 
                 dateComponentIndex++;
@@ -329,6 +338,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                 extendedDateTime.Hour = int.Parse(componentString);
 
+                extendedDateTime.Precision++;
+
                 timeComponentIndex++;
             }
             else if (timeComponentIndex == 1 && !timeZonePart)                                                         // We expect minutes to appear second.
@@ -344,6 +355,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                 extendedDateTime.Minute = int.Parse(componentString);
 
+                extendedDateTime.Precision++;
+
                 timeComponentIndex++;
             }
             else if (timeComponentIndex == 2 && !timeZonePart)                                                        // We expect seconds to appear third.
@@ -358,6 +371,8 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 }
 
                 extendedDateTime.Second = int.Parse(componentString);
+
+                extendedDateTime.Precision++;
 
                 timeComponentIndex++;
             }

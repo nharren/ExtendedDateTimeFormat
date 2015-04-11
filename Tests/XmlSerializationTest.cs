@@ -4,7 +4,6 @@ using System.ExtendedDateTimeFormat;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Tests
@@ -15,7 +14,7 @@ namespace Tests
         {
             Name = name;
             Strings = strings;
-            Category = "Serialization to XML";
+            Category = "Serializing to XML";
         }
 
         public IEnumerable<string> Strings { get; set; }
@@ -62,7 +61,6 @@ namespace Tests
 
                         stringBuilder.AppendLine();
                         stringBuilder.AppendLine("Output:".Indent(indent));
-
 
                         using (var sw = new StringWriter(stringBuilder))
                         {

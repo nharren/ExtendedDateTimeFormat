@@ -11,6 +11,7 @@
         <CollectionViewSource x:Key="TestCollectionViewSource"
                               Source="{Binding TestCollection}">
             <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription  PropertyName="Category" />
                 <scm:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
             <CollectionViewSource.GroupDescriptions>
