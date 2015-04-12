@@ -71,9 +71,9 @@ namespace Tests
             TestCollection.Add(new XmlSerializationTest("All Specification Features", TestStrings.SpecificationStrings));
             TestCollection.Add(new XmlSerializationTest("Miscellaneous", TestStrings.MiscellaneousStrings));
             TestCollection.Add(new HashCodeTest(new ExtendedDateTime(1600, 1, 1, 0, 0, 0, TimeSpan.Zero), new ExtendedDateTime(2000, 1, 1, 0, 0, 0, TimeSpan.Zero), 100));
-            TestCollection.Add(new CalculationTest("Total Months", Calculations.TotalMonthsCalculations));
-            TestCollection.Add(new CalculationTest("Total Years", Calculations.TotalYearsCalculations));
-            TestCollection.Add(new CalculationTest("Differences", Calculations.DifferenceCalculations));
+            TestCollection.Add(new CalculationTest("Total Months", CalculationTestEntries.TotalMonths));
+            TestCollection.Add(new CalculationTest("Total Years", CalculationTestEntries.TotalYears));
+            TestCollection.Add(new CalculationTest("Difference", CalculationTestEntries.Difference));
 
             foreach (var test in TestCollection)
             {
@@ -102,6 +102,12 @@ namespace Tests
                         resultBoxScrollViewer.Visibility = Visibility.Collapsed;
                         resultItemsScrollViewer.Visibility = Visibility.Visible;
                         resultItems.ItemsSource = ((ParsingTest)test).Entries;
+                    }
+                    else if (test is CalculationTest)
+                    {
+                        resultBoxScrollViewer.Visibility = Visibility.Collapsed;
+                        resultItemsScrollViewer.Visibility = Visibility.Visible;
+                        resultItems.ItemsSource = ((CalculationTest)test).Entries;
                     }
                     else
                     {

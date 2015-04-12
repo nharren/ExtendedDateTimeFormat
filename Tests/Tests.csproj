@@ -54,11 +54,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Calculation.cs" />
-    <Compile Include="Calculations.cs" />
+    <Compile Include="CalculationTestEntries.cs" />
     <Compile Include="CalculationTest.cs" />
     <Compile Include="HashCodeTest.cs" />
     <Compile Include="Outliner.cs" />
     <Compile Include="ParsingTestEntries.cs" />
+    <Compile Include="CalculationTestEntry.xaml.cs">
+      <DependentUpon>CalculationTestEntry.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StringSerializationTest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="StringSerializationTestEntries.cs" />
@@ -85,6 +88,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="CalculationTestEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ParsingTestEntry.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

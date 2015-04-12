@@ -313,88 +313,9 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        public static TimeSpan Subtract(ExtendedDateTime e2, ExtendedDateTime e1)          // Use http://www.calculator.net/date-calculator.html to verify. (Beware of calculators which use the julian calender, as this will produce different results.)
-        {
-            if (e1 == null)
-            {
-                throw new ArgumentNullException("e1");
-            }
-
-            if (e2 == null)
-            {
-                throw new ArgumentNullException("e2");
-            }
-
-            var invert = e1 > e2;
-
-            var e4 = invert ? e1 : e2;
-            var e3 = invert ? e2 : e1;
-
-            var days = 0;
-
-            for (int year = e3.Year; year < e4.Year; year++)                             // Add the years between the dates, including the starting year and excluding the ending year.
-            {
-                days += DaysInYear(year);
-            }
-
-            for (int i = e3.Month - 1; i >= 1; i--)                                // Subtract the months before the starting month.
-            {
-                days -= DaysInMonth(e3.Year, i);
-            }
-
-            for (int i = e3.Day; i >= 1; i--)                                      // Subtract the starting day and the days before.
-            {
-                days--;
-            }
-
-            var hours = 23 - e3.Hour;                                              // Add the hours remaining in the starting day excluding the starting hour.
-            var minutes = 59 - e3.Minute;                                          // Add the minutes remaining in the starting hour excluding the starting minute.
-            var seconds = 60 - e3.Second;                                          // Add the seconds remaining in the starting minute.
-
-            if (seconds > 59)
-            {
-                seconds -= 60;
-                minutes++;
-            }
-
-            if (minutes > 59)
-            {
-                minutes -= 60;
-                hours++;
-            }
-
-            if (hours > 23)
-            {
-                hours -= 24;
-                days++;
-            }
-
-            for (int i = e4.Month - 1; i >= 1; i--)                             // Add the months in the ending year that are before the ending month.
-            {
-                days += DaysInMonth(e4.Year, i);
-            }
-
-            for (int i = e4.Day - 1; i >= 1; i--)                               // Add the days into the ending month.
-            {
-                days++;
-            }
-
-            for (int i = e4.Hour - 1; i >= 0; i--)                              // Add the hours into the ending day.
-            {
-                hours++;
-            }
-
-            for (int i = e4.Minute - 1; i >= 0; i--)                            // Add the minutes into the ending hour.
-            {
-                minutes++;
-            }
-
-            for (int i = e4.Second - 1; i >= 0; i--)                            // Add the seconds into the ending minute.
-            {
-                seconds++;
-            }
-
-            return invert ? new TimeSpan(-days, -hours, -minutes, -seconds) : new TimeSpan(days, hours, minutes, seconds);
+        public static TimeSpan Subtract(ExtendedDateTime minuend, ExtendedDateTime subtrahend)
+        {          
+            return GetSpan(subtrahend, minuend).TimeSpan;
         }
 
         public static ExtendedDateTime SubtractMonths(ExtendedDateTime e, int count)
@@ -661,41 +582,18 @@ namespace System.ExtendedDateTimeFormat
 
             return roundedDate;
         }
+
         public static double TotalMonths(ExtendedDateTime e1, ExtendedDateTime e2)
         {
-            if (e1 == null)
-            {
-                throw new ArgumentNullException("e1");
-            }
-
-            if (e2 == null)
-            {
-                throw new ArgumentNullException("e2");
-            }
-
-            var span = BaseSubtract(e1, e2);
-
-            return span[0] * 12 + span[1] + (span[2] + (span[3] + (span[4] + span[5] / 60) / 60) / 24) / span[6];
+            return GetSpan(e1, e2).TotalMonths;
         }
 
         public static double TotalYears(ExtendedDateTime e1, ExtendedDateTime e2)
         {
-            if (e1 == null)
-            {
-                throw new ArgumentNullException("e1");
-            }
-
-            if (e2 == null)
-            {
-                throw new ArgumentNullException("e2");
-            }
-
-            var span = BaseSubtract(e1, e2);
-
-            return span[0] + (span[1] + (span[2] + (span[3] + (span[4] + span[5] / 60) / 60) / 24) / span[6]) / 12;
+            return GetSpan(e1, e2).TotalYears;
         }
 
-        private static double[] BaseSubtract(ExtendedDateTime e1, ExtendedDateTime e2)
+        private static ExtendedTimeSpan GetSpan(ExtendedDateTime e1, ExtendedDateTime e2)
         {
             if (e1 == null)
             {
@@ -707,36 +605,114 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentNullException("e2");
             }
 
-            var invert = e2 > e1;
+            var invert = e1 > e2;
 
-            var e3 = invert ? e1 : e2;
-            var e4 = invert ? e2 : e1;
-
-            var difference = e4 - e3;
+            var e4 = invert ? e1 : e2;
+            var e3 = invert ? e2 : e1;
 
             var years = 0;
             var months = 0;
-            var days = difference.Days;
+            var totalMonths = 0d;
+            var days = 0;
+            var exclusiveDays = 0;
+            var hours = e4.Hour - e3.Hour;
+            var minutes = e4.Minute = e3.Minute;
+            var seconds = e4.Second - e3.Second;
 
-            for (int year = e3.Year + 1; year < e4.Year; year++)                         // Add the years between the dates, excluding the starting year and ending year.
+            var includeStartDay = e3.Hour == 0 && e3.Minute == 0 && e3.Second == 0;
+            var includeStartMonth = e3.Day == 1 && includeStartDay;
+            var includeStartYear = e3.Month == 1 && includeStartMonth;
+
+            var yearsEqual = e3.Year == e4.Year;
+            var yearsMonthsEqual = yearsEqual && e3.Month == e4.Month;
+
+            if (yearsEqual)
             {
-                days -= DaysInYear(year);
-                years++;
+                for (int i = e3.Month + (includeStartMonth ? 0 : 1); i < e4.Month; i++)                                                                // Add the difference between two months in the same year in days.
+                {
+                    months++;
+                    totalMonths++;
+                    days += DaysInMonth(e3.Year, i);
+                }
+            }
+            else
+            {
+                for (int year = e3.Year + (includeStartYear ? 0 : 1); year < e4.Year; year++)                                                          // Add the years between in days.
+                {
+                    years++;
+                    days += DaysInYear(year);
+                }
+
+                for (int i = e3.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                     // Add the months remaining in the starting year in days.
+                {
+                    months++;
+                    totalMonths++;
+                    days += DaysInMonth(e3.Year, i);
+                }
+
+                for (int i = e4.Month - 1; i >= 1; i--)                                                                                                // Add the months into the ending year excluding the ending month in days.
+                {
+                    months++;
+                    totalMonths++;
+                    days += DaysInMonth(e4.Year, i);
+                }
             }
 
-            for (int i = e3.Month + 1; i <= 12; i++)                               // Add the months remaining in the starting year, excluding the starting month.
+            if (yearsMonthsEqual)
             {
-                days -= DaysInMonth(e3.Year, i);
-                months++;
+                totalMonths += (e4.Day - e3.Day) / DaysInMonth(e3.Year, e3.Month);
+
+                for (int i = e3.Day + (includeStartDay ? 0 : 1); i < e4.Day; i++)                                                                      // Add the difference between two days in the same month of the same year.
+                {
+                    exclusiveDays++;
+                    days++;
+                }
+            }
+            else
+            {
+                var daysInMonth = DaysInMonth(e3.Year, e3.Month);
+
+                totalMonths += ((daysInMonth - (e3.Day - 1)) / (double)daysInMonth) + ((e4.Day - 1) / (double)DaysInMonth(e4.Year, e4.Month));         // The -1 is because the start day is excluded (e.g. If the start day is Dec. 2, then only one day has passed in the month, so there are 30 remaining days.)                                                          
+
+                for (int i = e3.Day + (includeStartDay ? 0 : 1); i <= daysInMonth; i++)                                                                // Add the days remaining in the starting month.
+                {
+                    exclusiveDays++;
+                    days++;
+                }
+
+                for (int i = e4.Day - 1; i >= 1; i--)                                                                                                  // Add the days into the ending month excluding the ending day.
+                {
+                    exclusiveDays++;
+                    days++;
+                }
             }
 
-            for (int i = e4.Month - 1; i >= 1; i--)                                // Add the months in the ending year that are before the ending month.
+            return invert ? new ExtendedTimeSpan(-years, -totalMonths / 12, -months, -totalMonths, -exclusiveDays, new TimeSpan(-days, -hours, -minutes, -seconds)) : new ExtendedTimeSpan(years, totalMonths / 12, months, totalMonths, exclusiveDays, new TimeSpan(days, hours, minutes, seconds));
+        }
+
+        private class ExtendedTimeSpan
+        {
+            public ExtendedTimeSpan(int years, double totalYears, int months, double totalMonths, int exclusiveDays, TimeSpan timeSpan)
             {
-                days -= DaysInMonth(e4.Year, i);
-                months++;
+                Years = years;
+                TotalYears = totalYears;
+                Months = months;
+                TotalMonths = totalMonths;
+                ExclusiveDays = exclusiveDays;
+                TimeSpan = timeSpan;
             }
 
-            return invert ? new double[] { -years, -months, -days, -difference.Hours, -difference.Minutes, -difference.Seconds, DaysInMonth(e4.Year, e4.Month) } : new double[] { years, months, days, difference.Hours, difference.Minutes, difference.Seconds, DaysInMonth(e4.Year, e4.Month) };
+            public int ExclusiveDays { get; set; }
+
+            public int Months { get; set; }
+
+            public TimeSpan TimeSpan { get; set; }
+
+            public double TotalMonths { get; set; }
+
+            public double TotalYears { get; set; }
+
+            public int Years { get; set; }
         }
     }
 }
