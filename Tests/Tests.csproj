@@ -56,6 +56,10 @@
     <Compile Include="Calculation.cs" />
     <Compile Include="CalculationTestEntries.cs" />
     <Compile Include="CalculationTest.cs" />
+    <Compile Include="XmlSerializationTestEntries.cs" />
+    <Compile Include="XmlSerializationTestEntry.xaml.cs">
+      <DependentUpon>XmlSerializationTestEntry.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HashCodeTest.cs" />
     <Compile Include="Outliner.cs" />
     <Compile Include="ParsingTestEntries.cs" />
@@ -76,6 +80,10 @@
     <Compile Include="ParsingTest.cs" />
     <Compile Include="TextBlockInput.cs" />
     <Compile Include="XmlSerializationTest.cs" />
+    <Page Include="XmlSerializationTestEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

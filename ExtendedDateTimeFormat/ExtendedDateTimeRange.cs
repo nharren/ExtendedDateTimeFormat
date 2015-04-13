@@ -7,8 +7,7 @@ using System.Xml.Serialization;
 
 namespace System.ExtendedDateTimeFormat
 {
-    [Serializable]
-    public class ExtendedDateTimeRange : IExtendedDateTimeCollectionChild, ISerializable, IXmlSerializable
+    public class ExtendedDateTimeRange : IExtendedDateTimeCollectionChild
     {
         public ExtendedDateTimeRange(ISingleExtendedDateTimeType start, ISingleExtendedDateTimeType end)
         {
@@ -35,16 +34,6 @@ namespace System.ExtendedDateTimeFormat
         {
         }
 
-        protected ExtendedDateTimeRange(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-            {
-                throw new System.ArgumentNullException("info");
-            }
-
-            Parse((string)info.GetValue("edtrStr", typeof(string)), this);
-        }
-
         public ISingleExtendedDateTimeType End { get; set; }
 
         public ISingleExtendedDateTimeType Start { get; set; }
@@ -54,34 +43,14 @@ namespace System.ExtendedDateTimeFormat
             return Start.Earliest();
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("edtrStr", this.ToString());
-        }
-
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
         public ExtendedDateTime Latest()
         {
             return End.Latest();
         }
 
-        public void ReadXml(XmlReader reader)
-        {
-            Parse(reader.ReadString(), this);
-        }
-
         public override string ToString()
         {
             return ExtendedDateTimeRangeSerializer.Serialize(this);
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteString(this.ToString());
         }
 
         internal static ExtendedDateTimeRange Parse(string rangeString, ExtendedDateTimeRange range = null)

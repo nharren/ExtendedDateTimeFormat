@@ -50,26 +50,11 @@ namespace Tests
             TestCollection.Add(new StringSerializationTest("Exponential Years", StringSerializationTestEntries.ExponentialFormOfYearsExceedingFourDigitsEntries));
             TestCollection.Add(new StringSerializationTest("L2 Extensions", StringSerializationTestEntries.L2ExtensionEntries));
             TestCollection.Add(new StringSerializationTest("All Specification Features", StringSerializationTestEntries.SpecificationFeatures));
-            TestCollection.Add(new XmlSerializationTest("Date", TestStrings.DateStrings));
-            TestCollection.Add(new XmlSerializationTest("Date and Time", TestStrings.DateAndTimeStrings));
-            TestCollection.Add(new XmlSerializationTest("Intervals", TestStrings.IntervalStrings));
-            TestCollection.Add(new XmlSerializationTest("L0 Features", TestStrings.LevelZeroStrings));
-            TestCollection.Add(new XmlSerializationTest("Uncertain and Approximate", TestStrings.UncertainOrApproximateStrings));
-            TestCollection.Add(new XmlSerializationTest("Unspecified Dates", TestStrings.UnspecifiedStrings));
-            TestCollection.Add(new XmlSerializationTest("L1 Extended Intervals", TestStrings.L1ExtendedIntervalStrings));
-            TestCollection.Add(new XmlSerializationTest("Years Exceeding Four Digits", TestStrings.YearExceedingFourDigitsStrings));
-            TestCollection.Add(new XmlSerializationTest("Seasons", TestStrings.SeasonStrings));
-            TestCollection.Add(new XmlSerializationTest("L1 Extensions", TestStrings.LevelOneExtensionStrings));
-            TestCollection.Add(new XmlSerializationTest("Partially Uncertain and Approximate", TestStrings.PartialUncertainOrApproximateStrings));
-            TestCollection.Add(new XmlSerializationTest("Partially Unspecified Dates", TestStrings.PartialUnspecifiedStrings));
-            TestCollection.Add(new XmlSerializationTest("One of a Set", TestStrings.OneOfASetStrings));
-            TestCollection.Add(new XmlSerializationTest("Multiple Dates", TestStrings.MultipleDateStrings));
-            TestCollection.Add(new XmlSerializationTest("Masked Precision", TestStrings.MaskedPrecisionStrings));
-            TestCollection.Add(new XmlSerializationTest("L2 Extended Intervals", TestStrings.LevelTwoExtendedIntervalStrings));
-            TestCollection.Add(new XmlSerializationTest("Exponential Years", TestStrings.ExponentialFormOfYearsExeedingFourDigitsStrings));
-            TestCollection.Add(new XmlSerializationTest("L2 Extensions", TestStrings.LevelTwoExtensionStrings));
-            TestCollection.Add(new XmlSerializationTest("All Specification Features", TestStrings.SpecificationStrings));
-            TestCollection.Add(new XmlSerializationTest("Miscellaneous", TestStrings.MiscellaneousStrings));
+            TestCollection.Add(new XmlSerializationTest("Intervals", XmlSerializationTestEntries.Intervals));
+            TestCollection.Add(new XmlSerializationTest("Collections", XmlSerializationTestEntries.Collections));
+            TestCollection.Add(new XmlSerializationTest("Possibility Collections", XmlSerializationTestEntries.PossibilityCollections));
+            TestCollection.Add(new XmlSerializationTest("Extended Datetimes", XmlSerializationTestEntries.ExtendedDateTimes));
+            TestCollection.Add(new XmlSerializationTest("Unspecified Extended Datetimes", XmlSerializationTestEntries.UnspecifiedExtendedDateTimes));
             TestCollection.Add(new HashCodeTest(new ExtendedDateTime(1600, 1, 1, 0, 0, 0, TimeSpan.Zero), new ExtendedDateTime(2000, 1, 1, 0, 0, 0, TimeSpan.Zero), 100));
             TestCollection.Add(new CalculationTest("Total Months", CalculationTestEntries.TotalMonths));
             TestCollection.Add(new CalculationTest("Total Years", CalculationTestEntries.TotalYears));
@@ -96,6 +81,12 @@ namespace Tests
                         resultBoxScrollViewer.Visibility = Visibility.Collapsed;
                         resultItemsScrollViewer.Visibility = Visibility.Visible;
                         resultItems.ItemsSource = ((StringSerializationTest)test).Entries;
+                    }
+                    else if (test is XmlSerializationTest)
+                    {
+                        resultBoxScrollViewer.Visibility = Visibility.Collapsed;
+                        resultItemsScrollViewer.Visibility = Visibility.Visible;
+                        resultItems.ItemsSource = ((XmlSerializationTest)test).Entries;
                     }
                     else if (test is ParsingTest)
                     {
