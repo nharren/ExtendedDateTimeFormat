@@ -615,8 +615,9 @@ namespace System.ExtendedDateTimeFormat
             var totalMonths = 0d;
             var days = 0;
             var exclusiveDays = 0;
-            var hours = e4.Hour - e3.Hour;
-            var minutes = e4.Minute = e3.Minute;
+            var offsetDifference = e4.UtcOffset - e3.UtcOffset;
+            var hours = e4.Hour - e3.Hour + offsetDifference.Hours;
+            var minutes = e4.Minute - e3.Minute + offsetDifference.Minutes;
             var seconds = e4.Second - e3.Second;
 
             var includeStartDay = e3.Hour == 0 && e3.Minute == 0 && e3.Second == 0;
@@ -628,7 +629,7 @@ namespace System.ExtendedDateTimeFormat
 
             if (yearsEqual)
             {
-                for (int i = e3.Month + (includeStartMonth ? 0 : 1); i < e4.Month; i++)                                                                // Add the difference between two months in the same year in days.
+                for (int i = e3.Month + (includeStartMonth ? 0 : 1); i < e4.Month; i++)                                                                // Add the difference between two months in the same year.
                 {
                     months++;
                     totalMonths++;
@@ -637,20 +638,20 @@ namespace System.ExtendedDateTimeFormat
             }
             else
             {
-                for (int year = e3.Year + (includeStartYear ? 0 : 1); year < e4.Year; year++)                                                          // Add the years between in days.
+                for (int year = e3.Year + (includeStartYear ? 0 : 1); year < e4.Year; year++)                                                          // Add the years between.
                 {
                     years++;
                     days += DaysInYear(year);
                 }
 
-                for (int i = e3.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                     // Add the months remaining in the starting year in days.
+                for (int i = e3.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                     // Add the months remaining in the starting year.
                 {
                     months++;
                     totalMonths++;
                     days += DaysInMonth(e3.Year, i);
                 }
 
-                for (int i = e4.Month - 1; i >= 1; i--)                                                                                                // Add the months into the ending year excluding the ending month in days.
+                for (int i = e4.Month - 1; i >= 1; i--)                                                                                                // Add the months into the ending year excluding the ending month.
                 {
                     months++;
                     totalMonths++;

@@ -59,6 +59,7 @@ namespace Tests
             TestCollection.Add(new CalculationTest("Total Months", CalculationTestEntries.TotalMonths));
             TestCollection.Add(new CalculationTest("Total Years", CalculationTestEntries.TotalYears));
             TestCollection.Add(new CalculationTest("Difference", CalculationTestEntries.Difference));
+            TestCollection.Add(new CalculationTest("Time Zone Difference", CalculationTestEntries.TimeZoneDifference));
 
             foreach (var test in TestCollection)
             {

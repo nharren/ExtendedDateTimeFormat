@@ -53,7 +53,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Calculation.cs" />
     <Compile Include="CalculationTestEntries.cs" />
     <Compile Include="CalculationTest.cs" />
     <Compile Include="XmlSerializationTestEntries.cs" />
@@ -76,9 +75,7 @@
       <DependentUpon>StringSerializationTestEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="Test.cs" />
-    <Compile Include="TestStrings.cs" />
     <Compile Include="ParsingTest.cs" />
-    <Compile Include="TextBlockInput.cs" />
     <Compile Include="XmlSerializationTest.cs" />
     <Page Include="XmlSerializationTestEntry.xaml">
       <Generator>MSBuild:Compile</Generator>

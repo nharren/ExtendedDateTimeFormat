@@ -23,5 +23,10 @@ namespace Tests
         {
             new CalculationTestEntry(string.Format("{0}\\{1}", new ExtendedDateTime(2012, 2, 2), new ExtendedDateTime(2012, 11, 20)), () => (new ExtendedDateTime(2012, 11, 20) - new ExtendedDateTime(2012, 2, 2)).ToString(), "292.00:00:00"),                                                                // 28 days remaining in of February + 31 days in March + 30 days in April + 31 days in May + 30 days in June + 31 days in July + 31 days in August + 30 days in September + 31 days in October + 19 days passed into November = 292 days
         };
+
+        public static CalculationTestEntry[] TimeZoneDifference =
+        {
+            new CalculationTestEntry(string.Format("{0}\\{1}", new ExtendedDateTime(2012, 2, 2, 0, 0, 0, new TimeSpan(-8, 0, 0)), new ExtendedDateTime(2012, 11, 20, 0, 0, 0, TimeSpan.Zero)), () => (new ExtendedDateTime(2012, 11, 20, 0, 0, 0, new TimeSpan(-8, 0, 0)) - new ExtendedDateTime(2012, 2, 2, 0, 0, 0, TimeSpan.Zero)).ToString(), "291.16:00:00"),                                                                // 28 days remaining in of February + 31 days in March + 30 days in April + 31 days in May + 30 days in June + 31 days in July + 31 days in August + 30 days in September + 31 days in October + 19 days passed into November = 292 days
+        };
     }
 }

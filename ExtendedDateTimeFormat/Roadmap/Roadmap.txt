@@ -1,8 +1,11 @@
-1. Optimize (e.g. string literals, redundant code, etc.).
-2. Add more comprehensive tests.
-3. Consider TimeZone offset in ExtendedDateTime calculations.
-4. Make Local UTC Offset the default UTC Offset when parsing extended datetimes without a specified offset.
-5. Replace IExtremityProvider with implementations of IEnumerable<ExtendedDateTime> on each object.
-6. Upgrade tests from string output to UserControls for each entry with green or red highlighting indicating pass/fail. 
-7. Implement more features from ISO-8601:2004(E)
-8. Move scientific notation to separate class.
+Specific:
+- Implement remaining ISO-8601:2004(E) features.
+
+Ongoing:
+- Optimize (e.g. string literals, redundant code, etc.).
+- Improve robustness through tests.
+- Performance testing.
+
+Undecided:
+- Replace IExtremityProvider with implementations of IEnumerable<ExtendedDateTime> on each object.
+- Move scientific notation to separate class.
