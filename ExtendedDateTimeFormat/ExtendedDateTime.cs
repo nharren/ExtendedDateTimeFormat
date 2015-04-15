@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ExtendedDateTimeFormat.Internal.Comparers;
 using System.ExtendedDateTimeFormat.Internal.Converters;
@@ -17,143 +15,140 @@ namespace System.ExtendedDateTimeFormat
     public class ExtendedDateTime : ISingleExtendedDateTimeType, ICloneable, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable
     {
         public static readonly ExtendedDateTime Maximum = new ExtendedDateTime(9999, 12, 31, 23, 59, 59, TimeSpan.FromHours(14));
-
         public static readonly ExtendedDateTime Minimum = new ExtendedDateTime(-9999, 1, 1, 0, 0, 0, TimeSpan.FromHours(-12));
+        public static readonly ExtendedDateTime Open = new ExtendedDateTime() { _isOpen = true };
+        public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { _isUnknown = true };
 
-        public static readonly ExtendedDateTime Open = new ExtendedDateTime() { IsOpen = true };
+        private static ExtendedDateTimeComparer _comparer;
+        private int _day = 1;
+        private ExtendedDateTimeFlags _dayFlags;
+        private int _hour;
+        private bool _isOpen;
+        private bool _isUnknown;
+        private int _minute;
+        private int _month = 1;
+        private ExtendedDateTimeFlags _monthFlags;
+        private ExtendedDateTimePrecision _precision;
+        private Season _season;
+        private ExtendedDateTimeFlags _seasonFlags;
+        private string _seasonQualifier;
+        private int _second;
+        private TimeSpan _utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+        private int _year;
+        private int? _yearExponent;
+        private ExtendedDateTimeFlags _yearFlags;
+        private int? _yearPrecision;
 
-        public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { IsUnknown = true };
-
-        private static ExtendedDateTimeComparer comparer;
-
-        private int day = 1;
-
-        private int month = 1;
-
-        private TimeSpan utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, day, hour, minute, second, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day, hour, minute, second, utcOffset)
         {
-            DayFlags = dayFlags;
-            MonthFlags = monthFlags;
-            YearFlags = yearFlags;
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, day, hour, minute, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day, hour, minute, utcOffset)
         {
-            DayFlags = dayFlags;
-            MonthFlags = monthFlags;
-            YearFlags = yearFlags;
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, day, hour, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day, hour, utcOffset)
         {
-            DayFlags = dayFlags;
-            MonthFlags = monthFlags;
-            YearFlags = yearFlags;
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, int day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0)
-            : this(year, month, day)
+        public ExtendedDateTime(int year, int month, int day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day)
         {
-            DayFlags = dayFlags;
-            MonthFlags = monthFlags;
-            YearFlags = yearFlags;
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0)
-            : this(year, month)
+        public ExtendedDateTime(int year, int month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0) : this(year, month)
         {
-            MonthFlags = monthFlags;
-            YearFlags = yearFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, ExtendedDateTimeFlags yearFlags)
-            : this(year)
+        public ExtendedDateTime(int year, ExtendedDateTimeFlags yearFlags) : this(year)
         {
-            YearFlags = yearFlags;
+            _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset)
-            : this(year, month, day, hour, minute, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset) : this(year, month, day, hour, minute, utcOffset)
         {
             if (second < 0 || second > 59)
             {
                 throw new ArgumentException("second");
             }
 
-            Second = second;
-            Precision = ExtendedDateTimePrecision.Second;
+            _second = second;
+            _precision = ExtendedDateTimePrecision.Second;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset)
-            : this(year, month, day, hour, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset) : this(year, month, day, hour, utcOffset)
         {
             if (minute < 0 || minute > 59)
             {
                 throw new ArgumentException("minute");
             }
 
-            Minute = minute;
-            Precision = ExtendedDateTimePrecision.Minute;
+            _minute = minute;
+            _precision = ExtendedDateTimePrecision.Minute;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset)
-            : this(year, month, day)
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset) : this(year, month, day)
         {
             if (hour < 0 || hour > 23)
             {
                 throw new ArgumentException("hour");
             }
 
-            Hour = hour;
+            _hour = hour;
 
             if (utcOffset.Milliseconds != 0 || utcOffset.Seconds != 0 || utcOffset.Days != 0)
             {
                 throw new ArgumentOutOfRangeException("utcOffset");
             }
 
-            UtcOffset = utcOffset;
-            Precision = ExtendedDateTimePrecision.Hour;
+            _utcOffset = utcOffset;
+            _precision = ExtendedDateTimePrecision.Hour;
         }
 
-        public ExtendedDateTime(int year, int month, int day)
-            : this(year, month)
+        public ExtendedDateTime(int year, int month, int day) : this(year, month)
         {
             if (day < 1 || day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
             {
                 throw new ArgumentOutOfRangeException("day");
             }
 
-            Day = day;
-            Precision = ExtendedDateTimePrecision.Day;
+            _day = day;
+            _precision = ExtendedDateTimePrecision.Day;
         }
 
-        public ExtendedDateTime(int year, int month)
-            : this(year)
+        public ExtendedDateTime(int year, int month) : this(year)
         {
             if (month < 1 || month > 12)
             {
                 throw new ArgumentOutOfRangeException("month");
             }
 
-            Month = month;
-            Precision = ExtendedDateTimePrecision.Month;
+            _month = month;
+            _precision = ExtendedDateTimePrecision.Month;
         }
 
-        public ExtendedDateTime(int year)
-            : this()
+        public ExtendedDateTime(int year) : this()
         {
             if (year < -9999 || year > 9999)
             {
                 throw new ArgumentOutOfRangeException("year");
             }
 
-            Year = year;
-            Precision = ExtendedDateTimePrecision.Year;
+            _year = year;
+            _precision = ExtendedDateTimePrecision.Year;
         }
 
         internal ExtendedDateTime()                                     // Used for parsing; Internal to prevent an invalid state.
@@ -164,7 +159,7 @@ namespace System.ExtendedDateTimeFormat
         {
             if (info == null)
             {
-                throw new System.ArgumentNullException("info");
+                throw new ArgumentNullException("info");
             }
 
             Parse((string)info.GetValue("edtStr", typeof(string)), this);
@@ -174,12 +169,12 @@ namespace System.ExtendedDateTimeFormat
         {
             get
             {
-                if (comparer == null)
+                if (_comparer == null)
                 {
-                    comparer = new ExtendedDateTimeComparer();
+                    _comparer = new ExtendedDateTimeComparer();
                 }
 
-                return comparer;
+                return _comparer;
             }
         }
 
@@ -190,75 +185,244 @@ namespace System.ExtendedDateTimeFormat
                 return DateTimeOffset.Now.ToExtendedDateTime();
             }
         }
+
         public int Day
         {
             get
             {
-                return day;
+                return _day;
             }
+
             internal set
             {
-                day = value;
+                _day = value;
             }
         }
 
-        public ExtendedDateTimeFlags DayFlags { get; internal set; }
+        public ExtendedDateTimeFlags DayFlags
+        {
+            get
+            {
+                return _dayFlags;
+            }
 
-        public int Hour { get; internal set; }
+            internal set
+            {
+                _dayFlags = value;
+            }
+        }
 
-        public bool IsOpen { get; internal set; }
+        public int Hour
+        {
+            get
+            {
+                return _hour;
+            }
 
-        public bool IsUnknown { get; internal set; }
+            internal set
+            {
+                _hour = value;
+            }
+        }
 
-        public int Minute { get; internal set; }
+        public bool IsOpen
+        {
+            get
+            {
+                return _isOpen;
+            }
+
+            internal set
+            {
+                _isOpen = value;
+            }
+        }
+
+        public bool IsUnknown
+        {
+            get
+            {
+                return _isUnknown;
+            }
+
+            internal set
+            {
+                _isUnknown = value;
+            }
+        }
+
+        public int Minute
+        {
+            get
+            {
+                return _minute;
+            }
+
+            internal set
+            {
+                _minute = value;
+            }
+        }
 
         public int Month
         {
             get
             {
-                return month;
+                return _month;
             }
+
             internal set
             {
-                month = value;
+                _month = value;
             }
         }
 
-        public ExtendedDateTimeFlags MonthFlags { get; internal set; }
+        public ExtendedDateTimeFlags MonthFlags
+        {
+            get
+            {
+                return _monthFlags;
+            }
 
-        public ExtendedDateTimePrecision Precision { get; internal set; }
+            internal set
+            {
+                _monthFlags = value;
+            }
+        }
 
-        public Season Season { get; internal set; }
+        public ExtendedDateTimePrecision Precision
+        {
+            get
+            {
+                return _precision;
+            }
 
-        public ExtendedDateTimeFlags SeasonFlags { get; internal set; }
+            internal set
+            {
+                _precision = value;
+            }
+        }
 
-        public string SeasonQualifier { get; internal set; }
+        public Season Season
+        {
+            get
+            {
+                return _season;
+            }
 
-        public int Second { get; internal set; }
+            internal set
+            {
+                _season = value;
+            }
+        }
+
+        public ExtendedDateTimeFlags SeasonFlags
+        {
+            get
+            {
+                return _seasonFlags;
+            }
+
+            internal set
+            {
+                _seasonFlags = value;
+            }
+        }
+
+        public string SeasonQualifier
+        {
+            get
+            {
+                return _seasonQualifier;
+            }
+
+            internal set
+            {
+                _seasonQualifier = value;
+            }
+        }
+
+        public int Second
+        {
+            get
+            {
+                return _second;
+            }
+
+            internal set
+            {
+                _second = value;
+            }
+        }
 
         public TimeSpan UtcOffset
         {
             get
             {
-                return utcOffset;
+                return _utcOffset;
             }
+
             internal set
             {
-                utcOffset = value;
+                _utcOffset = value;
             }
         }
 
-        public int Year { get; internal set; }
+        public int Year
+        {
+            get
+            {
+                return _year;
+            }
 
-        public int? YearExponent { get; internal set; }
+            internal set
+            {
+                _year = value;
+            }
+        }
 
-        public ExtendedDateTimeFlags YearFlags { get; internal set; }
+        public int? YearExponent
+        {
+            get
+            {
+                return _yearExponent;
+            }
 
-        public int? YearPrecision { get; internal set; }
+            internal set
+            {
+                _yearExponent = value;
+            }
+        }
+
+        public ExtendedDateTimeFlags YearFlags
+        {
+            get
+            {
+                return _yearFlags;
+            }
+
+            internal set
+            {
+                _yearFlags = value;
+            }
+        }
+
+        public int? YearPrecision
+        {
+            get
+            {
+                return _yearPrecision;
+            }
+
+            internal set
+            {
+                _yearPrecision = value;
+            }
+        }
 
         public static ExtendedDateTime FromLongYear(int year)
         {
-            return new ExtendedDateTime { Year = year };
+            return new ExtendedDateTime { _year = year };
         }
 
         public static ExtendedDateTime FromScientificNotation(int significand, int exponent, int precision)
@@ -273,17 +437,17 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentOutOfRangeException("precision", "A precision must be positive.");
             }
 
-            return new ExtendedDateTime { Year = significand, YearExponent = exponent, YearPrecision = precision, Precision = ExtendedDateTimePrecision.Year };
+            return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _yearPrecision = precision, _precision = ExtendedDateTimePrecision.Year };
         }
 
         public static ExtendedDateTime FromScientificNotation(int significand, int exponent)
         {
             if (exponent < 1)
             {
-                throw new ArgumentOutOfRangeException("exponent","An exponent must be positive.");
+                throw new ArgumentOutOfRangeException("exponent", "An exponent must be positive.");
             }
 
-            return new ExtendedDateTime { Year = significand, YearExponent = exponent, Precision = ExtendedDateTimePrecision.Year };
+            return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _precision = ExtendedDateTimePrecision.Year };
         }
 
         public static ExtendedDateTime FromSeason(int year, Season season, string seasonQualifier = null, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags seasonFlags = 0)
@@ -293,7 +457,7 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentException("A season cannot be input as undefined.");
             }
 
-            return new ExtendedDateTime { Year = year, YearFlags = yearFlags, Season = season, SeasonQualifier = seasonQualifier, SeasonFlags = seasonFlags, Precision = ExtendedDateTimePrecision.Year };
+            return new ExtendedDateTime { _year = year, _yearFlags = yearFlags, _season = season, _seasonQualifier = seasonQualifier, _seasonFlags = seasonFlags, _precision = ExtendedDateTimePrecision.Year };
         }
 
         public static ExtendedDateTime operator -(ExtendedDateTime e, TimeSpan t)

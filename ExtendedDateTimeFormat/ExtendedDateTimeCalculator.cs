@@ -693,27 +693,70 @@ namespace System.ExtendedDateTimeFormat
 
         private class ExtendedTimeSpan
         {
+            private readonly int _exclusiveDays;
+            private readonly int _months;
+            private readonly TimeSpan _timeSpan;
+            private readonly double _totalMonths;
+            private readonly double _totalYears;
+            private readonly int _years;
+
             public ExtendedTimeSpan(int years, double totalYears, int months, double totalMonths, int exclusiveDays, TimeSpan timeSpan)
             {
-                Years = years;
-                TotalYears = totalYears;
-                Months = months;
-                TotalMonths = totalMonths;
-                ExclusiveDays = exclusiveDays;
-                TimeSpan = timeSpan;
+                _years = years;
+                _totalYears = totalYears;
+                _months = months;
+                _totalMonths = totalMonths;
+                _exclusiveDays = exclusiveDays;
+                _timeSpan = timeSpan;
             }
 
-            public int ExclusiveDays { get; set; }
+            public int ExclusiveDays
+            {
+                get
+                {
+                    return _exclusiveDays;
+                }
+            }
 
-            public int Months { get; set; }
+            public int Months
+            {
+                get
+                {
+                    return _months;
+                }
+            }
 
-            public TimeSpan TimeSpan { get; set; }
+            public TimeSpan TimeSpan
+            {
+                get
+                {
+                    return _timeSpan;
+                }
+            }
 
-            public double TotalMonths { get; set; }
+            public double TotalMonths
+            {
+                get
+                {
+                    return _totalMonths;
+                }
+            }
 
-            public double TotalYears { get; set; }
+            public double TotalYears
+            {
+                get
+                {
+                    return _totalYears;
+                }
+            }
 
-            public int Years { get; set; }
+            public int Years
+            {
+                get
+                {
+                    return _years;
+                }
+            }
         }
     }
 }

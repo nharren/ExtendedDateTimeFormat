@@ -3,7 +3,6 @@
     public interface IExtendedDateTimeExtremityProvider
     {
         ExtendedDateTime Earliest();
-
         ExtendedDateTime Latest();
     }
 }

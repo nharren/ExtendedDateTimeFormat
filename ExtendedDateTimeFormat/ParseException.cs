@@ -1,16 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace System.ExtendedDateTimeFormat
+﻿namespace System.ExtendedDateTimeFormat
 {
-    [SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
     public class ParseException : Exception
     {
-        public ParseException(string message, string invalidString)
-            : base(message)
+        private readonly string _invalidString;
+
+        public ParseException(string message, string invalidString) : base(message)
         {
-            InvalidString = invalidString;
+            _invalidString = invalidString;
         }
 
-        public string InvalidString { get; set; }
+        public string InvalidString
+        {
+            get
+            {
+                return _invalidString;
+            }
+        }
     }
 }

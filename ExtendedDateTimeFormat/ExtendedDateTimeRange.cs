@@ -1,32 +1,31 @@
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 
 namespace System.ExtendedDateTimeFormat
 {
     public class ExtendedDateTimeRange : IExtendedDateTimeCollectionChild
     {
+        private ISingleExtendedDateTimeType _end;
+        private ISingleExtendedDateTimeType _start;
+
         public ExtendedDateTimeRange(ISingleExtendedDateTimeType start, ISingleExtendedDateTimeType end)
         {
             if (start == null)
             {
-                Start = ExtendedDateTime.Minimum;
+                _start = ExtendedDateTime.Minimum;
             }
             else
             {
-                Start = start;
+                _start = start;
             }
 
             if (end == null)
             {
-                End = ExtendedDateTime.Maximum;
+                _end = ExtendedDateTime.Maximum;
             }
             else
             {
-                End = end;
+                _end = end;
             }
         }
 
@@ -34,9 +33,31 @@ namespace System.ExtendedDateTimeFormat
         {
         }
 
-        public ISingleExtendedDateTimeType End { get; set; }
+        public ISingleExtendedDateTimeType End
+        {
+            get
+            {
+                return _end;
+            }
 
-        public ISingleExtendedDateTimeType Start { get; set; }
+            set
+            {
+                _end = value;
+            }
+        }
+
+        public ISingleExtendedDateTimeType Start
+        {
+            get
+            {
+                return _start;
+            }
+
+            set
+            {
+                _start = value;
+            }
+        }
 
         public ExtendedDateTime Earliest()
         {

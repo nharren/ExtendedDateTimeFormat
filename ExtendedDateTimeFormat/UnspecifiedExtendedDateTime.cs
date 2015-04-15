@@ -13,26 +13,28 @@ namespace System.ExtendedDateTimeFormat
     [TypeConverter(typeof(UnspecifiedExtendedDateTimeConverter))]
     public class UnspecifiedExtendedDateTime : ISingleExtendedDateTimeType, ISerializable, IXmlSerializable
     {
-        public UnspecifiedExtendedDateTime(string year, string month, string day)
-            : this(year, month)
+        private string _day;
+        private string _month;
+        private string _year;
+
+        public UnspecifiedExtendedDateTime(string year, string month, string day) : this(year, month)
         {
             if (day.Length != 2)
             {
                 throw new ArgumentException("The day must be two characters long.");
             }
 
-            Day = day;
+            _day = day;
         }
 
-        public UnspecifiedExtendedDateTime(string year, string month)
-            : this(year)
+        public UnspecifiedExtendedDateTime(string year, string month) : this(year)
         {
             if (month.Length != 2)
             {
                 throw new ArgumentException("The month must be two characters long.");
             }
 
-            Month = month;
+            _month = month;
         }
 
         public UnspecifiedExtendedDateTime(string year)
@@ -42,7 +44,7 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentException("The year must be four characters long except if the year is negative, in which case the year must be five characters long.");
             }
 
-            Year = year;
+            _year = year;
         }
 
         internal UnspecifiedExtendedDateTime()
@@ -53,17 +55,50 @@ namespace System.ExtendedDateTimeFormat
         {
             if (info == null)
             {
-                throw new System.ArgumentNullException("info");
+                throw new ArgumentNullException("info");
             }
 
             Parse((string)info.GetValue("uedtStr", typeof(string)), this);
         }
 
-        public string Day { get; set; }
+        public string Day
+        {
+            get
+            {
+                return _day;
+            }
 
-        public string Month { get; set; }
+            internal set
+            {
+                _day = value;
+            }
+        }
 
-        public string Year { get; set; }
+        public string Month
+        {
+            get
+            {
+                return _month;
+            }
+
+            internal set
+            {
+                _month = value;
+            }
+        }
+
+        public string Year
+        {
+            get
+            {
+                return _year;
+            }
+
+            internal set
+            {
+                _year = value;
+            }
+        }
 
         public static UnspecifiedExtendedDateTime Parse(string unspecifiedExtendedDateTimeString)
         {
@@ -112,7 +147,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(this.ToString());
+            writer.WriteString(ToString());
         }
 
         internal static UnspecifiedExtendedDateTime Parse(string unspecifiedExtendedDateTimeString, UnspecifiedExtendedDateTime unspecifiedExtendedDateTime = null)

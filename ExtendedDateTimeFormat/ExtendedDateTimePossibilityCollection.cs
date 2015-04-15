@@ -23,7 +23,7 @@ namespace System.ExtendedDateTimeFormat
         {
             if (info == null)
             {
-                throw new System.ArgumentNullException("info");
+                throw new ArgumentNullException("info");
             }
 
             Parse((string)info.GetValue("edtpcStr", typeof(string)), this);
