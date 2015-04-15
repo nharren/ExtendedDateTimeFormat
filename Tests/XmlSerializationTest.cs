@@ -1,27 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ExtendedDateTimeFormat;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace Tests
 {
     public class XmlSerializationTest : Test
     {
-        public XmlSerializationTest(string name, IEnumerable<XmlSerializationTestEntry> entries)
+        private ICollection<XmlSerializationTestEntry> _entries;
+
+        public XmlSerializationTest(string name, ICollection<XmlSerializationTestEntry> entries)
         {
-            Name = name;
-            Entries = entries;
-            Category = "Serializing to XML";
+            _entries = entries;
+            _name = name;
+            _category = "Serializing to XML";
+            _worker.DoWork += new DoWorkEventHandler(DoWork);
         }
 
-        public IEnumerable<XmlSerializationTestEntry> Entries { get; set; }
-
-        public override void Begin()
+        private void DoWork(object sender, DoWorkEventArgs e)
         {
-            Worker.RunWorkerAsync();
+            var results = new List<TestResult>();
+            var index = 0;
+
+            foreach (var entry in _entries)
+            {
+                var input = entry.Input.Outline();
+                var output = Serialize(entry.Input);
+                var passed = output == entry.ExpectedOutput;
+
+                var testResult = App.Current.Dispatcher.Invoke(() => new TestResult(input, output, passed));
+
+                results.Add(testResult);
+
+                Worker.ReportProgress((index / _entries.Count) * 100);
+
+                index++;
+            }
+
+            e.Result = results;
+        }
+
+        private string Serialize(IExtendedDateTimeIndependentType extendedDateTimeIndependentType)
+        {
+            using (var stringWriter = new StringWriter())
+            {
+                var xmlSerializer = new XmlSerializer(extendedDateTimeIndependentType.GetType());
+                xmlSerializer.Serialize(stringWriter, extendedDateTimeIndependentType);
+
+                return stringWriter.ToString();
+            }
         }
     }
 }

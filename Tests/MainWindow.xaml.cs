@@ -76,37 +76,7 @@ namespace Tests
                 test.Worker.RunWorkerCompleted += (o, e) =>
                 {
                     progress.Visibility = Visibility.Collapsed;
-
-                    if (test is StringSerializationTest)
-                    {
-                        resultBoxScrollViewer.Visibility = Visibility.Collapsed;
-                        resultItemsScrollViewer.Visibility = Visibility.Visible;
-                        resultItems.ItemsSource = ((StringSerializationTest)test).Entries;
-                    }
-                    else if (test is XmlSerializationTest)
-                    {
-                        resultBoxScrollViewer.Visibility = Visibility.Collapsed;
-                        resultItemsScrollViewer.Visibility = Visibility.Visible;
-                        resultItems.ItemsSource = ((XmlSerializationTest)test).Entries;
-                    }
-                    else if (test is ParsingTest)
-                    {
-                        resultBoxScrollViewer.Visibility = Visibility.Collapsed;
-                        resultItemsScrollViewer.Visibility = Visibility.Visible;
-                        resultItems.ItemsSource = ((ParsingTest)test).Entries;
-                    }
-                    else if (test is CalculationTest)
-                    {
-                        resultBoxScrollViewer.Visibility = Visibility.Collapsed;
-                        resultItemsScrollViewer.Visibility = Visibility.Visible;
-                        resultItems.ItemsSource = ((CalculationTest)test).Entries;
-                    }
-                    else
-                    {
-                        resultBoxScrollViewer.Visibility = Visibility.Visible;
-                        resultItemsScrollViewer.Visibility = Visibility.Collapsed;
-                        resultBox.Text = (string)e.Result;
-                    }
+                    results.ItemsSource = (IEnumerable<TestResult>)e.Result;
                 };
             }
 
@@ -129,7 +99,7 @@ namespace Tests
         {
             foreach (Test test in e.AddedItems)
             {
-                test.Begin();
+                test.Worker.RunWorkerAsync();
             }
         }
     }

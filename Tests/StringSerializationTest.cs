@@ -1,21 +1,41 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Tests
 {
     public class StringSerializationTest : Test
     {
-        public StringSerializationTest(string name, IEnumerable<StringSerializationTestEntry> entries)
+        private ICollection<StringSerializationTestEntry> _entries;
+
+        public StringSerializationTest(string name, ICollection<StringSerializationTestEntry> entries)
         {
-            Name = name;
-            Entries = entries;
-            Category = "Serializing to String";
+            _entries = entries;
+            _name = name;
+            _category = "Serializing to String";
+            _worker.DoWork += new DoWorkEventHandler(DoWork);
         }
 
-        public IEnumerable<StringSerializationTestEntry> Entries { get; set; }
-
-        public override void Begin()
+        private void DoWork(object sender, DoWorkEventArgs e)
         {
-            Worker.RunWorkerAsync();
+            var results = new List<TestResult>();
+            var index = 0;
+
+            foreach (var entry in _entries)
+            {
+                var input = entry.Input.Outline();
+                var output = entry.Input.ToString();
+                var passed = output == entry.ExpectedOutput;
+
+                var testResult = App.Current.Dispatcher.Invoke(() => new TestResult(input, output, passed));
+
+                results.Add(testResult);
+
+                Worker.ReportProgress((index / _entries.Count) * 100);
+
+                index++;
+            }
+
+            e.Result = results;
         }
     }
 }

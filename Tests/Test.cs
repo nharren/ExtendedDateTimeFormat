@@ -4,17 +4,38 @@ namespace Tests
 {
     public abstract class Test
     {
+        protected string _category;
+        protected string _name;
+        protected BackgroundWorker _worker;
+
         public Test()
         {
-            Worker = new BackgroundWorker { WorkerReportsProgress = true };
+            _worker = new BackgroundWorker();
+            _worker.WorkerReportsProgress = true;
         }
 
-        public string Name { get; protected set; }
+        public string Category
+        {
+            get
+            {
+                return _category;
+            }
+        }
 
-        public string Category { get; protected set; }
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+        }
 
-        public BackgroundWorker Worker { get; private set; }
-
-        public abstract void Begin();
+        public BackgroundWorker Worker
+        {
+            get
+            {
+                return _worker;
+            }
+        }
     }
 }

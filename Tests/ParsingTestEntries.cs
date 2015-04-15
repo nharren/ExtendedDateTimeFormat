@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ExtendedDateTimeFormat;
 using System.Linq;
 
@@ -7,7 +6,7 @@ namespace Tests
 {
     public static class ParsingTestEntries
     {
-        public static ParsingTestEntry[] DateEntries =
+        public static readonly ParsingTestEntry[] DateEntries =
         {
             new ParsingTestEntry("2001-02-03", new ExtendedDateTime(2001, 2, 3)),
             new ParsingTestEntry("2008-12", new ExtendedDateTime(2008, 12)),
@@ -16,14 +15,14 @@ namespace Tests
             new ParsingTestEntry("0000", new ExtendedDateTime(0))
         };
 
-        public static ParsingTestEntry[] DateAndTimeEntries =
+        public static readonly ParsingTestEntry[] DateAndTimeEntries =
         {
             new ParsingTestEntry("2001-02-03T09:30:01-08", new ExtendedDateTime(2001, 2, 3, 9, 30, 1, TimeZoneInfo.Local.BaseUtcOffset)),
             new ParsingTestEntry("2004-01-01T10:10:10Z", new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.Zero)),
             new ParsingTestEntry("2004-01-01T10:10:10+05", new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.FromHours(5)))
         };
 
-        public static ParsingTestEntry[] IntervalEntries =
+        public static readonly ParsingTestEntry[] IntervalEntries =
         {
             new ParsingTestEntry("1964/2008", new ExtendedDateTimeInterval(new ExtendedDateTime(1964), new ExtendedDateTime(2008))),
             new ParsingTestEntry("2004-06/2006-08", new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6), new ExtendedDateTime(2006, 8))),
@@ -33,11 +32,12 @@ namespace Tests
             new ParsingTestEntry("2005/2006-02", new ExtendedDateTimeInterval(new ExtendedDateTime(2005), new ExtendedDateTime(2006, 2)))
         };
 
-        public static readonly IEnumerable<ParsingTestEntry> L0Entries = DateEntries
+        public static readonly ParsingTestEntry[] L0Entries = DateEntries
             .Concat(DateAndTimeEntries)
-            .Concat(IntervalEntries);
+            .Concat(IntervalEntries)
+            .ToArray();
 
-        public static ParsingTestEntry[] UncertainOrApproximateEntries =
+        public static readonly ParsingTestEntry[] UncertainOrApproximateEntries =
         {
             new ParsingTestEntry("1984?", new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain)),
             new ParsingTestEntry("2004-06?", new ExtendedDateTime(2004, 6, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain)),
@@ -46,7 +46,7 @@ namespace Tests
             new ParsingTestEntry("1984?~", new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate))
         };
 
-        public static ParsingTestEntry[] UnspecifiedEntries =
+        public static readonly ParsingTestEntry[] UnspecifiedEntries =
         {
             new ParsingTestEntry("199u", new UnspecifiedExtendedDateTime("199u")),
             new ParsingTestEntry("19uu", new UnspecifiedExtendedDateTime("19uu")),
@@ -55,7 +55,7 @@ namespace Tests
             new ParsingTestEntry("1999-uu-uu", new UnspecifiedExtendedDateTime("1999", "uu", "uu"))
         };
 
-        public static ParsingTestEntry[] L1ExtendedIntervalEntries =
+        public static readonly ParsingTestEntry[] L1ExtendedIntervalEntries =
         {
             new ParsingTestEntry("unknown/2006", new ExtendedDateTimeInterval(ExtendedDateTime.Unknown, new ExtendedDateTime(2006))),
             new ParsingTestEntry("2004-06-01/unknown", new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1), ExtendedDateTime.Unknown)),
@@ -69,13 +69,13 @@ namespace Tests
             new ParsingTestEntry("1984-06-02?/unknown", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), ExtendedDateTime.Unknown))
         };
 
-        public static ParsingTestEntry[] YearExceedingFourDigitsEntries =
+        public static readonly ParsingTestEntry[] YearExceedingFourDigitsEntries =
         {
             new ParsingTestEntry("y170000002", ExtendedDateTime.FromLongYear(170000002)),
             new ParsingTestEntry("y-170000002", ExtendedDateTime.FromLongYear(-170000002))
         };
 
-        public static ParsingTestEntry[] SeasonEntries =
+        public static readonly ParsingTestEntry[] SeasonEntries =
         {
             new ParsingTestEntry("2001-21", ExtendedDateTime.FromSeason(2001, Season.Spring)),
             new ParsingTestEntry("2001-22", ExtendedDateTime.FromSeason(2001, Season.Summer)),
@@ -83,13 +83,14 @@ namespace Tests
             new ParsingTestEntry("2001-24", ExtendedDateTime.FromSeason(2001, Season.Winter))
         };
 
-        public static readonly IEnumerable<ParsingTestEntry> L1ExtensionEntries = UncertainOrApproximateEntries
+        public static readonly ParsingTestEntry[] L1ExtensionEntries = UncertainOrApproximateEntries
             .Concat(UnspecifiedEntries)
             .Concat(L1ExtendedIntervalEntries)
             .Concat(YearExceedingFourDigitsEntries)
-            .Concat(SeasonEntries);
+            .Concat(SeasonEntries)
+            .ToArray();
 
-        public static ParsingTestEntry[] PartialUncertainOrApproximateEntries =
+        public static readonly ParsingTestEntry[] PartialUncertainOrApproximateEntries =
         {
             new ParsingTestEntry("2004?-06-11", new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Uncertain)),
             new ParsingTestEntry("2004-06~-11", new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Approximate, monthFlags: ExtendedDateTimeFlags.Approximate)),
@@ -106,7 +107,7 @@ namespace Tests
             new ParsingTestEntry("2011-23~", ExtendedDateTime.FromSeason(2011, Season.Autumn, yearFlags: ExtendedDateTimeFlags.Approximate, seasonFlags: ExtendedDateTimeFlags.Approximate))
         };
 
-        public static ParsingTestEntry[] PartialUnspecifiedEntries =
+        public static readonly ParsingTestEntry[] PartialUnspecifiedEntries =
         {
             new ParsingTestEntry("156u-12-25", new UnspecifiedExtendedDateTime("156u", "12", "25")),
             new ParsingTestEntry("15uu-12-25", new UnspecifiedExtendedDateTime("15uu", "12", "25")),
@@ -114,7 +115,7 @@ namespace Tests
             new ParsingTestEntry("1560-uu-25", new UnspecifiedExtendedDateTime("1560", "uu", "25"))
         };
 
-        public static ParsingTestEntry[] OneOfASetEntries =
+        public static readonly ParsingTestEntry[] OneOfASetEntries =
         {
             new ParsingTestEntry("[1667,1668,1670..1672]", new ExtendedDateTimePossibilityCollection { new ExtendedDateTime(1667), new ExtendedDateTime(1668), new ExtendedDateTimeRange(new ExtendedDateTime(1670), new ExtendedDateTime(1672)) }),
             new ParsingTestEntry("[..1760-12-03]", new ExtendedDateTimePossibilityCollection { new ExtendedDateTimeRange(null, new ExtendedDateTime(1760, 12, 3)) }),
@@ -123,41 +124,43 @@ namespace Tests
             new ParsingTestEntry("[1667,1760-12]", new ExtendedDateTimePossibilityCollection { new ExtendedDateTime(1667), new ExtendedDateTime(1760, 12) })
         };
 
-        public static ParsingTestEntry[] MultipleDateEntries =
+        public static readonly ParsingTestEntry[] MultipleDateEntries =
         {
             new ParsingTestEntry("{1667,1668,1670..1672}", new ExtendedDateTimeCollection { new ExtendedDateTime(1667), new ExtendedDateTime(1668), new ExtendedDateTimeRange(new ExtendedDateTime(1670), new ExtendedDateTime(1672)) }),
             new ParsingTestEntry("{1960,1961-12}", new ExtendedDateTimeCollection { new ExtendedDateTime(1960), new ExtendedDateTime(1961, 12) }),
         };
 
-        public static ParsingTestEntry[] MaskedPrecisionEntries =
+        public static readonly ParsingTestEntry[] MaskedPrecisionEntries =
         {
             new ParsingTestEntry("196x", new ExtendedDateTimePossibilityCollection { new ExtendedDateTimeRange(new ExtendedDateTime(1960), new ExtendedDateTime(1969)) }),
             new ParsingTestEntry("19xx", new ExtendedDateTimePossibilityCollection { new ExtendedDateTimeRange(new ExtendedDateTime(1900), new ExtendedDateTime(1999)) }),
         };
 
-        public static ParsingTestEntry[] L2ExtendedIntervalEntries =
+        public static readonly ParsingTestEntry[] L2ExtendedIntervalEntries =
         {
             new ParsingTestEntry("2004-06-(01)~/2004-06-(20)~", new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1, dayFlags: ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, 6, 20, dayFlags: ExtendedDateTimeFlags.Approximate))),
             new ParsingTestEntry("2004-06-uu/2004-07-03", new ExtendedDateTimeInterval(new UnspecifiedExtendedDateTime("2004", "06", "uu"), new ExtendedDateTime(2004, 7, 3)))
         };
 
-        public static ParsingTestEntry[] ExponentialFormOfYearsExceedingFourDigitsEntries =
+        public static readonly ParsingTestEntry[] ExponentialFormOfYearsExceedingFourDigitsEntries =
         {
             new ParsingTestEntry("y17e7", ExtendedDateTime.FromScientificNotation(17, 7)),
             new ParsingTestEntry("y-17e7", ExtendedDateTime.FromScientificNotation(-17, 7)),
             new ParsingTestEntry("y17101e4p3", ExtendedDateTime.FromScientificNotation(17101, 4, 3))
         };
 
-        public static readonly IEnumerable<ParsingTestEntry> L2ExtensionEntries = PartialUncertainOrApproximateEntries
+        public static readonly ParsingTestEntry[] L2ExtensionEntries = PartialUncertainOrApproximateEntries
             .Concat(PartialUnspecifiedEntries)
             .Concat(OneOfASetEntries)
             .Concat(MultipleDateEntries)
             .Concat(MaskedPrecisionEntries)
             .Concat(L2ExtendedIntervalEntries)
-            .Concat(ExponentialFormOfYearsExceedingFourDigitsEntries);
+            .Concat(ExponentialFormOfYearsExceedingFourDigitsEntries)
+            .ToArray();
 
-        public static readonly IEnumerable<ParsingTestEntry> SpecificationFeatures = L0Entries
+        public static readonly ParsingTestEntry[] SpecificationFeatures = L0Entries
             .Concat(L1ExtensionEntries)
-            .Concat(L2ExtensionEntries);
+            .Concat(L2ExtensionEntries)
+            .ToArray();
     }
 }

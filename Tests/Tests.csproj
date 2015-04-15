@@ -55,29 +55,24 @@
     </ApplicationDefinition>
     <Compile Include="CalculationTestEntries.cs" />
     <Compile Include="CalculationTest.cs" />
-    <Compile Include="XmlSerializationTestEntries.cs" />
-    <Compile Include="XmlSerializationTestEntry.xaml.cs">
-      <DependentUpon>XmlSerializationTestEntry.xaml</DependentUpon>
+    <Compile Include="CalculationTestEntry.cs" />
+    <Compile Include="ParsingTestEntry.cs" />
+    <Compile Include="StringSerializationTestEntry.cs" />
+    <Compile Include="TestResult.xaml.cs">
+      <DependentUpon>TestResult.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XmlSerializationTestEntries.cs" />
     <Compile Include="HashCodeTest.cs" />
     <Compile Include="Outliner.cs" />
     <Compile Include="ParsingTestEntries.cs" />
-    <Compile Include="CalculationTestEntry.xaml.cs">
-      <DependentUpon>CalculationTestEntry.xaml</DependentUpon>
-    </Compile>
     <Compile Include="StringSerializationTest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="StringSerializationTestEntries.cs" />
-    <Compile Include="ParsingTestEntry.xaml.cs">
-      <DependentUpon>ParsingTestEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="StringSerializationTestEntry.xaml.cs">
-      <DependentUpon>StringSerializationTestEntry.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Test.cs" />
     <Compile Include="ParsingTest.cs" />
     <Compile Include="XmlSerializationTest.cs" />
-    <Page Include="XmlSerializationTestEntry.xaml">
+    <Compile Include="XmlSerializationTestEntry.cs" />
+    <Page Include="TestResult.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -93,18 +88,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="CalculationTestEntry.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ParsingTestEntry.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StringSerializationTestEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
