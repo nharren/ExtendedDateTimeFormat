@@ -21,7 +21,13 @@ namespace Tests
 
         public static CalculationTestEntry[] Difference =
         {
+            new CalculationTestEntry(new ExtendedDateTime(2012), new ExtendedDateTime(2012), () => (new ExtendedDateTime(2012) - new ExtendedDateTime(2012)).ToString(), "00:00:00"),
+            new CalculationTestEntry(new ExtendedDateTime(2012), new ExtendedDateTime(2015), () => (new ExtendedDateTime(2015) - new ExtendedDateTime(2012)).ToString(), "1096.00:00:00"),                                                                                                                                                                      // 366 for 2012 (leap year) + 365 for 2013 + 365 for 2014 = 1096 days
+            new CalculationTestEntry(new ExtendedDateTime(2012, 1), new ExtendedDateTime(2012, 1), () => (new ExtendedDateTime(2012, 1) - new ExtendedDateTime(2012, 1)).ToString(), "00:00:00"),
+            new CalculationTestEntry(new ExtendedDateTime(2012, 1), new ExtendedDateTime(2012, 2), () => (new ExtendedDateTime(2012, 2) - new ExtendedDateTime(2012, 1)).ToString(), "31.00:00:00"),
+            new CalculationTestEntry(new ExtendedDateTime(2012, 2, 2), new ExtendedDateTime(2012, 2, 2), () => (new ExtendedDateTime(2012, 2, 2) - new ExtendedDateTime(2012, 2, 2)).ToString(), "00:00:00"),
             new CalculationTestEntry(new ExtendedDateTime(2012, 2, 2), new ExtendedDateTime(2012, 11, 20), () => (new ExtendedDateTime(2012, 11, 20) - new ExtendedDateTime(2012, 2, 2)).ToString(), "292.00:00:00"),                                                                                                                                           // 28 days remaining in of February + 31 days in March + 30 days in April + 31 days in May + 30 days in June + 31 days in July + 31 days in August + 30 days in September + 31 days in October + 19 days passed into November = 292 days
+
         };
 
         public static CalculationTestEntry[] TimeZoneDifference =

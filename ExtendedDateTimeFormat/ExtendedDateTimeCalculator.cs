@@ -644,18 +644,21 @@ namespace System.ExtendedDateTimeFormat
                     days += DaysInYear(year);
                 }
 
-                for (int i = e3.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                     // Add the months remaining in the starting year.
+                if (!includeStartYear)
                 {
-                    months++;
-                    totalMonths++;
-                    days += DaysInMonth(e3.Year, i);
-                }
+                    for (int i = e3.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                     // Add the months remaining in the starting year.
+                    {
+                        months++;
+                        totalMonths++;
+                        days += DaysInMonth(e3.Year, i);
+                    }
 
-                for (int i = e4.Month - 1; i >= 1; i--)                                                                                                // Add the months into the ending year excluding the ending month.
-                {
-                    months++;
-                    totalMonths++;
-                    days += DaysInMonth(e4.Year, i);
+                    for (int i = e4.Month - 1; i >= 1; i--)                                                                                                // Add the months into the ending year excluding the ending month.
+                    {
+                        months++;
+                        totalMonths++;
+                        days += DaysInMonth(e4.Year, i);
+                    } 
                 }
             }
 
@@ -669,7 +672,7 @@ namespace System.ExtendedDateTimeFormat
                     days++;
                 }
             }
-            else
+            else if (!includeStartMonth)
             {
                 var daysInMonth = DaysInMonth(e3.Year, e3.Month);
 
