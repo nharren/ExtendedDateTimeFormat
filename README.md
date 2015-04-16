@@ -10,29 +10,41 @@ The [Extended Date Time Format (EDTF)](http://www.loc.gov/standards/datetime/pre
 - Masked precision (e.g. "Some date in the 1950s.")
 - Seasons (e.g. "Spring of 1992")
 
-This library is intended to bring this proposed standard and all its features to .NET.
+This library implements all of the EDTF features in .NET.
 
-## Getting Started
+## Examples
+
+#### Dates and Times
+
+```csharp
+var year   = new ExtendedDateTime(2015);
+var month  = new ExtendedDateTime(2015, 4);
+var day    = new ExtendedDateTime(2015, 4, 16);
+var hour   = new ExtendedDateTime(2015, 4, 16, 3, TimeZoneInfo.Local.BaseUtcOffset);
+var minute = new ExtendedDateTime(2015, 4, 16, 3, 26, TimeZoneInfo.Local.BaseUtcOffset);
+var second = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeZoneInfo.Local.BaseUtcOffset);
+``` 
+
+#### Approximation and Uncertainty
+
+```csharp
+var uncertainMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain);
+var approximateMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Approximate);
+var uncertainAndApproximateMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate);
+```
 
 #### Parsing
 
-To parse an Extended Date Time Format string into the appropriate type, use the methods in the static class "ExtendedDateTimeFormatParser".
+```csharp
+var datetime = ExtendedDateTime.Parse("2015-04");
+var interval = ExtendedDateTimeInterval.Parse("2015-01/2015-04");
+var collection = ExtendedDateTimeCollection.Parse("{2015-01..2015-02,2015-04}");
+var possibilityCollection = ExtendedDateTimePossibilityCollection.Parse("[2015-01..2015-02,2015-04]");
+var unspecifiedDatetime = UnspecifiedExtendedDateTime.Parse("20uu-uu");
+var anyOfTheAbove = ExtendedDateTimeFormatParser.Parse("2015-01/2015-04")
+```
 
-If you will not know beforehand what type of object the string represents, then use the generic "Parse" method. This method will return a "IExtendedDateTimeIndependentType" interface which will be one of the following types:
-
-- ExtendedDateTimeInterval: Two dates separated by '/'.
-- ExtendedDateTimeCollection: Multiple dates between '{' and '}'
-- ExtendedDateTimePossibilityCollection: A collection of possible dates between '[' and ']'. Masked precision (dates with 'x') is converted to this type.
-- ExtendedDateTime: A datetime.
-- UnspecifiedExtendedDateTime: A datetime which is partly unspecified (contains 'u' in date).
-
-#### Serializing
-
-To serialize an ExtendedDateTimeFormat structure into a string, simply call the "ToString" method.
-
-#### Validating
-
-To validate a string, wrap the appropriate parse method from ExtendedDateTimeFormatParser in a Try-Catch statement, and catch the ParseException. The error messages from this exception can then be displayed to the user. See the "Validator" sample inside to see specifically how to do this.
+#### More examples coming soon...
 
 ## Contributing
 
