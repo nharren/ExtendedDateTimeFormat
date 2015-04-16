@@ -30,6 +30,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             var hasSeasonComponent = false;
 
+            if (string.IsNullOrEmpty(extendedDateTimeString))
+            {
+                throw new ParseException("The input string cannot be empty.", extendedDateTimeString);
+            }
+
             for (int i = 0; i < extendedDateTimeString.Length; i++)
             {
                 var character = extendedDateTimeString[i];
@@ -143,11 +148,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             if (dateComponentIndex == 0)                                                           // We expect a year to appear first.
             {
-                if (componentString.Length < 4)
-                {
-                    throw new ParseException("The year must have at least four digits.", componentString);
-                }
-
                 var isLongFormYear = false;
                 var isExponent = false;
                 var isPrecision = false;
@@ -186,20 +186,40 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                 }
 
-                if (digits.Count > 0)
+                if (isExponent)
                 {
-                    if (isExponent)
+                    extendedDateTime.YearExponent = int.Parse(new string(digits.ToArray()));
+                }
+                else if (isPrecision)
+                {
+                    extendedDateTime.YearPrecision = int.Parse(new string(digits.ToArray()));
+                }
+                else
+                {
+                    if (digits.Count == 0 || (digits.Count == 1 && digits[0] == '-'))
                     {
-                        extendedDateTime.YearExponent = int.Parse(new string(digits.ToArray()));
+                        throw new ParseException("The year must have more than zero digits.", componentString);
                     }
-                    else if (isPrecision)
+
+                    var year = int.Parse(new string(digits.ToArray()));
+
+                    if (isLongFormYear)
                     {
-                        extendedDateTime.YearPrecision = int.Parse(new string(digits.ToArray()));
+                        if (isExponent && year == 0)
+                        {
+                            throw new ParseException("The significand of a long year cannot be zero.", componentString);
+                        }
+                        else if (digits.Count < 4 || (digits[0] == '-' && digits.Count < 5))
+                        {
+                            throw new ParseException("The long year must have at least four digits.", componentString);
+                        }
                     }
-                    else
+                    else if (digits.Count < 4 || (digits[0] == '-' && digits.Count < 5) || year < -9999 || year > 9999)
                     {
-                        extendedDateTime.Year = int.Parse(new string(digits.ToArray()));
+                        throw new ParseException("The year must have four digits.", componentString);
                     }
+
+                    extendedDateTime.Year = year;
                 }
 
                 extendedDateTime.YearFlags = flags;

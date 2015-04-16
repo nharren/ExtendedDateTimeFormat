@@ -437,6 +437,11 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentOutOfRangeException("precision", "A precision must be positive.");
             }
 
+            if (significand == 0)
+            {
+                throw new ArgumentException("significand", "The significand must be nonzero.");
+            }
+
             return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _yearPrecision = precision, _precision = ExtendedDateTimePrecision.Year };
         }
 
@@ -445,6 +450,11 @@ namespace System.ExtendedDateTimeFormat
             if (exponent < 1)
             {
                 throw new ArgumentOutOfRangeException("exponent", "An exponent must be positive.");
+            }
+
+            if (significand == 0)
+            {
+                throw new ArgumentException("significand", "The significand must be nonzero.");
             }
 
             return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _precision = ExtendedDateTimePrecision.Year };
@@ -534,7 +544,7 @@ namespace System.ExtendedDateTimeFormat
 
             if (!(obj is ExtendedDateTime))
             {
-                throw new ArgumentException("An extended datetime can only be compared with another extended datetime");
+                throw new ArgumentException("An extended datetime can only be compared with another extended datetime.");
             }
 
             return Comparer.Compare(this, (ExtendedDateTime)obj);

@@ -1,4 +1,5 @@
 Specific:
+- Add support for seasons in date arithmetic.
 - Implement remaining ISO-8601:2004(E) features.
 
 Ongoing:
@@ -8,4 +9,4 @@ Ongoing:
 
 Undecided:
 - Replace IExtremityProvider with implementations of IEnumerable<ExtendedDateTime> on each object.
-- Move scientific notation to separate class.
+- Move scientific notation from extended datetime to a separate class.

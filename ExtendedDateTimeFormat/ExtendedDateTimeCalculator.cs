@@ -74,29 +74,29 @@ namespace System.ExtendedDateTimeFormat
             }
 
             if (second != 0 || e.Precision == ExtendedDateTimePrecision.Second)
-	        {
+            {
                 return new ExtendedDateTime(year, month, day, hour, minute, second, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
-	        }
+            }
 
             if (minute != 0 || e.Precision == ExtendedDateTimePrecision.Minute)
-	        {
-		        return new ExtendedDateTime(year, month, day, hour, minute, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
-	        }
+            {
+                return new ExtendedDateTime(year, month, day, hour, minute, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+            }
 
             if (hour != 0 || e.Precision == ExtendedDateTimePrecision.Hour)
-	        {
-		        return new ExtendedDateTime(year, month, day, hour, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
-	        }
+            {
+                return new ExtendedDateTime(year, month, day, hour, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+            }
 
             if (day != 1 || e.Precision == ExtendedDateTimePrecision.Day)
-	        {
-		        return new ExtendedDateTime(year, month, day, e.YearFlags, e.MonthFlags, e.DayFlags);
-	        }
+            {
+                return new ExtendedDateTime(year, month, day, e.YearFlags, e.MonthFlags, e.DayFlags);
+            }
 
             if (month != 1 || e.Precision == ExtendedDateTimePrecision.Month)
-	        {
-		        return new ExtendedDateTime(year, month, e.YearFlags, e.MonthFlags);
-	        }
+            {
+                return new ExtendedDateTime(year, month, e.YearFlags, e.MonthFlags);
+            }
 
             return new ExtendedDateTime(year, e.YearFlags);
         }
@@ -206,7 +206,7 @@ namespace System.ExtendedDateTimeFormat
             return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
         }
 
-        public static ExtendedDateTime[] NormalizePrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)       // Normalizes precisions to the highest common precision.
+        public static ExtendedDateTime[] ToUniformPrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
         {
             var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
 
@@ -263,7 +263,7 @@ namespace System.ExtendedDateTimeFormat
                 daysToSubtract++;
             }
 
-            for (int i = daysToSubtract; i >= 0 ; i--)
+            for (int i = daysToSubtract; i >= 0; i--)
             {
                 if (day - 1 < 1)
                 {
@@ -314,7 +314,7 @@ namespace System.ExtendedDateTimeFormat
         }
 
         public static TimeSpan Subtract(ExtendedDateTime minuend, ExtendedDateTime subtrahend)
-        {          
+        {
             return GetSpan(subtrahend, minuend).TimeSpan;
         }
 
@@ -646,19 +646,19 @@ namespace System.ExtendedDateTimeFormat
 
                 if (!includeStartYear)
                 {
-                    for (int i = e3.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                     // Add the months remaining in the starting year.
+                    for (int i = e3.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                 // Add the months remaining in the starting year.
                     {
                         months++;
                         totalMonths++;
                         days += DaysInMonth(e3.Year, i);
                     }
 
-                    for (int i = e4.Month - 1; i >= 1; i--)                                                                                                // Add the months into the ending year excluding the ending month.
+                    for (int i = e4.Month - 1; i >= 1; i--)                                                                                            // Add the months into the ending year excluding the ending month.
                     {
                         months++;
                         totalMonths++;
                         days += DaysInMonth(e4.Year, i);
-                    } 
+                    }
                 }
             }
 
@@ -676,7 +676,7 @@ namespace System.ExtendedDateTimeFormat
             {
                 var daysInMonth = DaysInMonth(e3.Year, e3.Month);
 
-                totalMonths += ((daysInMonth - (e3.Day - 1)) / (double)daysInMonth) + ((e4.Day - 1) / (double)DaysInMonth(e4.Year, e4.Month));         // The -1 is because the start day is excluded (e.g. If the start day is Dec. 2, then only one day has passed in the month, so there are 30 remaining days.)                                                          
+                totalMonths += ((daysInMonth - (e3.Day - 1)) / (double)daysInMonth) + ((e4.Day - 1) / (double)DaysInMonth(e4.Year, e4.Month));         // The -1 is because the start day is excluded (e.g. If the start day is Dec. 2, then only one day has passed in the month, so there are 30 remaining days.)
 
                 for (int i = e3.Day + (includeStartDay ? 0 : 1); i <= daysInMonth; i++)                                                                // Add the days remaining in the starting month.
                 {

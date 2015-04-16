@@ -7,9 +7,9 @@ namespace System.ExtendedDateTimeFormat
     {
         public static IExtendedDateTimeIndependentType Parse(string extendedDateTimeFormattedString)
         {
-            if (string.IsNullOrWhiteSpace(extendedDateTimeFormattedString))
+            if (string.IsNullOrEmpty(extendedDateTimeFormattedString))
             {
-                return null;
+                throw new ParseException("The input string cannot be empty.", extendedDateTimeFormattedString);
             }
 
             if (extendedDateTimeFormattedString.Contains('/'))

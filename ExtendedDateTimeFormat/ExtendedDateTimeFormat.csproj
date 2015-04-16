@@ -54,7 +54,7 @@
     <Compile Include="Internal\Comparers\ExtendedDateTimeComparer.cs" />
     <Compile Include="ExtendedDateTimePossibilityCollection.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Internal\Extensions\StringExtensions.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeMaskedPrecisionParser.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
     <Compile Include="ExtendedDateTimeFlags.cs" />
