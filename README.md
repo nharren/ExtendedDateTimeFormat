@@ -28,20 +28,93 @@ var second = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeZoneInfo.Local.Bas
 #### Approximation and Uncertainty
 
 ```csharp
-var uncertainMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain);
-var approximateMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Approximate);
-var uncertainAndApproximateMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate);
+var uncertainMonth       = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain);
+var approximateMonth     = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Approximate);
+var uncertainApproxMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate);
+```
+
+#### Seasons
+
+```csharp
+var season            = ExtendedDateTime.FromSeason(2015, Season.Spring);
+var qualifiedSeason   = ExtendedDateTime.FromSeason(2105, Season.Spring, "NorthernHemisphere");
+var approximateSeason = ExtendedDateTime.FromSeason(2105, Season.Spring, seasonFlags: ExtendedDateTimeFlags.Approximate);
+```
+
+#### Long Years
+
+```csharp
+var longYear = ExtendedDateTime.FromLongYear(-2000000);
+```
+
+#### Long Years in Scientific Notation
+
+```csharp
+var longScientificYear              = ExtendedDateTime.FromScientificNotation(-2, 6);
+var longScientificYearWithPrecision = ExtendedDateTime.FromScientificNotation(-2, 6, 1);
+```
+
+#### Date and Time Arithmetic
+
+```csharp
+var difference = new ExtendedDateTime(2006) - new ExtendedDateTime(2003);
+var difference = new ExtendedDateTime(2006) - new TimeSpan(5, 5, 5, 5);
+var difference = ExtendedDateTimeCalculator.SubtractYears(new ExtendedDateTime(2006), 5);
+var difference = ExtendedDateTimeCalculator.SubtractMonths(new ExtendedDateTime(2006), 5);
+var sum        = new ExtendedDateTime(2006) + new TimeSpan(5, 5, 5, 5);
+var sum        = ExtendedDateTimeCalculator.AddYears(new ExtendedDateTime(2006), 5);
+var sum        = ExtendedDateTimeCalculator.AddMonths(new ExtendedDateTime(2006), 5);
+```
+
+#### Other Calculations
+
+```csharp
+var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(2015, 4);
+var daysInYear  = ExtendedDateTimeCalculator.DaysInYear(2015);
+var isLeapYear  = ExtendedDateTimeCalculator.IsLeapYear(2015);
+```
+
+#### Extremities
+
+```csharp
+var earliestDateTime = ExtendedDateTimeInterval.Parse("[1560,1570,1590]/[1760,1770,1775]").Earliest();
+var latestDateTime   = ExtendedDateTimeInterval.Parse("[1560,1570,1590]/[1760,1770,1775]").Latest();
 ```
 
 #### Parsing
 
 ```csharp
-var datetime = ExtendedDateTime.Parse("2015-04");
-var interval = ExtendedDateTimeInterval.Parse("2015-01/2015-04");
-var collection = ExtendedDateTimeCollection.Parse("{2015-01..2015-02,2015-04}");
-var possibilityCollection = ExtendedDateTimePossibilityCollection.Parse("[2015-01..2015-02,2015-04]");
-var unspecifiedDatetime = UnspecifiedExtendedDateTime.Parse("20uu-uu");
+var datetime      = ExtendedDateTime.Parse("2015-04");
+var interval      = ExtendedDateTimeInterval.Parse("2015-01/2015-04");
+var collection    = ExtendedDateTimeCollection.Parse("{2015-01..2015-02,2015-04}");
+var possibilities = ExtendedDateTimePossibilityCollection.Parse("[2015-01..2015-02,2015-04]");
+var unspecified   = UnspecifiedExtendedDateTime.Parse("20uu-uu");
 var anyOfTheAbove = ExtendedDateTimeFormatParser.Parse("2015-01/2015-04")
+```
+
+#### Serializing to String
+
+```csharp
+var datetime      = new ExtendedDateTime(2015).ToString();
+var interval      = new ExtendedDateTimeInterval(new ExtendedDateTime(2013), new ExtendedDateTime(2015)).ToString();
+var collection    = new ExtendedDateTimeCollection { new ExtendedDateTime(2013), new ExtendedDateTime(2015) }.ToString();
+var possibilities = new ExtendedDateTimePossibilityCollection { new ExtendedDateTime(2013), new ExtendedDateTime(2015) }.ToString();
+var unspecified   = new UnspecifiedExtendedDateTime("20uu", "uu").ToString();
+```
+
+#### Serializing to XML
+
+```csharp
+private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependentType)
+{
+    using (var stringWriter = new StringWriter())
+    {
+        var xmlSerializer = new XmlSerializer(extendedDateTimeIndependentType.GetType());
+        xmlSerializer.Serialize(stringWriter, extendedDateTimeIndependentType);
+
+        return stringWriter.ToString();
+    }
+}
 ```
 
 #### More examples coming soon...
