@@ -584,7 +584,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("edtStr", this.ToString());
+            info.AddValue("edtStr", ToString());
         }
 
         public XmlSchema GetSchema()
@@ -614,7 +614,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(this.ToString());
+            writer.WriteString(ToString());
         }
 
         internal static ExtendedDateTime Parse(string extendedDateTimeString, ExtendedDateTime container)

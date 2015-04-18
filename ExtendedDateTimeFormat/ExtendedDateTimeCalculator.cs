@@ -4,6 +4,8 @@ namespace System.ExtendedDateTimeFormat
 {
     public static class ExtendedDateTimeCalculator
     {
+        private static readonly int[] DaysInMonthArray = { 29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
         public static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)
         {
             if (e == null)
@@ -47,29 +49,29 @@ namespace System.ExtendedDateTimeFormat
                 daysToAdd++;
             }
 
-            var daysInMonth = DaysInMonth(year, month);
-
-            for (int i = 0; i < daysToAdd; i++)
+            while (daysToAdd > 0)
             {
-                if (daysInMonth < day + 1)
+                var daysToNextMonth = DaysInMonth(year, month) - day;
+
+                if (daysToAdd >= daysToNextMonth)
                 {
                     if (month == 12)
                     {
                         year++;
                         month = 1;
-                        daysInMonth = DaysInMonth(year, month);
                     }
                     else
                     {
                         month++;
-                        daysInMonth = DaysInMonth(year, month);
                     }
 
                     day = 1;
+                    daysToAdd -= daysToNextMonth;
                 }
                 else
                 {
-                    day++;
+                    day += daysToAdd;
+                    daysToAdd = 0;
                 }
             }
 
@@ -173,27 +175,7 @@ namespace System.ExtendedDateTimeFormat
 
         public static int DaysInMonth(int year, int month)                                                                                         // This removes the range restriction present in the DateTime.DaysInMonth() method.
         {
-            if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
-            {
-                return 31;
-            }
-            else if (month == 4 || month == 6 || month == 9 || month == 11)
-            {
-                return 30;
-            }
-            else if (month == 2)
-            {
-                if (IsLeapYear(year))
-                {
-                    return 29;
-                }
-                else
-                {
-                    return 28;
-                }
-            }
-
-            throw new ArgumentOutOfRangeException("month", "A month must be between 1 and 12.");
+            return month == 2 && IsLeapYear(year) ? DaysInMonthArray[0] : DaysInMonthArray[month];
         }
 
         public static int DaysInYear(int year)
@@ -204,20 +186,6 @@ namespace System.ExtendedDateTimeFormat
         public static bool IsLeapYear(int year)                                                                                                      // http://www.timeanddate.com/date/leapyear.html
         {
             return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
-        }
-
-        public static ExtendedDateTime[] ToUniformPrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
-        {
-            var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
-
-            var clones = extendedDateTimes.Select(e => (ExtendedDateTime)e.Clone()).ToArray();
-
-            foreach (var extendedDateTime in clones)
-            {
-                extendedDateTime.Precision = maxPrecision;
-            }
-
-            return clones;
         }
 
         public static ExtendedDateTime Subtract(ExtendedDateTime e, TimeSpan t)
@@ -263,9 +231,11 @@ namespace System.ExtendedDateTimeFormat
                 daysToSubtract++;
             }
 
-            for (int i = daysToSubtract; i >= 0; i--)
+            while (daysToSubtract > 0)
             {
-                if (day - 1 < 1)
+                var daysToPreviousMonth = day;
+
+                if (daysToSubtract >= daysToPreviousMonth)
                 {
                     if (month == 1)
                     {
@@ -278,10 +248,12 @@ namespace System.ExtendedDateTimeFormat
                     }
 
                     day = DaysInMonth(year, month);
+                    daysToSubtract -= daysToPreviousMonth;
                 }
                 else
                 {
-                    day--;
+                    day += daysToSubtract;
+                    daysToSubtract = 0;
                 }
             }
 
@@ -593,6 +565,19 @@ namespace System.ExtendedDateTimeFormat
             return GetSpan(e1, e2).TotalYears;
         }
 
+        public static ExtendedDateTime[] ToUniformPrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
+        {
+            var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
+
+            var clones = extendedDateTimes.Select(e => (ExtendedDateTime)e.Clone()).ToArray();
+
+            foreach (var extendedDateTime in clones)
+            {
+                extendedDateTime.Precision = maxPrecision;
+            }
+
+            return clones;
+        }
         private static ExtendedTimeSpan GetSpan(ExtendedDateTime e1, ExtendedDateTime e2)
         {
             if (e1 == null)
