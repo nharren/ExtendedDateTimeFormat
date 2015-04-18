@@ -74,11 +74,31 @@ var daysInYear  = ExtendedDateTimeCalculator.DaysInYear(2015);
 var isLeapYear  = ExtendedDateTimeCalculator.IsLeapYear(2015);
 ```
 
+#### Collections of Dates and Times
+```csharp
+var collection          = new ExtendedDateTimeCollection { new ExtendedDateTime(1560), new ExtendedDateTime(1570), new ExtendedDateTime(1590) };
+var collectionWithRange = new ExtendedDateTimeCollection { new ExtendedDateTime(1560), new ExtendedDateTimeRange(new ExtendedDateTime(1570), new ExtendedDateTime(1590)) };
+```
+
+#### Collection of Possible Dates and Times
+```csharp
+var collection          = new ExtendedDateTimePossibilityCollection { new ExtendedDateTime(1560), new ExtendedDateTime(1570), new ExtendedDateTime(1590) };
+var collectionWithRange = new ExtendedDateTimePossibilityCollection { new ExtendedDateTime(1560), new ExtendedDateTimeRange(new ExtendedDateTime(1570), new ExtendedDateTime(1590)) };
+```
+
 #### Extremities
 
 ```csharp
 var earliestDateTime = ExtendedDateTimeInterval.Parse("[1560,1570,1590]/[1760,1770,1775]").Earliest();
 var latestDateTime   = ExtendedDateTimeInterval.Parse("[1560,1570,1590]/[1760,1770,1775]").Latest();
+```
+
+#### Partially-Unspecified Dates
+
+```csharp
+var partUnspecifiedYear         = new UnspecifiedExtendedDateTime("19uu");
+var partUnspecifiedYearAndMonth = new UnspecifiedExtendedDateTime("19uu", "u2");
+var partUnspecifiedDate         = new UnspecifiedExtendedDateTime("19uu", "u2", "1u");
 ```
 
 #### Parsing
