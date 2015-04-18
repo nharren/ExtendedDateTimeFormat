@@ -233,9 +233,7 @@ namespace System.ExtendedDateTimeFormat
 
             while (daysToSubtract > 0)
             {
-                var daysToPreviousMonth = day;
-
-                if (daysToSubtract >= daysToPreviousMonth)
+                if (daysToSubtract >= day)
                 {
                     if (month == 1)
                     {
@@ -247,8 +245,8 @@ namespace System.ExtendedDateTimeFormat
                         month--;
                     }
 
+                    daysToSubtract -= day;
                     day = DaysInMonth(year, month);
-                    daysToSubtract -= daysToPreviousMonth;
                 }
                 else
                 {
