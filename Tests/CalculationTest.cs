@@ -22,11 +22,10 @@ namespace Tests
 
             foreach (var entry in _entries)
             {
-                var input = string.Format("{0}\\{1}", entry.Start, entry.End);
                 var output = entry.Calculation();
                 var passed = output == entry.ExpectedResult;
 
-                var testResult = App.Current.Dispatcher.Invoke(() => new TestResult(input, output, passed));
+                var testResult = App.Current.Dispatcher.Invoke(() => new TestResult(entry.CalculationDisplayString, output, passed));
 
                 results.Add(testResult);
 

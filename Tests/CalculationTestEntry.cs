@@ -6,14 +6,12 @@ namespace Tests
     public class CalculationTestEntry
     {
         private readonly Func<string> _calculation;
-        private readonly ExtendedDateTime _end;
+        private readonly string _calculationDisplayString;
         private readonly string _expectedResult;
-        private readonly ExtendedDateTime _start;
 
-        public CalculationTestEntry(ExtendedDateTime start, ExtendedDateTime end, Func<string> calculation, string expectedResult)
+        public CalculationTestEntry(string calculationDisplayString, Func<string> calculation, string expectedResult)
         {
-            _start = start;
-            _end = end;
+            _calculationDisplayString = calculationDisplayString;
             _calculation = calculation;
             _expectedResult = expectedResult;
         }
@@ -26,14 +24,6 @@ namespace Tests
             }
         }
 
-        public ExtendedDateTime End
-        {
-            get
-            {
-                return _end;
-            }
-        }
-
         public string ExpectedResult
         {
             get
@@ -42,11 +32,11 @@ namespace Tests
             }
         }
 
-        public ExtendedDateTime Start
+        public string CalculationDisplayString
         {
             get
             {
-                return _start;
+                return _calculationDisplayString;
             }
         }
     }

@@ -13,45 +13,35 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentNullException("e");
             }
 
-            var second = e.Second;
-            var minute = e.Minute;
-            var hour = e.Hour;
-            var day = e.Day;
-            var month = e.Month;
-            var year = e.Year;
-
-            second += t.Seconds;
+            int second = e.Second + t.Seconds;
+            int minute = e.Minute + t.Minutes;
+            int hour = e.Hour + t.Hours;
+            int day = e.Day;
+            int month = e.Month;
+            int year = e.Year;
+            int daysToAdd = t.Days;
 
             while (second > 59)
             {
                 second -= 60;
-
                 minute++;
             }
-
-            minute += t.Minutes;
 
             while (minute > 59)
             {
                 minute -= 60;
-
                 hour++;
             }
-
-            hour += t.Hours;
-
-            var daysToAdd = t.Days;
 
             while (hour > 23)
             {
                 hour -= 24;
-
                 daysToAdd++;
             }
 
             while (daysToAdd > 0)
             {
-                var daysToNextMonth = DaysInMonth(year, month) - day;
+                int daysToNextMonth = DaysInMonth(year, month) - day;
 
                 if (daysToAdd >= daysToNextMonth)
                 {
@@ -110,21 +100,8 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentNullException("e");
             }
 
-            var month = e.Month;
-            var year = e.Year;
-
-            for (int i = 0; i < count; i++)
-            {
-                if (month == 12)
-                {
-                    year++;
-                    month = 1;
-                }
-                else
-                {
-                    month++;
-                }
-            }
+            int month = e.Month + count % 12;
+            int year = e.Year + (int)Math.Floor(count / 12d);
 
             if (e.Day > DaysInMonth(year, month))
             {
@@ -195,39 +172,29 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentNullException("e");
             }
 
-            var second = e.Second;
-            var minute = e.Minute;
-            var hour = e.Hour;
-            var day = e.Day;
-            var month = e.Month;
-            var year = e.Year;
-
-            second -= t.Seconds;
+            int second = e.Second - t.Seconds;
+            int minute = e.Minute - t.Minutes;
+            int hour = e.Hour - t.Hours;
+            int day = e.Day;
+            int month = e.Month;
+            int year = e.Year;
+            int daysToSubtract = t.Days;
 
             while (second < 0)
             {
                 second += 60;
-
                 minute--;
             }
-
-            minute += t.Minutes;
 
             while (minute < 0)
             {
                 minute += 60;
-
                 hour--;
             }
-
-            hour -= t.Hours;
-
-            var daysToSubtract = t.Days;
 
             while (hour < 0)
             {
                 hour += 24;
-
                 daysToSubtract++;
             }
 
@@ -295,21 +262,8 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentNullException("e");
             }
 
-            var month = e.Month;
-            var year = e.Year;
-
-            for (int i = 0; i < count; i++)
-            {
-                if (month == 1)
-                {
-                    year--;
-                    month = 12;
-                }
-                else
-                {
-                    month--;
-                }
-            }
+            int month = e.Month - count % 12;
+            int year = e.Year - (int)Math.Floor(count / 12d);
 
             if (e.Day > DaysInMonth(year, month))
             {
