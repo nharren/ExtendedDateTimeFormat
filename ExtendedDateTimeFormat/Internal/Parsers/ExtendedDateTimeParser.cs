@@ -139,7 +139,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             return extendedDateTime;
         }
 
-        private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, ExtendedDateTimeFlags flags, List<char> componentBuffer, ref ExtendedDateTime extendedDateTime)
+        private static void CommitDateComponent(ref int dateComponentIndex, ref bool hasSeasonComponent, int flags, List<char> componentBuffer, ref ExtendedDateTime extendedDateTime)
         {
             if (componentBuffer.Count == 0)
             {
@@ -224,7 +224,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     extendedDateTime.Year = year;
                 }
 
-                extendedDateTime.YearFlags = flags;
+                extendedDateTime.YearFlags = (YearFlags)flags;
 
                 dateComponentIndex++;
             }
@@ -259,7 +259,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     extendedDateTime.Season = (Season)seasonInteger;
 
-                    extendedDateTime.SeasonFlags = flags;
+                    extendedDateTime.SeasonFlags = (SeasonFlags)flags;
 
                     hasSeasonComponent = true;
                 }
@@ -286,7 +286,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                     extendedDateTime.Precision++;
 
-                    extendedDateTime.MonthFlags = flags;
+                    extendedDateTime.MonthFlags = (MonthFlags)flags;
                 }
 
                 dateComponentIndex++;
@@ -326,7 +326,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
                 extendedDateTime.Precision++;
 
-                extendedDateTime.DayFlags = flags;
+                extendedDateTime.DayFlags = (DayFlags)flags;
 
                 dateComponentIndex++;
             }
@@ -464,28 +464,28 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
             componentBuffer.Clear();
         }
 
-        private static ExtendedDateTimeFlags GetFlag(char character)
+        private static int GetFlag(char character)
         {
             if (character == '?')
             {
-                return ExtendedDateTimeFlags.Uncertain;
+                return 1;
             }
             else if (character == '~')
             {
-                return ExtendedDateTimeFlags.Approximate;
+                return 2;
             }
 
             return 0;
         }
 
-        private static ExtendedDateTimeFlags GetScopeFlags(int characterIndex, string extendedDateTimeString)
+        private static int GetScopeFlags(int characterIndex, string extendedDateTimeString)
         {
             if (characterIndex < 0)
             {
                 return 0;
             }
 
-            var scopeFlags = (ExtendedDateTimeFlags)0;
+            var scopeFlags = 0;
 
             if (extendedDateTimeString[characterIndex] == '?' || extendedDateTimeString[characterIndex] == '~')              // Set starting point to close parenthesis or before.
             {
@@ -533,7 +533,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                                 {
                                     scopeFlags |= GetFlag(extendedDateTimeString[i + 1]);            // Search for second flag.
 
-                                    if (scopeFlags.HasFlag(ExtendedDateTimeFlags.Approximate) && scopeFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
+                                    if (scopeFlags == 3)                                             // 3 means both flags are present.
                                     {
                                         i++;
                                     }
@@ -573,7 +573,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                                     {
                                         scopeFlags |= GetFlag(extendedDateTimeString[i + 1]);            // Search for second flag.
 
-                                        if (scopeFlags.HasFlag(ExtendedDateTimeFlags.Approximate) && scopeFlags.HasFlag(ExtendedDateTimeFlags.Uncertain))
+                                        if (scopeFlags == 3)                                             // 3 means both flags are present.
                                         {
                                             i++;
                                         }

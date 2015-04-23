@@ -40,11 +40,11 @@ namespace Tests
 
         public static readonly StringSerializationTestEntry[] UncertainOrApproximateEntries =
         {
-            new StringSerializationTestEntry(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain), "1984?"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), "2004-06?"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), "2004-06-11?"),
-            new StringSerializationTestEntry(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Approximate), "1984~"),
-            new StringSerializationTestEntry(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate), "1984?~")
+            new StringSerializationTestEntry(new ExtendedDateTime(1984, YearFlags.Uncertain), "1984?"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, YearFlags.Uncertain, MonthFlags.Uncertain), "2004-06?"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, YearFlags.Uncertain, MonthFlags.Uncertain, DayFlags.Uncertain), "2004-06-11?"),
+            new StringSerializationTestEntry(new ExtendedDateTime(1984, YearFlags.Approximate), "1984~"),
+            new StringSerializationTestEntry(new ExtendedDateTime(1984, YearFlags.Uncertain | YearFlags.Approximate), "1984?~")
         };
 
         public static readonly StringSerializationTestEntry[] UnspecifiedEntries =
@@ -61,13 +61,13 @@ namespace Tests
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(ExtendedDateTime.Unknown, new ExtendedDateTime(2006)), "unknown/2006"),
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1), ExtendedDateTime.Unknown), "2004-06-01/unknown"),
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 1, 1), ExtendedDateTime.Open), "2004-01-01/open"),
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, 6)), "1984~/2004-06"),
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984), new ExtendedDateTime(2004, 6, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate)), "1984/2004-06~"),
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, ExtendedDateTimeFlags.Approximate)), "1984~/2004~"),
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain), new ExtendedDateTime(2004, ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate)), "1984?/2004?~"),
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), new ExtendedDateTime(2004, 8, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain)), "1984-06?/2004-08?"),
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), new ExtendedDateTime(2004, 8, 8, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate)), "1984-06-02?/2004-08-08~"),
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), ExtendedDateTime.Unknown), "1984-06-02?/unknown")
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, YearFlags.Approximate), new ExtendedDateTime(2004, 6)), "1984~/2004-06"),
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984), new ExtendedDateTime(2004, 6, YearFlags.Approximate, MonthFlags.Approximate)), "1984/2004-06~"),
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, YearFlags.Approximate), new ExtendedDateTime(2004, YearFlags.Approximate)), "1984~/2004~"),
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, YearFlags.Uncertain), new ExtendedDateTime(2004, YearFlags.Uncertain | YearFlags.Approximate)), "1984?/2004?~"),
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, YearFlags.Uncertain, MonthFlags.Uncertain), new ExtendedDateTime(2004, 8, YearFlags.Uncertain, MonthFlags.Uncertain)), "1984-06?/2004-08?"),
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, YearFlags.Uncertain, MonthFlags.Uncertain, DayFlags.Uncertain), new ExtendedDateTime(2004, 8, 8, YearFlags.Approximate, MonthFlags.Approximate, DayFlags.Approximate)), "1984-06-02?/2004-08-08~"),
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, YearFlags.Uncertain, MonthFlags.Uncertain, DayFlags.Uncertain), ExtendedDateTime.Unknown), "1984-06-02?/unknown")
         };
 
         public static readonly StringSerializationTestEntry[] YearExceedingFourDigitsEntries =
@@ -93,17 +93,17 @@ namespace Tests
 
         public static readonly StringSerializationTestEntry[] PartialUncertainOrApproximateEntries =
         {
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Uncertain), "2004?-06-11"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Approximate, monthFlags: ExtendedDateTimeFlags.Approximate), "2004-06~-11"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, monthFlags: ExtendedDateTimeFlags.Uncertain), "2004-(06)?-11"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, dayFlags: ExtendedDateTimeFlags.Approximate), "2004-06-(11)~"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, monthFlags: ExtendedDateTimeFlags.Approximate | ExtendedDateTimeFlags.Uncertain), "2004-(06)?~"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, monthFlags: ExtendedDateTimeFlags.Uncertain, dayFlags: ExtendedDateTimeFlags.Uncertain), "(2004)-06-11?"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Uncertain, dayFlags: ExtendedDateTimeFlags.Approximate), "2004?-06-(11)~"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, yearFlags: ExtendedDateTimeFlags.Uncertain, monthFlags: ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate), "2004?-(06)?~"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 4, yearFlags: ExtendedDateTimeFlags.Uncertain, monthFlags: ExtendedDateTimeFlags.Approximate, dayFlags: ExtendedDateTimeFlags.Approximate), "(2004)?-06-04~"),
-            new StringSerializationTestEntry(new ExtendedDateTime(2011, 6, 4, monthFlags: ExtendedDateTimeFlags.Approximate, dayFlags: ExtendedDateTimeFlags.Approximate), "(2011)-06-04~"),
-            new StringSerializationTestEntry(ExtendedDateTime.FromSeason(2011, Season.Autumn, yearFlags: ExtendedDateTimeFlags.Approximate, seasonFlags: ExtendedDateTimeFlags.Approximate), "2011-23~")
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, YearFlags.Uncertain), "2004?-06-11"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, YearFlags.Approximate, MonthFlags.Approximate), "2004-06~-11"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, MonthFlags.Uncertain), "2004-(06)?-11"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, DayFlags.Approximate), "2004-06-(11)~"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, MonthFlags.Approximate | MonthFlags.Uncertain), "2004-(06)?~"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, MonthFlags.Uncertain, DayFlags.Uncertain), "(2004)-06-11?"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 11, YearFlags.Uncertain, DayFlags.Approximate), "2004?-06-(11)~"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, YearFlags.Uncertain, MonthFlags.Uncertain | MonthFlags.Approximate), "2004?-(06)?~"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2004, 6, 4, YearFlags.Uncertain, MonthFlags.Approximate, DayFlags.Approximate), "(2004)?-06-04~"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2011, 6, 4, MonthFlags.Approximate, DayFlags.Approximate), "(2011)-06-04~"),
+            new StringSerializationTestEntry(ExtendedDateTime.FromSeason(2011, Season.Autumn, YearFlags.Approximate, SeasonFlags.Approximate), "2011-23~")
         };
 
         public static readonly StringSerializationTestEntry[] PartialUnspecifiedEntries =
@@ -131,7 +131,7 @@ namespace Tests
 
         public static readonly StringSerializationTestEntry[] L2ExtendedIntervalEntries =
         {
-            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1, dayFlags: ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, 6, 20, dayFlags: ExtendedDateTimeFlags.Approximate)), "2004-06-(01)~/2004-06-(20)~"),
+            new StringSerializationTestEntry(new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1, DayFlags.Approximate), new ExtendedDateTime(2004, 6, 20, DayFlags.Approximate)), "2004-06-(01)~/2004-06-(20)~"),
             new StringSerializationTestEntry(new ExtendedDateTimeInterval(new UnspecifiedExtendedDateTime("2004", "06", "uu"), new ExtendedDateTime(2004, 7, 3)), "2004-06-uu/2004-07-03")
         };
 

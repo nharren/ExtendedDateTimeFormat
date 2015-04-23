@@ -21,59 +21,201 @@ namespace System.ExtendedDateTimeFormat
 
         private static ExtendedDateTimeComparer _comparer;
         private int _day;
-        private ExtendedDateTimeFlags _dayFlags;
+        private DayFlags _dayFlags;
         private int _hour;
         private bool _isOpen;
         private bool _isUnknown;
         private int _minute;
         private int _month;
-        private ExtendedDateTimeFlags _monthFlags;
+        private MonthFlags _monthFlags;
         private ExtendedDateTimePrecision _precision;
         private Season _season;
-        private ExtendedDateTimeFlags _seasonFlags;
+        private SeasonFlags _seasonFlags;
         private string _seasonQualifier;
         private int _second;
         private TimeSpan _utcOffset;
         private int _year;
         private int? _yearExponent;
-        private ExtendedDateTimeFlags _yearFlags;
+        private YearFlags _yearFlags;
         private int? _yearPrecision;
 
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day, hour, minute, second, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
         {
             _dayFlags = dayFlags;
             _monthFlags = monthFlags;
             _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day, hour, minute, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _dayFlags = dayFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, MonthFlags monthFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
         {
             _dayFlags = dayFlags;
             _monthFlags = monthFlags;
             _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day, hour, utcOffset)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _dayFlags = dayFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, MonthFlags monthFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
         {
             _dayFlags = dayFlags;
             _monthFlags = monthFlags;
             _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, int day, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0, ExtendedDateTimeFlags dayFlags = 0) : this(year, month, day)
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _dayFlags = dayFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, MonthFlags monthFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day)
         {
             _dayFlags = dayFlags;
             _monthFlags = monthFlags;
             _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, int month, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags monthFlags = 0) : this(year, month)
+        public ExtendedDateTime(int year, int month, int day, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day)
+        {
+            _dayFlags = dayFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day)
         {
             _monthFlags = monthFlags;
             _yearFlags = yearFlags;
         }
 
-        public ExtendedDateTime(int year, ExtendedDateTimeFlags yearFlags) : this(year)
+        public ExtendedDateTime(int year, int month, int day, DayFlags dayFlags) : this(year, month, day)
+        {
+            _dayFlags = dayFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, MonthFlags monthFlags) : this(year, month, day)
+        {
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags) : this(year, month, day)
+        {
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month)
+        {
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, MonthFlags monthFlags) : this(year, month)
+        {
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, YearFlags yearFlags) : this(year, month)
+        {
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, YearFlags yearFlags) : this(year)
         {
             _yearFlags = yearFlags;
         }
@@ -217,7 +359,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public ExtendedDateTimeFlags DayFlags
+        public DayFlags DayFlags
         {
             get
             {
@@ -295,7 +437,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public ExtendedDateTimeFlags MonthFlags
+        public MonthFlags MonthFlags
         {
             get
             {
@@ -334,7 +476,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public ExtendedDateTimeFlags SeasonFlags
+        public SeasonFlags SeasonFlags
         {
             get
             {
@@ -412,7 +554,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public ExtendedDateTimeFlags YearFlags
+        public YearFlags YearFlags
         {
             get
             {
@@ -478,7 +620,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _precision = ExtendedDateTimePrecision.Year };
         }
 
-        public static ExtendedDateTime FromSeason(int year, Season season, string seasonQualifier = null, ExtendedDateTimeFlags yearFlags = 0, ExtendedDateTimeFlags seasonFlags = 0)
+        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags, SeasonFlags seasonFlags, string seasonQualifier)
         {
             if (season == Season.Undefined)
             {
@@ -486,6 +628,41 @@ namespace System.ExtendedDateTimeFormat
             }
 
             return new ExtendedDateTime { _year = year, _yearFlags = yearFlags, _season = season, _seasonQualifier = seasonQualifier, _seasonFlags = seasonFlags, _precision = ExtendedDateTimePrecision.Year };
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season, SeasonFlags seasonFlags, string seasonQualifier)
+        {
+            return FromSeason(year, season, 0, seasonFlags, seasonQualifier);
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags, string seasonQualifier)
+        {
+            return FromSeason(year, season, yearFlags, 0, seasonQualifier);
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season, string seasonQualifier)
+        {
+            return FromSeason(year, season, 0, 0, seasonQualifier);
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags, SeasonFlags seasonFlags)
+        {
+            return FromSeason(year, season, yearFlags, seasonFlags, null);
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season, SeasonFlags seasonFlags)
+        {
+            return FromSeason(year, season, 0, seasonFlags, null);
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags)
+        {
+            return FromSeason(year, season, yearFlags, 0, null);
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season)
+        {
+            return FromSeason(year, season, 0, 0, null);
         }
 
         public static ExtendedDateTime operator -(ExtendedDateTime e, TimeSpan t)

@@ -118,14 +118,14 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
 
         private static void InsertFlags(ExtendedDateTime extendedDateTime, StringBuilder stringBuilder)      // Combinations generated from http://www.mathsisfun.com/combinatorics/combinations-permutations-calculator.html
         {
-            var da = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
-            var du = extendedDateTime.DayFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
-            var ma = extendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
-            var mu = extendedDateTime.MonthFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
-            var sa = extendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
-            var su = extendedDateTime.SeasonFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
-            var ya = extendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Approximate);
-            var yu = extendedDateTime.YearFlags.HasFlag(ExtendedDateTimeFlags.Uncertain);
+            var da = extendedDateTime.DayFlags.HasFlag(DayFlags.Approximate);
+            var du = extendedDateTime.DayFlags.HasFlag(DayFlags.Uncertain);
+            var ma = extendedDateTime.MonthFlags.HasFlag(MonthFlags.Approximate);
+            var mu = extendedDateTime.MonthFlags.HasFlag(MonthFlags.Uncertain);
+            var sa = extendedDateTime.SeasonFlags.HasFlag(SeasonFlags.Approximate);
+            var su = extendedDateTime.SeasonFlags.HasFlag(SeasonFlags.Uncertain);
+            var ya = extendedDateTime.YearFlags.HasFlag(YearFlags.Approximate);
+            var yu = extendedDateTime.YearFlags.HasFlag(YearFlags.Uncertain);
 
             var de = string.Empty;
             var ds = string.Empty;

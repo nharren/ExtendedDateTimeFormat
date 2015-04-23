@@ -39,11 +39,11 @@ namespace Tests
 
         public static readonly ParsingTestEntry[] UncertainOrApproximateEntries =
         {
-            new ParsingTestEntry("1984?", new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain)),
-            new ParsingTestEntry("2004-06?", new ExtendedDateTime(2004, 6, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain)),
-            new ParsingTestEntry("2004-06-11?", new ExtendedDateTime(2004, 6, 11, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain)),
-            new ParsingTestEntry("1984~", new ExtendedDateTime(1984, ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("1984?~", new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate))
+            new ParsingTestEntry("1984?", new ExtendedDateTime(1984, YearFlags.Uncertain)),
+            new ParsingTestEntry("2004-06?", new ExtendedDateTime(2004, 6, YearFlags.Uncertain, MonthFlags.Uncertain)),
+            new ParsingTestEntry("2004-06-11?", new ExtendedDateTime(2004, 6, 11, YearFlags.Uncertain, MonthFlags.Uncertain, DayFlags.Uncertain)),
+            new ParsingTestEntry("1984~", new ExtendedDateTime(1984, YearFlags.Approximate)),
+            new ParsingTestEntry("1984?~", new ExtendedDateTime(1984, YearFlags.Uncertain | YearFlags.Approximate))
         };
 
         public static readonly ParsingTestEntry[] UnspecifiedEntries =
@@ -60,13 +60,13 @@ namespace Tests
             new ParsingTestEntry("unknown/2006", new ExtendedDateTimeInterval(ExtendedDateTime.Unknown, new ExtendedDateTime(2006))),
             new ParsingTestEntry("2004-06-01/unknown", new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1), ExtendedDateTime.Unknown)),
             new ParsingTestEntry("2004-01-01/open", new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 1, 1), ExtendedDateTime.Open)),
-            new ParsingTestEntry("1984~/2004-06", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, 6))),
-            new ParsingTestEntry("1984/2004-06~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984), new ExtendedDateTime(2004, 6, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate))),
-            new ParsingTestEntry("1984~/2004~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, ExtendedDateTimeFlags.Approximate))),
-            new ParsingTestEntry("1984?/2004?~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, ExtendedDateTimeFlags.Uncertain), new ExtendedDateTime(2004, ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate))),
-            new ParsingTestEntry("1984-06?/2004-08?", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), new ExtendedDateTime(2004, 8, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain))),
-            new ParsingTestEntry("1984-06-02?/2004-08-08~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), new ExtendedDateTime(2004, 8, 8, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate, ExtendedDateTimeFlags.Approximate))),
-            new ParsingTestEntry("1984-06-02?/unknown", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain, ExtendedDateTimeFlags.Uncertain), ExtendedDateTime.Unknown))
+            new ParsingTestEntry("1984~/2004-06", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, YearFlags.Approximate), new ExtendedDateTime(2004, 6))),
+            new ParsingTestEntry("1984/2004-06~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984), new ExtendedDateTime(2004, 6, YearFlags.Approximate, MonthFlags.Approximate))),
+            new ParsingTestEntry("1984~/2004~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, YearFlags.Approximate), new ExtendedDateTime(2004, YearFlags.Approximate))),
+            new ParsingTestEntry("1984?/2004?~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, YearFlags.Uncertain), new ExtendedDateTime(2004, YearFlags.Uncertain | YearFlags.Approximate))),
+            new ParsingTestEntry("1984-06?/2004-08?", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, YearFlags.Uncertain, MonthFlags.Uncertain), new ExtendedDateTime(2004, 8, YearFlags.Uncertain, MonthFlags.Uncertain))),
+            new ParsingTestEntry("1984-06-02?/2004-08-08~", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, YearFlags.Uncertain, MonthFlags.Uncertain, DayFlags.Uncertain), new ExtendedDateTime(2004, 8, 8, YearFlags.Approximate, MonthFlags.Approximate, DayFlags.Approximate))),
+            new ParsingTestEntry("1984-06-02?/unknown", new ExtendedDateTimeInterval(new ExtendedDateTime(1984, 6, 2, YearFlags.Uncertain, MonthFlags.Uncertain, DayFlags.Uncertain), ExtendedDateTime.Unknown))
         };
 
         public static readonly ParsingTestEntry[] YearExceedingFourDigitsEntries =
@@ -92,19 +92,19 @@ namespace Tests
 
         public static readonly ParsingTestEntry[] PartialUncertainOrApproximateEntries =
         {
-            new ParsingTestEntry("2004?-06-11", new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Uncertain)),
-            new ParsingTestEntry("2004-06~-11", new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Approximate, monthFlags: ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("2004-(06)?-11", new ExtendedDateTime(2004, 6, 11, monthFlags: ExtendedDateTimeFlags.Uncertain)),
-            new ParsingTestEntry("2004-06-(11)~", new ExtendedDateTime(2004, 6, 11, dayFlags: ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("2004-(06)?~", new ExtendedDateTime(2004, 6, monthFlags: ExtendedDateTimeFlags.Approximate | ExtendedDateTimeFlags.Uncertain)),
-            new ParsingTestEntry("2004-(06-11)?", new ExtendedDateTime(2004, 6, 11, monthFlags: ExtendedDateTimeFlags.Uncertain, dayFlags: ExtendedDateTimeFlags.Uncertain)),
-            new ParsingTestEntry("2004?-06-(11)~", new ExtendedDateTime(2004, 6, 11, yearFlags: ExtendedDateTimeFlags.Uncertain, dayFlags: ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("(2004-(06)~)?", new ExtendedDateTime(2004, 6, yearFlags: ExtendedDateTimeFlags.Uncertain, monthFlags: ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("2004?-(06)?~", new ExtendedDateTime(2004, 6, yearFlags: ExtendedDateTimeFlags.Uncertain, monthFlags: ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("(2004)?-06-04~", new ExtendedDateTime(2004, 6, 4, yearFlags: ExtendedDateTimeFlags.Uncertain, monthFlags: ExtendedDateTimeFlags.Approximate, dayFlags: ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("(2011)-06-04~", new ExtendedDateTime(2011, 6, 4, monthFlags: ExtendedDateTimeFlags.Approximate, dayFlags: ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("2011-(06-04)~", new ExtendedDateTime(2011, 6, 4, monthFlags: ExtendedDateTimeFlags.Approximate, dayFlags: ExtendedDateTimeFlags.Approximate)),
-            new ParsingTestEntry("2011-23~", ExtendedDateTime.FromSeason(2011, Season.Autumn, yearFlags: ExtendedDateTimeFlags.Approximate, seasonFlags: ExtendedDateTimeFlags.Approximate))
+            new ParsingTestEntry("2004?-06-11", new ExtendedDateTime(2004, 6, 11, YearFlags.Uncertain)),
+            new ParsingTestEntry("2004-06~-11", new ExtendedDateTime(2004, 6, 11, YearFlags.Approximate, MonthFlags.Approximate)),
+            new ParsingTestEntry("2004-(06)?-11", new ExtendedDateTime(2004, 6, 11, MonthFlags.Uncertain)),
+            new ParsingTestEntry("2004-06-(11)~", new ExtendedDateTime(2004, 6, 11, DayFlags.Approximate)),
+            new ParsingTestEntry("2004-(06)?~", new ExtendedDateTime(2004, 6, MonthFlags.Approximate | MonthFlags.Uncertain)),
+            new ParsingTestEntry("2004-(06-11)?", new ExtendedDateTime(2004, 6, 11, MonthFlags.Uncertain, DayFlags.Uncertain)),
+            new ParsingTestEntry("2004?-06-(11)~", new ExtendedDateTime(2004, 6, 11, YearFlags.Uncertain, DayFlags.Approximate)),
+            new ParsingTestEntry("(2004-(06)~)?", new ExtendedDateTime(2004, 6, YearFlags.Uncertain, MonthFlags.Uncertain | MonthFlags.Approximate)),
+            new ParsingTestEntry("2004?-(06)?~", new ExtendedDateTime(2004, 6, YearFlags.Uncertain, MonthFlags.Uncertain | MonthFlags.Approximate)),
+            new ParsingTestEntry("(2004)?-06-04~", new ExtendedDateTime(2004, 6, 4, YearFlags.Uncertain, MonthFlags.Approximate, DayFlags.Approximate)),
+            new ParsingTestEntry("(2011)-06-04~", new ExtendedDateTime(2011, 6, 4, MonthFlags.Approximate, DayFlags.Approximate)),
+            new ParsingTestEntry("2011-(06-04)~", new ExtendedDateTime(2011, 6, 4, MonthFlags.Approximate, DayFlags.Approximate)),
+            new ParsingTestEntry("2011-23~", ExtendedDateTime.FromSeason(2011, Season.Autumn, YearFlags.Approximate, SeasonFlags.Approximate))
         };
 
         public static readonly ParsingTestEntry[] PartialUnspecifiedEntries =
@@ -138,7 +138,7 @@ namespace Tests
 
         public static readonly ParsingTestEntry[] L2ExtendedIntervalEntries =
         {
-            new ParsingTestEntry("2004-06-(01)~/2004-06-(20)~", new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1, dayFlags: ExtendedDateTimeFlags.Approximate), new ExtendedDateTime(2004, 6, 20, dayFlags: ExtendedDateTimeFlags.Approximate))),
+            new ParsingTestEntry("2004-06-(01)~/2004-06-(20)~", new ExtendedDateTimeInterval(new ExtendedDateTime(2004, 6, 1, DayFlags.Approximate), new ExtendedDateTime(2004, 6, 20, DayFlags.Approximate))),
             new ParsingTestEntry("2004-06-uu/2004-07-03", new ExtendedDateTimeInterval(new UnspecifiedExtendedDateTime("2004", "06", "uu"), new ExtendedDateTime(2004, 7, 3)))
         };
 

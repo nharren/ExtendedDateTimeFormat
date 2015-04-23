@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SeasonFlags.cs" />
+    <Compile Include="MonthFlags.cs" />
+    <Compile Include="YearFlags.cs" />
     <Compile Include="ExtendedDateTimePrecision.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="IExtendedDateTimeExtremityProvider.cs" />
@@ -57,7 +60,7 @@
     <Compile Include="Internal\Extensions\StringExtensions.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeMaskedPrecisionParser.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
-    <Compile Include="ExtendedDateTimeFlags.cs" />
+    <Compile Include="DayFlags.cs" />
     <Compile Include="ExtendedDateTimeFormatParser.cs" />
     <Compile Include="ExtendedDateTimeCollection.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeCollectionParser.cs" />

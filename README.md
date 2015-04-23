@@ -28,9 +28,9 @@ var second = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeZoneInfo.Local.Bas
 #### Approximation and Uncertainty
 
 ```csharp
-var uncertainMonth       = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain);
-var approximateMonth     = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Approximate);
-var uncertainApproxMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDateTimeFlags.Uncertain | ExtendedDateTimeFlags.Approximate);
+var uncertainMonth       = new ExtendedDateTime(2015, 4, MonthFlags.Uncertain);
+var approximateMonth     = new ExtendedDateTime(2015, 4, MonthFlags.Approximate);
+var uncertainApproxMonth = new ExtendedDateTime(2015, 4, MonthFlags.Uncertain | MonthFlags.Approximate);
 ```
 
 #### Seasons
@@ -38,7 +38,7 @@ var uncertainApproxMonth = new ExtendedDateTime(2015, 4, monthFlags: ExtendedDat
 ```csharp
 var season            = ExtendedDateTime.FromSeason(2015, Season.Spring);
 var qualifiedSeason   = ExtendedDateTime.FromSeason(2105, Season.Spring, "NorthernHemisphere");
-var approximateSeason = ExtendedDateTime.FromSeason(2105, Season.Spring, seasonFlags: ExtendedDateTimeFlags.Approximate);
+var approximateSeason = ExtendedDateTime.FromSeason(2105, Season.Spring, SeasonFlags.Approximate);
 ```
 
 #### Long Years
