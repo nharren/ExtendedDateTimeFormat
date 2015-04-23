@@ -59,11 +59,11 @@ var longScientificYearWithPrecision = ExtendedDateTime.FromScientificNotation(-2
 ```csharp
 var difference = new ExtendedDateTime(2006) - new ExtendedDateTime(2003);
 var difference = new ExtendedDateTime(2006) - new TimeSpan(5, 5, 5, 5);
-var difference = ExtendedDateTimeCalculator.SubtractYears(new ExtendedDateTime(2006), 5);
-var difference = ExtendedDateTimeCalculator.SubtractMonths(new ExtendedDateTime(2006), 5);
+var difference = new ExtendedDateTime(2006).SubtractYears(5);
+var difference = new ExtendedDateTime(2006).SubtractMonths(5);
 var sum        = new ExtendedDateTime(2006) + new TimeSpan(5, 5, 5, 5);
-var sum        = ExtendedDateTimeCalculator.AddYears(new ExtendedDateTime(2006), 5);
-var sum        = ExtendedDateTimeCalculator.AddMonths(new ExtendedDateTime(2006), 5);
+var sum        = new ExtendedDateTime(2006).AddYears(5);
+var sum        = new ExtendedDateTime(2006).AddMonths(5);
 ```
 
 #### Other Calculations
@@ -72,6 +72,8 @@ var sum        = ExtendedDateTimeCalculator.AddMonths(new ExtendedDateTime(2006)
 var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(2015, 4);
 var daysInYear  = ExtendedDateTimeCalculator.DaysInYear(2015);
 var isLeapYear  = ExtendedDateTimeCalculator.IsLeapYear(2015);
+var totalMonths = ExtendedDateTimeCalculator.TotalMonths(new ExtendedDateTime(2003, 2, 2), new ExtendedDateTime(2006, 1, 1));
+var totalYears  = ExtendedDateTimeCalculator.TotalYears(new ExtendedDateTime(2003, 2, 2), new ExtendedDateTime(2006, 1, 1));
 ```
 
 #### Collections of Dates and Times
@@ -136,8 +138,6 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
     }
 }
 ```
-
-#### More examples coming soon...
 
 ## Contributing
 
