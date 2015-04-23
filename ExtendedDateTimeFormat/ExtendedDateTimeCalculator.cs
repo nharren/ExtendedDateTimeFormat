@@ -6,13 +6,8 @@ namespace System.ExtendedDateTimeFormat
     {
         private static readonly int[] DaysInMonthArray = { 29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        public static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)
+        internal static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)                                                                   // Marked internal to prevent a null argument without having a null check.
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
-
             int second = e.Second + t.Seconds;
             int minute = e.Minute + t.Minutes;
             int hour = e.Hour + t.Hours;
@@ -93,13 +88,8 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)
+        internal static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)                                                                   // Marked internal to prevent a null argument without having a null check.
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
-
             int month = e.Month + count % 12;
             int year = e.Year + (int)Math.Floor(count / 12d);
 
@@ -136,7 +126,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        public static ExtendedDateTime AddYears(ExtendedDateTime extendedDateTime, int count)
+        internal static ExtendedDateTime AddYears(ExtendedDateTime extendedDateTime, int count)                                                     // Marked internal to prevent a null argument without having a null check.
         {
             if (extendedDateTime.Month == 2 && extendedDateTime.Day == 29 && IsLeapYear(extendedDateTime.Year) && !IsLeapYear(extendedDateTime.Year + count))
             {
@@ -165,13 +155,8 @@ namespace System.ExtendedDateTimeFormat
             return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
         }
 
-        public static ExtendedDateTime Subtract(ExtendedDateTime e, TimeSpan t)
+        internal static ExtendedDateTime Subtract(ExtendedDateTime e, TimeSpan t)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
-
             int second = e.Second - t.Seconds;
             int minute = e.Minute - t.Minutes;
             int hour = e.Hour - t.Hours;
@@ -250,18 +235,13 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        public static TimeSpan Subtract(ExtendedDateTime minuend, ExtendedDateTime subtrahend)
+        internal static TimeSpan Subtract(ExtendedDateTime minuend, ExtendedDateTime subtrahend)
         {
             return GetSpan(subtrahend, minuend).TimeSpan;
         }
 
-        public static ExtendedDateTime SubtractMonths(ExtendedDateTime e, int count)
+        internal static ExtendedDateTime SubtractMonths(ExtendedDateTime e, int count)                                               // Marked internal to prevent a null argument without having a null check.
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
-
             int month = e.Month - count % 12;
             int year = e.Year - (int)Math.Floor(count / 12d);
 
@@ -298,7 +278,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        public static ExtendedDateTime SubtractYears(ExtendedDateTime extendedDateTime, int count)
+        internal static ExtendedDateTime SubtractYears(ExtendedDateTime extendedDateTime, int count)                                      // Marked internal to prevent a null argument without having a null check.
         {
             if (extendedDateTime.Month == 2 && extendedDateTime.Day == 29 && IsLeapYear(extendedDateTime.Year) && !IsLeapYear(extendedDateTime.Year - count))
             {
@@ -312,7 +292,7 @@ namespace System.ExtendedDateTimeFormat
             return result;
         }
 
-        public static ExtendedDateTime ToPrecision(ExtendedDateTime originalDate, ExtendedDateTimePrecision precision, bool roundUp)
+        internal static ExtendedDateTime ToPrecision(ExtendedDateTime originalDate, ExtendedDateTimePrecision precision, bool roundUp)    // Marked internal to prevent a null argument without having a null check.
         {
             var roundedDate = (ExtendedDateTime)null;
 
@@ -509,11 +489,31 @@ namespace System.ExtendedDateTimeFormat
 
         public static double TotalMonths(ExtendedDateTime e1, ExtendedDateTime e2)
         {
+            if (e1 == null)
+            {
+                throw new ArgumentNullException("e1");
+            }
+
+            if (e2 == null)
+            {
+                throw new ArgumentNullException("e2");
+            }
+
             return GetSpan(e1, e2).TotalMonths;
         }
 
         public static double TotalYears(ExtendedDateTime e1, ExtendedDateTime e2)
         {
+            if (e1 == null)
+            {
+                throw new ArgumentNullException("e1");
+            }
+
+            if (e2 == null)
+            {
+                throw new ArgumentNullException("e2");
+            }
+
             return GetSpan(e1, e2).TotalYears;
         }
 
@@ -530,18 +530,9 @@ namespace System.ExtendedDateTimeFormat
 
             return clones;
         }
+
         private static ExtendedTimeSpan GetSpan(ExtendedDateTime e1, ExtendedDateTime e2)
         {
-            if (e1 == null)
-            {
-                throw new ArgumentNullException("e1");
-            }
-
-            if (e2 == null)
-            {
-                throw new ArgumentNullException("e2");
-            }
-
             var invert = e1 > e2;
 
             var e4 = invert ? e1 : e2;

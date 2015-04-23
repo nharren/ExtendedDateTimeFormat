@@ -55,11 +55,10 @@ namespace Tests
             TestCollection.Add(new XmlSerializationTest("Possibility Collections", XmlSerializationTestEntries.PossibilityCollections));
             TestCollection.Add(new XmlSerializationTest("Extended Datetimes", XmlSerializationTestEntries.ExtendedDateTimes));
             TestCollection.Add(new XmlSerializationTest("Unspecified Extended Datetimes", XmlSerializationTestEntries.UnspecifiedExtendedDateTimes));
-            TestCollection.Add(new HashCodeTest(new ExtendedDateTime(1600, 1, 1, 0, 0, 0, TimeSpan.Zero), new ExtendedDateTime(2000, 1, 1, 0, 0, 0, TimeSpan.Zero), 100));
+            TestCollection.Add(new HashCodeTest(new ExtendedDateTime(-1000, 1, 1, 0, 0, 0, TimeSpan.Zero), new ExtendedDateTime(1000, 1, 1, 0, 0, 0, TimeSpan.Zero), 97));
             TestCollection.Add(new CalculationTest("Total Months", CalculationTestEntries.TotalMonths));
             TestCollection.Add(new CalculationTest("Total Years", CalculationTestEntries.TotalYears));
             TestCollection.Add(new CalculationTest("Difference", CalculationTestEntries.Difference));
-            TestCollection.Add(new CalculationTest("Time Zone Difference", CalculationTestEntries.TimeZoneDifference));
             TestCollection.Add(new CalculationTest("Add Months", CalculationTestEntries.AddMonths));
             TestCollection.Add(new CalculationTest("Add Years", CalculationTestEntries.AddYears));
 

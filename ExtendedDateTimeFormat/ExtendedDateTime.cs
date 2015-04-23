@@ -525,6 +525,16 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeParser.Parse(extendedDateTimeString);
         }
 
+        public ExtendedDateTime AddMonths(int count)
+        {
+            return ExtendedDateTimeCalculator.AddMonths(this, count);
+        }
+
+        public ExtendedDateTime AddYears(int count)
+        {
+            return ExtendedDateTimeCalculator.AddYears(this, count);
+        }
+
         public object Clone()
         {
             return MemberwiseClone();
@@ -600,6 +610,16 @@ namespace System.ExtendedDateTimeFormat
         public void ReadXml(XmlReader reader)
         {
             Parse(reader.ReadString(), this);
+        }
+
+        public ExtendedDateTime SubtractMonths(int count)
+        {
+            return ExtendedDateTimeCalculator.SubtractMonths(this, count);
+        }
+
+        public ExtendedDateTime SubtractYears(int count)
+        {
+            return ExtendedDateTimeCalculator.SubtractYears(this, count);
         }
 
         public ExtendedDateTime ToPrecision(ExtendedDateTimePrecision precision, bool roundUp)
