@@ -6,7 +6,7 @@ namespace System.ExtendedDateTimeFormat
     {
         private static readonly int[] DaysInMonthArray = { 29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        internal static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)                                                                   // Marked internal to prevent a null argument without having a null check.
+        internal static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)                                                                  // Called from ExtendedDateTime.
         {
             int second = e.Second + t.Seconds;
             int minute = e.Minute + t.Minutes;
@@ -88,7 +88,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        internal static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)                                                                   // Marked internal to prevent a null argument without having a null check.
+        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)                                                                   // Called from ExtendedDateTime.
         {
             int month = e.Month + count % 12;
             int year = e.Year + (int)Math.Floor(count / 12d);
@@ -126,7 +126,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        internal static ExtendedDateTime AddYears(ExtendedDateTime extendedDateTime, int count)                                                     // Marked internal to prevent a null argument without having a null check.
+        internal static ExtendedDateTime AddYears(ExtendedDateTime extendedDateTime, int count)                                                     // Called from ExtendedDateTime.
         {
             if (extendedDateTime.Month == 2 && extendedDateTime.Day == 29 && IsLeapYear(extendedDateTime.Year) && !IsLeapYear(extendedDateTime.Year + count))
             {
@@ -238,7 +238,7 @@ namespace System.ExtendedDateTimeFormat
             return GetSpan(subtrahend, minuend).TimeSpan;
         }
 
-        internal static ExtendedDateTime SubtractMonths(ExtendedDateTime e, int count)                                               // Marked internal to prevent a null argument without having a null check.
+        internal static ExtendedDateTime SubtractMonths(ExtendedDateTime e, int count)                                               // Called from ExtendedDateTime.
         {
             int month = e.Month - count % 12;
             int year = e.Year - (int)Math.Floor(count / 12d);
@@ -276,7 +276,7 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        internal static ExtendedDateTime SubtractYears(ExtendedDateTime extendedDateTime, int count)                                      // Marked internal to prevent a null argument without having a null check.
+        internal static ExtendedDateTime SubtractYears(ExtendedDateTime extendedDateTime, int count)                                      // Called from ExtendedDateTime.
         {
             if (extendedDateTime.Month == 2 && extendedDateTime.Day == 29 && IsLeapYear(extendedDateTime.Year) && !IsLeapYear(extendedDateTime.Year - count))
             {
@@ -288,7 +288,7 @@ namespace System.ExtendedDateTimeFormat
             return extendedDateTime;
         }
 
-        internal static ExtendedDateTime ToPrecision(ExtendedDateTime originalDate, ExtendedDateTimePrecision precision, bool roundUp)    // Marked internal to prevent a null argument without having a null check.
+        internal static ExtendedDateTime ToPrecision(ExtendedDateTime originalDate, ExtendedDateTimePrecision precision, bool roundUp)    // Called from ExtendedDateTime.
         {
             var roundedDate = new ExtendedDateTime();
 
@@ -594,7 +594,7 @@ namespace System.ExtendedDateTimeFormat
             return invert ? new ExtendedTimeSpan(-years, -totalMonths / 12, -months, -totalMonths, -exclusiveDays, new TimeSpan(-days, -hours, -minutes, -seconds)) : new ExtendedTimeSpan(years, totalMonths / 12, months, totalMonths, exclusiveDays, new TimeSpan(days, hours, minutes, seconds));
         }
 
-        private class ExtendedTimeSpan
+        private struct ExtendedTimeSpan
         {
             private readonly int _exclusiveDays;
             private readonly int _months;

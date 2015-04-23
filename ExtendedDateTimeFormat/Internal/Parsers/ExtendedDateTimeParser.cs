@@ -131,11 +131,6 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                 CommitTimeComponent(ref currentTimeComponent, isTimeZonePart, componentBuffer, ref extendedDateTime);
             }
 
-            if (!isTimeZonePart)
-            {
-                extendedDateTime.UtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
-            }
-
             return extendedDateTime;
         }
 

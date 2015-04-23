@@ -46,7 +46,20 @@ namespace System.ExtendedDateTimeFormat
             _yearFlags = yearFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
         {
             _dayFlags = dayFlags;
             _monthFlags = monthFlags;
@@ -58,7 +71,19 @@ namespace System.ExtendedDateTimeFormat
             _yearFlags = yearFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
+        {
+            _dayFlags = dayFlags;
+            _yearFlags = yearFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute, second)
         {
             _monthFlags = monthFlags;
             _yearFlags = yearFlags;
@@ -69,7 +94,17 @@ namespace System.ExtendedDateTimeFormat
             _dayFlags = dayFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
+        {
+            _dayFlags = dayFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, MonthFlags monthFlags) : this(year, month, day, hour, minute, second, utcOffset)
+        {
+            _monthFlags = monthFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, MonthFlags monthFlags) : this(year, month, day, hour, minute, second)
         {
             _monthFlags = monthFlags;
         }
@@ -79,7 +114,19 @@ namespace System.ExtendedDateTimeFormat
             _yearFlags = yearFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags) : this(year, month, day, hour, minute, second)
+        {
+            _yearFlags = yearFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute)
         {
             _dayFlags = dayFlags;
             _monthFlags = monthFlags;
@@ -92,7 +139,19 @@ namespace System.ExtendedDateTimeFormat
             _monthFlags = monthFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute)
         {
             _dayFlags = dayFlags;
             _yearFlags = yearFlags;
@@ -104,7 +163,18 @@ namespace System.ExtendedDateTimeFormat
             _yearFlags = yearFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute)
+        {
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
+        {
+            _dayFlags = dayFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, DayFlags dayFlags) : this(year, month, day, hour, minute)
         {
             _dayFlags = dayFlags;
         }
@@ -114,12 +184,29 @@ namespace System.ExtendedDateTimeFormat
             _monthFlags = monthFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, MonthFlags monthFlags) : this(year, month, day, hour, minute)
+        {
+            _monthFlags = monthFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, minute, utcOffset)
         {
             _yearFlags = yearFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags) : this(year, month, day, hour, minute)
+        {
+            _yearFlags = yearFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour)
         {
             _dayFlags = dayFlags;
             _monthFlags = monthFlags;
@@ -132,7 +219,19 @@ namespace System.ExtendedDateTimeFormat
             _monthFlags = monthFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour)
+        {
+            _dayFlags = dayFlags;
+            _monthFlags = monthFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _dayFlags = dayFlags;
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour)
         {
             _dayFlags = dayFlags;
             _yearFlags = yearFlags;
@@ -144,7 +243,18 @@ namespace System.ExtendedDateTimeFormat
             _yearFlags = yearFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour)
+        {
+            _monthFlags = monthFlags;
+            _yearFlags = yearFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _dayFlags = dayFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, DayFlags dayFlags) : this(year, month, day, hour)
         {
             _dayFlags = dayFlags;
         }
@@ -154,7 +264,17 @@ namespace System.ExtendedDateTimeFormat
             _monthFlags = monthFlags;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, MonthFlags monthFlags) : this(year, month, day, hour)
+        {
+            _monthFlags = monthFlags;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, utcOffset)
+        {
+            _yearFlags = yearFlags;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags) : this(year, month, day, hour)
         {
             _yearFlags = yearFlags;
         }
@@ -231,6 +351,17 @@ namespace System.ExtendedDateTimeFormat
             _precision = ExtendedDateTimePrecision.Second;
         }
 
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second) : this(year, month, day, hour, minute)
+        {
+            if (second < 0 || second > 59)
+            {
+                throw new ArgumentException("second");
+            }
+
+            _second = second;
+            _precision = ExtendedDateTimePrecision.Second;
+        }
+
         public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset) : this(year, month, day, hour, utcOffset)
         {
             if (minute < 0 || minute > 59)
@@ -242,7 +373,28 @@ namespace System.ExtendedDateTimeFormat
             _precision = ExtendedDateTimePrecision.Minute;
         }
 
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset) : this(year, month, day)
+        public ExtendedDateTime(int year, int month, int day, int hour, int minute) : this(year, month, day, hour)
+        {
+            if (minute < 0 || minute > 59)
+            {
+                throw new ArgumentException("minute");
+            }
+
+            _minute = minute;
+            _precision = ExtendedDateTimePrecision.Minute;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset) : this(year, month, day, hour)
+        {
+            if (utcOffset.Milliseconds != 0 || utcOffset.Seconds != 0 || utcOffset.Days != 0)
+            {
+                throw new ArgumentOutOfRangeException("utcOffset");
+            }
+
+            _utcOffset = utcOffset;
+        }
+
+        public ExtendedDateTime(int year, int month, int day, int hour) : this(year, month, day)
         {
             if (hour < 0 || hour > 23)
             {
@@ -250,13 +402,6 @@ namespace System.ExtendedDateTimeFormat
             }
 
             _hour = hour;
-
-            if (utcOffset.Milliseconds != 0 || utcOffset.Seconds != 0 || utcOffset.Days != 0)
-            {
-                throw new ArgumentOutOfRangeException("utcOffset");
-            }
-
-            _utcOffset = utcOffset;
             _precision = ExtendedDateTimePrecision.Hour;
         }
 

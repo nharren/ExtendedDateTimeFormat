@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ExtendedDateTimeFormat;
 using System.Linq;
 
@@ -18,7 +17,7 @@ namespace Tests
 
         public static readonly StringSerializationTestEntry[] DateAndTimeEntries =
         {
-            new StringSerializationTestEntry(new ExtendedDateTime(2001, 2, 3, 9, 30, 1, TimeZoneInfo.Local.BaseUtcOffset), "2001-02-03T09:30:01-08"),
+            new StringSerializationTestEntry(new ExtendedDateTime(2001, 2, 3, 9, 30, 1), "2001-02-03T09:30:01-08"),
             new StringSerializationTestEntry(new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.Zero), "2004-01-01T10:10:10Z"),
             new StringSerializationTestEntry(new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.FromHours(5)), "2004-01-01T10:10:10+05")
         };

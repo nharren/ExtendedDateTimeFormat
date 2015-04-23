@@ -20,9 +20,18 @@ This library implements all of the EDTF features in .NET.
 var year   = new ExtendedDateTime(2015);
 var month  = new ExtendedDateTime(2015, 4);
 var day    = new ExtendedDateTime(2015, 4, 16);
-var hour   = new ExtendedDateTime(2015, 4, 16, 3, TimeZoneInfo.Local.BaseUtcOffset);
-var minute = new ExtendedDateTime(2015, 4, 16, 3, 26, TimeZoneInfo.Local.BaseUtcOffset);
-var second = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeZoneInfo.Local.BaseUtcOffset);
+var hour   = new ExtendedDateTime(2015, 4, 16, 3);
+var minute = new ExtendedDateTime(2015, 4, 16, 3, 26);
+var second = new ExtendedDateTime(2015, 4, 16, 3, 26, 25);
+``` 
+
+#### UTC Offsets
+
+```csharp
+var local = new ExtendedDateTime(2015, 4, 16, 3, 26, 25);
+var utc   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeSpan.Zero);
+var est   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeSpan.FromHours(-5);
+var nst   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, new TimeSpan(-3, -30, 0);
 ``` 
 
 #### Approximation and Uncertainty

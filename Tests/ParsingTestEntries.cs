@@ -17,7 +17,7 @@ namespace Tests
 
         public static readonly ParsingTestEntry[] DateAndTimeEntries =
         {
-            new ParsingTestEntry("2001-02-03T09:30:01-08", new ExtendedDateTime(2001, 2, 3, 9, 30, 1, TimeZoneInfo.Local.BaseUtcOffset)),
+            new ParsingTestEntry("2001-02-03T09:30:01-08", new ExtendedDateTime(2001, 2, 3, 9, 30, 1)),
             new ParsingTestEntry("2004-01-01T10:10:10Z", new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.Zero)),
             new ParsingTestEntry("2004-01-01T10:10:10+05", new ExtendedDateTime(2004, 1, 1, 10, 10, 10, TimeSpan.FromHours(5)))
         };
