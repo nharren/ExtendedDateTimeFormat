@@ -150,11 +150,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 
 ## Contributing
 
-To get an overview of the basic structure of this library, see the "Primary Classes" diagram in the "Diagrams" folder.
-
-A list of things you can do to help improve this library can be found in "Roadmap.txt" in the "Roadmap" folder.
-
-Alternatively, if you see something you would like to fix or a feature you would like to implement, feel free to do so.
+To get an overview of the basic structure of this library, see the "Primary Classes" diagram in the "Diagrams" folder. To see which features are in line to be implemented, see "Roadmap.txt" in the "Roadmap" folder. If you decide you would like to contribute, you can contact me at the email address on my profile page.
 
 ## License
 
