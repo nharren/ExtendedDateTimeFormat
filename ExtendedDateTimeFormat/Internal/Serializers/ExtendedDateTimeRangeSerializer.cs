@@ -8,14 +8,14 @@ namespace System.ExtendedDateTimeFormat.Internal.Serializers
         {
             var stringBuilder = new StringBuilder();
 
-            if (extendedDateTimeRange.Start != null && (extendedDateTimeRange.Start as ExtendedDateTime) != ExtendedDateTime.Minimum)
+            if (extendedDateTimeRange.Start != null && (ExtendedDateTime)extendedDateTimeRange.Start != ExtendedDateTime.Minimum)
             {
                 stringBuilder.Append(extendedDateTimeRange.Start.ToString());
             }
 
             stringBuilder.Append("..");
 
-            if (extendedDateTimeRange.End != null && (extendedDateTimeRange.End as ExtendedDateTime) != ExtendedDateTime.Maximum)
+            if (extendedDateTimeRange.End != null && (ExtendedDateTime)extendedDateTimeRange.End != ExtendedDateTime.Maximum)
             {
                 stringBuilder.Append(extendedDateTimeRange.End.ToString());
             }

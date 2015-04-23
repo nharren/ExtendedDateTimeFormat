@@ -133,11 +133,9 @@ namespace System.ExtendedDateTimeFormat
                 throw new InvalidOperationException("The years added to a leap day must result in another leap day.");
             }
 
-            var result = (ExtendedDateTime)extendedDateTime.Clone();
+            extendedDateTime.Year += count;
 
-            result.Year += count;
-
-            return result;
+            return extendedDateTime;
         }
 
         public static int DaysInMonth(int year, int month)                                                                                         // This removes the range restriction present in the DateTime.DaysInMonth() method.
@@ -285,16 +283,14 @@ namespace System.ExtendedDateTimeFormat
                 throw new InvalidOperationException("The years subtracted from a leap day must result in another leap day.");
             }
 
-            var result = (ExtendedDateTime)extendedDateTime.Clone();
+            extendedDateTime.Year -= count;
 
-            result.Year -= count;
-
-            return result;
+            return extendedDateTime;
         }
 
         internal static ExtendedDateTime ToPrecision(ExtendedDateTime originalDate, ExtendedDateTimePrecision precision, bool roundUp)    // Marked internal to prevent a null argument without having a null check.
         {
-            var roundedDate = (ExtendedDateTime)null;
+            var roundedDate = new ExtendedDateTime();
 
             switch (precision)
             {
@@ -489,46 +485,22 @@ namespace System.ExtendedDateTimeFormat
 
         public static double TotalMonths(ExtendedDateTime e1, ExtendedDateTime e2)
         {
-            if (e1 == null)
-            {
-                throw new ArgumentNullException("e1");
-            }
-
-            if (e2 == null)
-            {
-                throw new ArgumentNullException("e2");
-            }
-
             return GetSpan(e1, e2).TotalMonths;
         }
 
         public static double TotalYears(ExtendedDateTime e1, ExtendedDateTime e2)
         {
-            if (e1 == null)
-            {
-                throw new ArgumentNullException("e1");
-            }
-
-            if (e2 == null)
-            {
-                throw new ArgumentNullException("e2");
-            }
-
             return GetSpan(e1, e2).TotalYears;
         }
 
-        public static ExtendedDateTime[] ToUniformPrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
+        public static void ToUniformPrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
         {
             var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
 
-            var clones = extendedDateTimes.Select(e => (ExtendedDateTime)e.Clone()).ToArray();
-
-            foreach (var extendedDateTime in clones)
+            for (int i = 0; i < extendedDateTimes.Length; i++)
             {
-                extendedDateTime.Precision = maxPrecision;
+                extendedDateTimes[i].Precision = maxPrecision;
             }
-
-            return clones;
         }
 
         private static ExtendedTimeSpan GetSpan(ExtendedDateTime e1, ExtendedDateTime e2)

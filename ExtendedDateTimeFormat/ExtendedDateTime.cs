@@ -12,7 +12,7 @@ namespace System.ExtendedDateTimeFormat
 {
     [Serializable]
     [TypeConverter(typeof(ExtendedDateTimeConverter))]
-    public class ExtendedDateTime : ISingleExtendedDateTimeType, ICloneable, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable
+    public struct ExtendedDateTime : ISingleExtendedDateTimeType, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable
     {
         public static readonly ExtendedDateTime Maximum = new ExtendedDateTime(9999, 12, 31, 23, 59, 59, TimeSpan.FromHours(14));
         public static readonly ExtendedDateTime Minimum = new ExtendedDateTime(-9999, 1, 1, 0, 0, 0, TimeSpan.FromHours(-12));
@@ -20,20 +20,20 @@ namespace System.ExtendedDateTimeFormat
         public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { _isUnknown = true };
 
         private static ExtendedDateTimeComparer _comparer;
-        private int _day = 1;
+        private int _day;
         private ExtendedDateTimeFlags _dayFlags;
         private int _hour;
         private bool _isOpen;
         private bool _isUnknown;
         private int _minute;
-        private int _month = 1;
+        private int _month;
         private ExtendedDateTimeFlags _monthFlags;
         private ExtendedDateTimePrecision _precision;
         private Season _season;
         private ExtendedDateTimeFlags _seasonFlags;
         private string _seasonQualifier;
         private int _second;
-        private TimeSpan _utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+        private TimeSpan _utcOffset;
         private int _year;
         private int? _yearExponent;
         private ExtendedDateTimeFlags _yearFlags;
@@ -151,11 +151,29 @@ namespace System.ExtendedDateTimeFormat
             _precision = ExtendedDateTimePrecision.Year;
         }
 
-        internal ExtendedDateTime()                                     // Used for parsing; Internal to prevent an invalid state.
+        public ExtendedDateTime()
         {
+            _year = 0;
+            _month = 1;
+            _day = 1;
+            _hour = 0;
+            _minute = 0;
+            _second = 0;
+            _season = Season.Undefined;
+            _yearFlags = 0;
+            _monthFlags = 0;
+            _dayFlags = 0;
+            _seasonFlags = 0;
+            _seasonQualifier = null;
+            _isOpen = false;
+            _isUnknown = false;
+            _precision = ExtendedDateTimePrecision.Year;
+            _yearExponent = null;
+            _yearPrecision = null;
+            _utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
         }
 
-        protected ExtendedDateTime(SerializationInfo info, StreamingContext context)
+        protected ExtendedDateTime(SerializationInfo info, StreamingContext context) : this()
         {
             if (info == null)
             {
@@ -519,7 +537,7 @@ namespace System.ExtendedDateTimeFormat
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeString))
             {
-                return null;
+                return new ExtendedDateTime();
             }
 
             return ExtendedDateTimeParser.Parse(extendedDateTimeString);
@@ -533,11 +551,6 @@ namespace System.ExtendedDateTimeFormat
         public ExtendedDateTime AddYears(int count)
         {
             return ExtendedDateTimeCalculator.AddYears(this, count);
-        }
-
-        public object Clone()
-        {
-            return MemberwiseClone();
         }
 
         public int CompareTo(ExtendedDateTime other)
@@ -567,19 +580,12 @@ namespace System.ExtendedDateTimeFormat
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || obj.GetType() != typeof(ExtendedDateTime))
             {
                 return false;
             }
 
-            var extendedDateTime = obj as ExtendedDateTime;
-
-            if (extendedDateTime == null)
-            {
-                return false;
-            }
-
-            return Comparer.Compare(this, extendedDateTime) == 0;
+            return Comparer.Compare(this, (ExtendedDateTime)obj) == 0;
         }
 
         public bool Equals(ExtendedDateTime other)
@@ -641,7 +647,7 @@ namespace System.ExtendedDateTimeFormat
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeString))
             {
-                return null;
+                return new ExtendedDateTime();
             }
 
             return ExtendedDateTimeParser.Parse(extendedDateTimeString, container);

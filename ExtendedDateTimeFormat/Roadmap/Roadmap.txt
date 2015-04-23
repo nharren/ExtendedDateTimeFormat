@@ -1,5 +1,6 @@
 Specific:
 - Implement remaining ISO-8601:2004(E) features.
+- Implement binary serialization test.
 
 Ongoing:
 - Optimize (e.g. string literals, redundant code, etc.).
