@@ -548,7 +548,7 @@ namespace System.ExtendedDateTimeFormat
             var minutes = e4.Minute - e3.Minute + offsetDifference.Minutes;
             var seconds = e4.Second - e3.Second;
 
-            var includeStartDay = e3.Hour == 0 && e3.Minute == 0 && e3.Second == 0;
+            var includeStartDay = e4.Hour >= e3.Hour;                                                                                                  // When there are more or equal hours added to the end day than hours passed in the start day, then we have a full day.
             var includeStartMonth = e3.Day == 1 && includeStartDay;
             var includeStartYear = e3.Month == 1 && includeStartMonth;
 
