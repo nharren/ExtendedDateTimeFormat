@@ -8,7 +8,6 @@ Ongoing:
 - Performance testing.
 
 Undecided:
-- Add an implementation of IEnumerable<ExtendedDateTime> on each object.
 - Move scientific notation from extended datetime to a separate class.
 
 Backburner:

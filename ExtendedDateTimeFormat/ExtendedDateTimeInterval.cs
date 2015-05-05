@@ -59,7 +59,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("edtiStr", this.ToString());
+            info.AddValue("edtiStr", ToString());
         }
 
         public XmlSchema GetSchema()
@@ -84,7 +84,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(this.ToString());
+            writer.WriteString(ToString());
         }
 
         internal static ExtendedDateTimeInterval Parse(string extendedDateTimeIntervalString, ExtendedDateTimeInterval extendedDateTimeInterval = null)

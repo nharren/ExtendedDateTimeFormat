@@ -5,18 +5,16 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class ExtendedDateTimeParser
     {
-        internal static ExtendedDateTime Parse(string extendedDateTimeString, ExtendedDateTime? container = null)
+        internal static ExtendedDateTime Parse(string extendedDateTimeString, ExtendedDateTime extendedDateTime = null)
         {
             if (string.IsNullOrWhiteSpace(extendedDateTimeString))
             {
                 throw new ArgumentNullException("extendedDateTimeString");
             }
 
-            var extendedDateTime = new ExtendedDateTime();
-
-            if (container != null)
+            if (extendedDateTime == null)
             {
-                extendedDateTime = container.Value;
+                extendedDateTime = new ExtendedDateTime();
             }
 
             InsertArtificialScopes(ref extendedDateTimeString);                                                        // e.g. 1995-11?-12~ => {{1995-11}?-12}~

@@ -12,7 +12,7 @@ namespace System.ExtendedDateTimeFormat
 {
     [Serializable]
     [TypeConverter(typeof(ExtendedDateTimeConverter))]
-    public struct ExtendedDateTime : ISingleExtendedDateTimeType, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable
+    public class ExtendedDateTime : ISingleExtendedDateTimeType, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable
     {
         public static readonly ExtendedDateTime Maximum = new ExtendedDateTime(9999, 12, 31, 23, 59, 59, TimeSpan.FromHours(14));
         public static readonly ExtendedDateTime Minimum = new ExtendedDateTime(-9999, 1, 1, 0, 0, 0, TimeSpan.FromHours(-12));
