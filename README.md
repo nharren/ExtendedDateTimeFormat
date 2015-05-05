@@ -81,8 +81,8 @@ var sum        = new ExtendedDateTime(2006).AddMonths(5);
 var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(2015, 4);
 var daysInYear  = ExtendedDateTimeCalculator.DaysInYear(2015);
 var isLeapYear  = ExtendedDateTimeCalculator.IsLeapYear(2015);
-var totalMonths = ExtendedDateTimeCalculator.TotalMonths(new ExtendedDateTime(2003, 2, 2), new ExtendedDateTime(2006, 1, 1));
-var totalYears  = ExtendedDateTimeCalculator.TotalYears(new ExtendedDateTime(2003, 2, 2), new ExtendedDateTime(2006, 1, 1));
+var totalMonths = (new ExtendedDateTime(2006, 1, 1) - new ExtendedDateTime(2003, 2, 2)).TotalMonths;
+var totalYears  = (new ExtendedDateTime(2006, 1, 1) - new ExtendedDateTime(2003, 2, 2)).TotalYears;
 ```
 
 #### Collections of Dates and Times

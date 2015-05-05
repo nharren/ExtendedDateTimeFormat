@@ -12,7 +12,7 @@ namespace System.ExtendedDateTimeFormat
 {
     [Serializable]
     [TypeConverter(typeof(ExtendedDateTimeConverter))]
-    public class ExtendedDateTime : ISingleExtendedDateTimeType, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable
+    public class ExtendedDateTime : ISingleExtendedDateTimeType, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable, ICloneable
     {
         public static readonly ExtendedDateTime Maximum = new ExtendedDateTime(9999, 12, 31, 23, 59, 59, TimeSpan.FromHours(14));
         public static readonly ExtendedDateTime Minimum = new ExtendedDateTime(-9999, 1, 1, 0, 0, 0, TimeSpan.FromHours(-12));
@@ -438,7 +438,7 @@ namespace System.ExtendedDateTimeFormat
             _precision = ExtendedDateTimePrecision.Year;
         }
 
-        public ExtendedDateTime()
+        internal ExtendedDateTime()
         {
             _year = 0;
             _month = 1;
@@ -815,7 +815,7 @@ namespace System.ExtendedDateTimeFormat
             return ExtendedDateTimeCalculator.Subtract(e, t);
         }
 
-        public static TimeSpan operator -(ExtendedDateTime e2, ExtendedDateTime e1)
+        public static ExtendedTimeSpan operator -(ExtendedDateTime e2, ExtendedDateTime e1)
         {
             return ExtendedDateTimeCalculator.Subtract(e2, e1);
         }
@@ -873,6 +873,11 @@ namespace System.ExtendedDateTimeFormat
         public ExtendedDateTime AddYears(int count)
         {
             return ExtendedDateTimeCalculator.AddYears(this, count);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
 
         public int CompareTo(ExtendedDateTime other)

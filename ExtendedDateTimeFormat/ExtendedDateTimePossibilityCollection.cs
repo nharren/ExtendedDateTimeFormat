@@ -55,7 +55,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("edtpcStr", this.ToString());
+            info.AddValue("edtpcStr", ToString());
         }
 
         public XmlSchema GetSchema()
@@ -63,7 +63,7 @@ namespace System.ExtendedDateTimeFormat
             return null;
         }
 
-        public TimeSpan GetSpan()
+        public ExtendedTimeSpan GetSpan()
         {
             return Latest() - Earliest();
         }
@@ -94,7 +94,7 @@ namespace System.ExtendedDateTimeFormat
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteString(this.ToString());
+            writer.WriteString(ToString());
         }
 
         internal static ExtendedDateTimePossibilityCollection Parse(string possibilityCollectionString, ExtendedDateTimePossibilityCollection possibilityCollection = null)

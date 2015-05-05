@@ -23,7 +23,7 @@ namespace System.ExtendedDateTimeFormat
         {
         }
 
-        public TimeSpan Span()
+        public ExtendedTimeSpan Span()
         {
             return End.Latest() - Start.Earliest();
         }
