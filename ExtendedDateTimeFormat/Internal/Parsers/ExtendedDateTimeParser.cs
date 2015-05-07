@@ -88,6 +88,11 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                     }
                     else if (isSeasonQualifierPart)
                     {
+                        if (char.IsWhiteSpace(character))
+                        {
+                            throw new ParseException("Season qualifiers cannot contain whitespace.", new string(componentBuffer.ToArray()));
+                        }
+
                         componentBuffer.Add(character);
                     }
                     else

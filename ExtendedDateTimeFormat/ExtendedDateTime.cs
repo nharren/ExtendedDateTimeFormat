@@ -517,6 +517,19 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
+        public DayOfWeek DayOfWeek
+        {
+            get
+            {
+                if (Precision > ExtendedDateTimePrecision.Day)
+                {
+                    throw new InvalidOperationException("Day of the Week can only be calculated when the precision is of the day or greater.");
+                }
+
+                return ExtendedDateTimeCalculator.DayOfWeek(this);
+            }
+        }
+
         public int Hour
         {
             get

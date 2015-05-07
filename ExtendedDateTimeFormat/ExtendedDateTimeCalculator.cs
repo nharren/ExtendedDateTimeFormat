@@ -6,6 +6,69 @@ namespace System.ExtendedDateTimeFormat
     {
         private static readonly int[] DaysInMonthArray = { 29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
+        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)                                                                   // Called from ExtendedDateTime.
+        {
+            int month = e.Month + count % 12;
+            int year = e.Year + (int)Math.Floor(count / 12d);
+
+            if (e.Day > DaysInMonth(year, month))
+            {
+                throw new InvalidOperationException("The day is greater than the number of days in the resulting month.");
+            }
+
+            if (e.Second != 0 || e.Precision == ExtendedDateTimePrecision.Second)
+            {
+                return new ExtendedDateTime(year, month, e.Day, e.Hour, e.Minute, e.Second, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+            }
+
+            if (e.Minute != 0 || e.Precision == ExtendedDateTimePrecision.Minute)
+            {
+                return new ExtendedDateTime(year, month, e.Day, e.Hour, e.Minute, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+            }
+
+            if (e.Hour != 0 || e.Precision == ExtendedDateTimePrecision.Hour)
+            {
+                return new ExtendedDateTime(year, month, e.Day, e.Hour, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+            }
+
+            if (e.Day != 1 || e.Precision == ExtendedDateTimePrecision.Day)
+            {
+                return new ExtendedDateTime(year, month, e.Day, e.YearFlags, e.MonthFlags, e.DayFlags);
+            }
+
+            if (month != 1 || e.Precision == ExtendedDateTimePrecision.Month)
+            {
+                return new ExtendedDateTime(year, month, e.YearFlags, e.MonthFlags);
+            }
+
+            return new ExtendedDateTime(year, e.YearFlags);
+        }
+
+        public static int DaysInMonth(int year, int month)                                                                                         // This removes the range restriction present in the DateTime.DaysInMonth() method.
+        {
+            return month == 2 && IsLeapYear(year) ? DaysInMonthArray[0] : DaysInMonthArray[month];
+        }
+
+        public static int DaysInYear(int year)
+        {
+            return IsLeapYear(year) ? 366 : 365;
+        }
+
+        public static bool IsLeapYear(int year)                                                                                                      // http://www.timeanddate.com/date/leapyear.html
+        {
+            return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+        }
+
+        public static void ToUniformPrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
+        {
+            var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
+
+            for (int i = 0; i < extendedDateTimes.Length; i++)
+            {
+                extendedDateTimes[i].Precision = maxPrecision;
+            }
+        }
+
         internal static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)                                                                  // Called from ExtendedDateTime.
         {
             int second = e.Second + t.Seconds;
@@ -88,44 +151,6 @@ namespace System.ExtendedDateTimeFormat
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)                                                                   // Called from ExtendedDateTime.
-        {
-            int month = e.Month + count % 12;
-            int year = e.Year + (int)Math.Floor(count / 12d);
-
-            if (e.Day > DaysInMonth(year, month))
-            {
-                throw new InvalidOperationException("The day is greater than the number of days in the resulting month.");
-            }
-
-            if (e.Second != 0 || e.Precision == ExtendedDateTimePrecision.Second)
-            {
-                return new ExtendedDateTime(year, month, e.Day, e.Hour, e.Minute, e.Second, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
-            }
-
-            if (e.Minute != 0 || e.Precision == ExtendedDateTimePrecision.Minute)
-            {
-                return new ExtendedDateTime(year, month, e.Day, e.Hour, e.Minute, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
-            }
-
-            if (e.Hour != 0 || e.Precision == ExtendedDateTimePrecision.Hour)
-            {
-                return new ExtendedDateTime(year, month, e.Day, e.Hour, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
-            }
-
-            if (e.Day != 1 || e.Precision == ExtendedDateTimePrecision.Day)
-            {
-                return new ExtendedDateTime(year, month, e.Day, e.YearFlags, e.MonthFlags, e.DayFlags);
-            }
-
-            if (month != 1 || e.Precision == ExtendedDateTimePrecision.Month)
-            {
-                return new ExtendedDateTime(year, month, e.YearFlags, e.MonthFlags);
-            }
-
-            return new ExtendedDateTime(year, e.YearFlags);
-        }
-
         internal static ExtendedDateTime AddYears(ExtendedDateTime extendedDateTime, int count)                                                     // Called from ExtendedDateTime.
         {
             if (extendedDateTime.Month == 2 && extendedDateTime.Day == 29 && IsLeapYear(extendedDateTime.Year) && !IsLeapYear(extendedDateTime.Year + count))
@@ -138,19 +163,28 @@ namespace System.ExtendedDateTimeFormat
             return extendedDateTime;
         }
 
-        public static int DaysInMonth(int year, int month)                                                                                         // This removes the range restriction present in the DateTime.DaysInMonth() method.
+        internal static DayOfWeek DayOfWeek(ExtendedDateTime extendedDateTime)                               // http://www.stoimen.com/blog/2012/04/24/computer-algorithms-how-to-determine-the-day-of-the-week/
         {
-            return month == 2 && IsLeapYear(year) ? DaysInMonthArray[0] : DaysInMonthArray[month];
-        }
+            var yearFirstHalf = int.Parse(extendedDateTime.Year.ToString().Substring(0, 2));
+            var yearSecondHalf = int.Parse(extendedDateTime.Year.ToString().Substring(2, 2));
+            var monthKeyTable = new int[] { 0, 0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5 };
+            var monthKey = monthKeyTable[extendedDateTime.Month];
+            var centuryKeyTable = new int[] { 6, 4, 2, 0 };
+            var centuryKey = centuryKeyTable[yearFirstHalf % 4];
 
-        public static int DaysInYear(int year)
-        {
-            return IsLeapYear(year) ? 366 : 365;
-        }
+            if (IsLeapYear(extendedDateTime.Year))
+            {
+                if (extendedDateTime.Month == 1)
+                {
+                    monthKey = 6;
+                }
+                else if (extendedDateTime.Month == 2)
+                {
+                    monthKey = 2;
+                }
+            }
 
-        public static bool IsLeapYear(int year)                                                                                                      // http://www.timeanddate.com/date/leapyear.html
-        {
-            return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+            return (DayOfWeek)((extendedDateTime.Day + monthKey + yearSecondHalf + Math.Floor(yearSecondHalf / 4d) + centuryKey) % 7);
         }
 
         internal static ExtendedDateTime Subtract(ExtendedDateTime e, TimeSpan t)
@@ -567,16 +601,6 @@ namespace System.ExtendedDateTimeFormat
             }
 
             return roundedDate;
-        }
-
-        public static void ToUniformPrecision(ExtendedDateTime[] extendedDateTimes, ExtendedDateTimePrecision? precision = null)
-        {
-            var maxPrecision = precision ?? extendedDateTimes.Max(e => e.Precision);
-
-            for (int i = 0; i < extendedDateTimes.Length; i++)
-            {
-                extendedDateTimes[i].Precision = maxPrecision;
-            }
         }
     }
 }
