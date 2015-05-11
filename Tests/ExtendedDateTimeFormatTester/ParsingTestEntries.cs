@@ -2,7 +2,7 @@
 using System.ExtendedDateTimeFormat;
 using System.Linq;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public static class ParsingTestEntries
     {

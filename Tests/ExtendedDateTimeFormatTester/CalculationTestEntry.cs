@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ExtendedDateTimeFormat;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public class CalculationTestEntry
     {

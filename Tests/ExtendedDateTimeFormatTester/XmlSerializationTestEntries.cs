@@ -1,6 +1,6 @@
 ﻿using System.ExtendedDateTimeFormat;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public static class XmlSerializationTestEntries
     {

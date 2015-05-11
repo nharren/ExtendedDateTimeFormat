@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public class CalculationTest : Test
     {

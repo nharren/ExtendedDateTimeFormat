@@ -4,7 +4,7 @@ using System.ExtendedDateTimeFormat;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public partial class MainWindow : Window
     {

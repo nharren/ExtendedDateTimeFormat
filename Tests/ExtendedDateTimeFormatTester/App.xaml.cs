@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     /// <summary>
     /// Interaction logic for App.xaml

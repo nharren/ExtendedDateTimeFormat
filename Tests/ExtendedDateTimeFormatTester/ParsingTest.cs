@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ExtendedDateTimeFormat;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public class ParsingTest : Test
     {

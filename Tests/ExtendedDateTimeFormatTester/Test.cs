@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public abstract class Test
     {

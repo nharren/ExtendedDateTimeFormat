@@ -1,7 +1,7 @@
 ﻿using System.ExtendedDateTimeFormat;
 using System.Text;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public static class Outliner
     {

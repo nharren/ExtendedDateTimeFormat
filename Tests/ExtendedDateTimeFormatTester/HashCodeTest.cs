@@ -5,7 +5,7 @@ using System.ExtendedDateTimeFormat;
 using System.Linq;
 using System.Text;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public class HashCodeTest : Test
     {

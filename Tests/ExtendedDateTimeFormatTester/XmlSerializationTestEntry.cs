@@ -1,13 +1,13 @@
 ﻿using System.ExtendedDateTimeFormat;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
-    public class StringSerializationTestEntry
+    public class XmlSerializationTestEntry
     {
         private readonly string _expectedOutput;
         private readonly IExtendedDateTimeIndependentType _input;
 
-        public StringSerializationTestEntry(IExtendedDateTimeIndependentType input, string expectedOutput)
+        public XmlSerializationTestEntry(IExtendedDateTimeIndependentType input, string expectedOutput)
         {
             _input = input;
             _expectedOutput = expectedOutput;

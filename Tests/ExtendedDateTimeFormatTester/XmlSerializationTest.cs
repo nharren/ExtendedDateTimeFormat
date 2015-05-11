@@ -4,7 +4,7 @@ using System.ExtendedDateTimeFormat;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Tests
+namespace ExtendedDateTimeFormatTester
 {
     public class XmlSerializationTest : Test
     {
