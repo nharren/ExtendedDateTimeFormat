@@ -40,9 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalendarDate.cs" />
+    <Compile Include="Date.cs" />
+    <Compile Include="DateCalculator.cs" />
+    <Compile Include="ExtendedDatePrecision.cs" />
     <Compile Include="ExtendedTimeSpan.cs" />
+    <Compile Include="Internal\Parsers\WeekDateParser.cs" />
+    <Compile Include="Internal\Serializers\WeekDateSerializer.cs" />
+    <Compile Include="OrdinalDate.cs" />
     <Compile Include="SeasonFlags.cs" />
     <Compile Include="MonthFlags.cs" />
+    <Compile Include="WeekDate.cs" />
+    <Compile Include="WeekDatePrecision.cs" />
     <Compile Include="YearFlags.cs" />
     <Compile Include="ExtendedDateTimePrecision.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

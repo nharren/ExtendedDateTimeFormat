@@ -4,7 +4,7 @@ namespace System.ExtendedDateTimeFormat
 {
     public static class ExtendedDateTimeCalculator
     {
-        private static readonly int[] DaysInMonthArray = { 29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        private static readonly int[] DaysInMonthArray = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
         public static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)                                                                   // Called from ExtendedDateTime.
         {
@@ -46,7 +46,7 @@ namespace System.ExtendedDateTimeFormat
 
         public static int DaysInMonth(int year, int month)                                                                                         // This removes the range restriction present in the DateTime.DaysInMonth() method.
         {
-            return month == 2 && IsLeapYear(year) ? DaysInMonthArray[0] : DaysInMonthArray[month];
+            return month == 2 && IsLeapYear(year) ? 29 : DaysInMonthArray[month];
         }
 
         public static int DaysInYear(int year)
