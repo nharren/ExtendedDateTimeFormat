@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExtendedDateTimeFormat, Version=1.0.5608.41462, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Source\ExtendedDateTimeFormat\bin\Debug\ExtendedDateTimeFormat.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -118,12 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="License\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExtendedDateTimeFormat\ExtendedDateTimeFormat.csproj">
-      <Project>{de828727-15f5-4327-933c-6d6825513400}</Project>
-      <Name>ExtendedDateTimeFormat</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
