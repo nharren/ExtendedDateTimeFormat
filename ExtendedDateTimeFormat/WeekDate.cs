@@ -1,16 +1,17 @@
 ﻿using System.ExtendedDateTimeFormat.Internal.Parsers;
+using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
     public class WeekDate : Date
     {
+        private readonly int _addedYearLength;
         private readonly int _day;
         private readonly WeekDatePrecision _precision;
         private readonly int _week;
         private readonly long _year;
-        private readonly int _numberOfAddedYearDigits;
 
-        public WeekDate(long year, int week, int day, int numberOfAddedYearDigits = 0) : this(year, week, numberOfAddedYearDigits)
+        public WeekDate(long year, int week, int day, int addedYearLength = 0) : this(year, week, addedYearLength)
         {
             if (day < 1 || day > 7)
             {
@@ -21,7 +22,7 @@ namespace System.ExtendedDateTimeFormat
             _precision = WeekDatePrecision.Day;
         }
 
-        public WeekDate(long year, int week, int numberOfAddedYearDigits = 0)
+        public WeekDate(long year, int week, int addedYearLength = 0)
         {
             if (year < 0 || year > 9999)
             {
@@ -37,8 +38,16 @@ namespace System.ExtendedDateTimeFormat
 
             _year = year;
             _week = week;
-            _numberOfAddedYearDigits = numberOfAddedYearDigits;
+            _addedYearLength = addedYearLength;
             _precision = WeekDatePrecision.Week;
+        }
+
+        public int AddedYearLength
+        {
+            get
+            {
+                return _addedYearLength;
+            }
         }
 
         public int Day
@@ -73,22 +82,19 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public int NumberOfAddedYearDigits
+        public static WeekDate Parse(string input, int addedYearLength)
         {
-            get
-            {
-                return _numberOfAddedYearDigits;
-            }
-        }
-
-        public static WeekDate Parse(string input, int numberOfAddedYearDigits = 0)
-        {
-            return WeekDateParser.Parse(input, numberOfAddedYearDigits);
+            return WeekDateParser.Parse(input, addedYearLength);
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return ToString(true);
+        }
+
+        public virtual string ToString(bool hyphenate)
+        {
+            return WeekDateSerializer.Serialize(this, hyphenate);
         }
     }
 }

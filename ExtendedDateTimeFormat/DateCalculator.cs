@@ -14,12 +14,12 @@
             return month == 2 && IsLeapYear(year) ? 29 : DaysInMonthArray[month];
         }
 
-        public static int DaysInYear(int year)
+        public static int DaysInYear(long year)
         {
             return IsLeapYear(year) ? 366 : 365;
         }
 
-        public static bool IsLeapYear(int year)                                                                                                      // http://www.timeanddate.com/date/leapyear.html
+        public static bool IsLeapYear(long year)                                                                                                      // http://www.timeanddate.com/date/leapyear.html
         {
             return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
         }

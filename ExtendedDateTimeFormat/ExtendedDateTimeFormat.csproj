@@ -45,7 +45,9 @@
     <Compile Include="DateCalculator.cs" />
     <Compile Include="ExtendedDatePrecision.cs" />
     <Compile Include="ExtendedTimeSpan.cs" />
+    <Compile Include="Internal\Parsers\OrdinalDateParser.cs" />
     <Compile Include="Internal\Parsers\WeekDateParser.cs" />
+    <Compile Include="Internal\Serializers\OrdinalDateSerializer.cs" />
     <Compile Include="Internal\Serializers\WeekDateSerializer.cs" />
     <Compile Include="OrdinalDate.cs" />
     <Compile Include="SeasonFlags.cs" />
