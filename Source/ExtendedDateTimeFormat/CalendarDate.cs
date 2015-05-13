@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ExtendedDateTimeFormat.Internal.Comparers;
+using System.ExtendedDateTimeFormat.Internal.Converters;
+using System.ExtendedDateTimeFormat.Internal.Parsers;
+using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class CalendarDate : Date
+    public class CalendarDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
-        private readonly long _year;
-        private readonly int _month;
+        private readonly int _addedYearLength;
+        private readonly int _century;
         private readonly int _day;
-        private readonly ExtendedDatePrecision _precision;
+        private readonly int _month;
+        private readonly CalendarDatePrecision _precision;
+        private readonly long _year;
+        private static DateComparer _comparer;
 
-        public CalendarDate(int year, int month, int day) : this(year, month)
+        public CalendarDate(long year, int month, int day, int addedYearLength = 0) : this(year, month, addedYearLength)
         {
-            var daysInMonth = ExtendedDateTimeCalculator.DaysInMonth(year, month);
+            var daysInMonth = DateCalculator.DaysInMonth(year, month);
 
             if (day < 1 || day > daysInMonth)
             {
@@ -23,10 +25,10 @@ namespace System.ExtendedDateTimeFormat
             }
 
             _day = day;
-            _precision = ExtendedDatePrecision.Day;
+            _precision = CalendarDatePrecision.Day;
         }
 
-        public CalendarDate(int year, int month) : this(year)
+        public CalendarDate(long year, int month, int addedYearLength = 0) : this(year, addedYearLength)
         {
             if (month < 1 || month > 12)
             {
@@ -34,10 +36,17 @@ namespace System.ExtendedDateTimeFormat
             }
 
             _month = month;
-            _precision = ExtendedDatePrecision.Month;
+            _precision = CalendarDatePrecision.Month;
         }
 
-        public CalendarDate(int year)
+        public CalendarDate(int century, int addedYearLength = 0)
+        {
+            _century = century;
+            _addedYearLength = addedYearLength;
+            _precision = CalendarDatePrecision.Century;
+        }
+
+        public CalendarDate(long year, int addedYearLength = 0)
         {
             if (year < 0 || year > 9999)
             {
@@ -45,14 +54,32 @@ namespace System.ExtendedDateTimeFormat
             }
 
             _year = year;
-            _precision = ExtendedDatePrecision.Year;
+            _century = DateCalculator.CenturyOfYear(year);
+            _addedYearLength = addedYearLength;
+            _precision = CalendarDatePrecision.Year;
         }
 
-        public long Year
+        public int AddedYearLength
         {
             get
             {
-                return _year;
+                return _addedYearLength;
+            }
+        }
+
+        public int Century
+        {
+            get
+            {
+                return _century;
+            }
+        }
+
+        public int Day
+        {
+            get
+            {
+                return _day;
             }
         }
 
@@ -64,12 +91,133 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public int Day
+        public CalendarDatePrecision Precision
         {
             get
             {
-                return _day;
+                return _precision;
             }
         }
+
+        public long Year
+        {
+            get
+            {
+                return _year;
+            }
+        }
+
+        public static ExtendedTimeSpan operator -(CalendarDate x, CalendarDate y)
+        {
+            return DateCalculator.Subtract(x, y);
+        }
+
+        public static bool operator !=(CalendarDate x, Date y)
+        {
+            return Comparer.Compare(x, y) != 0;
+        }
+
+        public static bool operator <(CalendarDate x, Date y)
+        {
+            return Comparer.Compare(x, y) < 0;
+        }
+
+        public static bool operator <=(CalendarDate x, Date y)
+        {
+            return Comparer.Compare(x, y) <= 0;
+        }
+
+        public static bool operator ==(CalendarDate x, Date y)
+        {
+            return Comparer.Compare(x, y) == 0;
+        }
+
+        public static bool operator >(CalendarDate x, Date y)
+        {
+            return Comparer.Compare(x, y) > 0;
+        }
+
+        public static bool operator >=(CalendarDate x, Date y)
+        {
+            return Comparer.Compare(x, y) >= 0;
+        }
+
+        public int CompareTo(Date other)
+        {
+            return Comparer.Compare(this, other);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+
+            if (!(obj is Date))
+            {
+                throw new ArgumentException("A calendar date can only be compared with other dates.");
+            }
+
+            return Comparer.Compare(this, (Date)obj);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Date))
+            {
+                return false;
+            }
+
+            return Comparer.Compare(this, (Date)obj) == 0;
+        }
+
+        public bool Equals(Date other)
+        {
+            return Comparer.Compare(this, other) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return unchecked((int)Year) ^ (Month << 28) ^ (Day << 22);
+        }
+
+        public static CalendarDate Parse(string input, int addedYearLength = 0)
+        {
+            return CalendarDateParser.Parse(input, addedYearLength);
+        }
+
+        public static DateComparer Comparer
+        {
+            get
+            {
+                if (_comparer == null)
+                {
+                    _comparer = new DateComparer();
+                }
+
+                return _comparer;
+            }
+        }
+
+        public override string ToString()
+        {
+            return ToString(true);
+        }
+
+        public virtual string ToString(bool hyphenate)
+        {
+            return CalendarDateSerializer.Serialize(this, hyphenate);
+        }
+
+        public OrdinalDate ToOrdinalDate()
+        {
+            return CalendarDateConverter.ToOrdinalDate(this);
+        }
+
+        public WeekDate ToWeekDate(WeekDatePrecision precision)
+        {
+            return CalendarDateConverter.ToWeekDate(this, precision);
+        } 
     }
 }

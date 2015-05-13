@@ -2,7 +2,7 @@
 {
     internal static class WeekDateParser
     {
-        internal static WeekDate Parse(string input, int extraYearLength)
+        internal static WeekDate Parse(string input, int addedYearLength)
         {
             if (input == null)
             {
@@ -10,7 +10,7 @@
             }
 
             var operatorLength = input.StartsWith("+") || input.StartsWith("-") ? 1 : 0;
-            var yearLength = operatorLength + 4 + extraYearLength;
+            var yearLength = operatorLength + 4 + addedYearLength;
             var weekDesignatorLength = 1;
             var weekLength = weekDesignatorLength + 2;
             var minimumLength = yearLength + weekLength;
@@ -38,12 +38,11 @@
                 throw new ParseException("The week could not be parsed from the input string.", input);
             }
 
-            var dayLength = 1;
-            var hasDay = input.Length == yearLength + hyphenLength + weekLength + hyphenLength + dayLength;
+            var noDay = input.Length == yearLength + hyphenLength + weekLength;
 
-            if (!hasDay)
+            if (noDay)
             {
-                return new WeekDate(year, week);
+                return new WeekDate(year, week, addedYearLength);
             }
 
             int day;
@@ -54,7 +53,7 @@
                 throw new ParseException("The day could not be parsed from the input string.", input);
             }
 
-            return new WeekDate(year, week, day);
+            return new WeekDate(year, week, day, addedYearLength);
         }
     }
 }
