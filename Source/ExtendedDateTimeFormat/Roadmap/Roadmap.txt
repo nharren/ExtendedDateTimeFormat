@@ -13,10 +13,10 @@
 	☑ Representations of local time with decimal fraction in basic format (hhmmss,sss*, hhmmss.sss*, hhmm,mmm*, hhmm.mmm*, hh,hhh*, hh.hhh*).
 	☑ Representations of local time with time designator ("T" in front of any of the local time representations above).
 	☑ Representations of midnight in basic format (240000) or extended format (24:00:00) and in all local time representations.
-	☐ Representations of calender dates and time in basic format (year – month – day of the month – time designator – hour – minute – second – zone designator).
-	☐ Representations of ordinal dates and time in basic and extended formats (year – day of the year – time designator – hour – minute – second – zone designator).
-	☐ Representations of week dates and time in basic and extended formats (year – week designator – week – day of the week – time designator – hour – minute – second – zone).
-	☐ All other date and time representations allowed (See section 4.3.3 of the standard).
+	☑ Representations of calender dates and time in basic format (year – month – day of the month – time designator – hour – minute – second – zone designator).
+	☑ Representations of ordinal dates and time in basic and extended formats (year – day of the year – time designator – hour – minute – second – zone designator).
+	☑ Representations of week dates and time in basic and extended formats (year – week designator – week – day of the week – time designator – hour – minute – second – zone).
+	☑ All other date and time representations allowed (See section 4.3.3 of the standard).
 	☐ Representations of time intervals by duration (Pnnn*Ynnn*Mnnn*DTnnn*Hnnn*Mnnn*S, Pnnn*W).
 	☐ Reduced accuracy of representations of time intervals by duration where the lowest order components are omitted to represent reduced accuracy. Lowest order components may have a decimal fraction ("," is preferred, otherwise "."). "T" is absent if all components are absent.
 	☐ Alternative format for the representation of time intervals by duration in basic format (PYYYYMMDDThhmmss, PYYYYDDDThhmmss) or extended format (PYYYY-MM-DDThh:mm:ss, PYYYY-DDDThh:mm:ss).
@@ -25,6 +25,18 @@
 	☐ All other time interval representations allowed (See sections 4.4.4.5 and 4.4.5 of the standard).
 	☐ Representations of recurring time intervals in basic format (e.g. Rnn*/YYYYMMDDThhmmss/YYYYMMDDThhmmss) or extended format (Rnn*/YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss).
 	☐ Representation other than complete of recurring time intervals (See section 4.5.4 of the standard).
+☐ Implement ISO-8601:2004(E) tests.
+	☐ Parsing calendar dates.
+	☐ Parsing ordinal dates.
+	☐ Parsing week dates.
+	☐ Parsing times.
+	☐ Parsing datetimes.
+	☐ Serializing calendar dates.
+	☐ Serializing ordinal dates.
+	☐ Serializing week dates.
+	☐ Serializing times.
+	☐ Serializing datetimes.
+	☐ Conversion between date types.
 designator).
 ☐ Implement binary serialization test.
 ☐ Add DayOfWeek and ExtendedDateTimePrecision to readme examples.

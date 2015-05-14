@@ -44,6 +44,8 @@
     <Compile Include="Date.cs" />
     <Compile Include="DateCalculator.cs" />
     <Compile Include="CalendarDatePrecision.cs" />
+    <Compile Include="DateTime.cs" />
+    <Compile Include="DateType.cs" />
     <Compile Include="ExtendedTimeSpan.cs" />
     <Compile Include="Internal\Comparers\DateComparer.cs" />
     <Compile Include="Internal\Comparers\TimeComparer.cs" />
@@ -51,10 +53,12 @@
     <Compile Include="Internal\Converters\OrdinalDateConverter.cs" />
     <Compile Include="Internal\Converters\WeekDateConverter.cs" />
     <Compile Include="Internal\Parsers\CalendarDateParser.cs" />
+    <Compile Include="Internal\Parsers\DateTimeParser.cs" />
     <Compile Include="Internal\Parsers\OrdinalDateParser.cs" />
     <Compile Include="Internal\Parsers\TimeParser.cs" />
     <Compile Include="Internal\Parsers\WeekDateParser.cs" />
     <Compile Include="Internal\Serializers\CalendarDateSerializer.cs" />
+    <Compile Include="Internal\Serializers\DateTimeSerializer.cs" />
     <Compile Include="Internal\Serializers\OrdinalDateSerializer.cs" />
     <Compile Include="Internal\Serializers\TimeSerializer.cs" />
     <Compile Include="Internal\Serializers\WeekDateSerializer.cs" />
