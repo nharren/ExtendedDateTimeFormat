@@ -8,11 +8,11 @@
 	☑ Representations of week dates in basic format (YYYYWwwD) and extended format (YYYY-Www-D).
 	☑ Representations of week dates with reduced accuracy in basic format (YYYYWww) and extended format (YYYY-Www).
 	☑ Expanded representations of week dates in basic format (±Y*YYYYWwwD, ±Y*YYYYWww) and extended format (±Y*YYYY-Www-D, ±Y*YYYY-Www).
-    ☐ Representations of local time in basic format (hhmmss) and extended format (hh:mm:ss).
-	☐ Representations of local time with reduced accuracy in basic format (hhmm, hh) and extended format (hh:mm).
-	☐ Representations of local time with decimal fraction in basic format (hhmmss,sss*, hhmmss.sss*, hhmm,mmm*, hhmm.mmm*, hh,hhh*, hh.hhh*).
-	☐ Representations of local time with time designator ("T" in front of any of the local time representations above).
-	☐ Representations of midnight in basic format (240000) or extended format (24:00:00) and in all local time representations.
+    ☑ Representations of local time in basic format (hhmmss) and extended format (hh:mm:ss).
+	☑ Representations of local time with reduced accuracy in basic format (hhmm, hh) and extended format (hh:mm).
+	☑ Representations of local time with decimal fraction in basic format (hhmmss,sss*, hhmmss.sss*, hhmm,mmm*, hhmm.mmm*, hh,hhh*, hh.hhh*).
+	☑ Representations of local time with time designator ("T" in front of any of the local time representations above).
+	☑ Representations of midnight in basic format (240000) or extended format (24:00:00) and in all local time representations.
 	☐ Representations of calender dates and time in basic format (year – month – day of the month – time designator – hour – minute – second – zone designator).
 	☐ Representations of ordinal dates and time in basic and extended formats (year – day of the year – time designator – hour – minute – second – zone designator).
 	☐ Representations of week dates and time in basic and extended formats (year – week designator – week – day of the week – time designator – hour – minute – second – zone).
