@@ -38,7 +38,7 @@
                 throw new ParseException("The day could not be parsed from the input string.", input);
             }
 
-            return new OrdinalDate(year, day);
+            return new OrdinalDate(year, day) { AddedYearLength = addedYearLength };
         }
     }
 }

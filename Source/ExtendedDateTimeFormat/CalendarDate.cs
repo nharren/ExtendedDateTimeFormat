@@ -2,12 +2,13 @@
 using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
+using System.ExtendedDateTimeFormat.Internal.Types;
 
 namespace System.ExtendedDateTimeFormat
 {
     public class CalendarDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
-        private readonly int _addedYearLength;
+        private int _addedYearLength;
         private readonly int _century;
         private readonly int _day;
         private readonly int _month;
@@ -15,7 +16,7 @@ namespace System.ExtendedDateTimeFormat
         private readonly long _year;
         private static DateComparer _comparer;
 
-        public CalendarDate(long year, int month, int day, int addedYearLength = 0) : this(year, month, addedYearLength)
+        public CalendarDate(long year, int month, int day) : this(year, month)
         {
             var daysInMonth = DateCalculator.DaysInMonth(year, month);
 
@@ -28,7 +29,7 @@ namespace System.ExtendedDateTimeFormat
             _precision = CalendarDatePrecision.Day;
         }
 
-        public CalendarDate(long year, int month, int addedYearLength = 0) : this(year, addedYearLength)
+        public CalendarDate(long year, int month) : this(year)
         {
             if (month < 1 || month > 12)
             {
@@ -39,14 +40,13 @@ namespace System.ExtendedDateTimeFormat
             _precision = CalendarDatePrecision.Month;
         }
 
-        public CalendarDate(int century, int addedYearLength = 0)
+        public CalendarDate(int century)
         {
             _century = century;
-            _addedYearLength = addedYearLength;
             _precision = CalendarDatePrecision.Century;
         }
 
-        public CalendarDate(long year, int addedYearLength = 0)
+        public CalendarDate(long year)
         {
             if (year < 0 || year > 9999)
             {
@@ -55,7 +55,6 @@ namespace System.ExtendedDateTimeFormat
 
             _year = year;
             _century = DateCalculator.CenturyOfYear(year);
-            _addedYearLength = addedYearLength;
             _precision = CalendarDatePrecision.Year;
         }
 
@@ -64,6 +63,10 @@ namespace System.ExtendedDateTimeFormat
             get
             {
                 return _addedYearLength;
+            }
+            set
+            {
+                _addedYearLength = value;
             }
         }
 
@@ -107,7 +110,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public static ExtendedTimeSpan operator -(CalendarDate x, CalendarDate y)
+        public static TimeSpan operator -(CalendarDate x, CalendarDate y)
         {
             return DateCalculator.Subtract(x, y);
         }
@@ -218,6 +221,6 @@ namespace System.ExtendedDateTimeFormat
         public WeekDate ToWeekDate(WeekDatePrecision precision)
         {
             return CalendarDateConverter.ToWeekDate(this, precision);
-        } 
+        }
     }
 }

@@ -42,7 +42,7 @@
 
             if (noDay)
             {
-                return new WeekDate(year, week, addedYearLength);
+                return new WeekDate(year, week) { AddedYearLength = addedYearLength };
             }
 
             int day;
@@ -53,7 +53,7 @@
                 throw new ParseException("The day could not be parsed from the input string.", input);
             }
 
-            return new WeekDate(year, week, day, addedYearLength);
+            return new WeekDate(year, week, day) { AddedYearLength = addedYearLength };
         }
     }
 }

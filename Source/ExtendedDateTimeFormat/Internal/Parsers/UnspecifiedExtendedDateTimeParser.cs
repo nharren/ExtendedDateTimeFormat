@@ -18,7 +18,7 @@
 
             if (unspecifiedExtendedDateTime == null)
             {
-                unspecifiedExtendedDateTime = new UnspecifiedExtendedDateTime(); 
+                unspecifiedExtendedDateTime = new UnspecifiedExtendedDateTime();
             }
 
             unspecifiedExtendedDateTime.Year = components[0];

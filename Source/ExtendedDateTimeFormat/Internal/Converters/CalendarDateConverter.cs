@@ -9,7 +9,7 @@
                 throw new ConversionException("The calendar date must be defined to the day to be converted to an ordinal date.");
             }
 
-            return new OrdinalDate(calendarDate.Year, DateCalculator.DayOfYear(calendarDate), calendarDate.AddedYearLength);
+            return new OrdinalDate(calendarDate.Year, DateCalculator.DayOfYear(calendarDate)) { AddedYearLength = calendarDate.AddedYearLength };
         }
 
         public static WeekDate ToWeekDate(CalendarDate calendarDate, WeekDatePrecision precision)
@@ -37,12 +37,12 @@
 
             if (precision == WeekDatePrecision.Week)
             {
-                return new WeekDate(year, week, calendarDate.AddedYearLength);
+                return new WeekDate(year, week) { AddedYearLength = calendarDate.AddedYearLength };
             }
 
             var day = (int)DateCalculator.DayOfWeek(calendarDate);
 
-            return new WeekDate(year, week, day, calendarDate.AddedYearLength);
+            return new WeekDate(year, week, day) { AddedYearLength = calendarDate.AddedYearLength };
         }
     }
 }

@@ -9,51 +9,35 @@
         {
             if (precision == CalendarDatePrecision.Century)
             {
-                return new CalendarDate(DateCalculator.CenturyOfYear(ordinalDate.Year), ordinalDate.AddedYearLength);
+                return new CalendarDate(DateCalculator.CenturyOfYear(ordinalDate.Year)) { AddedYearLength = ordinalDate.AddedYearLength };
             }
 
             if (precision == CalendarDatePrecision.Year)
             {
-                return new CalendarDate(ordinalDate.Year, ordinalDate.AddedYearLength);
+                return new CalendarDate(ordinalDate.Year) { AddedYearLength = ordinalDate.AddedYearLength };
             }
 
-            var isLeapYear = DateCalculator.IsLeapYear(ordinalDate.Year);
+            var days = DateCalculator.IsLeapYear(ordinalDate.Year) ? DaysToMonth366 : DaysToMonth365;
             var month = 0;
             var day = 0;
 
-            if (isLeapYear)
+            for (int i = days.Length - 1; i >= 0; i--)
             {
-                for (int i = DaysToMonth366.Length - 1; i >= 0; i--)
+                if (ordinalDate.Day > days[i])
                 {
-                    if (ordinalDate.Day > DaysToMonth366[i])
-                    {
-                        month = i + 1;
-                        day = ordinalDate.Day - DaysToMonth366[i];
+                    month = i + 1;
+                    day = ordinalDate.Day - days[i];
 
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = DaysToMonth365.Length - 1; i >= 0; i--)
-                {
-                    if (ordinalDate.Day > DaysToMonth365[i])
-                    {
-                        month = i + 1;
-                        day = ordinalDate.Day - DaysToMonth365[i];
-
-                        break;
-                    }
+                    break;
                 }
             }
 
             if (precision == CalendarDatePrecision.Month)
             {
-                return new CalendarDate(ordinalDate.Year, month, ordinalDate.AddedYearLength);
+                return new CalendarDate(ordinalDate.Year, month) { AddedYearLength = ordinalDate.AddedYearLength };
             }
 
-            return new CalendarDate(ordinalDate.Year, month, day, ordinalDate.AddedYearLength);
+            return new CalendarDate(ordinalDate.Year, month, day) { AddedYearLength = ordinalDate.AddedYearLength };
         }
 
         internal static WeekDate ToWeekDate(OrdinalDate ordinalDate, WeekDatePrecision precision)

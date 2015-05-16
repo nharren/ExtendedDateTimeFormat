@@ -52,7 +52,7 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
 
             if (collection == null)
             {
-                collection = new ExtendedDateTimeCollection(); 
+                collection = new ExtendedDateTimeCollection();
             }
 
             for (int i = 0; i < contentsString.Length; i++)                                     // Add set contents, including nested sets.

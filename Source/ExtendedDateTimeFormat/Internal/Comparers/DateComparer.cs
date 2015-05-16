@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ExtendedDateTimeFormat.Internal.Types;
 
 namespace System.ExtendedDateTimeFormat.Internal.Comparers
 {

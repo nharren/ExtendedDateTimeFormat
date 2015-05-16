@@ -72,18 +72,22 @@ namespace System.ExtendedDateTimeFormat.Internal.Parsers
                             hour = double.Parse(componentString);
                             currentComponent++;
                             break;
+
                         case TimeComponent.Minute:
                             minute = double.Parse(componentString);
                             currentComponent++;
                             break;
+
                         case TimeComponent.Second:
                             second = double.Parse(componentString);
                             currentComponent++;
                             break;
+
                         case TimeComponent.UtcHour:
                             utcHours = int.Parse(componentString);
                             currentComponent++;
                             break;
+
                         case TimeComponent.UtcMinute:
                             utcMinutes = int.Parse(componentString);
                             break;

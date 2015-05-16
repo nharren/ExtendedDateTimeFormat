@@ -28,7 +28,7 @@
                     throw new ParseException("The century could not be parsed from the input string", input);
                 }
 
-                return new CalendarDate(century, addedYearLength);
+                return new CalendarDate(century) { AddedYearLength = addedYearLength };
             }
 
             var yearLength = centuryLength + 2;
@@ -44,7 +44,7 @@
 
             if (noMonth)
             {
-                return new CalendarDate(year, addedYearLength);
+                return new CalendarDate(year) { AddedYearLength = addedYearLength };
             }
 
             var inExtendedFormat = input[yearLength] == '-';
@@ -62,7 +62,7 @@
 
             if (noDay)
             {
-                return new CalendarDate(year, month, addedYearLength);
+                return new CalendarDate(year, month) { AddedYearLength = addedYearLength };
             }
 
             int day;
@@ -73,7 +73,7 @@
                 throw new ParseException("The day could not be parsed from the input string.", input);
             }
 
-            return new CalendarDate(year, month, day, addedYearLength);
+            return new CalendarDate(year, month, day) { AddedYearLength = addedYearLength };
         }
     }
 }

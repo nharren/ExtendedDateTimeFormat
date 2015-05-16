@@ -2,17 +2,18 @@
 using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
+using System.ExtendedDateTimeFormat.Internal.Types;
 
 namespace System.ExtendedDateTimeFormat
 {
     public class OrdinalDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
         private static DateComparer _comparer;
-        private readonly int _addedYearLength;
+        private int _addedYearLength;
         private readonly int _day;
         private readonly long _year;
 
-        public OrdinalDate(long year, int day, int addedYearLength = 0)
+        public OrdinalDate(long year, int day)
         {
             var daysInYear = DateCalculator.DaysInYear(year);
 
@@ -23,7 +24,6 @@ namespace System.ExtendedDateTimeFormat
 
             _year = year;
             _day = day;
-            _addedYearLength = 0;
         }
 
         public static DateComparer Comparer
@@ -44,6 +44,11 @@ namespace System.ExtendedDateTimeFormat
             get
             {
                 return _addedYearLength;
+            }
+
+            set
+            {
+                _addedYearLength = value;
             }
         }
 

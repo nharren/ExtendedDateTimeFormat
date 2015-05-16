@@ -21,7 +21,7 @@
 
             if (extendedDateTimeInterval == null)
             {
-                extendedDateTimeInterval = new ExtendedDateTimeInterval(); 
+                extendedDateTimeInterval = new ExtendedDateTimeInterval();
             }
 
             if (startString[0] == '{')

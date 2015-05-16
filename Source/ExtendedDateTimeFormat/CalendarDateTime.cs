@@ -3,32 +3,51 @@ using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class DateTime
+    public class CalendarDateTime : Internal.Types.DateTime
     {
         private readonly CalendarDate _date;
         private readonly Time _time;
+        private int _addedYearLength;
 
-        public DateTime(CalendarDate date, Time time)
+        public CalendarDateTime(long year, int month, int day, int hour, int minute, double second, TimeSpan? utcOffset = null)
         {
-            if (date.Precision != CalendarDatePrecision.Day)
-            {
-                throw new InvalidOperationException("Calender dates must have day precision in a datetime.");
-            }
+            _date = new CalendarDate(year, month, day);
+            _time = new Time(hour, minute, second, utcOffset);
+        }
 
-            if (date.AddedYearLength > 0)
-            {
-                throw new InvalidOperationException("Dates with added year lengths are not allowed in datetimes.");
-            }
+        public CalendarDateTime(long year, int month, int day, int hour, int minute, TimeSpan? utcOffset = null)
+        {
+            _date = new CalendarDate(year, month, day);
+            _time = new Time(hour, minute, utcOffset);
+        }
 
+        public CalendarDateTime(long year, int month, int day, int hour, TimeSpan? utcOffset = null)
+        {
+            _date = new CalendarDate(year, month, day);
+            _time = new Time(hour, utcOffset);
+        }
+
+        public CalendarDateTime(long year, int month, int day)
+        {
+            _date = new CalendarDate(year, month, day);
+        }
+
+        internal CalendarDateTime(CalendarDate date, Time time)
+        {
             _date = date;
             _time = time;
         }
 
-        internal CalendarDate Date
+        public int AddedYearLength
         {
             get
             {
-                return _date;
+                return _addedYearLength;
+            }
+
+            set
+            {
+                _addedYearLength = value;
             }
         }
 
@@ -80,14 +99,6 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        internal Time Time
-        {
-            get
-            {
-                return _time;
-            }
-        }
-
         public long Year
         {
             get
@@ -96,7 +107,23 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public static DateTime Parse(string input)
+        internal CalendarDate Date
+        {
+            get
+            {
+                return _date;
+            }
+        }
+
+        internal Time Time
+        {
+            get
+            {
+                return _time;
+            }
+        }
+
+        public static CalendarDateTime Parse(string input)
         {
             return DateTimeParser.Parse(input);
         }

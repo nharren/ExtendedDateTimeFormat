@@ -2,19 +2,20 @@
 using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
+using System.ExtendedDateTimeFormat.Internal.Types;
 
 namespace System.ExtendedDateTimeFormat
 {
     public class WeekDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
         private static DateComparer _comparer;
-        private readonly int _addedYearLength;
+        private int _addedYearLength;
         private readonly int _day;
         private readonly WeekDatePrecision _precision;
         private readonly int _week;
         private readonly long _year;
 
-        public WeekDate(long year, int week, int day, int addedYearLength = 0) : this(year, week, addedYearLength)
+        public WeekDate(long year, int week, int day) : this(year, week)
         {
             if (day < 1 || day > 7)
             {
@@ -25,7 +26,7 @@ namespace System.ExtendedDateTimeFormat
             _precision = WeekDatePrecision.Day;
         }
 
-        public WeekDate(long year, int week, int addedYearLength = 0)
+        public WeekDate(long year, int week)
         {
             if (year < 0 || year > 9999)
             {
@@ -41,7 +42,6 @@ namespace System.ExtendedDateTimeFormat
 
             _year = year;
             _week = week;
-            _addedYearLength = addedYearLength;
             _precision = WeekDatePrecision.Week;
         }
 
@@ -63,6 +63,11 @@ namespace System.ExtendedDateTimeFormat
             get
             {
                 return _addedYearLength;
+            }
+
+            set
+            {
+                _addedYearLength = value;
             }
         }
 

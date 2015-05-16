@@ -33,7 +33,7 @@
                 ordinalDay -= daysInYear;
             }
 
-            return new OrdinalDate(year, ordinalDay);
+            return new OrdinalDate(year, ordinalDay) { AddedYearLength = weekDate.AddedYearLength };
         }
     }
 }

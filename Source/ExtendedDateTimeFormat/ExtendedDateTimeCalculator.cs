@@ -6,37 +6,37 @@ namespace System.ExtendedDateTimeFormat
     {
         private static readonly int[] DaysInMonthArray = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int count)                                                                   // Called from ExtendedDateTime.
+        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int monthsToAdd)
         {
-            int month = e.Month + count % 12;
-            int year = e.Year + (int)Math.Floor(count / 12d);
+            int month;
+            int year = e.Year + Math.DivRem(e.Month + monthsToAdd, 12, out month);
 
             if (e.Day > DaysInMonth(year, month))
             {
                 throw new InvalidOperationException("The day is greater than the number of days in the resulting month.");
             }
 
-            if (e.Second != 0 || e.Precision == ExtendedDateTimePrecision.Second)
+            if (e.Precision == ExtendedDateTimePrecision.Second)
             {
                 return new ExtendedDateTime(year, month, e.Day, e.Hour, e.Minute, e.Second, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
-            if (e.Minute != 0 || e.Precision == ExtendedDateTimePrecision.Minute)
+            if (e.Precision == ExtendedDateTimePrecision.Minute)
             {
                 return new ExtendedDateTime(year, month, e.Day, e.Hour, e.Minute, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
-            if (e.Hour != 0 || e.Precision == ExtendedDateTimePrecision.Hour)
+            if (e.Precision == ExtendedDateTimePrecision.Hour)
             {
                 return new ExtendedDateTime(year, month, e.Day, e.Hour, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
-            if (e.Day != 1 || e.Precision == ExtendedDateTimePrecision.Day)
+            if (e.Precision == ExtendedDateTimePrecision.Day)
             {
                 return new ExtendedDateTime(year, month, e.Day, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
-            if (month != 1 || e.Precision == ExtendedDateTimePrecision.Month)
+            if (e.Precision == ExtendedDateTimePrecision.Month)
             {
                 return new ExtendedDateTime(year, month, e.YearFlags, e.MonthFlags);
             }
