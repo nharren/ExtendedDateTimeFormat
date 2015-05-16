@@ -52,11 +52,31 @@ namespace System.ExtendedDateTimeFormat.Internal.Comparers
                 calendarDateY = ((WeekDate)y).ToCalendarDate(CalendarDatePrecision.Day);
             }
 
-            if (calendarDateX.Year > calendarDateY.Year || calendarDateX.Month > calendarDateY.Month || calendarDateX.Day > calendarDateY.Day)
+            if (calendarDateX.Year > calendarDateY.Year)
             {
                 return 1;
             }
-            else if (calendarDateX.Year < calendarDateY.Year || calendarDateX.Month < calendarDateY.Month || calendarDateX.Day < calendarDateY.Day)
+
+            if (calendarDateX.Year < calendarDateY.Year)
+            {
+                return -1;
+            }
+
+            if (calendarDateX.Month > calendarDateY.Month)
+            {
+                return 1;
+            }
+
+            if (calendarDateX.Month < calendarDateY.Month)
+            {
+                return -1;
+            }
+
+            if (calendarDateX.Day > calendarDateY.Day)
+            {
+                return 1;
+            }
+            else if (calendarDateX.Day < calendarDateY.Day)
             {
                 return -1;
             }

@@ -8,13 +8,13 @@ namespace System.ExtendedDateTimeFormat
 {
     public class CalendarDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
-        private int _addedYearLength;
+        private static DateComparer _comparer;
         private readonly int _century;
         private readonly int _day;
         private readonly int _month;
         private readonly CalendarDatePrecision _precision;
         private readonly long _year;
-        private static DateComparer _comparer;
+        private int _addedYearLength;
 
         public CalendarDate(long year, int month, int day) : this(year, month)
         {
@@ -56,6 +56,19 @@ namespace System.ExtendedDateTimeFormat
             _year = year;
             _century = DateCalculator.CenturyOfYear(year);
             _precision = CalendarDatePrecision.Year;
+        }
+
+        public static DateComparer Comparer
+        {
+            get
+            {
+                if (_comparer == null)
+                {
+                    _comparer = new DateComparer();
+                }
+
+                return _comparer;
+            }
         }
 
         public int AddedYearLength
@@ -145,6 +158,11 @@ namespace System.ExtendedDateTimeFormat
             return Comparer.Compare(x, y) >= 0;
         }
 
+        public static CalendarDate Parse(string input, int addedYearLength = 0)
+        {
+            return CalendarDateParser.Parse(input, addedYearLength);
+        }
+
         public int CompareTo(Date other)
         {
             return Comparer.Compare(this, other);
@@ -185,22 +203,9 @@ namespace System.ExtendedDateTimeFormat
             return unchecked((int)Year) ^ (Month << 28) ^ (Day << 22);
         }
 
-        public static CalendarDate Parse(string input, int addedYearLength = 0)
+        public OrdinalDate ToOrdinalDate()
         {
-            return CalendarDateParser.Parse(input, addedYearLength);
-        }
-
-        public static DateComparer Comparer
-        {
-            get
-            {
-                if (_comparer == null)
-                {
-                    _comparer = new DateComparer();
-                }
-
-                return _comparer;
-            }
+            return CalendarDateConverter.ToOrdinalDate(this);
         }
 
         public override string ToString()
@@ -213,14 +218,14 @@ namespace System.ExtendedDateTimeFormat
             return CalendarDateSerializer.Serialize(this, hyphenate);
         }
 
-        public OrdinalDate ToOrdinalDate()
-        {
-            return CalendarDateConverter.ToOrdinalDate(this);
-        }
-
         public WeekDate ToWeekDate(WeekDatePrecision precision)
         {
             return CalendarDateConverter.ToWeekDate(this, precision);
+        }
+
+        public WeekDate ToWeekDate()
+        {
+            return CalendarDateConverter.ToWeekDate(this, WeekDatePrecision.Day);
         }
     }
 }

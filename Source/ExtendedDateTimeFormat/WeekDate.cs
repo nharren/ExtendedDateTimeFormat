@@ -9,11 +9,11 @@ namespace System.ExtendedDateTimeFormat
     public class WeekDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
         private static DateComparer _comparer;
-        private int _addedYearLength;
         private readonly int _day;
         private readonly WeekDatePrecision _precision;
         private readonly int _week;
         private readonly long _year;
+        private int _addedYearLength;
 
         public WeekDate(long year, int week, int day) : this(year, week)
         {
@@ -181,6 +181,11 @@ namespace System.ExtendedDateTimeFormat
         public CalendarDate ToCalendarDate(CalendarDatePrecision precision)
         {
             return WeekDateConverter.ToCalendarDate(this, precision);
+        }
+
+        public CalendarDate ToCalendarDate()
+        {
+            return WeekDateConverter.ToCalendarDate(this, CalendarDatePrecision.Day);
         }
 
         public OrdinalDate ToOrdinalDate()

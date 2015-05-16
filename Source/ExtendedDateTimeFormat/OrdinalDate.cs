@@ -9,9 +9,9 @@ namespace System.ExtendedDateTimeFormat
     public class OrdinalDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
         private static DateComparer _comparer;
-        private int _addedYearLength;
         private readonly int _day;
         private readonly long _year;
+        private int _addedYearLength;
 
         public OrdinalDate(long year, int day)
         {
@@ -148,6 +148,11 @@ namespace System.ExtendedDateTimeFormat
             return OrdinalDateConverter.ToCalendarDate(this, precision);
         }
 
+        public CalendarDate ToCalendarDate()
+        {
+            return OrdinalDateConverter.ToCalendarDate(this, CalendarDatePrecision.Day);
+        }
+
         public override string ToString()
         {
             return ToString(true);
@@ -161,6 +166,11 @@ namespace System.ExtendedDateTimeFormat
         public WeekDate ToWeekDate(WeekDatePrecision precision)
         {
             return OrdinalDateConverter.ToWeekDate(this, precision);
+        }
+
+        public WeekDate ToWeekDate()
+        {
+            return OrdinalDateConverter.ToWeekDate(this, WeekDatePrecision.Day);
         }
     }
 }

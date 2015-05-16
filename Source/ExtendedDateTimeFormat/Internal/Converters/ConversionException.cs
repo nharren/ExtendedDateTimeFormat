@@ -1,4 +1,4 @@
-﻿namespace System.ExtendedDateTimeFormat
+﻿namespace System.ExtendedDateTimeFormat.Internal.Converters
 {
     public class ConversionException : Exception
     {

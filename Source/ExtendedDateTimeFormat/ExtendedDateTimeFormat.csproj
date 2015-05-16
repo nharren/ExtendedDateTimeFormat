@@ -41,6 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalendarDate.cs" />
+    <Compile Include="Internal\Comparers\DateTimeComparer.cs" />
+    <Compile Include="Internal\Converters\CalendarDateTimeConverter.cs" />
+    <Compile Include="Internal\Converters\OrdinalDateTimeConverter.cs" />
+    <Compile Include="Internal\Converters\WeekDateTimeConverter.cs" />
+    <Compile Include="Internal\Parsers\OrdinalDateTimeParser.cs" />
+    <Compile Include="Internal\Parsers\WeekDateTimeParser.cs" />
+    <Compile Include="Internal\Serializers\OrdinalDateTimeSerializer.cs" />
+    <Compile Include="Internal\Serializers\WeekDateTimeSerializer.cs" />
     <Compile Include="Internal\Types\Date.cs" />
     <Compile Include="DateCalculator.cs" />
     <Compile Include="CalendarDatePrecision.cs" />
@@ -53,28 +61,30 @@
     <Compile Include="Internal\Converters\OrdinalDateConverter.cs" />
     <Compile Include="Internal\Converters\WeekDateConverter.cs" />
     <Compile Include="Internal\Parsers\CalendarDateParser.cs" />
-    <Compile Include="Internal\Parsers\DateTimeParser.cs" />
+    <Compile Include="Internal\Parsers\CalendarDateTimeParser.cs" />
     <Compile Include="Internal\Parsers\OrdinalDateParser.cs" />
     <Compile Include="Internal\Parsers\TimeParser.cs" />
     <Compile Include="Internal\Parsers\WeekDateParser.cs" />
     <Compile Include="Internal\Serializers\CalendarDateSerializer.cs" />
-    <Compile Include="Internal\Serializers\DateTimeSerializer.cs" />
+    <Compile Include="Internal\Serializers\CalendarDateTimeSerializer.cs" />
     <Compile Include="Internal\Serializers\OrdinalDateSerializer.cs" />
     <Compile Include="Internal\Serializers\TimeSerializer.cs" />
     <Compile Include="Internal\Serializers\WeekDateSerializer.cs" />
     <Compile Include="Internal\Types\DateTime.cs" />
     <Compile Include="OrdinalDate.cs" />
+    <Compile Include="OrdinalDateTime.cs" />
     <Compile Include="SeasonFlags.cs" />
     <Compile Include="MonthFlags.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="TimePrecision.cs" />
     <Compile Include="WeekDate.cs" />
     <Compile Include="WeekDatePrecision.cs" />
+    <Compile Include="WeekDateTime.cs" />
     <Compile Include="YearFlags.cs" />
     <Compile Include="ExtendedDateTimePrecision.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="IExtendedDateTimeExtremityProvider.cs" />
-    <Compile Include="ConversionException.cs" />
+    <Compile Include="Internal\Converters\ConversionException.cs" />
     <Compile Include="Internal\Converters\ExtendedDateTimeCollectionConverter.cs" />
     <Compile Include="Internal\Converters\ExtendedDateTimeConverter.cs" />
     <Compile Include="Internal\Converters\ExtendedDateTimeIntervalConverter.cs" />
@@ -84,7 +94,7 @@
     <Compile Include="ExtendedDateTimeCalculator.cs" />
     <Compile Include="Internal\Comparers\ExtendedDateTimeComparer.cs" />
     <Compile Include="ExtendedDateTimePossibilityCollection.cs" />
-    <Compile Include="Extensions\DateTimeOffsetExtensions.cs" />
+    <Compile Include="DateTimeOffsetExtensions.cs" />
     <Compile Include="Internal\Extensions\StringExtensions.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeMaskedPrecisionParser.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
@@ -107,18 +117,10 @@
     <Compile Include="IExtendedDateTimeCollectionChild.cs" />
     <Compile Include="Internal\Serializers\UnspecifiedExtendedDateTimeSerializer.cs" />
     <Compile Include="ISingleExtendedDateTimeType.cs" />
-    <Compile Include="ParseException.cs" />
+    <Compile Include="Internal\Parsers\ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Season.cs" />
     <Compile Include="UnspecifiedExtendedDateTime.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Diagrams\Primary Classes.mdj" />
-    <None Include="Specifications\Extended Date-Time Format %28EDTF%29 1.0 Submission.url" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="License\LICENSE.txt" />
-    <Content Include="Roadmap\Roadmap.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

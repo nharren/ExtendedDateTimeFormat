@@ -1,8 +1,8 @@
 ﻿namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
-    public class DateTimeSerializer
+    internal static class OrdinalDateTimeSerializer
     {
-        public static string Serialize(CalendarDateTime dateTime, DateType withDateType, bool withTimeDesignator, bool withSeparators, bool withUtcOffset)
+        internal static string Serialize(OrdinalDateTime dateTime, bool withTimeDesignator, bool withSeparators, bool withUtcOffset)
         {
             return string.Format("{0}{1}", dateTime.Date.ToString(withSeparators), dateTime.Time.ToString(withTimeDesignator, withSeparators, withUtcOffset));
         }

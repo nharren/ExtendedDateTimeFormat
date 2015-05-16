@@ -5,36 +5,36 @@ using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class CalendarDateTime : Internal.Types.DateTime, IComparable, IComparable<Internal.Types.DateTime>, IEquatable<Internal.Types.DateTime>
+    public class OrdinalDateTime : Internal.Types.DateTime, IComparable, IComparable<Internal.Types.DateTime>, IEquatable<Internal.Types.DateTime>
     {
         private static DateTimeComparer _comparer;
-        private readonly CalendarDate _date;
+        private readonly OrdinalDate _date;
         private readonly Time _time;
 
-        public CalendarDateTime(long year, int month, int day, int hour, int minute, double second, TimeSpan? utcOffset = null)
+        public OrdinalDateTime(long year, int day, int hour, int minute, double second, TimeSpan? utcOffset = null)
         {
-            _date = new CalendarDate(year, month, day);
+            _date = new OrdinalDate(year, day);
             _time = new Time(hour, minute, second, utcOffset);
         }
 
-        public CalendarDateTime(long year, int month, int day, int hour, int minute, TimeSpan? utcOffset = null)
+        public OrdinalDateTime(long year, int day, int hour, int minute, TimeSpan? utcOffset = null)
         {
-            _date = new CalendarDate(year, month, day);
+            _date = new OrdinalDate(year, day);
             _time = new Time(hour, minute, utcOffset);
         }
 
-        public CalendarDateTime(long year, int month, int day, int hour, TimeSpan? utcOffset = null)
+        public OrdinalDateTime(long year, int day, int hour, TimeSpan? utcOffset = null)
         {
-            _date = new CalendarDate(year, month, day);
+            _date = new OrdinalDate(year, day);
             _time = new Time(hour, utcOffset);
         }
 
-        public CalendarDateTime(long year, int month, int day)
+        public OrdinalDateTime(long year, int day)
         {
-            _date = new CalendarDate(year, month, day);
+            _date = new OrdinalDate(year, day);
         }
 
-        internal CalendarDateTime(CalendarDate date, Time time)
+        internal OrdinalDateTime(OrdinalDate date, Time time)
         {
             _date = date;
             _time = time;
@@ -90,14 +90,6 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public int Month
-        {
-            get
-            {
-                return _date.Month;
-            }
-        }
-
         public TimePrecision Precision
         {
             get
@@ -122,7 +114,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        internal CalendarDate Date
+        internal OrdinalDate Date
         {
             get
             {
@@ -138,39 +130,39 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public static bool operator !=(CalendarDateTime x, Internal.Types.DateTime y)
+        public static bool operator !=(OrdinalDateTime x, Internal.Types.DateTime y)
         {
             return Comparer.Compare(x, y) != 0;
         }
 
-        public static bool operator <(CalendarDateTime x, Internal.Types.DateTime y)
+        public static bool operator <(OrdinalDateTime x, Internal.Types.DateTime y)
         {
             return Comparer.Compare(x, y) < 0;
         }
 
-        public static bool operator <=(CalendarDateTime x, Internal.Types.DateTime y)
+        public static bool operator <=(OrdinalDateTime x, Internal.Types.DateTime y)
         {
             return Comparer.Compare(x, y) <= 0;
         }
 
-        public static bool operator ==(CalendarDateTime x, Internal.Types.DateTime y)
+        public static bool operator ==(OrdinalDateTime x, Internal.Types.DateTime y)
         {
             return Comparer.Compare(x, y) == 0;
         }
 
-        public static bool operator >(CalendarDateTime x, Internal.Types.DateTime y)
+        public static bool operator >(OrdinalDateTime x, Internal.Types.DateTime y)
         {
             return Comparer.Compare(x, y) > 0;
         }
 
-        public static bool operator >=(CalendarDateTime x, Internal.Types.DateTime y)
+        public static bool operator >=(OrdinalDateTime x, Internal.Types.DateTime y)
         {
             return Comparer.Compare(x, y) >= 0;
         }
 
-        public static CalendarDateTime Parse(string input)
+        public static OrdinalDateTime Parse(string input)
         {
-            return CalendarDateTimeParser.Parse(input);
+            return OrdinalDateTimeParser.Parse(input);
         }
 
         public int CompareTo(Internal.Types.DateTime other)
@@ -187,7 +179,7 @@ namespace System.ExtendedDateTimeFormat
 
             if (!(obj is Internal.Types.DateTime))
             {
-                throw new ArgumentException("A calendar datetime can only be compared with other datetimes.");
+                throw new ArgumentException("A ordinal datetime can only be compared with other datetimes.");
             }
 
             return Comparer.Compare(this, (Internal.Types.DateTime)obj);
@@ -213,9 +205,9 @@ namespace System.ExtendedDateTimeFormat
             return _date.GetHashCode() ^ _time.GetHashCode();
         }
 
-        public OrdinalDateTime ToOrdinalDateTime()
+        public CalendarDateTime ToCalendarDateTime()
         {
-            return CalendarDateTimeConverter.ToOrdinalDateTime(this);
+            return OrdinalDateTimeConverter.ToCalendarDateTime(this);
         }
 
         public override string ToString()
@@ -225,12 +217,12 @@ namespace System.ExtendedDateTimeFormat
 
         public virtual string ToString(bool withTimeDesignator, bool withSeparators, bool withUtcOffset)
         {
-            return CalendarDateTimeSerializer.Serialize(this, withTimeDesignator, withSeparators, withUtcOffset);
+            return OrdinalDateTimeSerializer.Serialize(this, withTimeDesignator, withSeparators, withUtcOffset);
         }
 
         public WeekDateTime ToWeekDateTime()
         {
-            return CalendarDateTimeConverter.ToWeekDateTime(this);
+            return OrdinalDateTimeConverter.ToWeekDateTime(this);
         }
     }
 }
