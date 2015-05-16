@@ -148,9 +148,9 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 }
 ```
 
-## Contributing
+## Status
 
-To get an overview of the basic structure of this library, see the "Primary Classes" diagram in the "Diagrams" folder. To see which features are in line to be implemented, see "Roadmap.txt" in the "Roadmap" folder. If you decide you would like to contribute, you can contact me at the email address on my profile page.
+Adding complete ISO 8601:2004(E) support. The current EDTF classes will eventually use the ISO 8601 classes (e.g. CalendarDate, OrdinalDate, WeekDate, Time, CalendarDateTime, WeekDateTime, OrdinalDateTime, etc.) as its foundation.
 
 ## License
 
