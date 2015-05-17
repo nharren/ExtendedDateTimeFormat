@@ -238,20 +238,12 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 	- [ ] Conversion tests.
 	- [ ] Serialization tests.
 	- [ ] Parsing tests.
-	- [ ] Calculation tests. 
+	- [ ] Calculation tests.
+	- [ ] Performance tests.
 designator).
 - [ ] Add XML and binary serialization support for ISO-8601:2004(E) objects.
 - [ ] Update EDTF tests.
 - [ ] Update EDTF readme examples with new features.
-
-#### General
-- Optimize (e.g. string literals, redundant code, etc.).
-- Improve robustness through tests.
-- Performance testing.
-
-#### Undecided
-- Add support for seasons in date arithmetic. (More difficult than it seems.)
-- Add support for leap seconds (Is it even calculable?).
 
 ## License
 
