@@ -244,8 +244,6 @@ designator).
 - [ ] Update EDTF tests.
 - [ ] Update EDTF readme examples with new features.
 
-* = 
-
 #### General
 - Optimize (e.g. string literals, redundant code, etc.).
 - Improve robustness through tests.
