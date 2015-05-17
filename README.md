@@ -216,8 +216,9 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 	- [x] Ordinal dates and time in extended format (YYYY-DDDThh[:mm][:ss][Z][hh][:mm]).
 	- [x] Week dates and time in basic format (YYYYWwwDThh[mm][ss][Z][hh][mm]).
 	- [x] Week dates and time in extended format (YYYY-Www-DThh[:mm][:ss][Z][hh][:mm]).
-	- [ ] Duration in alternative basic format (PYYYYMMDDThhmmss, PYYYYDDDThhmmss).
-	- [ ] Duration in alternative extended format (PYYYY-MM-DDThh:mm:ss, PYYYY-DDDThh:mm:ss).
+	- [ ] Durations (PnnY[nnM][nnD][TnnH][nnM][nnS], PnnW).
+	- [ ] Durations in alternative basic format (PYYYYMMDDThhmmss, PYYYYDDDThhmmss).
+	- [ ] Durations in alternative extended format (PYYYY-MM-DDThh:mm:ss, PYYYY-DDDThh:mm:ss).
 	- [ ] Time intervals by start and end in basic format (YYYYMMDDThhmmss/YYYYMMDDThhmmss).
 	- [ ] Time intervals by start and end in extended format (YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
 	- [ ] Time intervals by duration and context (PnnY[nnM][nnD][TnnH][nnM][nnS], PnnW).
