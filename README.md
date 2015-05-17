@@ -206,9 +206,9 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 	- [x] Local time with decimal fraction in extended format (hh:mm:ss,ss, hh:mm:ss.ss, hh:mm,mm, hh:mm.mm).
 	- [x] Midnight in basic format (000000, 240000).
 	- [x] Midnight in extended format (00:00:00, 24:00:00).
-	- [x] UTC in basic format (hhmmssZ, hhmmZ, hhZ).
-	- [x] UTC in extended format (hh:mm:ssZ, hh:mmZ).
-	- [x] Local time and UTC offset in basic format (±hhmm, ±hh).
+	- [x] UTC in basic format (hh[mm][ss][Z]).
+	- [x] UTC in extended format (hh[:mm][:ss][Z], hh[:mm][Z]).
+	- [x] Local time and UTC offset in basic format (±hh[mm]).
 	- [x] Local time and UTC offset in extended format (±hh:mm).
 	- [x] Calender dates and time in basic format (YYYYMMDDThh[mm][ss][Z][hh][mm]).
 	- [x] Calender dates and time in extended format (YYYY-MM-DDThh[:mm][:ss][Z][hh][:mm]).
@@ -241,7 +241,6 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 	- [ ] Parsing tests.
 	- [ ] Calculation tests.
 	- [ ] Performance tests.
-designator).
 - [ ] Add XML and binary serialization support for ISO-8601:2004(E) objects.
 - [ ] Update EDTF tests.
 - [ ] Update EDTF readme examples with new features.
