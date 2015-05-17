@@ -210,11 +210,11 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 	- [x] UTC in extended format (hh:mm:ssZ, hh:mmZ).
 	- [x] Local time and UTC offset in basic format (±hhmm, ±hh).
 	- [x] Local time and UTC offset in extended format (±hh:mm).
-	- [x] Calender dates and time in basic format (YYYYMMDDThh[mm][ss?][Z][hh][mm]).
+	- [x] Calender dates and time in basic format (YYYYMMDDThh[mm][ss][Z][hh][mm]).
 	- [x] Calender dates and time in extended format (YYYY-MM-DDThh[:mm][:ss][Z][hh][:mm]).
-	- [x] Ordinal dates and time in basic format (YYYYDDDThh[mm][ss?][Z][hh][mm]).
+	- [x] Ordinal dates and time in basic format (YYYYDDDThh[mm][ss][Z][hh][mm]).
 	- [x] Ordinal dates and time in extended format (YYYY-DDDThh[:mm][:ss][Z][hh][:mm]).
-	- [x] Week dates and time in basic format (YYYYWwwDThh[mm][ss?][Z][hh][mm]).
+	- [x] Week dates and time in basic format (YYYYWwwDThh[mm][ss][Z][hh][mm]).
 	- [x] Week dates and time in extended format (YYYY-Www-DThh[:mm][:ss][Z][hh][:mm]).
 	- [ ] Duration in alternative basic format (PYYYYMMDDThhmmss, PYYYYDDDThhmmss).
 	- [ ] Duration in alternative extended format (PYYYY-MM-DDThh:mm:ss, PYYYY-DDDThh:mm:ss).
