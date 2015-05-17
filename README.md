@@ -188,7 +188,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 
 #### Version 1.0
 - [ ] Add ISO-8601:2004(E) features.
-	- [x] Calendar dates in basic format (YY[YY][MM][DD]).
+	- [x] Calendar dates in basic format (YY[YY][MMDD], YYYY-MM).
 	- [x] Calendar dates in extended format (YYYY-MM-DD).
 	- [x] Expanded representations of calendar dates in basic format (±YYYYMMDD, ±YYYY-MM, ±YYYY, ±YY).
 	- [x] Expanded representations of calendar dates in extended format (±YYYY-MM-DD).
