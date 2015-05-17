@@ -186,33 +186,52 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 
 ## Progress
 
-#### Specific
+#### Version 1.0
 - [ ] Add ISO-8601:2004(E) features.
-	- [x] Representation of dates in basic format (YYYYMMDD)
-	- [x] Representations of dates with reduced accuracy (YYYY-MM, YYYY, YY)
-	- [x] Expanded representations of dates in basic format (±Y*YYYYMMDD, ±Y*YYYY-MM, ±Y*YYYY, ±Y*YY) and extended format (±Y*YYYY-MM-DD)
-	- [x] Representations of ordinal dates in basic format (YYYYDDD) and extended format (YYYY-DDD).
-	- [x] Expanded representations of ordinal dates in basic format (±Y*YYYYDDD) and extended format (±Y*YYYY-DDD).
-	- [x] Representations of week dates in basic format (YYYYWwwD) and extended format (YYYY-Www-D).
-	- [x] Representations of week dates with reduced accuracy in basic format (YYYYWww) and extended format (YYYY-Www).
-	- [x] Expanded representations of week dates in basic format (±Y*YYYYWwwD, ±Y*YYYYWww) and extended format (±Y*YYYY-Www-D, ±Y*YYYY-Www).
-	- [x] Representations of local time in basic format (hhmmss) and extended format (hh:mm:ss).
-	- [x] Representations of local time with reduced accuracy in basic format (hhmm, hh) and extended format (hh:mm).
-	- [x] Representations of local time with decimal fraction in basic format (hhmmss,sss*, hhmmss.sss*, hhmm,mmm*, hhmm.mmm*, hh,hhh*, hh.hhh*).
-	- [x] Representations of local time with time designator ("T" in front of any of the local time representations above).
-	- [x] Representations of midnight in basic format (240000) or extended format (24:00:00) and in all local time representations.
-	- [x] Representations of calender dates and time in basic format (year – month – day of the month – time designator – hour – minute – second – zone designator).
-	- [x] Representations of ordinal dates and time in basic and extended formats (year – day of the year – time designator – hour – minute – second – zone designator).
-	- [x] Representations of week dates and time in basic and extended formats (year – week designator – week – day of the week – time designator – hour – minute – second – zone).
-	- [x] All other date and time representations allowed (See section 4.3.3 of the standard).
-	- [ ] Representations of time intervals by duration (Pnnn*Ynnn*Mnnn*DTnnn*Hnnn*Mnnn*S, Pnnn*W).
-	- [ ] Reduced accuracy of representations of time intervals by duration where the lowest order components are omitted to represent reduced accuracy. Lowest order components may have a decimal fraction ("," is preferred, otherwise "."). "T" is absent if all components are absent.
-	- [ ] Alternative format for the representation of time intervals by duration in basic format (PYYYYMMDDThhmmss, PYYYYDDDThhmmss) or extended format (PYYYY-MM-DDThh:mm:ss, PYYYY-DDDThh:mm:ss).
-	- [ ] Representations of time intervals by start and duration in basic format (YYYYMMDDThhmmss/Pnnn*Ynnn*Mnnn*DTnnn*Hnnn*Mnnn*S, YYYYMMDDThhmmss/PYYYYMMDDThhmmss) and extended format (YYYY-MM-DDThh:mm:ss/Pnnn*Ynnn*Mnnn*DTnnn*Hnnn*Mnnn*S, YYYY-MM-DDThh:mm:ss/PYYYY-MM-DDThh:mm:ss).
-	- [ ] Representations of time intervals by duration and end in basic format (Pnnn*Ynnn*Mnnn*DTnnn*Hnnn*Mnnn*S/YYYYMMDDThhmmss, PYYYYMMDDThhmmss/YYYYMMDDThhmmss) and extended format (Pnnn*Ynnn*Mnnn*DTnnn*Hnnn*Mnnn*S/YYYY-MM-DDThh:mm:ss, PYYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss).
-	- [ ] All other time interval representations allowed (See sections 4.4.4.5 and 4.4.5 of the standard).
-	- [ ] Representations of recurring time intervals in basic format (e.g. Rnn*/YYYYMMDDThhmmss/YYYYMMDDThhmmss) or extended format (Rnn*/YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss).
-	- [ ] Representation other than complete of recurring time intervals (See section 4.5.4 of the standard).
+	- [x] Calendar dates in basic format (YY[YY][MM][DD]).
+	- [x] Calendar dates in extended format (YYYY-MM-DD).
+	- [x] Expanded representations of calendar dates in basic format (±YYYYMMDD, ±YYYY-MM, ±YYYY, ±YY).
+	- [x] Expanded representations of calendar dates in extended format (±YYYY-MM-DD).
+	- [x] Ordinal dates in basic format (YYYYDDD).
+	- [x] Ordinal dates in extended format (YYYY-DDD).
+	- [x] Expanded representations of ordinal dates in basic format (±YYYYDDD).
+	- [x] Expanded representations of ordinal dates in extended format (±YYYY-DDD).
+	- [x] Week dates in basic format (YYYYWww[D]).
+	- [x] Week dates in extended format (YYYY-Www[-D]).
+	- [x] Expanded representations of week dates in basic format (±YYYYWwwD, ±YYYYWww).
+	- [x] Expanded representations of week dates in extended format (±YYYY-Www-D, ±YYYY-Www).
+	- [x] Local time in basic format ([T]hh[mm][ss]).
+	- [x] Local time in extended format ([T]hh:mm[:ss]).
+	- [x] Local time with decimal fraction in basic format (hhmmss,ss, hhmmss.ss, hhmm,mm, hhmm.mm, hh,hh, hh.hh).
+	- [x] Local time with decimal fraction in extended format (hh:mm:ss,ss, hh:mm:ss.ss, hh:mm,mm, hh:mm.mm).
+	- [x] Midnight in basic format (000000, 240000).
+	- [x] Midnight in extended format (00:00:00, 24:00:00).
+	- [x] UTC in basic format (hhmmssZ, hhmmZ, hhZ).
+	- [x] UTC in extended format (hh:mm:ssZ, hh:mmZ).
+	- [x] Local time and UTC offset in basic format (±hhmm, ±hh).
+	- [x] Local time and UTC offset in extended format (±hh:mm).
+	- [x] Calender dates and time in basic format (YYYYMMDDThh[mm][ss?][Z][hh][mm]).
+	- [x] Calender dates and time in extended format (YYYY-MM-DDThh[:mm][:ss][Z][hh][:mm]).
+	- [x] Ordinal dates and time in basic format (YYYYDDDThh[mm][ss?][Z][hh][mm]).
+	- [x] Ordinal dates and time in extended format (YYYY-DDDThh[:mm][:ss][Z][hh][:mm]).
+	- [x] Week dates and time in basic format (YYYYWwwDThh[mm][ss?][Z][hh][mm]).
+	- [x] Week dates and time in extended format (YYYY-Www-DThh[:mm][:ss][Z][hh][:mm]).
+	- [ ] Duration in alternative basic format (PYYYYMMDDThhmmss, PYYYYDDDThhmmss).
+	- [ ] Duration in alternative extended format (PYYYY-MM-DDThh:mm:ss, PYYYY-DDDThh:mm:ss).
+	- [ ] Time intervals by start and end in basic format (YYYYMMDDThhmmss/YYYYMMDDThhmmss).
+	- [ ] Time intervals by start and end in extended format (YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
+	- [ ] Time intervals by duration and context (PnnY[nnM][nnD][TnnH][nnM][nnS], PnnW).
+	- [ ] Time intervals by start and duration in basic format (YYYYMMDDThhmmss/PnnY[nnM][nnDT][nnH][nnM][nnS], YYYYMMDDThhmmss/PYYYYMMDDThhmmss).
+	- [ ] Tim intervals by start and duration in extended format (YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS], YYYY-MM-DDThh:mm:ss/PYYYY-MM-DDThh:mm:ss).
+	- [ ] Time intervals by duration and end in basic format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss, PYYYYMMDDThhmmss/YYYYMMDDThhmmss) and extended format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss, PYYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss).
+	- [ ] Other time interval combinations allowed by sections 4.4.4.5 and 4.4.5 of the standard.
+	- [ ] Recurring time intervals by start and end in basic format (R[n]/YYYYMMDDThhmmss/YYYYMMDDThhmmss).
+	- [ ] Recurring time intervals by start and end in extended format (R[n]/YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss).
+	- [ ] Recurring time intervals by duration and context in basic format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS]).
+	- [ ] Recurring time intervals by start and duration in basic format (R[n]/YYYYMMDDThhmmss/PnnY[nnM][nnD][TnnH][nnM][nnS]).
+	- [ ] Recurring time intervals by start and duration in extended format (R[n]/YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS]).
+	- [ ] Recurring time intervals by duration and end in basic format (R[n]PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss).
+	- [ ] Recurring time intervals by start and duration in basic format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss).
 - [ ] Add ExtendedDate.
 - [ ] Modify ExtendedDateTime to utilize ExtendedDate and Time.
 - [ ] Add ISO-8601:2004(E) tests.
@@ -224,6 +243,8 @@ designator).
 - [ ] Add XML and binary serialization support for ISO-8601:2004(E) objects.
 - [ ] Update EDTF tests.
 - [ ] Update EDTF readme examples with new features.
+
+* = 
 
 #### General
 - Optimize (e.g. string literals, redundant code, etc.).
