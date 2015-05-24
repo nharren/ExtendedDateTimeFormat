@@ -184,7 +184,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 }
 ```
 
-## Features
+## Progress
 
 #### Version 1.0
 
@@ -242,7 +242,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 	- [x] Conversion from string
 		- [x] Basic format (YYYYWwwDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
 		- [x] Extended format (YYYY-Www-DThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
-	- [ ] Conversion to string
+	- [x] Conversion to string
 - [ ] Designated durations
 	- [ ] Conversion from string
 		- [ ] Basic and extended formats (PnnY[nnM[nnD[TnnH[nnM[nnS]]]]]|PnnM[nnD[TnnH[nnM[nnS]]]]|PnnD[TnnH[nnM[nnS]]]|PTnnH[nnM[nnS]]|PTnnM[nnS]|PTnnS|PnnW)
