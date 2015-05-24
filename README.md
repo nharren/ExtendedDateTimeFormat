@@ -229,7 +229,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 		- [x] Basic format ([T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]±hh[mm])
 		- [x] Extended format ([T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]±hh:mm)
 	- [x] Conversion to string
-- [x] Calender datetimes
+- [x] Calendar datetimes
 	- [x] Conversion from string
 		- [x] Basic format (YYYYMMDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
 		- [x] Extended format (YYYY-MM-DDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
