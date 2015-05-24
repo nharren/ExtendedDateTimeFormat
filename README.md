@@ -1,4 +1,4 @@
-﻿## Introduction
+## Introduction
 
 The ExtendedDateTimeFormat library is an implementation of the ISO 8601 standard and the Extended Date/Time Format (EDTF) extensions. Because EDTF is a proposed extension to the ISO 8601 standard, the features of EDTF are subject to change, and consequently, so are the features of this library. This library will likely undergo a series of breaking transformations; however, there will be stable releases along the way.
 
@@ -184,73 +184,138 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 }
 ```
 
-## Progress
+## Features
 
 #### Version 1.0
-- [ ] Add ISO-8601:2004(E) features.
-	- [x] Calendar dates in basic format (YY|YYYY-MM|YYYY[MMDD]).
-	- [x] Calendar dates in extended format (YYYY-MM-DD).
-	- [x] Expanded representations of calendar dates in basic format (+Y*YY|+Y*YYYY-MM|+Y*YYYY[MMDD]|-Y*Y|-Y*YYY-MM|-Y*YYY[MMDD]).
-	- [x] Expanded representations of calendar dates in extended format (+Y*YYYY-MM-DD|-Y*YYY-MM-DD).
-	- [x] Ordinal dates in basic format (YYYYDDD).
-	- [x] Ordinal dates in extended format (YYYY-DDD).
-	- [x] Expanded representations of ordinal dates in basic format (+Y*YYYYDDD|-Y*YYYDDD).
-	- [x] Expanded representations of ordinal dates in extended format (+Y*YYYY-DDD|-Y*YYY-DDD).
-	- [x] Week dates in basic format (YYYYWww[D]).
-	- [x] Week dates in extended format (YYYY-Www[-D]).
-	- [x] Expanded representations of week dates in basic format (+Y*YYYYWww[D]|-Y*YYYWww[D]).
-	- [x] Expanded representations of week dates in extended format (+Y*YYYY-Www[-D], -Y*YYY-Www[-D]).
-	- [x] Local time in basic format ([T]hh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]]).
-	- [x] Local time in extended format ([T]hh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]]).
-	- [x] Midnight in basic format ([T]00[.0*|,0*|00[.0*|,0*|00[.0*|,0*]]]|[T]24[.0*|,0*|00[.0*|,0*|00[.0*|,0*]]]).
-	- [x] Midnight in extended format ([T]00[.0*|,0*|:00[.0*|,0*|:00[.0*|,0*]]]|[T]24[.0*|,0*|:00[.0*|,0*|:00[.0*|,0*]]]).
-	- [x] UTC in basic format ([T]hh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]]Z).
-	- [x] UTC in extended format ([T]hh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]]Z).
-	- [x] Local time and UTC offset in basic format ([T]hh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]]±hh[mm]).
-	- [x] Local time and UTC offset in extended format ([T]hh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]]±hh:mm).
-	- [x] Calender datetimes in basic format (YYYYMMDDThh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]][±hh[mm]]).
-	- [x] Calender datetimes in extended format (YYYY-MM-DDThh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]][±hh[:mm]]).
-	- [x] Ordinal datetimes in basic format (YYYYDDDThh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]][±hh[mm]]).
-	- [x] Ordinal datetimes in extended format (YYYY-DDDThh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]][±hh[:mm]]).
-	- [x] Week datetimes in basic format (YYYYWwwDThh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]][±hh[mm]]).
-	- [x] Week datetimes in extended format (YYYY-Www-DThh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]][±hh[:mm]]).
-	- [ ] Durations with designators (PnnY[nnM[nnD[TnnH[nnM[nnS]]]]]|PnnM[nnD[TnnH[nnM[nnS]]]]|PnnD[TnnH[nnM[nnS]]]|PTnnH[nnM[nnS]]|PTnnM[nnS]|PTnnS|PnnW)).
-	- [x] Calendar Date Durations in basic alternative format (PYYYY[MM[DD]]).
-	- [x] Calendar Date Durations in extended alternative format (PYYYY[-MM[-DD]]).
-	- [x] Ordinal Date durations in basic alternative format (PYYYYDDD).
-	- [x] Ordinal Date durations in extended alternative format (PYYYY-DDD).
-	- [x] Time Durations in basic alternative format (P[T]hh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]]).
-	- [x] Time Durations in extended alternative format (P[T]hh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]]).
-	- [x] Calendar Datetime Durations in basic alternative format (PYYYYMMDDThh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]]).
-	- [x] Calendar Datetime Durations in extended alternative format (PYYYY-MM-DDThh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]]).
-	- [x] Ordinal Datetime durations in basic alternative format (PYYYYDDDThh[,h*|.h*|mm[,m*|.m*|ss[,s*|.s*]]]).
-	- [x] Ordinal Datetime durations in extended alternative format (PYYYY-DDDThh[,h*|.h*|:mm[,m*|.m*|:ss[,s*|.s*]]])
-	- [ ] Time intervals by start and end in basic format (YYYYMMDDThhmmss/YYYYMMDDThhmmss).
-	- [ ] Time intervals by start and end in extended format (YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
-	- [ ] Time intervals by duration and context (PnnY[nnM][nnD][TnnH][nnM][nnS], PnnW).
-	- [ ] Time intervals by start and duration in basic format (YYYYMMDDThhmmss/PnnY[nnM][nnDT][nnH][nnM][nnS], YYYYMMDDThhmmss/PYYYYMMDDThhmmss).
-	- [ ] Time intervals by start and duration in extended format (YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS], YYYY-MM-DDThh:mm:ss/PYYYY-MM-DDThh:mm:ss).
-	- [ ] Time intervals by duration and end in basic format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss, PYYYYMMDDThhmmss/YYYYMMDDThhmmss)
-	- [ ] Time intervals by duration and end in extended format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss, PYYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss).
-	- [ ] Other time interval combinations allowed by sections 4.4.4.5 and 4.4.5 of the standard.
-	- [ ] Recurring time intervals by start and end in basic format (R[n]/YYYYMMDDThhmmss/YYYYMMDDThhmmss).
-	- [ ] Recurring time intervals by start and end in extended format (R[n]/YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss).
-	- [ ] Recurring time intervals by duration and context in basic format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS]).
-	- [ ] Recurring time intervals by start and duration in basic format (R[n]/YYYYMMDDThhmmss/PnnY[nnM][nnD][TnnH][nnM][nnS]).
-	- [ ] Recurring time intervals by start and duration in extended format (R[n]/YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS]).
-	- [ ] Recurring time intervals by duration and end in basic format (R[n]PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss).
-	- [ ] Recurring time intervals by start and duration in basic format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss).
-- [ ] Add ExtendedDate.
-- [ ] Modify ExtendedDateTime to utilize ExtendedDate and Time.
-- [ ] Add ISO-8601:2004(E) tests.
-	- [ ] Conversion tests.
-	- [ ] Serialization tests.
-	- [ ] Parsing tests.
-	- [ ] Calculation tests.
-	- [ ] Performance tests.
-- [ ] Add XML and binary serialization support for ISO-8601:2004(E) objects.
-- [ ] Update EDTF tests.
-- [ ] Update EDTF readme examples with new features.
+
+##### ISO-8601:2004(E)
+- [x] Calendar dates 
+	- [x] Conversion from string
+		- [x] Basic format (YY|YYYY-MM|YYYY[MMDD])
+		- [x] Expanded basic format (+**Y**YY|+**Y**YYYY-MM|+**Y**YYYY[MMDD]|-**Y**Y|-**Y**YYY-MM|-**Y**YYY[MMDD])
+		- [x] Extended format (YYYY-MM-DD)
+		- [x] Expanded extended format (+**Y**YYYY-MM-DD|-**Y**YYY-MM-DD)
+	- [x] Conversion to string
+	- [x] Conversion to ordinal dates
+	- [x] Conversion to week dates
+- [x] Ordinal dates 
+	- [x] Conversion from string
+		- [x] Basic format (YYYYDDD)
+		- [x] Expanded basic format (+**Y**YYYYDDD|-**Y**YYYDDD)
+		- [x] Extended format (YYYY-DDD)
+		- [x] Expanded extended format (+**Y**YYYY-DDD|-**Y**YYY-DDD)
+	- [x] Conversion to string
+	- [x] Conversion to calendar dates
+	- [x] Conversion to week dates
+- [x] Week dates
+	- [x] Conversion from string
+		- [x] Basic format (YYYYWww[D])
+		- [x] Expanded basic format (+**Y**YYYYWww[D]|-**Y**YYYWww[D])
+		- [x] Extended format (YYYY-Www[-D])
+		- [x] Expanded extended format (+**Y**YYYY-Www[-D], -**Y**YYY-Www[-D])
+	- [x] Conversion to string
+	- [x] Conversion to calendar dates
+	- [x] Conversion to ordinal dates
+- [x] Time
+	- [x] Conversion from string
+		- [x] Basic format ([T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
+		- [x] Extended format ([T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
+		- [x] Midnight in basic format ([T]00[.**0**|,**0**|00[.**0**|,**0**|00[.**0**|,**0**]]]|[T]24[.**0**|,**0**|00[.**0**|,**0**|00[.**0**|,**0**]]])
+		- [x] Midnight in extended format ([T]00[.**0**|,**0**|:00[.**0**|,**0**|:00[.**0**|,**0**]]]|[T]24[.**0**|,**0**|:00[.**0**|,**0**|:00[.**0**|,**0**]]])
+	- [x] Conversion to string
+- [x] Coordinated universal time
+	- [x] Conversion from string
+		- [x] Basic format ([T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]±hh[mm])
+		- [x] Extended format ([T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]±hh:mm)
+	- [x] Conversion to string
+- [x] Calender datetimes
+	- [x] Conversion from string
+		- [x] Basic format (YYYYMMDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
+		- [x] Extended format (YYYY-MM-DDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
+	- [x] Conversion to string
+- [x] Ordinal datetimes
+	- [x] Conversion from string
+		- [x] Basic format (YYYYDDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
+		- [x] Extended format (YYYY-DDDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
+	- [x] Conversion to string
+- [x] Week datetimes
+	- [x] Conversion from string
+		- [x] Basic format (YYYYWwwDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
+		- [x] Extended format (YYYY-Www-DThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
+	- [ ] Conversion to string
+- [ ] Designated durations
+	- [ ] Conversion from string
+		- [ ] Basic and extended formats (PnnY[nnM[nnD[TnnH[nnM[nnS]]]]]|PnnM[nnD[TnnH[nnM[nnS]]]]|PnnD[TnnH[nnM[nnS]]]|PTnnH[nnM[nnS]]|PTnnM[nnS]|PTnnS|PnnW)
+	- [ ] Conversion to string
+- [x] Calendar date durations
+	- [x] Conversion from string
+		- [x] Basic format (PYYYY[MM[DD]])
+		- [x] Extended format (PYYYY[-MM[-DD]])
+	- [x] Conversion to string
+- [x] Ordinal date durations
+	- [x] Conversion from string
+		- [x] Basic format (PYYYYDDD)
+		- [x] Extended format (PYYYY-DDD)
+	- [x] Conversion to string
+- [x] Time durations
+	- [x] Conversion from string
+		- [x] Basic format (P[T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
+		- [x] Extended format (P[T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
+	- [x] Conversion to string
+- [x] Calendar datetime durations
+	- [x] Conversion from string
+		- [x] Basic format (PYYYYMMDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
+		- [x] Extended format (PYYYY-MM-DDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
+	- [x] Conversion to string
+- [x] Ordinal datetime durations
+	- [x] Conversion from string
+		- [x] Basic format (PYYYYDDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
+		- [x] Extended format (PYYYY-DDDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
+	- [x] Conversion to string
+- [ ] Start-end time intervals
+	- [ ] Conversion from string
+		- [ ] Basic format (YYYYMMDDThhmmss/YYYYMMDDThhmmss)
+		- [ ] Extended format (YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
+	- [ ] Conversion to string
+- [ ] Duration-context time intervals
+	- [ ] Conversion from string
+		- [ ] Basic and extended formats (PnnY[nnM[nnD[TnnH[nnM[nnS]]]]]|PnnM[nnD[TnnH[nnM[nnS]]]]|PnnD[TnnH[nnM[nnS]]]|PTnnH[nnM[nnS]]|PTnnM[nnS]|PTnnS|PnnW)
+	- [ ] Conversion to string
+- [ ] Start-duration time intervals
+	- [ ] Conversion from string
+		- [ ] Basic format (YYYYMMDDThhmmss/PnnY[nnM][nnDT][nnH][nnM][nnS], YYYYMMDDThhmmss/PYYYYMMDDThhmmss)
+		- [ ] Extended format (YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS], YYY-MM-DDThh:mm:ss/PYYYY-MM-DDThh:mm:ss)
+	- [ ] Conversion to string
+- [ ] Duration-end time intervals
+	- [ ] Conversion from string
+		- [ ] Basic format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss, PYYYYMMDDThhmmss/YYYYMMDDThhmmss)
+		- [ ] Extended format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss, PYYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
+	- [ ] Conversion to string
+- [ ] Recurring start-end time intervals
+	- [ ] Conversion from string
+		- [ ] Basic format (R[n]/YYYYMMDDThhmmss/YYYYMMDDThhmmss)
+		- [ ] Extended format (R[n]/YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
+	- [ ] Conversion to string
+- [ ] Recurring duration-context time intervals
+	- [ ] Conversion from string
+		- [ ] Basic format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS])
+	- [ ] Conversion to string
+- [ ] Recurring start-duration time intervals
+	- [ ] Conversion from string
+		- [ ] Basic format (R[n]/YYYYMMDDThhmmss/PnnY[nnM][nnD][TnnH][nnM][nnS])
+		- [ ] Extended format (R[n]/YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS])
+	- [ ] Conversion to string
+- [ ] Recurring duration-end time intervals
+	- [ ] Conversion from string
+		- [ ] Basic format (R[n]PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss)
+		- [ ] Extended format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss)
+	- [ ] Conversion to string
+
+###### Notes:
+
+1. Bold means one or many values. 
+2. "|" symbolizes the logical "or".
+3. Contents between "[" and "]" are optional. 
 
 ## License
 
