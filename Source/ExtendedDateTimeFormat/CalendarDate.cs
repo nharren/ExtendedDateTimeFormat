@@ -1,8 +1,8 @@
-﻿using System.ExtendedDateTimeFormat.Internal.Comparers;
+﻿using System.ExtendedDateTimeFormat.Abstract;
+using System.ExtendedDateTimeFormat.Internal.Comparers;
 using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
-using System.ExtendedDateTimeFormat.Internal.Types;
 
 namespace System.ExtendedDateTimeFormat
 {

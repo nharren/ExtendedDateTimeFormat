@@ -1,8 +1,8 @@
 ﻿namespace System.ExtendedDateTimeFormat.Internal.Converters
 {
-    public static class WeekDateConverter
+    internal static class WeekDateConverter
     {
-        public static CalendarDate ToCalendarDate(WeekDate weekDate, CalendarDatePrecision precision)
+        internal static CalendarDate ToCalendarDate(WeekDate weekDate, CalendarDatePrecision precision)
         {
             if (weekDate.Precision != WeekDatePrecision.Day)
             {
@@ -12,7 +12,7 @@
             return ToOrdinalDate(weekDate).ToCalendarDate(precision);
         }
 
-        public static OrdinalDate ToOrdinalDate(WeekDate weekDate)
+        internal static OrdinalDate ToOrdinalDate(WeekDate weekDate)
         {
             if (weekDate.Precision != WeekDatePrecision.Day)
             {

@@ -2,7 +2,7 @@
 using System.ExtendedDateTimeFormat.Internal.Converters;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
-using System.ExtendedDateTimeFormat.Internal.Types;
+using System.ExtendedDateTimeFormat.Abstract;
 
 namespace System.ExtendedDateTimeFormat
 {

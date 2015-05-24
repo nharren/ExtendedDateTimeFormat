@@ -2,7 +2,7 @@
 
 namespace System.ExtendedDateTimeFormat.Internal.Converters
 {
-    public sealed class ExtendedDateTimePossibilityCollectionConverter : TypeConverter
+    internal sealed class ExtendedDateTimePossibilityCollectionConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {

@@ -5,7 +5,7 @@ using System.ExtendedDateTimeFormat.Internal.Serializers;
 
 namespace System.ExtendedDateTimeFormat
 {
-    public class OrdinalDateTime : Internal.Types.DateTime, IComparable, IComparable<Internal.Types.DateTime>, IEquatable<Internal.Types.DateTime>
+    public class OrdinalDateTime : Abstract.DateTime, IComparable, IComparable<Abstract.DateTime>, IEquatable<Abstract.DateTime>
     {
         private static DateTimeComparer _comparer;
         private readonly OrdinalDate _date;
@@ -130,32 +130,32 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public static bool operator !=(OrdinalDateTime x, Internal.Types.DateTime y)
+        public static bool operator !=(OrdinalDateTime x, Abstract.DateTime y)
         {
             return Comparer.Compare(x, y) != 0;
         }
 
-        public static bool operator <(OrdinalDateTime x, Internal.Types.DateTime y)
+        public static bool operator <(OrdinalDateTime x, Abstract.DateTime y)
         {
             return Comparer.Compare(x, y) < 0;
         }
 
-        public static bool operator <=(OrdinalDateTime x, Internal.Types.DateTime y)
+        public static bool operator <=(OrdinalDateTime x, Abstract.DateTime y)
         {
             return Comparer.Compare(x, y) <= 0;
         }
 
-        public static bool operator ==(OrdinalDateTime x, Internal.Types.DateTime y)
+        public static bool operator ==(OrdinalDateTime x, Abstract.DateTime y)
         {
             return Comparer.Compare(x, y) == 0;
         }
 
-        public static bool operator >(OrdinalDateTime x, Internal.Types.DateTime y)
+        public static bool operator >(OrdinalDateTime x, Abstract.DateTime y)
         {
             return Comparer.Compare(x, y) > 0;
         }
 
-        public static bool operator >=(OrdinalDateTime x, Internal.Types.DateTime y)
+        public static bool operator >=(OrdinalDateTime x, Abstract.DateTime y)
         {
             return Comparer.Compare(x, y) >= 0;
         }
@@ -165,7 +165,7 @@ namespace System.ExtendedDateTimeFormat
             return OrdinalDateTimeParser.Parse(input);
         }
 
-        public int CompareTo(Internal.Types.DateTime other)
+        public int CompareTo(Abstract.DateTime other)
         {
             return Comparer.Compare(this, other);
         }
@@ -177,25 +177,25 @@ namespace System.ExtendedDateTimeFormat
                 return 1;
             }
 
-            if (!(obj is Internal.Types.DateTime))
+            if (!(obj is Abstract.DateTime))
             {
                 throw new ArgumentException("A ordinal datetime can only be compared with other datetimes.");
             }
 
-            return Comparer.Compare(this, (Internal.Types.DateTime)obj);
+            return Comparer.Compare(this, (Abstract.DateTime)obj);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != typeof(Internal.Types.DateTime))
+            if (obj == null || obj.GetType() != typeof(Abstract.DateTime))
             {
                 return false;
             }
 
-            return Comparer.Compare(this, (Internal.Types.DateTime)obj) == 0;
+            return Comparer.Compare(this, (Abstract.DateTime)obj) == 0;
         }
 
-        public bool Equals(Internal.Types.DateTime other)
+        public bool Equals(Abstract.DateTime other)
         {
             return Comparer.Compare(this, other) == 0;
         }

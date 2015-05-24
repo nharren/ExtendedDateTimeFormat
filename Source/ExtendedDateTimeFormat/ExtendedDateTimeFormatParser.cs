@@ -19,23 +19,23 @@ namespace System.ExtendedDateTimeFormat
 
             if (extendedDateTimeFormattedString[0] == '{')
             {
-                return (IExtendedDateTimeIndependentType)ExtendedDateTimeCollectionParser.Parse(extendedDateTimeFormattedString);
+                return ExtendedDateTimeCollectionParser.Parse(extendedDateTimeFormattedString);
             }
             else if (extendedDateTimeFormattedString[0] == '[')
             {
-                return (IExtendedDateTimeIndependentType)ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimeFormattedString);
+                return ExtendedDateTimePossibilityCollectionParser.Parse(extendedDateTimeFormattedString);
             }
             else if (extendedDateTimeFormattedString.ContainsBefore('u', '^'))
             {
-                return (IExtendedDateTimeIndependentType)UnspecifiedExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
+                return UnspecifiedExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
             }
             else if (extendedDateTimeFormattedString.ContainsBefore('x', '^'))
             {
-                return (IExtendedDateTimeIndependentType)ExtendedDateTimeMaskedPrecisionParser.Parse(extendedDateTimeFormattedString);
+                return ExtendedDateTimeMaskedPrecisionParser.Parse(extendedDateTimeFormattedString);
             }
             else
             {
-                return (IExtendedDateTimeIndependentType)ExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
+                return ExtendedDateTimeParser.Parse(extendedDateTimeFormattedString);
             }
         }
     }

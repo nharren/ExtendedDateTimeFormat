@@ -1,6 +1,6 @@
 ﻿namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
-    public class TimeSerializer
+    internal static class TimeSerializer
     {
         internal static string Serialize(Time time, bool withTimeDesignator, bool withColons, bool withUtcOffset)
         {
