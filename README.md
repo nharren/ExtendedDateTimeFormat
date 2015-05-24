@@ -186,7 +186,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 
 ## Roadmap
 
-#### Version 1.0 α
+#### Version 1α
 
 ##### ISO-8601:2004(E)
 
@@ -320,13 +320,13 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 
 ##### EDTF
 
-#### Version 1.0 β
+#### Version 1β
 
 ##### ISO-8601:2004(E) Unit Tests
 
 ##### EDTF Unit Tests
 
-#### Version 1.0 
+#### Version 1 
 
 ##### ISO-8601:2004(E) Usability Tests
 
