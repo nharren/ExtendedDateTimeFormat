@@ -224,7 +224,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 		- [x] Midnight in basic format ([T]00[.**0**|,**0**|00[.**0**|,**0**|00[.**0**|,**0**]]]|[T]24[.**0**|,**0**|00[.**0**|,**0**|00[.**0**|,**0**]]])
 		- [x] Midnight in extended format ([T]00[.**0**|,**0**|:00[.**0**|,**0**|:00[.**0**|,**0**]]]|[T]24[.**0**|,**0**|:00[.**0**|,**0**|:00[.**0**|,**0**]]])
 	- [x] Conversion to string
-- [x] Coordinated universal time
+- [x] Offset time
 	- [x] Conversion from string
 		- [x] Basic format ([T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]±hh[mm])
 		- [x] Extended format ([T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]±hh:mm)
