@@ -184,11 +184,12 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 }
 ```
 
-## Progress
+## Roadmap
 
-#### Version 1.0
+#### Version 1.0 α
 
 ##### ISO-8601:2004(E)
+
 - [x] Calendar dates 
 	- [x] Conversion from string
 		- [x] Basic format (YY|YYYY-MM|YYYY[MMDD])
@@ -316,6 +317,24 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 1. Bold means one or many values. 
 2. "|" symbolizes the logical "or".
 3. Contents between "[" and "]" are optional. 
+
+##### EDTF
+
+#### Version 1.0 β
+
+##### ISO-8601:2004(E) Unit Tests
+
+##### EDTF Unit Tests
+
+#### Version 1.0 
+
+##### ISO-8601:2004(E) Usability Tests
+
+##### ISO-8601:2004(E) Performance Tests
+
+##### EDTF Usability Tests
+
+##### EDTF Performance Tests
 
 ## License
 
