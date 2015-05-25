@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ExtendedDateTimeFormat.Internal.Durations;
+using System.Text;
 
 namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {

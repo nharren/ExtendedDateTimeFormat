@@ -2,9 +2,9 @@
 
 namespace System.ExtendedDateTimeFormat.Internal.Comparers
 {
-    public class DateTimeComparer : IComparer<Abstract.DateTime>
+    public class DateTimeComparer : IComparer<ExtendedDateTimeFormat.Abstract.DateTime>
     {
-        public int Compare(Abstract.DateTime x, Abstract.DateTime y)
+        public int Compare(ExtendedDateTimeFormat.Abstract.DateTime x, ExtendedDateTimeFormat.Abstract.DateTime y)
         {
             if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
             {

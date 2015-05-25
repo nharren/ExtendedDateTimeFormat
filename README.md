@@ -1,4 +1,4 @@
-## Introduction
+﻿## Introduction
 
 The ExtendedDateTimeFormat library is an implementation of the ISO 8601 standard and the Extended Date/Time Format (EDTF) extensions. Because EDTF is a proposed extension to the ISO 8601 standard, the features of EDTF are subject to change, and consequently, so are the features of this library. This library will likely undergo a series of breaking transformations; however, there will be stable releases along the way.
 
@@ -159,7 +159,7 @@ var unspecified   = UnspecifiedExtendedDateTime.Parse("20uu-uu");
 var anyOfTheAbove = ExtendedDateTimeFormatParser.Parse("2015-01/2015-04")
 ```
 
-#### Serializing to String
+#### Serialization to String
 
 ```csharp
 var datetime      = new ExtendedDateTime(2015).ToString();
@@ -169,15 +169,15 @@ var possibilities = new ExtendedDateTimePossibilityCollection { new ExtendedDate
 var unspecified   = new UnspecifiedExtendedDateTime("20uu", "uu").ToString();
 ```
 
-#### Serializing to XML
+#### Serialization to XML
 
 ```csharp
 private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependentType)
 {
     using (var stringWriter = new StringWriter())
     {
-        var xmlSerializer = new XmlSerializer(extendedDateTimeIndependentType.GetType());
-        xmlSerializer.Serialize(stringWriter, extendedDateTimeIndependentType);
+        var xmlSerializationr = new XmlSerializationr(extendedDateTimeIndependentType.GetType());
+        xmlSerializationr.Serialization(stringWriter, extendedDateTimeIndependentType);
 
         return stringWriter.ToString();
     }
@@ -191,126 +191,130 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 ##### ISO-8601:2004(E)
 
 - [x] Calendar dates 
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (YY|YYYY-MM|YYYY[MMDD])
 		- [x] Expanded basic format (+**Y**YY|+**Y**YYYY-MM|+**Y**YYYY[MMDD]|-**Y**Y|-**Y**YYY-MM|-**Y**YYY[MMDD])
 		- [x] Extended format (YYYY-MM-DD)
 		- [x] Expanded extended format (+**Y**YYYY-MM-DD|-**Y**YYY-MM-DD)
-	- [x] Conversion to string
+	- [x] Serialization to string
 	- [x] Conversion to ordinal dates
 	- [x] Conversion to week dates
 - [x] Ordinal dates 
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (YYYYDDD)
 		- [x] Expanded basic format (+**Y**YYYYDDD|-**Y**YYYDDD)
 		- [x] Extended format (YYYY-DDD)
 		- [x] Expanded extended format (+**Y**YYYY-DDD|-**Y**YYY-DDD)
-	- [x] Conversion to string
+	- [x] Serialization to string
 	- [x] Conversion to calendar dates
 	- [x] Conversion to week dates
 - [x] Week dates
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (YYYYWww[D])
 		- [x] Expanded basic format (+**Y**YYYYWww[D]|-**Y**YYYWww[D])
 		- [x] Extended format (YYYY-Www[-D])
 		- [x] Expanded extended format (+**Y**YYYY-Www[-D], -**Y**YYY-Www[-D])
-	- [x] Conversion to string
+	- [x] Serialization to string
 	- [x] Conversion to calendar dates
 	- [x] Conversion to ordinal dates
 - [x] Time
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format ([T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
 		- [x] Extended format ([T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
 		- [x] Midnight in basic format ([T]00[.**0**|,**0**|00[.**0**|,**0**|00[.**0**|,**0**]]]|[T]24[.**0**|,**0**|00[.**0**|,**0**|00[.**0**|,**0**]]])
 		- [x] Midnight in extended format ([T]00[.**0**|,**0**|:00[.**0**|,**0**|:00[.**0**|,**0**]]]|[T]24[.**0**|,**0**|:00[.**0**|,**0**|:00[.**0**|,**0**]]])
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Offset time
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format ([T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]]±hh[mm])
 		- [x] Extended format ([T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]Z|[T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]]±hh:mm)
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Calendar datetimes
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (YYYYMMDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
 		- [x] Extended format (YYYY-MM-DDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Ordinal datetimes
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (YYYYDDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
 		- [x] Extended format (YYYY-DDDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Week datetimes
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (YYYYWwwDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
 		- [x] Extended format (YYYY-Www-DThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
-	- [x] Conversion to string
-- [ ] Designated durations
-	- [ ] Conversion from string
-		- [ ] Basic and extended formats (PnnY[nnM[nnD[TnnH[nnM[nnS]]]]]|PnnM[nnD[TnnH[nnM[nnS]]]]|PnnD[TnnH[nnM[nnS]]]|PTnnH[nnM[nnS]]|PTnnM[nnS]|PTnnS|PnnW)
-	- [ ] Conversion to string
+	- [x] Serialization to string
+- [x] Designated durations
+	- [x] Deserialization from string
+		- [x] Basic and extended formats (P**n**Y[**n**M[**n**D[T**n**H[**n**M[**n**S]]]]])
+	- [x] Serialization to string
+- [x] Designated week durations
+	- [x] Deserialization from string
+		- [x] Basic and extended formats (P**n**W)
+	- [x] Serialization to string
 - [x] Calendar date durations
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (PYYYY[MM[DD]])
 		- [x] Extended format (PYYYY[-MM[-DD]])
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Ordinal date durations
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (PYYYYDDD)
 		- [x] Extended format (PYYYY-DDD)
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Time durations
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (P[T]hh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
 		- [x] Extended format (P[T]hh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Calendar datetime durations
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (PYYYYMMDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
 		- [x] Extended format (PYYYY-MM-DDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [x] Ordinal datetime durations
-	- [x] Conversion from string
+	- [x] Deserialization from string
 		- [x] Basic format (PYYYYDDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
 		- [x] Extended format (PYYYY-DDDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
-	- [x] Conversion to string
+	- [x] Serialization to string
 - [ ] Start-end time intervals
-	- [ ] Conversion from string
+	- [ ] Deserialization from string
 		- [ ] Basic format (YYYYMMDDThhmmss/YYYYMMDDThhmmss)
 		- [ ] Extended format (YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
-	- [ ] Conversion to string
+	- [ ] Serialization to string
 - [ ] Duration-context time intervals
-	- [ ] Conversion from string
-		- [ ] Basic and extended formats (PnnY[nnM[nnD[TnnH[nnM[nnS]]]]]|PnnM[nnD[TnnH[nnM[nnS]]]]|PnnD[TnnH[nnM[nnS]]]|PTnnH[nnM[nnS]]|PTnnM[nnS]|PTnnS|PnnW)
-	- [ ] Conversion to string
+	- [ ] Deserialization from string
+		- [ ] Basic and extended formats P**n**Y[**n**M[**n**D[T**n**H[**n**M[**n**S]]]]]|P**n**W)
+	- [ ] Serialization to string
 - [ ] Start-duration time intervals
-	- [ ] Conversion from string
+	- [ ] Deserialization from string
 		- [ ] Basic format (YYYYMMDDThhmmss/PnnY[nnM][nnDT][nnH][nnM][nnS], YYYYMMDDThhmmss/PYYYYMMDDThhmmss)
 		- [ ] Extended format (YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS], YYY-MM-DDThh:mm:ss/PYYYY-MM-DDThh:mm:ss)
-	- [ ] Conversion to string
+	- [ ] Serialization to string
 - [ ] Duration-end time intervals
-	- [ ] Conversion from string
+	- [ ] Deserialization from string
 		- [ ] Basic format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss, PYYYYMMDDThhmmss/YYYYMMDDThhmmss)
 		- [ ] Extended format (PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss, PYYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
-	- [ ] Conversion to string
+	- [ ] Serialization to string
 - [ ] Recurring start-end time intervals
-	- [ ] Conversion from string
+	- [ ] Deserialization from string
 		- [ ] Basic format (R[n]/YYYYMMDDThhmmss/YYYYMMDDThhmmss)
 		- [ ] Extended format (R[n]/YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
-	- [ ] Conversion to string
+	- [ ] Serialization to string
 - [ ] Recurring duration-context time intervals
-	- [ ] Conversion from string
+	- [ ] Deserialization from string
 		- [ ] Basic format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS])
-	- [ ] Conversion to string
+	- [ ] Serialization to string
 - [ ] Recurring start-duration time intervals
-	- [ ] Conversion from string
+	- [ ] Deserialization from string
 		- [ ] Basic format (R[n]/YYYYMMDDThhmmss/PnnY[nnM][nnD][TnnH][nnM][nnS])
 		- [ ] Extended format (R[n]/YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS])
-	- [ ] Conversion to string
+	- [ ] Serialization to string
 - [ ] Recurring duration-end time intervals
-	- [ ] Conversion from string
+	- [ ] Deserialization from string
 		- [ ] Basic format (R[n]PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYYMMDDThhmmss)
 		- [ ] Extended format (R[n]/PnnY[nnM][nnD][TnnH][nnM][nnS]/YYYY-MM-DDThh:mm:ss)
-	- [ ] Conversion to string
+	- [ ] Serialization to string
 
 ###### Notes:
 

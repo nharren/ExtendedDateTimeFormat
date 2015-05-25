@@ -40,19 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\DateDuration.cs" />
-    <Compile Include="Abstract\DateTimeDuration.cs" />
+    <Compile Include="CalendarDateTimePrecision.cs" />
+    <Compile Include="Internal\Abstract\DateDuration.cs" />
+    <Compile Include="Internal\Abstract\DateTimeDuration.cs" />
     <Compile Include="CalendarDate.cs" />
-    <Compile Include="CalendarDateDuration.cs" />
-    <Compile Include="CalendarDateTimeDuration.cs" />
+    <Compile Include="Internal\Durations\CalendarDateDuration.cs" />
+    <Compile Include="Internal\Durations\CalendarDateTimeDuration.cs" />
     <Compile Include="DecimalSeparator.cs" />
-    <Compile Include="DesignatedDuration.cs" />
+    <Compile Include="Internal\Durations\DesignatedDuration.cs" />
     <Compile Include="Internal\Comparers\DateTimeComparer.cs" />
     <Compile Include="Internal\Converters\CalendarDateTimeConverter.cs" />
     <Compile Include="Internal\Converters\OrdinalDateTimeConverter.cs" />
     <Compile Include="Internal\Converters\WeekDateTimeConverter.cs" />
+    <Compile Include="Internal\Durations\DesignatedWeekDuration.cs" />
     <Compile Include="Internal\Parsers\CalendarDateDurationParser.cs" />
     <Compile Include="Internal\Parsers\CalendarDateTimeDurationParser.cs" />
+    <Compile Include="Internal\Parsers\DesignatedDurationParser.cs" />
+    <Compile Include="Internal\Parsers\DesignatedWeekDurationParser.cs" />
     <Compile Include="Internal\Parsers\OrdinalDateDurationParser.cs" />
     <Compile Include="Internal\Parsers\OrdinalDateTimeDurationParser.cs" />
     <Compile Include="Internal\Parsers\OrdinalDateTimeParser.cs" />
@@ -60,6 +64,8 @@
     <Compile Include="Internal\Parsers\WeekDateTimeParser.cs" />
     <Compile Include="Internal\Serializers\CalendarDateDurationSerializer.cs" />
     <Compile Include="Internal\Serializers\CalendarDateTimeDurationSerializer.cs" />
+    <Compile Include="Internal\Serializers\DesignatedDurationSerializer.cs" />
+    <Compile Include="Internal\Serializers\DesignatedWeekDurationSerializer.cs" />
     <Compile Include="Internal\Serializers\OrdinalDateDurationSerializer.cs" />
     <Compile Include="Internal\Serializers\OrdinalDateTimeDurationSerializer.cs" />
     <Compile Include="Internal\Serializers\OrdinalDateTimeSerializer.cs" />
@@ -87,15 +93,15 @@
     <Compile Include="Internal\Serializers\TimeSerializer.cs" />
     <Compile Include="Internal\Serializers\WeekDateSerializer.cs" />
     <Compile Include="Abstract\DateTime.cs" />
-    <Compile Include="Abstract\Duration.cs" />
+    <Compile Include="Internal\Abstract\Duration.cs" />
     <Compile Include="OrdinalDate.cs" />
-    <Compile Include="OrdinalDateDuration.cs" />
+    <Compile Include="Internal\Durations\OrdinalDateDuration.cs" />
     <Compile Include="OrdinalDateTime.cs" />
-    <Compile Include="OrdinalDateTimeDuration.cs" />
+    <Compile Include="Internal\Durations\OrdinalDateTimeDuration.cs" />
     <Compile Include="SeasonFlags.cs" />
     <Compile Include="MonthFlags.cs" />
     <Compile Include="Time.cs" />
-    <Compile Include="TimeDuration.cs" />
+    <Compile Include="Internal\Durations\TimeDuration.cs" />
     <Compile Include="TimePrecision.cs" />
     <Compile Include="WeekDate.cs" />
     <Compile Include="WeekDatePrecision.cs" />

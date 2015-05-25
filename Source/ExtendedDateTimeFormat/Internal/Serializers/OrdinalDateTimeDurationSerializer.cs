@@ -1,4 +1,6 @@
-﻿namespace System.ExtendedDateTimeFormat.Internal.Serializers
+﻿using System.ExtendedDateTimeFormat.Internal.Durations;
+
+namespace System.ExtendedDateTimeFormat.Internal.Serializers
 {
     internal static class OrdinalDateTimeDurationSerializer
     {

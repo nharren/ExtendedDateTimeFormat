@@ -1,4 +1,6 @@
-﻿namespace System.ExtendedDateTimeFormat.Internal.Parsers
+﻿using System.ExtendedDateTimeFormat.Internal.Durations;
+
+namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {
     internal static class CalendarDateDurationParser
     {

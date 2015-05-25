@@ -1,11 +1,11 @@
-﻿using System.ExtendedDateTimeFormat.Abstract;
+﻿using System.ExtendedDateTimeFormat.Internal.Abstract;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 using System.Globalization;
 
-namespace System.ExtendedDateTimeFormat
+namespace System.ExtendedDateTimeFormat.Internal.Durations
 {
-    public class TimeDuration : Duration
+    internal class TimeDuration : Duration
     {
         private readonly double _hours;
         private readonly double _minutes;
@@ -35,7 +35,7 @@ namespace System.ExtendedDateTimeFormat
 
             _seconds = seconds;
 
-            var fractionParts = seconds.ToString().Split('.');
+            var fractionParts = seconds.ToString().Split('.', ',');
 
             _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
         }
@@ -56,7 +56,7 @@ namespace System.ExtendedDateTimeFormat
 
             _minutes = minutes;
 
-            var fractionParts = minutes.ToString().Split('.');
+            var fractionParts = minutes.ToString().Split('.', ',');
 
             _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
         }
@@ -70,7 +70,7 @@ namespace System.ExtendedDateTimeFormat
 
             _hours = hours;
 
-            var fractionParts = hours.ToString().Split('.');
+            var fractionParts = hours.ToString().Split('.', ',');
 
             _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
         }

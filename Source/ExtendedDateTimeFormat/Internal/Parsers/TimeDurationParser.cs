@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ExtendedDateTimeFormat.Internal.Durations;
+using System.Globalization;
 
 namespace System.ExtendedDateTimeFormat.Internal.Parsers
 {

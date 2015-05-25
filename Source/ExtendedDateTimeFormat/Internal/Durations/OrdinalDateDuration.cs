@@ -1,10 +1,10 @@
-﻿using System.ExtendedDateTimeFormat.Abstract;
+﻿using System.ExtendedDateTimeFormat.Internal.Abstract;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 
-namespace System.ExtendedDateTimeFormat
+namespace System.ExtendedDateTimeFormat.Internal.Durations
 {
-    public class OrdinalDateDuration : DateDuration
+    internal class OrdinalDateDuration : DateDuration
     {
         private readonly int _days;
         private readonly int _years;

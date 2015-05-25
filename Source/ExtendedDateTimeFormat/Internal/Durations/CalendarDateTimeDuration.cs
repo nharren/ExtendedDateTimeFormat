@@ -1,25 +1,30 @@
-﻿using System.ExtendedDateTimeFormat.Abstract;
+﻿using System.ExtendedDateTimeFormat.Internal.Abstract;
 using System.ExtendedDateTimeFormat.Internal.Parsers;
 using System.ExtendedDateTimeFormat.Internal.Serializers;
 using System.Globalization;
 
-namespace System.ExtendedDateTimeFormat
+namespace System.ExtendedDateTimeFormat.Internal.Durations
 {
-    public class OrdinalDateTimeDuration : DateTimeDuration
+    internal class CalendarDateTimeDuration : DateTimeDuration
     {
-        private readonly OrdinalDateDuration _dateDuration;
+        private readonly CalendarDateDuration _dateDuration;
         private readonly TimeDuration _timeDuration;
 
-        public OrdinalDateTimeDuration(int years, int days, int hours, int minutes, double seconds)
+        public CalendarDateTimeDuration(int years, int months, int days, int hours, int minutes, double seconds)
         {
             if (years < 0 || years >= 10000)
             {
                 throw new ArgumentOutOfRangeException(nameof(years), "Years must be a number between 0 and 9999.");
             }
 
-            if (days < 0 || days > 999)
+            if (months < 0 || months > 24)
             {
-                throw new ArgumentOutOfRangeException(nameof(days), "Days must be a number between 0 and 999.");
+                throw new ArgumentOutOfRangeException(nameof(months), "Months must be a number between 0 and 12.");
+            }
+
+            if (days < 0 || days > 30)
+            {
+                throw new ArgumentOutOfRangeException(nameof(days), "Days must be a number between 0 and 30.");
             }
 
             if (hours < 0 || hours > 24)
@@ -37,41 +42,20 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentOutOfRangeException(nameof(seconds), "Seconds must be a number between 0 and 60.");
             }
 
-            _dateDuration = new OrdinalDateDuration(years, days);
+            _dateDuration = new CalendarDateDuration(years, months, days);
             _timeDuration = new TimeDuration(hours, minutes, seconds);
         }
 
-        public OrdinalDateTimeDuration(int years, int days, int hours, double minutes)
+        public CalendarDateTimeDuration(int years, int months, int days, int hours, double minutes)
         {
             if (years < 0 || years >= 10000)
             {
                 throw new ArgumentOutOfRangeException(nameof(years), "Years must be a number between 0 and 9999.");
             }
 
-            if (days < 0 || days > 999)
+            if (months < 0 || months > 24)
             {
-                throw new ArgumentOutOfRangeException(nameof(days), "Days must be a number between 0 and 999.");
-            }
-
-            if (hours < 0 || hours > 24)
-            {
-                throw new ArgumentOutOfRangeException(nameof(hours), "Hours must be a number between 0 and 24.");
-            }
-
-            if (minutes < 0 || minutes > 60)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minutes), "Minutes must be a number between 0 and 60.");
-            }
-
-            _dateDuration = new OrdinalDateDuration(years, days);
-            _timeDuration = new TimeDuration(hours, minutes);
-        }
-
-        public OrdinalDateTimeDuration(int years, int days, double hours)
-        {
-            if (years < 0 || years >= 10000)
-            {
-                throw new ArgumentOutOfRangeException(nameof(years), "Years must be a number between 0 and 9999.");
+                throw new ArgumentOutOfRangeException(nameof(months), "Months must be a number between 0 and 12.");
             }
 
             if (days < 0 || days > 30)
@@ -84,11 +68,42 @@ namespace System.ExtendedDateTimeFormat
                 throw new ArgumentOutOfRangeException(nameof(hours), "Hours must be a number between 0 and 24.");
             }
 
-            _dateDuration = new OrdinalDateDuration(years, days);
+            if (minutes < 0 || minutes > 60)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minutes), "Minutes must be a number between 0 and 60.");
+            }
+
+            _dateDuration = new CalendarDateDuration(years, months, days);
+            _timeDuration = new TimeDuration(hours, minutes);
+        }
+
+        public CalendarDateTimeDuration(int years, int months, int days, double hours)
+        {
+            if (years < 0 || years >= 10000)
+            {
+                throw new ArgumentOutOfRangeException(nameof(years), "Years must be a number between 0 and 9999.");
+            }
+
+            if (months < 0 || months > 24)
+            {
+                throw new ArgumentOutOfRangeException(nameof(months), "Months must be a number between 0 and 12.");
+            }
+
+            if (days < 0 || days > 30)
+            {
+                throw new ArgumentOutOfRangeException(nameof(days), "Days must be a number between 0 and 30.");
+            }
+
+            if (hours < 0 || hours > 24)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hours), "Hours must be a number between 0 and 24.");
+            }
+
+            _dateDuration = new CalendarDateDuration(years, months, days);
             _timeDuration = new TimeDuration(hours);
         }
 
-        internal OrdinalDateTimeDuration(OrdinalDateDuration dateDuration, TimeDuration timeDuration)
+        internal CalendarDateTimeDuration(CalendarDateDuration dateDuration, TimeDuration timeDuration)
         {
             _dateDuration = dateDuration;
             _timeDuration = timeDuration;
@@ -131,6 +146,14 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
+        public double Months
+        {
+            get
+            {
+                return _dateDuration.Months;
+            }
+        }
+
         public double Seconds
         {
             get
@@ -147,7 +170,7 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        internal OrdinalDateDuration DateDuration
+        internal CalendarDateDuration DateDuration
         {
             get
             {
@@ -163,9 +186,9 @@ namespace System.ExtendedDateTimeFormat
             }
         }
 
-        public static OrdinalDateTimeDuration Parse(string input, int fractionLength = 0)
+        public static CalendarDateTimeDuration Parse(string input, int fractionLength = 0)
         {
-            return OrdinalDateTimeDurationParser.Parse(input, fractionLength);
+            return CalendarDateTimeDurationParser.Parse(input, fractionLength);
         }
 
         public override string ToString()
@@ -175,7 +198,7 @@ namespace System.ExtendedDateTimeFormat
 
         public virtual string ToString(bool withComponentSeparators, DecimalSeparator decimalSeparator)
         {
-            return OrdinalDateTimeDurationSerializer.Serialize(this, withComponentSeparators, decimalSeparator);
+            return CalendarDateTimeDurationSerializer.Serialize(this, withComponentSeparators, decimalSeparator);
         }
     }
 }
