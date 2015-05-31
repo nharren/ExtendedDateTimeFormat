@@ -1,7 +1,6 @@
 (* -------------------- Common -------------------- *)
 
 digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
-
 fractional part = ( "," | "." ), digit, { digit } ;
 
 (* ******************** DATE ******************** *)
@@ -42,20 +41,20 @@ extended month and day = thirty one day month, "-", one to thirty one
 
 extended leap month and day = "02-29" ;
 
-complete basic calendar date = year, basic month and day 
+basic complete calendar date = year, basic month and day 
                              | leap year, basic leap month and day ;
-complete extended calandar date = year, "-", extended month and day, 
+extended complete calandar date = year, "-", extended month and day, 
                                 | leap year, "-", extended leap month and day ;
-complete calendar date = complete basic calandar date | complete extended calendar date ;
+complete calendar date = basic complete calandar date | extended complete calendar date ;
 
 reduced calendar date = year and month | century ;
 
-expanded basic calendar date = expanded year, basic month and day 
+basic expanded calendar date = expanded year, basic month and day 
                              | expanded leap year, basic leap month and day ;
-expanded extended calendar date = expanded year, "-", extended month and day 
+extended expanded calendar date = expanded year, "-", extended month and day 
                                 | expanded leap year, "-", extended leap month and day
                                 | expanded year and month | expanded year | expanded century ;
-expanded calendar date = expanded basic calendar date | expanded extended calendar date ;
+expanded calendar date = basic expanded calendar date | extended expanded calendar date ;
 
 calendar date = complete calendar date | reduced calendar date | expanded calendar date ;
 
@@ -65,17 +64,17 @@ day of year = ( "0", digit, digit ) - "000" | "1", digit, digit | "2", digit, di
             | "30", digit | "31", digit | "32", digit | "33", digit | "34", digit | "35", digit
             | "360" | "361" | "362" | "363" | "364" | "365" ;
 
-complete basic ordinal date = year, day of year 
+basic complete ordinal date = year, day of year 
                             | leap year, "366" ;
-complete extended ordinal date = year, "-", day of year 
+extended complete ordinal date = year, "-", day of year 
                                | leap year, "-366" ;
-complete ordinal date = complete basic ordinal date | complete extended ordinal date ;
+complete ordinal date = basic complete ordinal date | extended complete ordinal date ;
 
-expanded basic ordinal date = expanded year, day of year 
+basic expanded ordinal date = expanded year, day of year 
                             | expanded leap year, "366" ;
-expanded extended ordinal date = expanded year, "-", day of year 
+extended expanded ordinal date = expanded year, "-", day of year 
                                | expanded leap year, "-366" ;
-expanded ordinal date = expanded basic ordinal date | expanded extended ordinal date ;
+expanded ordinal date = basic expanded ordinal date | extended expanded ordinal date ;
 
 ordinal date = complete ordinal date | expanded ordinal date ;
 
@@ -89,49 +88,49 @@ week = ( "0", digit ) - "00" | "1", digit | "2", digit | "3", digit | "4", digit
 
 day of week = "1" | "2" | "3" | "4" | "5" | "6" | "7" ;
 
-complete basic week date = year, "W", week, day of week  
+basic complete week date = year, "W", week, day of week  
                          | fifty three week year, "W53", day of week ;
-complete extended week date = year, "-W", week, "-", day of week 
+extended complete week date = year, "-W", week, "-", day of week 
                             | fifty three week year, "-W53-", day of week ;
-complete week date = complete basic week date | complete extended week date ;
+complete week date = basic complete week date | extended complete week date ;
 
-reduced basic week date = year, "W", week  | fifty three week year, "W53" ;
-reduced extended week date = year, "-W", week | fifty three week year, "-W53" ;
-reduced week date = reduced basic week date | reduced extended week date ;
+basic reduced week date = year, "W", week  | fifty three week year, "W53" ;
+extended reduced week date = year, "-W", week | fifty three week year, "-W53" ;
+reduced week date = basic reduced week date | extended reduced week date ;
 
-expanded basic week date = expanded year, "W", week, day of week 
+basic expanded week date = expanded year, "W", week, day of week 
                          | expanded fifty three week year, "W53", day of week
                          | expanded year, "W", week
                          | expanded fifty three week year, "W53" ;
-expanded extended week date = expanded year, "-W", week, "-", day of week 
+extended expanded week date = expanded year, "-W", week, "-", day of week 
                             | expanded fifty three week year, "-W53-", day of week
                             | expanded year, "-W", week
                             | expanded fifty three week year, "-W53" ;
-expanded week date = expanded basic week date | expanded extended week date ; 
+expanded week date = basic expanded week date | extended expanded week date ; 
 
 
 week date = complete week date | reduced week date | expanded week date ;
 
-(* -------------------- General -------------------- *)
+(* -------------------- General Date -------------------- *)
 
-complete basic date = complete basic calendar date | complete basic ordinal date 
-                    | complete basic week date ;
-complete extended date = complete extended calendar date | complete extended ordinal date 
-                       | complete extended week date ;
-complete date = complete basic date | complete extended date ;
+basic complete date = basic complete calendar date | basic complete ordinal date 
+                    | basic complete week date ;
+extended complete date = extended complete calendar date | extended complete ordinal date 
+                       | extended complete week date ;
+complete date = basic complete date | extended complete date ;
 
-reduced basic date = reduced calendard date | reduced basic week date ;
-reduced extended date = reduced extended week date ;
-reduced date = reduced basic date | reduced extended date ;
+basic reduced date = reduced calendard date | basic reduced week date ;
+extended reduced date = extended reduced week date ;
+reduced date = basic reduced date | extended reduced date ;
 
-expanded basic date = expanded basic calendar date | expanded basic ordinal date 
-                    | expanded basic week date ;
-expanded extended date = expanded extended calendar date | expanded extended ordinal date 
-                       | expanded extended week date ;
-expanded date = expanded basic date | expanded extended date ;
+basic expanded date = basic expanded calendar date | basic expanded ordinal date 
+                    | basic expanded week date ;
+extended expanded date = extended expanded calendar date | extended expanded ordinal date 
+                       | extended expanded week date ;
+expanded date = basic expanded date | extended expanded date ;
 
-basic date = complete basic date | reduced basic date | expanded basic date ;
-extended date = complete extended date | reduced extended date | expanded extended date ;
+basic date = basic complete date | basic reduced date | basic expanded date ;
+extended date = extended complete date | extended reduced date | extended expanded date ;
 
 date = basic date | extended date ;
 
@@ -146,25 +145,25 @@ second = "0", digit | "1", digit | "2", digit | "3", digit | "4", digit | "5", d
 
 (* -------------------- Local Time -------------------- *)
 
-complete basic local time = hour, minute, second | "240000" ;
-complete extended local time = hour, ":", minute, ":", second | "24:00:00" ;
-complete local time = complete basic local time | complete extended local time ;
+basic complete local time = hour, minute, second | "240000" ;
+extended complete local time = hour, ":", minute, ":", second | "24:00:00" ;
+complete local time = basic complete local time | extended complete local time ;
 
-reduced basic local time = hour, [ minute ] | "24", [ ":00" ] ;
-reduced extended local time = hour, ":", minute | "24:00" ;
-reduced local time = reduced basic local time | reduced extended local time ;
+basic reduced local time = hour, [ minute ] | "24", [ ":00" ] ;
+extended reduced local time = hour, ":", minute | "24:00" ;
+reduced local time = basic reduced local time | extended reduced local time ;
 
-fractional basic local time = complete basic local time, fractional part 
-                            | reduced basic local time, fractional part ;
-fractional extended local time = complete extended local time, fractional part 
-                               | reduced extended local time, fractional part ;
+basic fractional local time = basic complete local time, fractional part 
+                            | basic reduced local time, fractional part ;
+extended fractional local time = extended complete local time, fractional part 
+                               | extended reduced local time, fractional part ;
 fractional local time = complete local time, fractional part 
                       | reduced local time, fractional part ;
 
-basic local time without time designator = complete basic local time | reduced basic local time 
-                                         | fractional basic local time ;
-extended local time without time designator = complete extended local time | reduced extended local time 
-                                            | fractional extended local time ;
+basic local time without time designator = basic complete local time | basic reduced local time 
+                                         | basic fractional local time ;
+extended local time without time designator = extended complete local time | extended reduced local time 
+                                            | extended fractional local time ;
 local time without time designator = complete local time | reduced local time | fractional local time;
 
 local time = [ "T" ], local time without time designator;
@@ -177,33 +176,33 @@ utc of day = local time without time designator, "Z" ;
 
 (* -------------------- Local time and UTC offset -------------------- *)
 
-complete basic utc offset = ( "+" | "-" ), hour, minute ;
-complete extended utc offset = ( "+" | "-" ), hour, ":", minute ;
-complete utc offset = complete basic utc offset | complete extended utc offset ;
+basic complete utc offset = ( "+" | "-" ), hour, minute ;
+extended complete utc offset = ( "+" | "-" ), hour, ":", minute ;
+complete utc offset = basic complete utc offset | extended complete utc offset ;
 
-reduced basic utc offset = ( "+" | "-" ), hour ;
+basic reduced utc offset = ( "+" | "-" ), hour ;
 
-basic utc offset = complete basic utc offset | reduced basic utc offset ; 
-extended utc offset = complete extended utc offset ;
+basic utc offset = basic complete utc offset | basic reduced utc offset ; 
+extended utc offset = extended complete utc offset ;
 utc offset = basic utc offset | extended utc offset ;
 
 basic local time and utc offset = basic local time without time designator, basic utc offset ;
 extended local time and utc offset = extended local time without time designator, extended utc offset ;
 local time and utc offset = basic local time and utc offset | extended local time and utc offset ;
 
-(* -------------------- General -------------------- *)
+(* -------------------- General Time -------------------- *)
 
-complete basic time = [ "T" ], complete basic local time, [ complete basic utc offset | "Z" ] ;
-complete extended time = [ "T" ], complete extended local time, [ complete extended utc offset | "Z" ] ;
-complete time  = complete basic time | complete extended time ;
+basic complete time = [ "T" ], basic complete local time, [ basic complete utc offset | "Z" ] ;
+extended complete time = [ "T" ], extended complete local time, [ extended complete utc offset | "Z" ] ;
+complete time  = basic complete time | extended complete time ;
 
-reduced basic time = [ "T" ], reduced basic local time, [ basic utc offset | "Z" ] ;
-reduced extended time = [ "T" ], reduced extended local time, [ extended utc offset | "Z" ] ;
-reduced time = reduced basic time | reduced extended time ;
+basic reduced time = [ "T" ], basic reduced local time, [ basic utc offset | "Z" ] ;
+extended reduced time = [ "T" ], extended reduced local time, [ extended utc offset | "Z" ] ;
+reduced time = basic reduced time | extended reduced time ;
 
-fractional basic time = [ "T" ], fractional basic local time, [ basic utc offset | "Z" ] ;
-fractional extended time = [ "T" ], fractional extended local time, [ extended utc offset | "Z" ] ;
-fractional time = fractional basic time | fractional extended time ;
+basic fractional time = [ "T" ], basic fractional local time, [ basic utc offset | "Z" ] ;
+extended fractional time = [ "T" ], extended fractional local time, [ extended utc offset | "Z" ] ;
+fractional time = basic fractional time | extended fractional time ;
 
 basic time = [ "T" ], basic local time without time designator, [ basic utc offset | "Z" ] ;
 extended time = [ "T" ], extended local time without time designator, [ extended utc offset | "Z" ] ;
@@ -212,32 +211,45 @@ time = basic time | extended time ;
 
 (* ******************** DATE AND TIME OF DAY ******************** *)
 
-complete basic date and time of day = complete basic date, complete basic time ;
-complete extended date and time of day = complete extended date, complete extended time ;
-complete date and time of day = complete basic date and time of day | complete extended date and time of day ;
+basic complete datetime = basic complete date, basic complete time ;
+extended complete datetime = extended complete date, extended complete time ;
+complete datetime = basic complete datetime | extended complete datetime ;
 
-reduced basic date and time of day = complete basic date, reduced basic time ;
-reduced extended date and time of day = complete extended date, reduced extended time ;
-reduced date and time of day = reduced basic date and time of day | reduced extended date and time of day ;
+basic reduced datetime = basic complete date, basic reduced time ;
+extended reduced datetime = extended complete date, extended reduced time ;
+reduced datetime = basic reduced datetime | extended reduced datetime ;
 
-fractional basic date and time of day = complete basic date, fractional basic time ;
-fractional extended date and time of day = complete extended date , fractional extended time ;
-fractional date and time of day = fractional basic date and time of day | fractional extended date and time of day ;
+basic fractional datetime = basic complete date, basic fractional time ;
+extended fractional datetime = extended complete date , extended fractional time ;
+fractional datetime = basic fractional datetime | extended fractional datetime ;
 
-expanded basic date and time of day = expanded basic date, basic time ;
-expanded extended date and time of day = expanded extended date, extended time ;
-expanded date and time of day = expanded basic date and time of day | expanded extended date and time of day ;
+basic expanded datetime = basic expanded date, basic time ;
+extended expanded datetime = extended expanded date, extended time ;
+expanded datetime = basic expanded datetime | extended expanded datetime ;
 
-basic date and time of day = complete basic date and time of day | reduced basic date and time of day 
-                           | fractional basic date and time of day | expanded basic date and time of day ;
+basic datetime = basic complete datetime | basic reduced datetime 
+               | basic fractional datetime | basic expanded datetime ;
 
-extended date and time of day = complete extended date and time of day | reduced extended date and time of day 
-                              | fractional extended date and time of day 
-                              | expanded extended date and time of day ;
+extended datetime = extended complete datetime | extended reduced datetime 
+                  | extended fractional datetime | extended expanded datetime ;
 
-date and time of day = basic date and time of day | extended date and time of day ;
+datetime = basic datetime | extended datetime ;
 
 (* ******************** TIME INTERVAL ******************** *)
+
+(* -------------------- Common -------------------- *)
+
+basic incomplete time point = basic reduced datetime | basic fractional datetime 
+			                | basic expanded datetime | basic reduced time 
+				            | basic fractional time | basic reduced date | basic expanded date ;
+extended incomplete time point = extended reduced datetime | extended fractional datetime 
+			                   | extended expanded datetime | extended reduced time 
+				               | extended fractional time | extended reduced date | extended expanded date ;
+
+basic time point = basic date | basic time | basic datetime ;
+extended time point = extended date | extended time | extended datetime ;
+
+(* -------------------- Designated Duration -------------------- *)
 
 complete designated duration = "P", digit, { digit }, "Y", digit, { digit }, "M", digit, { digit }, "D", 
                                "T", digit, { digit }, "H", digit, { digit }, "M", digit, { digit }, "S" 
@@ -259,7 +271,14 @@ fractional designated duration = "P", digit, { digit }, fractional part, "Y"
 
 designated duration = complete designated duration | reduced designated duration | fractional designated duration ;
 
+(* -------------------- Date Duration -------------------- *)
+
+centuries = digit, digit ;
+expanded centuries = "+" | "-", { digit }, centuries ;
+
 years = digit, digit, digit, digit ;
+expanded years = "+" | "-", { digit }, years ;
+
 months = "1", digit | "11" | "12" ;
 days = "1", digit | "2", digit | "30" ;
 (* The carry over point for days of year is assumed to be 365, but it is not specified by the standard *)
@@ -270,5 +289,242 @@ hours = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
 minutes = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
 seconds = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
 
-alternative basic duration = "P", years, months, days, "T", hours, minutes, seconds ;
+basic complete calendar date duration = "P", years, months, days ;
+extended complete calandar date duration = "P", years, "-", months, "-", days ;
+complete calendar date duration = basic complete calendar date duration | extended complete calandar date duration ;
 
+reduced calendar date duration = "P", years, "-", months | "P", centuries ;
+
+basic expanded calendar date duration = "P", expanded years, month, day ;
+extended expanded calendar date duration = "P", expanded years, "-", months, "-", days ;
+                                         | "P", expanded years, "-", months | "P", expanded years | "P", expanded centuries ;
+expanded calendar date duration = basic expanded calendar date duration | extended expanded calendar date duration ;
+
+calendar date duration = complete calendar date duration | reduced calendar date duration | expanded calendar date duration ;
+
+basic complete ordinal date duration = "P", years, days of year ;
+extended complete ordinal date duration = "P", years, "-", days of year ;
+complete ordinal date duration = basic complete ordinal date duration | extended complete ordinal date duration ;
+
+basic expanded ordinal date duration = "P", expanded years, days of year ;
+extended expanded ordinal date duration = "P", expanded years, "-", days of year ;
+expanded ordinal date duration = basic expanded ordinal date duration | extended expanded ordinal date duration ;
+
+ordinal date duration = complete ordinal date duration | expanded ordinal date duration ;
+
+basic complete date duration = basic complete calendar date duration | basic complete ordinal date duration ;
+extended complete date duration = extended complete calendar date duration | extended complete ordinal date duration ;
+complete date duration = basic complete date duration | extended complete date duration;
+
+reduced date duration = reduced calendar date duration ;
+
+basic expanded date duration = basic expanded calendar date duration | basic expanded ordinal date duration ;
+extended expanded date duration = extended expanded calendar date duration | extended expanded ordinal date duration ;
+expanded date duration = basic expanded date duration | extended expanded date duration ;
+
+basic date duration = basic complete date duration | reduced date duration | basic expanded date duration ;
+extended date duration = extended complete date duration | extended expanded date duration ;
+
+date duration = basic date duration | extended date duration ;
+
+(* -------------------- Time Duration -------------------- *)
+
+basic complete local time duration = "PT", hours, minutes, seconds ;
+extended complete local time duration = "PT", hours, ":", minutes, ":", seconds ;
+complete local time duration = basic complete local time duration | extended complete local time duration ;
+
+basic reduced local time duration = "PT", hours, [ minutes ] ;
+extended reduced local time duration = "PT", hours, ":", minutes ;
+reduced local time duration = basic reduced local time duration | extended reduced local time duration ;
+
+basic fractional local time duration = basic complete local time duration, fractional part 
+                                     | basic reduced local time duration, fractional part ;
+extended fractional local time duration = extended complete local time duration, fractional part 
+                                        | extended reduced local time duration, fractional part ;
+fractional local time duration = complete local time duration, fractional part 
+                               | reduced local time duration, fractional part ;
+
+basic local time duration = basic complete local time duration | basic reduced local time duration 
+                          | basic fractional local time duration ;
+extended local time duration = extended complete local time duration | extended reduced local time duration 
+                             | extended fractional local time duration ;
+local time duration = basic local time duration | extended local time duration;
+
+(* -------------------- Date and Time Duration -------------------- *)
+
+basic complete datetime duration = basic complete date duration, "T", hours, minutes, seconds ;
+extended complete datetime duration = extended complete date duration, "T", hours, ":", minutes, ":", seconds ;
+complete datetime duration = basic complete datetime | extended complete datetime ;
+
+basic reduced datetime duration = basic complete date duration, "T", hours, [ minutes ] ;
+extended reduced datetime duration = extended complete date duration, "T", hours, ":", minutes ;
+reduced datetime duration = basic reduced datetime | extended reduced datetime ;
+
+basic fractional datetime duration = basic complete date duration, hours, [ minutes, [ seconds ] ], fractional part ;
+extended fractional datetime duration = extended complete date , hours, [ minutes, [ seconds ] ], fractional part ;
+fractional datetime duration = basic fractional datetime duration | extended fractional datetime duration ;
+
+basic expanded datetime duration = basic expanded date duration, 
+                                   "T", hours, [ minutes, [ seconds ] ], [ fractional part ] ;
+extended expanded datetime duration = extended expanded date duration,
+                                      "T", hours, [ ":", minutes, [ ":", seconds ] ], [ fractional part ] ;
+expanded datetime duration = basic expanded datetime duration | extended expanded datetime duration ;
+
+basic datetime duration = basic complete datetime duration | basic reduced datetime duration
+                         | basic fractional datetime duration | basic expanded datetime duration ;
+extended datetime duration = extended complete datetime duration | extended reduced datetime duration
+                           | extended fractional datetime duration | extended expanded datetime duration ;
+datetime duration = basic datetime duration | extended datetime duration ;
+
+(* -------------------- General Duration -------------------- *)
+
+basic complete duration = complete designated duration | basic complete datetime duration ;
+extended complete duration = complete designated duration | extended complete datetime duration ;
+complete duration = basic complete duration | extended complete duration ;
+
+basic incomplete duration = reduced designated duration | fractional designated duration 
+                          | basic reduced datetime duration | basic fractional datetime duration
+				          | basic expanded datetime duration ;
+extended incomplete duration = reduced designated duration | fractional designated duration 
+                             | extended reduced datetime duration | extended fractional datetime duration
+				             | extended expanded datetime duration ;
+incomplete duration = basic incomplete duration | extended incomplete duration ;
+
+(* -------------------- Start and End Time Interval -------------------- *)
+
+basic complete start and end time interval = basic complete datetime, "/", basic complete datetime ;
+extended complete start and end time interval = extended complete datetime, "/", extended complete datetime ;
+complete start and end time interval = basic complete start and end time interval 
+                                     | extended complete start and end time interval ;
+
+basic incomplete start and end time interval = basic incomplete time point, "/", basic time point
+                                             | basic time point, "/", basic incomplete time point ;
+extended incomplete start and end time interval = extended incomplete time point, "/", extended time point
+                                                | extended time point, "/", extended incomplete time point ;
+incomplete start and end time interval = basic incomplete start and end time interval 
+                                       | extended incomplete start and end time interval ;
+
+start and end time interval = complete start and end time interval
+                            | incomplete start and end time interval ;
+
+(* -------------------- Duration and Context Time Interval -------------------- *)
+
+basic complete duration and context time interval = complete designated duration 
+                                                  | basic complete datetime duration ;
+extended complete duration and context time interval = complete designated duration 
+                                                     | extended complete datetime duration ;
+complete duration and context time interval = complete designated duration | complete datetime duration ;
+
+basic incomplete duration and context time interval = basic incomplete duration ;
+extended incomplete duration and context time interval = extended incomplete duration ;
+incomplete duration and context time interval = basic incomplete duration and context time interval
+                                              | extended incomplete duration and context time interval ;
+
+duration and context time interval = complete duration and context time interval 
+                                   | incomplete duration and context time interval ;
+
+(* -------------------- Start and Duration Time Interval -------------------- *)
+
+basic complete start and duration time interval = basic complete datetime, "/", basic complete duration ;
+extended complete start and duration time interval = extended complete datetime, "/", extended complete duration ;
+complete start and duration time interval = basic complete start and duration time interval 
+                                          | extended complete start and duration time interval ; 
+
+basic incomplete start and duration time interval = basic incomplete time point, "/", basic duration
+                                                  | basic time point, "/", basic incomplete duration ;
+extended incomplete start and duration time interval = extended incomplete time point, "/", extended duration
+                                                     | extended time point, "/", extended incomplete duration ;
+incomplete start and duration time interval = basic incomplete start and duration time interval
+                                            | extended incomplete start and duration time interval ;
+
+start and duration time interval = complete start and duration time interval 
+                                 | incomplete start and duration time interval ;
+
+(* -------------------- Duration and End Time Interval -------------------- *)
+
+basic complete duration and end time interval = basic complete duration, "/", basic complete datetime ;
+extended complete duration and end time interval = extended complete duration, "/", extended complete datetime ;
+complete duration and end time interval = basic complete duration and end time interval
+                                        | extended complete duration and end time interval ;
+
+basic incomplete duration and end time interval = basic duration, "/", basic incomplete time point
+                                                | basic incomplete duration, "/", basic time point ;
+extended incomplete duration and end time interval = extended duration, "/", extended incomplete time point
+                                                   | extended incomplete duration, "/", extended time point ;
+incomplete duration and end time interval = basic incomplete duration and end time interval
+                                          | extended incomplete duration and end time interval ;
+
+duration and end time interval = complete duration and end time interval 
+                               | incomplete duration and end time interval ;
+
+(* -------------------- General Time Interval -------------------- *)
+
+time interval = start and end time interval | duration and context time interval 
+              | start and duration time interval | duration and end time interval ;
+
+(* ******************** RECURRING TIME INTERVAL ******************** *)
+
+(* -------------------- Start and End Recurring Time Interval -------------------- *)
+
+basic complete start and end recurring time interval = "R", { digit }, "/", basic complete start and end time interval ;
+extended complete start and end recurring time interval = "R", { digit }, "/", extended complete start and end time interval ;
+complete start and end recurring time interval = basic complete start and end recurring time interval
+                                               | extended complete start and end recurring time interval ;
+
+basic incomplete start and end recurring time interval = "R", { digit }, "/", basic incomplete start and end time interval ;
+extended incomplete start and end recurring time interval = "R", { digit }, "/", extended incomplete start and end time interval ;
+incomplete start and end recurring time interval = basic incomplete start and end recurring time interval
+                                                 | extended incomplete start and end recurring time interval ;
+
+start and end recurring time interval = complete start and end recurring time interval
+                                      | incomplete start and end recurring time interval ;
+
+(* -------------------- Duration and Context Recurring Time Interval -------------------- *)
+
+basic complete duration and context recurring time interval = "R", { digit }, "/", basic complete duration and context time interval ;
+extended complete duration and context recurring time interval = "R", { digit }, "/", extended complete duration and context time interval ;
+complete duration and context recurring time interval = basic complete duration and context recurring time interval
+                                                      | extended complete duration and context recurring time interval ;
+
+basic incomplete duration and context recurring time interval = "R", { digit }, "/", basic incomplete duration and context time interval ;
+extended incomplete duration and context recurring time interval = "R", { digit }, "/", extended incomplete duration and context time interval ;
+incomplete duration and context recurring time interval = basic incomplete duration and context recurring time interval
+                                                        | extended incomplete duration and context recurring time interval ;
+
+duration and context recurring time interval = complete duration and context recurring time interval
+                                             | incomplete duration and context recurring time interval ;
+
+(* -------------------- Start and Duration Recurring Time Interval -------------------- *)
+
+basic complete start and duration recurring time interval = "R", { digit }, "/", basic complete start and duration time interval ;
+extended complete start and duration recurring time interval = "R", { digit }, "/", extended complete start and duration time interval ;
+complete start and duration recurring time interval = basic complete start and duration recurring time interval
+                                                    | extended complete start and duration recurring time interval ;
+
+basic incomplete start and duration recurring time interval = "R", { digit }, "/", basic incomplete start and duration time interval ;
+extended incomplete start and duration recurring time interval = "R", { digit }, "/", extended incomplete start and duration time interval ;
+incomplete start and duration recurring time interval = basic incomplete start and duration recurring time interval
+                                                      | extended incomplete start and duration recurring time interval ;
+
+start and duration recurring time interval = complete start and duration recurring time interval
+                                           | incomplete start and duration recurring time interval ;
+
+(* -------------------- Duration and End Recurring Time Interval -------------------- *)
+
+basic complete duration and end recurring time interval = "R", { digit }, basic complete duration and end time interval ;
+extended complete duration and end recurring time interval = "R", { digit }, extended complete duration and end time interval ;
+complete duration and end recurring time interval = basic complete duration and end recurring time interval
+                                                  | extended complete duration and end recurring time interval ;
+
+basic incomplete duration and end recurring time interval = "R", { digit }, basic incomplete duration and end time interval ;
+extended incomplete duration and end recurring time interval = "R", { digit }, extended incomplete duration and end time interval ;
+incomplete duration and end recurring time interval = basic incomplete duration and end recurring time interval
+                                                    | extended incomplete duration and end recurring time interval ;
+
+duration and end recurring time interval = complete duration and end recurring time interval
+                                         | incomplete duration and end recurring time interval ;
+
+(* -------------------- General Recurring Time Interval -------------------- *)
+
+recurring time interval = start and end recurring time interval | duration and context recurring time interval 
+                        | start and duration recurring time interval | duration and end recurring time interval ;
