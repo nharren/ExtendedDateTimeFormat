@@ -1,0 +1,274 @@
+(* -------------------- Common -------------------- *)
+
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+fractional part = ( "," | "." ), digit, { digit } ;
+
+(* ******************** DATE ******************** *)
+
+(* -------------------- Common -------------------- *)
+
+year = digit, digit, digit, digit ;
+expanded year = "+" | "-", { digit }, year ;
+
+leap year = ? four digit leap years ? ;
+expanded leap year = "+" | "-", ? four or more digit leap years ? ;
+
+(* -------------------- Calendar Date -------------------- *)
+
+one to thirty = ( "0", digit ) - "00" | "1", digit | "2", digit
+              | "30" ;
+one to twenty eight = one to thirty - "30" - "29" ;
+one to thirty one = one to thirty | "31" ;
+
+century = digit, digit ;
+expanded century = "+" | "-", { digit }, century ;
+
+year and month = year, "-", month ;
+expanded year and month = expanded year, "-", month ;
+
+thirty one day month = "01" | "03" | "05" | "07" | "08" | "10" | "12" ;
+thirty day month = "04" | "06" | "09" | "11" ;
+
+basic month and day = thirty one day month, one to thirty one
+                    | thirty day month, one to thirty 
+                    | "02", one to twenty eight ;
+
+basic leap month and day = "0229" ;
+
+extended month and day = thirty one day month, "-", one to thirty one
+                       | thirty day month, "-", one to thirty 
+                       | "02-", one to twenty eight ;
+
+extended leap month and day = "02-29" ;
+
+complete basic calendar date = year, basic month and day 
+                             | leap year, basic leap month and day ;
+complete extended calandar date = year, "-", extended month and day, 
+                                | leap year, "-", extended leap month and day ;
+complete calendar date = complete basic calandar date | complete extended calendar date ;
+
+reduced calendar date = year and month | century ;
+
+expanded basic calendar date = expanded year, basic month and day 
+                             | expanded leap year, basic leap month and day ;
+expanded extended calendar date = expanded year, "-", extended month and day 
+                                | expanded leap year, "-", extended leap month and day
+                                | expanded year and month | expanded year | expanded century ;
+expanded calendar date = expanded basic calendar date | expanded extended calendar date ;
+
+calendar date = complete calendar date | reduced calendar date | expanded calendar date ;
+
+(* -------------------- Ordinal Date -------------------- *)
+
+day of year = ( "0", digit, digit ) - "000" | "1", digit, digit | "2", digit, digit 
+            | "30", digit | "31", digit | "32", digit | "33", digit | "34", digit | "35", digit
+            | "360" | "361" | "362" | "363" | "364" | "365" ;
+
+complete basic ordinal date = year, day of year 
+                            | leap year, "366" ;
+complete extended ordinal date = year, "-", day of year 
+                               | leap year, "-366" ;
+complete ordinal date = complete basic ordinal date | complete extended ordinal date ;
+
+expanded basic ordinal date = expanded year, day of year 
+                            | expanded leap year, "366" ;
+expanded extended ordinal date = expanded year, "-", day of year 
+                               | expanded leap year, "-366" ;
+expanded ordinal date = expanded basic ordinal date | expanded extended ordinal date ;
+
+ordinal date = complete ordinal date | expanded ordinal date ;
+
+(* -------------------- Week Date -------------------- *)
+
+fifty three week year = ? four digit fifty three week years ? ;
+expanded fifty three week year = "+" | "-", ? four or more digit fifty three week years ? ;
+
+week = ( "0", digit ) - "00" | "1", digit | "2", digit | "3", digit | "4", digit 
+     | "50" | "51" | "52" ;
+
+day of week = "1" | "2" | "3" | "4" | "5" | "6" | "7" ;
+
+complete basic week date = year, "W", week, day of week  
+                         | fifty three week year, "W53", day of week ;
+complete extended week date = year, "-W", week, "-", day of week 
+                            | fifty three week year, "-W53-", day of week ;
+complete week date = complete basic week date | complete extended week date ;
+
+reduced basic week date = year, "W", week  | fifty three week year, "W53" ;
+reduced extended week date = year, "-W", week | fifty three week year, "-W53" ;
+reduced week date = reduced basic week date | reduced extended week date ;
+
+expanded basic week date = expanded year, "W", week, day of week 
+                         | expanded fifty three week year, "W53", day of week
+                         | expanded year, "W", week
+                         | expanded fifty three week year, "W53" ;
+expanded extended week date = expanded year, "-W", week, "-", day of week 
+                            | expanded fifty three week year, "-W53-", day of week
+                            | expanded year, "-W", week
+                            | expanded fifty three week year, "-W53" ;
+expanded week date = expanded basic week date | expanded extended week date ; 
+
+
+week date = complete week date | reduced week date | expanded week date ;
+
+(* -------------------- General -------------------- *)
+
+complete basic date = complete basic calendar date | complete basic ordinal date 
+                    | complete basic week date ;
+complete extended date = complete extended calendar date | complete extended ordinal date 
+                       | complete extended week date ;
+complete date = complete basic date | complete extended date ;
+
+reduced basic date = reduced calendard date | reduced basic week date ;
+reduced extended date = reduced extended week date ;
+reduced date = reduced basic date | reduced extended date ;
+
+expanded basic date = expanded basic calendar date | expanded basic ordinal date 
+                    | expanded basic week date ;
+expanded extended date = expanded extended calendar date | expanded extended ordinal date 
+                       | expanded extended week date ;
+expanded date = expanded basic date | expanded extended date ;
+
+basic date = complete basic date | reduced basic date | expanded basic date ;
+extended date = complete extended date | reduced extended date | expanded extended date ;
+
+date = basic date | extended date ;
+
+(* ********** TIME OF DAY ********** *)
+
+(* -------------------- Common -------------------- *)
+
+hour = "0", digit  | "1", digit 
+     | "20" | "21" | "22" | "23" ;
+minute = "0", digit | "1", digit | "2", digit | "3", digit | "4", digit | "5", digit ;
+second = "0", digit | "1", digit | "2", digit | "3", digit | "4", digit | "5", digit ;
+
+(* -------------------- Local Time -------------------- *)
+
+complete basic local time = hour, minute, second | "240000" ;
+complete extended local time = hour, ":", minute, ":", second | "24:00:00" ;
+complete local time = complete basic local time | complete extended local time ;
+
+reduced basic local time = hour, [ minute ] | "24", [ ":00" ] ;
+reduced extended local time = hour, ":", minute | "24:00" ;
+reduced local time = reduced basic local time | reduced extended local time ;
+
+fractional basic local time = complete basic local time, fractional part 
+                            | reduced basic local time, fractional part ;
+fractional extended local time = complete extended local time, fractional part 
+                               | reduced extended local time, fractional part ;
+fractional local time = complete local time, fractional part 
+                      | reduced local time, fractional part ;
+
+basic local time without time designator = complete basic local time | reduced basic local time 
+                                         | fractional basic local time ;
+extended local time without time designator = complete extended local time | reduced extended local time 
+                                            | fractional extended local time ;
+local time without time designator = complete local time | reduced local time | fractional local time;
+
+local time = [ "T" ], local time without time designator;
+
+(* -------------------- UTC of day -------------------- *)
+
+basic utc of day = basic local time without time designator, "Z" ;
+extended utc of day = extended local time without time designator, "Z" ;
+utc of day = local time without time designator, "Z" ;
+
+(* -------------------- Local time and UTC offset -------------------- *)
+
+complete basic utc offset = ( "+" | "-" ), hour, minute ;
+complete extended utc offset = ( "+" | "-" ), hour, ":", minute ;
+complete utc offset = complete basic utc offset | complete extended utc offset ;
+
+reduced basic utc offset = ( "+" | "-" ), hour ;
+
+basic utc offset = complete basic utc offset | reduced basic utc offset ; 
+extended utc offset = complete extended utc offset ;
+utc offset = basic utc offset | extended utc offset ;
+
+basic local time and utc offset = basic local time without time designator, basic utc offset ;
+extended local time and utc offset = extended local time without time designator, extended utc offset ;
+local time and utc offset = basic local time and utc offset | extended local time and utc offset ;
+
+(* -------------------- General -------------------- *)
+
+complete basic time = [ "T" ], complete basic local time, [ complete basic utc offset | "Z" ] ;
+complete extended time = [ "T" ], complete extended local time, [ complete extended utc offset | "Z" ] ;
+complete time  = complete basic time | complete extended time ;
+
+reduced basic time = [ "T" ], reduced basic local time, [ basic utc offset | "Z" ] ;
+reduced extended time = [ "T" ], reduced extended local time, [ extended utc offset | "Z" ] ;
+reduced time = reduced basic time | reduced extended time ;
+
+fractional basic time = [ "T" ], fractional basic local time, [ basic utc offset | "Z" ] ;
+fractional extended time = [ "T" ], fractional extended local time, [ extended utc offset | "Z" ] ;
+fractional time = fractional basic time | fractional extended time ;
+
+basic time = [ "T" ], basic local time without time designator, [ basic utc offset | "Z" ] ;
+extended time = [ "T" ], extended local time without time designator, [ extended utc offset | "Z" ] ;
+
+time = basic time | extended time ;
+
+(* ******************** DATE AND TIME OF DAY ******************** *)
+
+complete basic date and time of day = complete basic date, complete basic time ;
+complete extended date and time of day = complete extended date, complete extended time ;
+complete date and time of day = complete basic date and time of day | complete extended date and time of day ;
+
+reduced basic date and time of day = complete basic date, reduced basic time ;
+reduced extended date and time of day = complete extended date, reduced extended time ;
+reduced date and time of day = reduced basic date and time of day | reduced extended date and time of day ;
+
+fractional basic date and time of day = complete basic date, fractional basic time ;
+fractional extended date and time of day = complete extended date , fractional extended time ;
+fractional date and time of day = fractional basic date and time of day | fractional extended date and time of day ;
+
+expanded basic date and time of day = expanded basic date, basic time ;
+expanded extended date and time of day = expanded extended date, extended time ;
+expanded date and time of day = expanded basic date and time of day | expanded extended date and time of day ;
+
+basic date and time of day = complete basic date and time of day | reduced basic date and time of day 
+                           | fractional basic date and time of day | expanded basic date and time of day ;
+
+extended date and time of day = complete extended date and time of day | reduced extended date and time of day 
+                              | fractional extended date and time of day 
+                              | expanded extended date and time of day ;
+
+date and time of day = basic date and time of day | extended date and time of day ;
+
+(* ******************** TIME INTERVAL ******************** *)
+
+complete designated duration = "P", digit, { digit }, "Y", digit, { digit }, "M", digit, { digit }, "D", 
+                               "T", digit, { digit }, "H", digit, { digit }, "M", digit, { digit }, "S" 
+                             | "P", digit, { digit }, "W" ;
+
+reduced designated duration = "P", digit, { digit }, "Y", [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], [ "T", [ digit, { digit }, "H" ], [ digit, { digit }, "M" ], [ digit, { digit }, "S" ] ]
+                            | "P", [ digit, { digit }, "Y" ], digit, { digit }, "M", [ digit, { digit }, "D" ], [ "T", [ digit, { digit }, "H" ], [ digit, { digit }, "M" ], [ digit, { digit }, "S" ] ]
+                            | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], digit, { digit }, "D", [ "T", [ digit, { digit }, "H" ], [ digit, { digit }, "M" ], [ digit, { digit }, "S" ] ]
+                            | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", digit, { digit }, "H", [ digit, { digit }, "M" ], [ digit, { digit }, "S" ]
+                            | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", [ digit, { digit }, "H" ], digit, { digit }, "M", [ digit, { digit }, "S" ]
+                            | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", [ digit, { digit }, "H" ], [ digit, { digit }, "M" ], digit, { digit }, "S" ;
+
+fractional designated duration = "P", digit, { digit }, fractional part, "Y"
+                               | "P", [ digit, { digit }, "Y" ], digit, { digit }, fractional part, "M"
+                               | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], digit, { digit }, fractional part, "D"
+                               | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", digit, { digit }, fractional part, "H"
+                               | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", [ digit, { digit }, "H" ], digit, { digit }, fractional part, "M"
+                               | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", [ digit, { digit }, "H" ], [ digit, { digit }, "M" ], digit, { digit }, fractional part, "S" ;
+
+designated duration = complete designated duration | reduced designated duration | fractional designated duration ;
+
+years = digit, digit, digit, digit ;
+months = "1", digit | "11" | "12" ;
+days = "1", digit | "2", digit | "30" ;
+(* The carry over point for days of year is assumed to be 365, but it is not specified by the standard *)
+days of year = ( "0", digit, digit ) - "000" | "1", digit, digit | "2", digit, digit
+             | "30", digit | "31", digit | "32", digit | "33", digit | "34", digit | "35", digit
+             | "360" | "361" | "362" | "363" | "364" | "365" ;
+hours = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
+minutes = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
+seconds = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
+
+alternative basic duration = "P", years, months, days, "T", hours, minutes, seconds ;
+

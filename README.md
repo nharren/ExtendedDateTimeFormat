@@ -213,7 +213,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 		- [x] Basic format (YYYYWww[D])
 		- [x] Expanded basic format (+**Y**YYYYWww[D]|-**Y**YYYWww[D])
 		- [x] Extended format (YYYY-Www[-D])
-		- [x] Expanded extended format (+**Y**YYYY-Www[-D], -**Y**YYY-Www[-D])
+		- [x] Expanded extended format (+**Y**YYYY-Www[-D]-**Y**YYY-Www[-D])
 	- [x] Serialization to string
 	- [x] Conversion to calendar dates
 	- [x] Conversion to ordinal dates
@@ -231,18 +231,18 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 	- [x] Serialization to string
 - [x] Calendar datetimes
 	- [x] Deserialization from string
-		- [x] Basic format (YYYYMMDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
-		- [x] Extended format (YYYY-MM-DDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
+		- [x] Basic format (YYYYMMDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][Z|±hh[mm]])
+		- [x] Extended format (YYYY-MM-DDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][Z|±hh[:mm]])
 	- [x] Serialization to string
 - [x] Ordinal datetimes
 	- [x] Deserialization from string
 		- [x] Basic format (YYYYDDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
-		- [x] Extended format (YYYY-DDDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
+		- [x] Extended format (YYYY-DDDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][Z|±hh[:mm]])
 	- [x] Serialization to string
 - [x] Week datetimes
 	- [x] Deserialization from string
 		- [x] Basic format (YYYYWwwDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]][±hh[mm]])
-		- [x] Extended format (YYYY-Www-DThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][±hh[:mm]])
+		- [x] Extended format (YYYY-Www-DThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]][Z|±hh[:mm]])
 	- [x] Serialization to string
 - [x] Designated durations
 	- [x] Deserialization from string
@@ -277,18 +277,18 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 		- [x] Basic format (PYYYYDDDThh[,**h**|.**h**|mm[,**m**|.**m**|ss[,**s**|.**s**]]])
 		- [x] Extended format (PYYYY-DDDThh[,**h**|.**h**|:mm[,**m**|.**m**|:ss[,**s**|.**s**]]])
 	- [x] Serialization to string
-- [ ] Start-end time intervals
-	- [ ] Deserialization from string
-		- [ ] Basic format (YYYYMMDDThhmmss/YYYYMMDDThhmmss)
-		- [ ] Extended format (YYYY-MM-DDThh:mm:ss/YYYY-MM-DDThh:mm:ss)
-	- [ ] Serialization to string
+- [x] Start-end time intervals
+	- [x] Deserialization from string
+		- [x] Basic format (YYYY{MMDD|DDD|WwwD}Thhmmss[Z|±hh[mm]]/{{[[[YYYY]MM]DD|[YYYY]DDD|[[YYYY]Www]D]Thh|T}mm|T}ss[Z|±hh[mm]])
+		- [x] Extended format (YYYY-{MM-DD|DDD|Www-D}Thh:mm:ss[Z|±hh[:mm]]/{{[[[YYYY-]MM-]DD|[YYYY-]DDD|[[YYYY-]Www-]D]Thh:|T}mm:|T}ss[Z|±hh[:mm]])
+	- [x] Serialization to string
 - [ ] Duration-context time intervals
 	- [ ] Deserialization from string
-		- [ ] Basic and extended formats P**n**Y[**n**M[**n**D[T**n**H[**n**M[**n**S]]]]]|P**n**W)
+		- [ ] Basic and extended formats (P[**n**Y][**n**M][**n**D][T**n**H][**n**M][**n**S]|P**n**W)
 	- [ ] Serialization to string
 - [ ] Start-duration time intervals
 	- [ ] Deserialization from string
-		- [ ] Basic format (YYYYMMDDThhmmss/PnnY[nnM][nnDT][nnH][nnM][nnS], YYYYMMDDThhmmss/PYYYYMMDDThhmmss)
+		- [ ] Basic format (YYYYMMDDThhmmss/{P**n**Y[**n**M[**n**D[T**n**H[**n**M[**n**S]]]]]|P**n**W|})
 		- [ ] Extended format (YYYY-MM-DDThh:mm:ss/PnnY[nnM][nnD][TnnH][nnM][nnS], YYY-MM-DDThh:mm:ss/PYYYY-MM-DDThh:mm:ss)
 	- [ ] Serialization to string
 - [ ] Duration-end time intervals
@@ -321,6 +321,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 1. Bold means one or many values. 
 2. "|" symbolizes the logical "or".
 3. Contents between "[" and "]" are optional. 
+4. "{" and "}" used with "|" means one of the choices.
 
 ##### EDTF
 
@@ -339,27 +340,3 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 ##### EDTF Usability Tests
 
 ##### EDTF Performance Tests
-
-## License
-
-The MIT License (MIT)
-
-Copyright (c) 2015 Nathan Harrenstein
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.

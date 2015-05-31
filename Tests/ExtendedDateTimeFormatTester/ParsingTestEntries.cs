@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ExtendedDateTimeFormat;
+using System.EDTF;
 using System.Linq;
 
 namespace ExtendedDateTimeFormatTester

@@ -34,9 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExtendedDateTimeFormat, Version=1.0.5608.41462, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Source\ExtendedDateTimeFormat\bin\Debug\ExtendedDateTimeFormat.dll</HintPath>
+    <Reference Include="EDTF">
+      <HintPath>..\..\Source\EDTF\bin\Debug\EDTF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

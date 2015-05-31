@@ -1,4 +1,4 @@
-﻿using System.ExtendedDateTimeFormat;
+﻿using System.EDTF;
 using System.Text;
 
 namespace ExtendedDateTimeFormatTester
