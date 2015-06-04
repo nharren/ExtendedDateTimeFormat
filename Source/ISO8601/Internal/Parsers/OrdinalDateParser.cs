@@ -2,43 +2,43 @@
 {
     internal static class OrdinalDateParser
     {
-        internal static OrdinalDate Parse(string input, int addedYearLength)
+        internal static OrdinalDate Parse(string input, int yearLength)
         {
             if (input == null)
             {
                 throw new ArgumentNullException(nameof(input));
             }
 
-            var operatorLength = input.StartsWith("+") || input.StartsWith("-") ? 1 : 0;
-            var yearLength = operatorLength + 4 + addedYearLength;
-            var dayLength = 3;
-            var minimumLength = yearLength + dayLength;
+            var isExpanded = false;
+            var yearLengthWithOperator = yearLength;
 
-            if (input.Length < minimumLength)
+            if (input.StartsWith("+") || input.StartsWith("-"))
             {
-                throw new ParseException(string.Format("The ordinal date string must be at least {0} characters long.", minimumLength), input);
+                yearLengthWithOperator++;
+                isExpanded = true;
+            }
+
+            if (input.Length < yearLengthWithOperator + 3)
+            {
+                throw new ParseException(string.Format("The ordinal date string must be at least {0} characters long.", yearLength + 3), input);
             }
 
             long year;
-            var cannotParseYear = !long.TryParse(input.Substring(0, yearLength), out year);
 
-            if (cannotParseYear)
+            if (!long.TryParse(input.Substring(0, yearLengthWithOperator), out year))
             {
                 throw new ParseException("The year could not be parsed from the input string.", input);
             }
 
             int day;
-            var inExtendedFormat = input[yearLength] == '-';
-            var hyphenLength = inExtendedFormat ? 1 : 0;
+            var hyphenLength = input[yearLengthWithOperator] == '-' ? 1 : 0;
 
-            var cannotParseDay = !int.TryParse(input.Substring(yearLength + hyphenLength, dayLength), out day);
-
-            if (cannotParseDay)
+            if (!int.TryParse(input.Substring(yearLengthWithOperator + hyphenLength, 3), out day))
             {
                 throw new ParseException("The day could not be parsed from the input string.", input);
             }
 
-            return new OrdinalDate(year, day) { AddedYearLength = addedYearLength };
+            return new OrdinalDate(year, day) { YearLength = yearLength, IsExpanded = isExpanded };
         }
     }
 }

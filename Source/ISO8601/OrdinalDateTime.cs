@@ -30,16 +30,16 @@ namespace System.ISO8601
             }
         }
 
-        public int AddedYearLength
+        public int YearLength
         {
             get
             {
-                return _date.AddedYearLength;
+                return _date.YearLength;
             }
 
             set
             {
-                Date.AddedYearLength = value;
+                Date.YearLength = value;
             }
         }
 
@@ -51,7 +51,7 @@ namespace System.ISO8601
             }
         }
 
-        public int Hour
+        public double Hour
         {
             get
             {
@@ -59,7 +59,7 @@ namespace System.ISO8601
             }
         }
 
-        public int Minute
+        public double Minute
         {
             get
             {
@@ -75,7 +75,7 @@ namespace System.ISO8601
             }
         }
 
-        public int Second
+        public double Second
         {
             get
             {
@@ -189,12 +189,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true, true, true);
+            return ToString(true, true, DecimalSeparator.Comma, true);
         }
 
-        public virtual string ToString(bool withTimeDesignator, bool withSeparators, bool withUtcOffset)
+        public virtual string ToString(bool withTimeDesignator, bool withSeparators, DecimalSeparator decimalSeparator, bool withUtcOffset)
         {
-            return OrdinalDateTimeSerializer.Serialize(this, withTimeDesignator, withSeparators, withUtcOffset);
+            return OrdinalDateTimeSerializer.Serialize(this, withTimeDesignator, withSeparators, decimalSeparator, withUtcOffset);
         }
 
         public WeekDateTime ToWeekDateTime()

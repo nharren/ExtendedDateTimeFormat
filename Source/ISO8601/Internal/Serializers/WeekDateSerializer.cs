@@ -1,4 +1,6 @@
-﻿namespace System.ISO8601.Internal.Serializers
+﻿using System.Text;
+
+namespace System.ISO8601.Internal.Serializers
 {
     internal static class WeekDateSerializer
     {
@@ -6,13 +8,41 @@
         {
             var hyphen = hyphenate ? "-" : string.Empty;
 
-            return string.Format(
-                "{0}{1:D" + (4 + weekDate.AddedYearLength) + "}{2}W{3:D2}{4}",
-                weekDate.Year < 0 ? "-" : weekDate.AddedYearLength > 0 ? "+" : string.Empty, 
-                weekDate.Year,
-                hyphen, 
-                weekDate.Week,
-                weekDate.Precision == WeekDatePrecision.Day ? hyphen + weekDate.Day : string.Empty);
+            var output = new StringBuilder();
+
+            if (weekDate.IsExpanded)
+            {
+                if (weekDate.Year < 0)
+                {
+                    output.Append('-');
+                }
+                else
+                {
+                    output.Append('+');
+                }
+            }
+
+            output.Append(weekDate.Year.ToString("D" + weekDate.YearLength));
+
+            if (hyphenate)
+            {
+                output.Append('-');
+            }
+
+            output.Append('W');
+            output.Append(weekDate.Week.ToString("D2"));
+
+            if (weekDate.Precision == WeekDatePrecision.Day)
+            {
+                if (hyphenate)
+                {
+                    output.Append('-');
+                }
+
+                output.Append(weekDate.Day);
+            }
+
+            return output.ToString();
         }
     }
 }

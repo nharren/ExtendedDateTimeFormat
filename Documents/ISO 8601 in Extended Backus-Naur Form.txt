@@ -47,14 +47,18 @@ extended complete calandar date = year, "-", extended month and day,
                                 | leap year, "-", extended leap month and day ;
 complete calendar date = basic complete calandar date | extended complete calendar date ;
 
-reduced calendar date = year and month | century ;
+reduced calendar date = year and month | year | century ;
 
-basic expanded calendar date = expanded year, basic month and day 
-                             | expanded leap year, basic leap month and day ;
-extended expanded calendar date = expanded year, "-", extended month and day 
-                                | expanded leap year, "-", extended leap month and day
-                                | expanded year and month | expanded year | expanded century ;
-expanded calendar date = basic expanded calendar date | extended expanded calendar date ;
+basic complete expanded calendar date = expanded year, basic month and day
+                                      | expanded leap year, basic leap month and day ;
+extended complete expanded calendar date = expanded year, "-", extended month and day
+                                         | expanded leap year, extended leap month and day ;
+complete expanded calendar date = basic complete expanded calendar date | extended complete expanded calendar date ;
+
+incomplete expanded calendar date = expanded year, "-", month 
+                                  | expanded year | expanded century;
+
+expanded calendar date = complete expanded calendar date | incomplete expanded calendar dated;
 
 calendar date = complete calendar date | reduced calendar date | expanded calendar date ;
 
@@ -98,16 +102,19 @@ basic reduced week date = year, "W", week  | fifty three week year, "W53" ;
 extended reduced week date = year, "-W", week | fifty three week year, "-W53" ;
 reduced week date = basic reduced week date | extended reduced week date ;
 
-basic expanded week date = expanded year, "W", week, day of week 
-                         | expanded fifty three week year, "W53", day of week
-                         | expanded year, "W", week
-                         | expanded fifty three week year, "W53" ;
-extended expanded week date = expanded year, "-W", week, "-", day of week 
-                            | expanded fifty three week year, "-W53-", day of week
-                            | expanded year, "-W", week
-                            | expanded fifty three week year, "-W53" ;
-expanded week date = basic expanded week date | extended expanded week date ; 
+basic complete expanded week date = expanded year, "W", week, day of week 
+                         | expanded fifty three week year, "W53", day of week ;
+extended complete expanded week date = expanded year, "-W", week, "-", day of week 
+                                     | expanded fifty three week year, "-W53-", day of week ;
+complete expanded week date = basic complete expanded week date | extended complete expanded week date ;
 
+basic incomplete expanded week date = expanded year, "W", week
+                                    | expanded fifty three week year, "W53" ;
+extended incomplete expanded week date = expanded year, "-W", week
+                                       | expanded fifty three week year, "-W53" ;
+incomplete expanded week date = basic complete expanded week date | extended complete expanded week date ;
+
+expanded week date = complete expanded week date | incomplete expanded week date ; 
 
 week date = complete week date | reduced week date | expanded week date ;
 
@@ -122,6 +129,18 @@ complete date = basic complete date | extended complete date ;
 basic reduced date = reduced calendard date | basic reduced week date ;
 extended reduced date = extended reduced week date ;
 reduced date = basic reduced date | extended reduced date ;
+
+basic complete expanded date = basic complete expanded calendar date | basic complete expanded ordinal date 
+                             | basic complete expanded week date ;
+extended complete expanded date = extended complete expanded calendar date | extended complete expanded ordinal date 
+                                | extended complete expanded week date ;
+complete expanded date = basic complete expanded date | extended complete expanded date ;
+
+basic incomplete expanded date = basic incomplete expanded calendar date | basic incomplete expanded ordinal date 
+                             | basic incomplete expanded week date ;
+extended incomplete expanded date = extended incomplete expanded calendar date | extended incomplete expanded ordinal date 
+                                | extended incomplete expanded week date ;
+incomplete expanded date = basic incomplete expanded date | extended incomplete expanded date ;
 
 basic expanded date = basic expanded calendar date | basic expanded ordinal date 
                     | basic expanded week date ;
@@ -220,11 +239,11 @@ extended reduced datetime = extended complete date, extended reduced time ;
 reduced datetime = basic reduced datetime | extended reduced datetime ;
 
 basic fractional datetime = basic complete date, basic fractional time ;
-extended fractional datetime = extended complete date , extended fractional time ;
+extended fractional datetime = extended complete date, extended fractional time ;
 fractional datetime = basic fractional datetime | extended fractional datetime ;
 
-basic expanded datetime = basic expanded date, basic time ;
-extended expanded datetime = extended expanded date, extended time ;
+basic expanded datetime = basic complete expanded date, basic time ;
+extended expanded datetime = extended complete expanded date, extended time ;
 expanded datetime = basic expanded datetime | extended expanded datetime ;
 
 basic datetime = basic complete datetime | basic reduced datetime 
@@ -267,7 +286,8 @@ fractional designated duration = "P", digit, { digit }, fractional part, "Y"
                                | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], digit, { digit }, fractional part, "D"
                                | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", digit, { digit }, fractional part, "H"
                                | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", [ digit, { digit }, "H" ], digit, { digit }, fractional part, "M"
-                               | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", [ digit, { digit }, "H" ], [ digit, { digit }, "M" ], digit, { digit }, fractional part, "S" ;
+                               | "P", [ digit, { digit }, "Y" ], [ digit, { digit }, "M" ], [ digit, { digit }, "D" ], "T", [ digit, { digit }, "H" ], [ digit, { digit }, "M" ], digit, { digit }, fractional part, "S"
+							   | "P", digit, { digit }, fractional part, "W" ;
 
 designated duration = complete designated duration | reduced designated duration | fractional designated duration ;
 

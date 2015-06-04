@@ -9,119 +9,144 @@ namespace System.ISO8601.Internal.Parsers
 
         internal static Time Parse(string input)
         {
-            var componentBuffer = new List<char>();
-            var currentComponent = TimeComponent.Hour;
-
-            double hour = 0d;
-            double? minute = null;
-            double? second = null;
-            int? utcHours = null;
-            int? utcMinutes = null;
-            var invertUtc = false;
-            var componentLength = 2;
-
-            for (int i = 0; i < input.Length; i++)
+            if (input == null)
             {
-                var character = input[i];
-
-                if (character == ',')
-                {
-                    character = '.';
-                }
-
-                var noDecimalFraction = true;
-
-                if (char.IsDigit(character) || character == '.')
-                {
-                    componentBuffer.Add(character);
-                }
-                else if (character == '.')
-                {
-                    componentBuffer.Add(character);
-                    noDecimalFraction = false;
-                }
-                else if (character == 'Z')
-                {
-                    utcHours = 0;
-                    utcMinutes = 0;
-                }
-                else if (character == '+')
-                {
-                    currentComponent = TimeComponent.UtcHour;
-                }
-                else if (character == '-')
-                {
-                    currentComponent = TimeComponent.UtcHour;
-                    invertUtc = true;
-                }
-                else if (character != ':' || character != 'T')
-                {
-                    throw new ParseException("The character \'" + character + "\' could not be recognized.", new string(componentBuffer.ToArray()));
-                }
-
-                var isLastCharacter = ReferenceEquals(character, input.Last());
-                var endOfComponent = (componentBuffer.Count == componentLength && noDecimalFraction) || isLastCharacter;
-
-                if (endOfComponent)
-                {
-                    var componentString = new string(componentBuffer.ToArray());
-
-                    switch (currentComponent)
-                    {
-                        case TimeComponent.Hour:
-                            hour = double.Parse(componentString);
-                            currentComponent++;
-                            break;
-
-                        case TimeComponent.Minute:
-                            minute = double.Parse(componentString);
-                            currentComponent++;
-                            break;
-
-                        case TimeComponent.Second:
-                            second = double.Parse(componentString);
-                            currentComponent++;
-                            break;
-
-                        case TimeComponent.UtcHour:
-                            utcHours = int.Parse(componentString);
-                            currentComponent++;
-                            break;
-
-                        case TimeComponent.UtcMinute:
-                            utcMinutes = int.Parse(componentString);
-                            break;
-                    }
-
-                    componentBuffer.Clear();
-                }
+                throw new ArgumentNullException(nameof(input));
             }
 
-            var utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
-
-            if (utcHours.HasValue)
+            if (input.Length < 2)
             {
-                if (utcMinutes.HasValue)
+                throw new ArgumentException("The time string must be at least two digits long.", nameof(input));
+            }
+
+            int hourStartIndex = input[0] == 'T' ? 1 : 0;
+            int hour = int.Parse(input.Substring(hourStartIndex, 2));
+
+            if (input.Length == hourStartIndex + 2)
+            {
+                return new Time(hour);
+            }
+
+            var nextChar = input[hourStartIndex + 2];
+
+            if (nextChar == '.' || nextChar == ',')
+            {
+                var fractionIndex = hourStartIndex + 3;
+                var fractionPartBuffer = new List<char>();
+
+                while (fractionIndex < input.Length && char.IsDigit(input[fractionIndex]))
                 {
-                    utcOffset = new TimeSpan(invertUtc ? -utcHours.Value : utcHours.Value, invertUtc ? -utcMinutes.Value : utcMinutes.Value, 0);
+                    fractionPartBuffer.Add(input[fractionIndex]);
+                    fractionIndex++;
+                }
+
+                if (fractionIndex == input.Length)
+                {
+                    return new Time(double.Parse(hour + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count };
                 }
                 else
                 {
-                    utcOffset = TimeSpan.FromHours(invertUtc ? -utcHours.Value : utcHours.Value);
+                    return new Time(double.Parse(hour + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count, UtcOffset = ParseUtcOffset(input, fractionIndex) };
                 }
-            }
 
-            if (minute == null)
+            }
+            else if (nextChar == '+' || nextChar == '-' || nextChar == 'Z')
             {
-                return new Time(hour, utcOffset);
+                return new Time(hour) { UtcOffset = ParseUtcOffset(input, hourStartIndex + 2) };
             }
 
-            if (second == null)
+            var hasColons = nextChar == ':';
+            int minuteStartIndex = hasColons ? hourStartIndex + 3 : hourStartIndex + 2;
+            int minute = int.Parse(input.Substring(minuteStartIndex, 2));
+
+            if (input.Length == minuteStartIndex + 2)
             {
-                return new Time((int)hour, minute.Value, utcOffset);
+                return new Time(hour, minute);
             }
 
-            return new Time((int)hour, (int)minute.Value, second.Value, utcOffset);
+            nextChar = input[minuteStartIndex + 2];
+
+            if (nextChar == '.' || nextChar == ',')
+            {
+                var fractionIndex = minuteStartIndex + 3;
+                var fractionPartBuffer = new List<char>();
+
+                while (fractionIndex < input.Length && char.IsDigit(input[fractionIndex]))
+                {
+                    fractionPartBuffer.Add(input[fractionIndex]);
+                    fractionIndex++;
+                }
+
+                if (fractionIndex == input.Length)
+                {
+                    return new Time(hour, double.Parse(minute + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count };
+                }
+                else
+                {
+                    return new Time(hour, double.Parse(minute + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count, UtcOffset = ParseUtcOffset(input, fractionIndex) };
+                }
+
+            }
+            else if (nextChar == '+' || nextChar == '-' || nextChar == 'Z')
+            {
+                return new Time(hour, minute) { UtcOffset = ParseUtcOffset(input, minuteStartIndex + 2) };
+            }
+
+            int secondStartIndex = hasColons ? minuteStartIndex + 3 : minuteStartIndex + 2;
+            int second = int.Parse(input.Substring(secondStartIndex, 2));
+
+            if (input.Length == secondStartIndex + 2)
+            {
+                return new Time(hour, minute, second);
+            }
+
+            nextChar = input[secondStartIndex + 2];
+
+            if (nextChar == '.' || nextChar == ',')
+            {
+                var fractionIndex = secondStartIndex + 3;
+                var fractionPartBuffer = new List<char>();
+
+                while (fractionIndex < input.Length && char.IsDigit(input[fractionIndex]))
+                {
+                    fractionPartBuffer.Add(input[fractionIndex]);
+                    fractionIndex++;
+                }
+
+                if (fractionIndex == input.Length)
+                {
+                    return new Time(hour, minute, double.Parse(second + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count };
+                }
+                else
+                {
+                    return new Time(hour, minute, double.Parse(second + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count, UtcOffset = ParseUtcOffset(input, fractionIndex) };
+                }
+
+            }
+            else
+            {
+                return new Time(hour, minute, second) { UtcOffset = ParseUtcOffset(input, secondStartIndex + 2) };
+            }
+        }
+
+        private static UtcOffset ParseUtcOffset(string input, int utcOffsetStartIndex)
+        {
+            if (input[utcOffsetStartIndex] == 'Z')
+            {
+                return new UtcOffset(0, 0);
+            }
+
+            int hours = int.Parse(input.Substring(utcOffsetStartIndex, 3));
+
+            if (input.Length == utcOffsetStartIndex + 3)
+            {
+                return new UtcOffset(hours);
+            }
+
+            var hasColons = input[utcOffsetStartIndex + 3] == ':';
+            int minutes = int.Parse(input.Substring(hasColons ? utcOffsetStartIndex + 4 : utcOffsetStartIndex + 3, 2));
+
+            return new UtcOffset(hours, minutes);
         }
     }
 }

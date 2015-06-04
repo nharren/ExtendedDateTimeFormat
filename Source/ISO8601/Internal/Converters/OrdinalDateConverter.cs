@@ -9,12 +9,12 @@
         {
             if (precision == CalendarDatePrecision.Century)
             {
-                return new CalendarDate(DateCalculator.CenturyOfYear(ordinalDate.Year)) { AddedYearLength = ordinalDate.AddedYearLength };
+                return new CalendarDate(DateCalculator.CenturyOfYear(ordinalDate.Year)) { YearLength = ordinalDate.YearLength };
             }
 
             if (precision == CalendarDatePrecision.Year)
             {
-                return new CalendarDate(ordinalDate.Year) { AddedYearLength = ordinalDate.AddedYearLength };
+                return new CalendarDate(ordinalDate.Year) { YearLength = ordinalDate.YearLength };
             }
 
             var days = DateCalculator.IsLeapYear(ordinalDate.Year) ? DaysToMonth366 : DaysToMonth365;
@@ -34,10 +34,10 @@
 
             if (precision == CalendarDatePrecision.Month)
             {
-                return new CalendarDate(ordinalDate.Year, month) { AddedYearLength = ordinalDate.AddedYearLength };
+                return new CalendarDate(ordinalDate.Year, month) { YearLength = ordinalDate.YearLength };
             }
 
-            return new CalendarDate(ordinalDate.Year, month, day) { AddedYearLength = ordinalDate.AddedYearLength };
+            return new CalendarDate(ordinalDate.Year, month, day) { YearLength = ordinalDate.YearLength };
         }
 
         internal static WeekDate ToWeekDate(OrdinalDate ordinalDate, WeekDatePrecision precision)

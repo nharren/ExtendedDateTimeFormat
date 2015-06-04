@@ -8,7 +8,7 @@ namespace System.ISO8601.Internal.Parsers
         private const int DurationDesignatorLength = 1;
         private const int MinimumLength = 3;
 
-        internal static DesignatedStandardDuration Parse(string input)
+        internal static DesignatedDuration Parse(string input)
         {
             if (input == null)
             {
@@ -31,11 +31,11 @@ namespace System.ISO8601.Internal.Parsers
 
             if (componentString.Contains('.'))
             {
-                return new DesignatedStandardDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                return new DesignatedDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
             }
             else if (componentString.Contains(','))
             {
-                return new DesignatedStandardDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                return new DesignatedDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
             }
 
             int years;
@@ -47,7 +47,7 @@ namespace System.ISO8601.Internal.Parsers
 
             if (input.Length < endIndex + 1)
             {
-                return new DesignatedStandardDuration(years);
+                return new DesignatedDuration(years);
             }
 
             startIndex = endIndex + 1;
@@ -56,11 +56,11 @@ namespace System.ISO8601.Internal.Parsers
 
             if (componentString.Contains('.'))
             {
-                return new DesignatedStandardDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                return new DesignatedDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
             }
             else if (componentString.Contains(','))
             {
-                return new DesignatedStandardDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                return new DesignatedDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
             }
 
             int months;
@@ -72,7 +72,7 @@ namespace System.ISO8601.Internal.Parsers
 
             if (input.Length < endIndex + 1)
             {
-                return new DesignatedStandardDuration(years, months);
+                return new DesignatedDuration(years, months);
             }
 
             startIndex = endIndex + 1;
@@ -81,11 +81,11 @@ namespace System.ISO8601.Internal.Parsers
 
             if (componentString.Contains('.'))
             {
-                return new DesignatedStandardDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                return new DesignatedDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
             }
             else if (componentString.Contains(','))
             {
-                return new DesignatedStandardDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                return new DesignatedDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
             }
 
             int days;
@@ -97,7 +97,7 @@ namespace System.ISO8601.Internal.Parsers
 
             if (input.Length < endIndex + 1)
             {
-                return new DesignatedStandardDuration(years, months, days);
+                return new DesignatedDuration(years, months, days);
             }
 
             startIndex = endIndex + 2;
@@ -106,11 +106,11 @@ namespace System.ISO8601.Internal.Parsers
 
             if (componentString.Contains('.'))
             {
-                return new DesignatedStandardDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                return new DesignatedDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
             }
             else if (componentString.Contains(','))
             {
-                return new DesignatedStandardDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                return new DesignatedDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
             }
 
             int hours;
@@ -122,7 +122,7 @@ namespace System.ISO8601.Internal.Parsers
 
             if (input.Length < endIndex + 1)
             {
-                return new DesignatedStandardDuration(years, months, days, hours);
+                return new DesignatedDuration(years, months, days, hours);
             }
 
             startIndex = endIndex + 1;
@@ -131,11 +131,11 @@ namespace System.ISO8601.Internal.Parsers
 
             if (componentString.Contains('.'))
             {
-                return new DesignatedStandardDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                return new DesignatedDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
             }
             else if (componentString.Contains(','))
             {
-                return new DesignatedStandardDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                return new DesignatedDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
             }
 
             int minutes;
@@ -147,7 +147,7 @@ namespace System.ISO8601.Internal.Parsers
 
             if (input.Length < endIndex + 1)
             {
-                return new DesignatedStandardDuration(years, months, days, hours, minutes);
+                return new DesignatedDuration(years, months, days, hours, minutes);
             }
 
             startIndex = endIndex + 1;
@@ -156,11 +156,11 @@ namespace System.ISO8601.Internal.Parsers
 
             if (componentString.Contains('.'))
             {
-                return new DesignatedStandardDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                return new DesignatedDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
             }
             else if (componentString.Contains(','))
             {
-                return new DesignatedStandardDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                return new DesignatedDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
             }
 
             int seconds;
@@ -170,7 +170,7 @@ namespace System.ISO8601.Internal.Parsers
                 throw new ParseException("The seconds component must be a number.", input);
             }
 
-            return new DesignatedStandardDuration(years, months, days, hours, minutes, seconds);
+            return new DesignatedDuration(years, months, days, hours, minutes, seconds);
         }
     }
 }

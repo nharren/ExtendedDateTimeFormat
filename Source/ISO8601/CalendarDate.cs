@@ -14,15 +14,14 @@ namespace System.ISO8601
         private readonly int _month;
         private readonly CalendarDatePrecision _precision;
         private readonly long _year;
-        private int _addedYearLength;
+        private int _yearLength;
+        private bool _isExpanded;
 
         public CalendarDate(long year, int month, int day) : this(year, month)
         {
-            var daysInMonth = DateCalculator.DaysInMonth(year, month);
-
-            if (day < 1 || day > daysInMonth)
+            if (day < 1 || day > DateCalculator.DaysInMonth(year, month))
             {
-                throw new ArgumentOutOfRangeException("day", string.Format("The day must be a value from 1 to {0}.", daysInMonth));
+                throw new ArgumentOutOfRangeException("day", string.Format("The day must be a value from 1 to {0}.", DateCalculator.DaysInMonth(year, month)));
             }
 
             _day = day;
@@ -40,22 +39,22 @@ namespace System.ISO8601
             _precision = CalendarDatePrecision.Month;
         }
 
-        public CalendarDate(int century)
-        {
-            _century = century;
-            _precision = CalendarDatePrecision.Century;
-        }
-
         public CalendarDate(long year)
         {
             if (year < 0 || year > 9999)
             {
-                throw new ArgumentOutOfRangeException("year", "The year must be a value from 0 to 9999.");
+                _isExpanded = true;
             }
 
             _year = year;
             _century = DateCalculator.CenturyOfYear(year);
             _precision = CalendarDatePrecision.Year;
+        }
+
+        private CalendarDate(int century)
+        {
+            _century = century;
+            _precision = CalendarDatePrecision.Century;
         }
 
         public static DateComparer Comparer
@@ -68,18 +67,6 @@ namespace System.ISO8601
                 }
 
                 return _comparer;
-            }
-        }
-
-        public int AddedYearLength
-        {
-            get
-            {
-                return _addedYearLength;
-            }
-            set
-            {
-                _addedYearLength = value;
             }
         }
 
@@ -123,6 +110,41 @@ namespace System.ISO8601
             }
         }
 
+        public int YearLength
+        {
+            get
+            {
+                return _yearLength;
+            }
+            set
+            {
+                _yearLength = value;
+            }
+        }
+
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+
+            set
+            {
+                if ((_year < 0 || _year > 9999) && !value)
+                {
+                    _isExpanded = true;
+                }
+
+                _isExpanded = value;
+            }
+        }
+
+        public static CalendarDate FromCentury(int century)
+        {
+            return new CalendarDate(century);
+        }
+
         public static TimeSpan operator -(CalendarDate x, CalendarDate y)
         {
             return DateCalculator.Subtract(x, y);
@@ -158,9 +180,14 @@ namespace System.ISO8601
             return Comparer.Compare(x, y) >= 0;
         }
 
-        public static CalendarDate Parse(string input, int addedYearLength = 0)
+        public static CalendarDate Parse(string input, int yearLength = 4)
         {
-            return CalendarDateParser.Parse(input, addedYearLength);
+            if (yearLength < 4)
+            {
+                throw new ArgumentOutOfRangeException(nameof(yearLength), "The year length must be four or greater.");
+            }
+
+            return CalendarDateParser.Parse(input, yearLength);
         }
 
         public int CompareTo(Date other)

@@ -1,8 +1,8 @@
-﻿using System.ISO8601.Internal.Comparers;
+﻿using System.ISO8601.Abstract;
+using System.ISO8601.Internal.Comparers;
 using System.ISO8601.Internal.Converters;
 using System.ISO8601.Internal.Parsers;
 using System.ISO8601.Internal.Serializers;
-using System.ISO8601.Abstract;
 
 namespace System.ISO8601
 {
@@ -13,7 +13,8 @@ namespace System.ISO8601
         private readonly WeekDatePrecision _precision;
         private readonly int _week;
         private readonly long _year;
-        private int _addedYearLength;
+        private int _yearLength;
+        private bool _isExpanded;
 
         public WeekDate(long year, int week, int day) : this(year, week)
         {
@@ -30,7 +31,7 @@ namespace System.ISO8601
         {
             if (year < 0 || year > 9999)
             {
-                throw new ArgumentOutOfRangeException("year", "The year must be a value from 0 to 9999.");
+                _isExpanded = true;
             }
 
             int weeksInYear = DateCalculator.WeeksInYear(year);
@@ -58,16 +59,16 @@ namespace System.ISO8601
             }
         }
 
-        public int AddedYearLength
+        public int YearLength
         {
             get
             {
-                return _addedYearLength;
+                return _yearLength;
             }
 
             set
             {
-                _addedYearLength = value;
+                _yearLength = value;
             }
         }
 
@@ -103,6 +104,19 @@ namespace System.ISO8601
             }
         }
 
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+
+            set
+            {
+                _isExpanded = value;
+            }
+        }
+
         public static bool operator !=(WeekDate x, Date y)
         {
             return Comparer.Compare(x, y) != 0;
@@ -133,9 +147,9 @@ namespace System.ISO8601
             return Comparer.Compare(x, y) >= 0;
         }
 
-        public static WeekDate Parse(string input, int addedYearLength)
+        public static WeekDate Parse(string input, int yearLength = 4)
         {
-            return WeekDateParser.Parse(input, addedYearLength);
+            return WeekDateParser.Parse(input, yearLength);
         }
 
         public int CompareTo(Date other)
@@ -175,7 +189,7 @@ namespace System.ISO8601
 
         public override int GetHashCode()
         {
-            return unchecked((int)Year) ^ (Week << 28) ^ (Day << 22);
+            return _year.GetHashCode() ^ (_week << 28) ^ (_day << 22);
         }
 
         public CalendarDate ToCalendarDate(CalendarDatePrecision precision)

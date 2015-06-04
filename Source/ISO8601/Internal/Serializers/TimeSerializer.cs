@@ -1,53 +1,95 @@
-﻿namespace System.ISO8601.Internal.Serializers
+﻿using System.Text;
+
+namespace System.ISO8601.Internal.Serializers
 {
     internal static class TimeSerializer
     {
-        internal static string Serialize(Time time, bool withTimeDesignator, bool withColons, bool withUtcOffset)
+        internal static string Serialize(Time time, bool withTimeDesignator, DecimalSeparator decimalSeparator, bool withColons, bool withUtcOffset)
         {
-            var timeDesignator = withTimeDesignator ? "T" : string.Empty;
-            var colon = withColons ? ":" : string.Empty;
-            var utcOffset = string.Empty;
+            var output = new StringBuilder();
 
-            if (withUtcOffset)
+            if (withTimeDesignator)
             {
-                if (time.UtcOffset == TimeSpan.Zero)
+                output.Append('T');
+            }
+
+            var hourParts = time.Hour.ToString().Split('.', ',');
+
+            if (time.Precision == TimePrecision.Hour && hourParts.Length > 1)
+            {
+                output.AppendFormat("{0}{1}{2}", int.Parse(hourParts[0]).ToString("D2"), decimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(hourParts[1]).ToString("D" + time.FractionLength));
+            }
+            else
+            {
+                output.AppendFormat("{0}", int.Parse(hourParts[0]).ToString("D2"));
+            }
+
+            if (time.Precision != TimePrecision.Hour)
+            {
+                if (withColons)
                 {
-                    utcOffset = "Z";
+                    output.Append(":");
+                }
+
+                var minuteParts = time.Minute.ToString().Split('.', ',');
+
+                if (time.Precision == TimePrecision.Minute && minuteParts.Length > 1)
+                {
+                    output.AppendFormat("{0}{1}{2}", int.Parse(minuteParts[0]).ToString("D2"), decimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(minuteParts[1]).ToString("D" + time.FractionLength));
                 }
                 else
                 {
-                    var sign = time.UtcOffset.Hours > 0 ? "+" : string.Empty;
-                    var utcOffsetHours = time.UtcOffset.Hours.ToString("D2");
+                    output.AppendFormat("{0}", int.Parse(minuteParts[0]).ToString("D2"));
+                }
+            }
 
-                    if (time.UtcOffset.Minutes == 0)
+            if (time.Precision == TimePrecision.Second)
+            {
+                if (withColons)
+                {
+                    output.Append(":");
+                }
+
+                var secondParts = time.Second.ToString().Split('.', ',');
+
+                if (secondParts.Length > 1)
+                {
+                    output.AppendFormat("{0}{1}{2}", int.Parse(secondParts[0]).ToString("D2"), decimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(secondParts[1]).ToString("D" + time.FractionLength));
+                }
+                else
+                {
+                    output.AppendFormat("{0}", int.Parse(secondParts[0]).ToString("D2"));
+                }
+            }
+
+            if (withUtcOffset)
+            {
+                if (time.UtcOffset.Hours == 0 && time.UtcOffset.Minutes == 0)
+                {
+                    output.Append('Z');
+                }
+                else
+                {
+                    if (time.UtcOffset.Hours >= 0)
                     {
-                        utcOffset = string.Format("{0}{1:D2}", sign, utcOffsetHours);
+                        output.Append('+');
                     }
-                    else
+
+                    output.AppendFormat("{0}", time.UtcOffset.Hours.ToString("D2"));
+ 
+                    if (time.UtcOffset.Minutes != 0)
                     {
-                        var utcOffsetMinutes = Math.Abs(time.UtcOffset.Minutes).ToString("D2");
-                        utcOffset = string.Format("{0}{1:D2}:{2:D2}", sign, utcOffsetHours, utcOffsetMinutes);
+                        if (withColons)
+                        {
+                            output.Append(':');
+                        }
+
+                        output.AppendFormat("{0}", time.UtcOffset.Minutes.ToString("D2"));
                     }
                 }
             }
 
-            var hour = time.Precision == TimePrecision.Hour && time.DecimalFraction != 0 ? string.Format("{0:D2}.{1}", time.Hour, time.DecimalFraction) : time.Hour.ToString("D2");
-
-            if (time.Precision == TimePrecision.Hour)
-            {
-                return string.Format("{0}{1}{2}", timeDesignator, hour, utcOffset);
-            }
-
-            var minute = time.Precision == TimePrecision.Minute && time.DecimalFraction != 0 ? string.Format("{0:D2}.{1}", time.Minute, time.DecimalFraction) : time.Minute.ToString("D2");
-
-            if (time.Precision == TimePrecision.Minute)
-            {
-                return string.Format("{0}{1}{2}{3}{4}", timeDesignator, hour, colon, minute, utcOffset);
-            }
-
-            var second = time.Precision == TimePrecision.Second && time.DecimalFraction != 0 ? string.Format("{0:D2}.{1}", time.Second, time.DecimalFraction) : time.Second.ToString("D2");
-
-            return string.Format("{0}{1}{2}{3}{4}{5}{6}", timeDesignator, hour, colon, minute, colon, second, utcOffset);
+            return output.ToString();
         }
     }
 }

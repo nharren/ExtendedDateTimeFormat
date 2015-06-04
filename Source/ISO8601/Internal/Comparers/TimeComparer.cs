@@ -21,8 +21,8 @@ namespace System.ISO8601.Internal.Comparers
                 return -1;
             }
 
-            var xHour = x.Precision == TimePrecision.Hour && x.DecimalFraction != 0 ? double.Parse(string.Format("{0}.{1}", x.Hour, x.DecimalFraction)) : x.Hour;
-            var yHour = y.Precision == TimePrecision.Hour && y.DecimalFraction != 0 ? double.Parse(string.Format("{0}.{1}", y.Hour, y.DecimalFraction)) : y.Hour;
+            var xHour = x.Precision == TimePrecision.Hour && x.FractionLength != 0 ? double.Parse(string.Format("{0}.{1}", x.Hour, x.FractionLength)) : x.Hour;
+            var yHour = y.Precision == TimePrecision.Hour && y.FractionLength != 0 ? double.Parse(string.Format("{0}.{1}", y.Hour, y.FractionLength)) : y.Hour;
 
             if (xHour > yHour)
             {
@@ -33,8 +33,8 @@ namespace System.ISO8601.Internal.Comparers
                 return -1;
             }
 
-            var xMinute = x.Precision == TimePrecision.Minute && x.DecimalFraction != 0 ? double.Parse(string.Format("{0}.{1}", x.Minute, x.DecimalFraction)) : x.Minute;
-            var yMinute = y.Precision == TimePrecision.Minute && y.DecimalFraction != 0 ? double.Parse(string.Format("{0}.{1}", y.Minute, y.DecimalFraction)) : y.Minute;
+            var xMinute = x.Precision == TimePrecision.Minute && x.FractionLength != 0 ? double.Parse(string.Format("{0}.{1}", x.Minute, x.FractionLength)) : x.Minute;
+            var yMinute = y.Precision == TimePrecision.Minute && y.FractionLength != 0 ? double.Parse(string.Format("{0}.{1}", y.Minute, y.FractionLength)) : y.Minute;
 
             if (xMinute > yMinute)
             {
@@ -45,8 +45,8 @@ namespace System.ISO8601.Internal.Comparers
                 return -1;
             }
 
-            var xSecond = x.Precision == TimePrecision.Second && x.DecimalFraction != 0 ? double.Parse(string.Format("{0}.{1}", x.Second, x.DecimalFraction)) : x.Second;
-            var ySecond = y.Precision == TimePrecision.Second && y.DecimalFraction != 0 ? double.Parse(string.Format("{0}.{1}", y.Second, y.DecimalFraction)) : y.Second;
+            var xSecond = x.Precision == TimePrecision.Second && x.FractionLength != 0 ? double.Parse(string.Format("{0}.{1}", x.Second, x.FractionLength)) : x.Second;
+            var ySecond = y.Precision == TimePrecision.Second && y.FractionLength != 0 ? double.Parse(string.Format("{0}.{1}", y.Second, y.FractionLength)) : y.Second;
 
             if (xSecond > ySecond)
             {
@@ -57,11 +57,20 @@ namespace System.ISO8601.Internal.Comparers
                 return -1;
             }
 
-            if (x.UtcOffset > y.UtcOffset)
+            if (x.UtcOffset.Hours > y.UtcOffset.Hours)
             {
                 return 1;
             }
-            else if (x.UtcOffset < y.UtcOffset)
+            else if (x.UtcOffset.Hours < y.UtcOffset.Hours)
+            {
+                return -1;
+            }
+
+            if (x.UtcOffset.Minutes > y.UtcOffset.Minutes)
+            {
+                return 1;
+            }
+            else if (x.UtcOffset.Minutes < y.UtcOffset.Minutes)
             {
                 return -1;
             }

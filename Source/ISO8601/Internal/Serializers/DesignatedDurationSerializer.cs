@@ -5,7 +5,7 @@ namespace System.ISO8601.Internal.Serializers
 {
     internal static class DesignatedDurationSerializer
     {
-        internal static string Serialize(DesignatedStandardDuration designatedDuration, DecimalSeparator decimalSeparator)
+        internal static string Serialize(DesignatedDuration designatedDuration, DecimalSeparator decimalSeparator)
         {
             var cultureInfo = decimalSeparator == DecimalSeparator.Dot ? CultureInfo.GetCultureInfo("en-US") : CultureInfo.GetCultureInfo("fr-FR");
 

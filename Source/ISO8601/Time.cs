@@ -6,92 +6,55 @@ namespace System.ISO8601
 {
     public class Time : IComparable, IComparable<Time>, IEquatable<Time>
     {
+        private UtcOffset _utcOffset;
         private static TimeComparer _comparer;
-        private readonly int _decimalFraction;
-        private readonly int _hour;
-        private readonly int _minute;
+        private readonly double _hour;
+        private readonly double _minute;
         private readonly TimePrecision _precision;
-        private readonly int _second;
-        private readonly TimeSpan _utcOffset;
+        private readonly double _second;
+        private int _fractionLength;
 
-        public Time(int hour, int minute, double second, TimeSpan? utcOffset = null)
+        public Time(int hour, int minute, double second) : this(hour, minute)
         {
-            if (hour < 0 || hour > 24)
-            {
-                throw new ArgumentOutOfRangeException(nameof(hour), "The hour must be a number from 0 to 24 (including 24).");
-            }
-
-            if (minute < 0 || minute > 59)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minute), "The minute must be a number from 0 to 60 (excluding 60).");
-            }
-
             if (second < 0 || !(second < 60))
             {
                 throw new ArgumentOutOfRangeException(nameof(minute), "The second must be a number from 0 to 60 (excluding 60).");
             }
 
-            _hour = hour;
-            _minute = minute;
-
-            var secondParts = second.ToString().Split('.');
-
-            _second = int.Parse(secondParts[0]);
-
-            if (secondParts.Length > 1)
-            {
-                _decimalFraction = int.Parse(secondParts[1]);
-            }
-
-            _utcOffset = utcOffset ?? TimeZoneInfo.Local.BaseUtcOffset;
+            _second = second;
             _precision = TimePrecision.Second;
+
+            var fractionParts = second.ToString().Split('.', ',');
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
-        public Time(int hour, double minute, TimeSpan? utcOffset = null)
+        public Time(int hour, double minute) : this(hour)
         {
-            if (hour < 0 || hour > 24)
-            {
-                throw new ArgumentOutOfRangeException(nameof(hour), "The hour must be a number from 0 to 24 (including 24).");
-            }
-
             if (minute < 0 || !(minute < 60))
             {
                 throw new ArgumentOutOfRangeException(nameof(minute), "The minute must be a number from 0 to 60 (excluding 60).");
             }
 
-            _hour = hour;
-
-            var minuteParts = minute.ToString().Split('.');
-
-            _minute = int.Parse(minuteParts[0]);
-
-            if (minuteParts.Length > 1)
-            {
-                _decimalFraction = int.Parse(minuteParts[1]);
-            }
-
-            _utcOffset = utcOffset ?? TimeZoneInfo.Local.BaseUtcOffset;
+            _minute = minute;
             _precision = TimePrecision.Minute;
+
+            var fractionParts = minute.ToString().Split('.', ',');
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
-        public Time(double hour, TimeSpan? utcOffset = null)
+        public Time(double hour)
         {
             if (hour < 0 || hour > 24)
             {
                 throw new ArgumentOutOfRangeException(nameof(hour), "The hour must be a number from 0 to 24 (including 24).");
             }
 
-            var hourParts = hour.ToString().Split('.');
-
-            _hour = int.Parse(hourParts[0]);
-
-            if (hourParts.Length > 1)
-            {
-                _decimalFraction = int.Parse(hourParts[1]);
-            }
-
-            _utcOffset = utcOffset ?? TimeZoneInfo.Local.BaseUtcOffset;
+            _hour = hour;
             _precision = TimePrecision.Hour;
+            _utcOffset = UtcOffset.Unset;
+
+            var fractionParts = hour.ToString().Split('.', ',');
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public static TimeComparer Comparer
@@ -107,15 +70,7 @@ namespace System.ISO8601
             }
         }
 
-        public int DecimalFraction
-        {
-            get
-            {
-                return _decimalFraction;
-            }
-        }
-
-        public int Hour
+        public double Hour
         {
             get
             {
@@ -123,7 +78,7 @@ namespace System.ISO8601
             }
         }
 
-        public int Minute
+        public double Minute
         {
             get
             {
@@ -139,7 +94,7 @@ namespace System.ISO8601
             }
         }
 
-        public int Second
+        public double Second
         {
             get
             {
@@ -147,11 +102,29 @@ namespace System.ISO8601
             }
         }
 
-        public TimeSpan UtcOffset
+        public UtcOffset UtcOffset
         {
             get
             {
                 return _utcOffset;
+            }
+
+            set
+            {
+                _utcOffset = value;
+            }
+        }
+
+        public int FractionLength
+        {
+            get
+            {
+                return _fractionLength;
+            }
+
+            set
+            {
+                _fractionLength = value;
             }
         }
 
@@ -227,17 +200,17 @@ namespace System.ISO8601
 
         public override int GetHashCode()
         {
-            return Hour ^ (Minute << 4) ^ (Second << 8) ^ (DecimalFraction << 12) ^ (UtcOffset.GetHashCode() << 16);
+            return _hour.GetHashCode() ^ (_minute.GetHashCode() << 4) ^ (_second.GetHashCode() << 8) ^ (UtcOffset.GetHashCode() << 16);
         }
 
         public override string ToString()
         {
-            return ToString(false, true, true);
+            return ToString(false, DecimalSeparator.Comma, true, true);
         }
 
-        public string ToString(bool withTimeDesignator, bool withColons, bool withUtcOffset)
+        public string ToString(bool withTimeDesignator, DecimalSeparator decimalSeparator, bool withColons, bool withUtcOffset)
         {
-            return TimeSerializer.Serialize(this, withTimeDesignator, withColons, withUtcOffset);
+            return TimeSerializer.Serialize(this, withTimeDesignator, decimalSeparator, withColons, withUtcOffset);
         }
     }
 }

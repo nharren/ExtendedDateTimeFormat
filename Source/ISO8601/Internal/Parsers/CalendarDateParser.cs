@@ -2,78 +2,79 @@
 {
     internal static class CalendarDateParser
     {
-        internal static CalendarDate Parse(string input, int addedYearLength)
+        internal static CalendarDate Parse(string input, int yearLength)
         {
             if (input == null)
             {
                 throw new ArgumentNullException(nameof(input));
             }
 
-            var operatorLength = input.StartsWith("+") || input.StartsWith("-") ? 1 : 0;
-            var centuryLength = operatorLength + 2 + addedYearLength;
-            var minimumLength = centuryLength;
+            var isExpanded = false;
+            var yearLengthWithOperator = yearLength;
 
-            if (string.IsNullOrEmpty(input) || input.Length < minimumLength)
+            if (input.StartsWith("+") || input.StartsWith("-"))
             {
-                throw new ParseException(string.Format("The calendar date string must be at least {0} characters long.", minimumLength), input);
+                yearLengthWithOperator++;
+                isExpanded = true;
+            }
+
+            var centuryLength = yearLengthWithOperator - 2;
+
+            if (input.Length < centuryLength)
+            {
+                throw new ParseException(string.Format("The calendar date string must be at least {0} characters long.", centuryLength), input);
             }
 
             if (input.Length == centuryLength)
             {
                 int century;
-                var cannotParseCentury = !int.TryParse(input.Substring(0, centuryLength), out century);
 
-                if (cannotParseCentury)
+                if (!int.TryParse(input.Substring(0, centuryLength), out century))
                 {
                     throw new ParseException("The century could not be parsed from the input string", input);
                 }
 
-                return new CalendarDate(century) { AddedYearLength = addedYearLength };
+                var calendarDate = CalendarDate.FromCentury(century);
+                calendarDate.YearLength = yearLength;
+                calendarDate.IsExpanded = isExpanded;
+
+                return calendarDate;
             }
 
-            var yearLength = centuryLength + 2;
             long year;
-            var cannotParseYear = !long.TryParse(input.Substring(0, yearLength), out year);
 
-            if (cannotParseYear)
+            if (!long.TryParse(input.Substring(0, yearLengthWithOperator), out year))
             {
                 throw new ParseException("The year could not be parsed from the input string.", input);
             }
 
-            var noMonth = input.Length == yearLength;
-
-            if (noMonth)
+            if (input.Length == yearLengthWithOperator)
             {
-                return new CalendarDate(year) { AddedYearLength = addedYearLength };
+                return new CalendarDate(year) { YearLength = yearLength, IsExpanded = isExpanded };
             }
 
-            var inExtendedFormat = input[yearLength] == '-';
-            var hyphenLength = inExtendedFormat ? 1 : 0;
-            var monthLength = 2;
+            var hyphenLength = input[yearLengthWithOperator] == '-' ? 1 : 0;
+            var yearMonthLength = yearLengthWithOperator + hyphenLength + 2;
             int month;
-            var cannotParseMonth = !int.TryParse(input.Substring(yearLength + hyphenLength + monthLength, 2), out month);
 
-            if (cannotParseMonth)
+            if (!int.TryParse(input.Substring(yearLengthWithOperator + hyphenLength, 2), out month))
             {
                 throw new ParseException("The month could not be parsed from the input string.", input);
             }
 
-            var noDay = input.Length == yearLength + hyphenLength + monthLength;
-
-            if (noDay)
+            if (input.Length == yearMonthLength)
             {
-                return new CalendarDate(year, month) { AddedYearLength = addedYearLength };
+                return new CalendarDate(year, month) { YearLength = yearLength, IsExpanded = isExpanded };
             }
 
             int day;
-            var cannotParseDay = !int.TryParse(input.Substring(input.Length - 1, 2), out day);
 
-            if (cannotParseDay)
+            if (!int.TryParse(input.Substring(yearMonthLength + hyphenLength, 2), out day))
             {
                 throw new ParseException("The day could not be parsed from the input string.", input);
             }
 
-            return new CalendarDate(year, month, day) { AddedYearLength = addedYearLength };
+            return new CalendarDate(year, month, day) { YearLength = yearLength, IsExpanded = isExpanded };
         }
     }
 }

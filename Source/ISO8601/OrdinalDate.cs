@@ -1,8 +1,8 @@
-﻿using System.ISO8601.Internal.Comparers;
+﻿using System.ISO8601.Abstract;
+using System.ISO8601.Internal.Comparers;
 using System.ISO8601.Internal.Converters;
 using System.ISO8601.Internal.Parsers;
 using System.ISO8601.Internal.Serializers;
-using System.ISO8601.Abstract;
 
 namespace System.ISO8601
 {
@@ -11,10 +11,16 @@ namespace System.ISO8601
         private static DateComparer _comparer;
         private readonly int _day;
         private readonly long _year;
-        private int _addedYearLength;
+        private int _yearLength;
+        private bool _isExpanded;
 
         public OrdinalDate(long year, int day)
         {
+            if (year < 0 || year > 9999)
+            {
+                _isExpanded = true;
+            }
+
             var daysInYear = DateCalculator.DaysInYear(year);
 
             if (day < 1 || day > daysInYear)
@@ -39,16 +45,16 @@ namespace System.ISO8601
             }
         }
 
-        public int AddedYearLength
+        public int YearLength
         {
             get
             {
-                return _addedYearLength;
+                return _yearLength;
             }
 
             set
             {
-                _addedYearLength = value;
+                _yearLength = value;
             }
         }
 
@@ -65,6 +71,19 @@ namespace System.ISO8601
             get
             {
                 return _year;
+            }
+        }
+
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+
+            set
+            {
+                _isExpanded = value;
             }
         }
 
@@ -138,9 +157,9 @@ namespace System.ISO8601
             return unchecked((int)Year) ^ (Day << 22);
         }
 
-        public OrdinalDate Parse(string input, int addedYearLength = 0)
+        public static OrdinalDate Parse(string input, int yearLength = 4)
         {
-            return OrdinalDateParser.Parse(input, addedYearLength);
+            return OrdinalDateParser.Parse(input, yearLength);
         }
 
         public CalendarDate ToCalendarDate(CalendarDatePrecision precision)
