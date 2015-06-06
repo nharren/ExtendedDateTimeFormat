@@ -2,16 +2,26 @@
 {
     internal static class WeekDateTimeParser
     {
-        internal static WeekDateTime Parse(string input)
+        internal static WeekDateTime Parse(string input, int yearLength)
         {
-            var components = input.Split('T');
-
-            if (components.Length != 2)
+            if (input == null)
             {
-                throw new ParseException("The datetime string is invalid.", input);
+                throw new ArgumentNullException(nameof(input));
             }
 
-            return new WeekDateTime(WeekDateParser.Parse(components[0], 0), Time.Parse(components[1]));
+            int dateLength = 8;
+
+            if (input.StartsWith("+") || input.StartsWith("-"))
+            {
+                dateLength += yearLength - 3;
+            }
+
+            if (input.Substring(1).Contains("-"))
+            {
+                dateLength += 2;
+            }
+
+            return new WeekDateTime(WeekDateParser.Parse(input.Substring(0, dateLength), yearLength), Time.Parse(input.Substring(dateLength)));
         }
     }
 }

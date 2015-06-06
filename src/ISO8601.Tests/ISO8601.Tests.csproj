@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ISO8601">
-      <HintPath>..\..\..\Source\ISO8601\bin\Debug\ISO8601.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -58,7 +55,15 @@
     <Compile Include="OrdinalDateTests.cs" />
     <Compile Include="TimeTests.cs" />
     <Compile Include="CalendarDateTimeTests.cs" />
+    <Compile Include="OrdinalDateTimeTests.cs" />
+    <Compile Include="WeekDateTimeTests.cs" />
     <Compile Include="WeekDateTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ISO8601\ISO8601.csproj">
+      <Project>{67d4776b-cc09-418d-bb5e-b2dc31259967}</Project>
+      <Name>ISO8601</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -10,11 +10,7 @@ namespace System.ISO8601.Internal.Serializers
 
             if (ordinalDate.IsExpanded)
             {
-                if (ordinalDate.Year < 0)
-                {
-                    output.Append('-');
-                }
-                else
+                if (ordinalDate.Year >= 0)
                 {
                     output.Append('+');
                 }

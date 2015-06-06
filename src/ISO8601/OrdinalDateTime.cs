@@ -137,9 +137,9 @@ namespace System.ISO8601
             return Comparer.Compare(x, y) >= 0;
         }
 
-        public static OrdinalDateTime Parse(string input)
+        public static OrdinalDateTime Parse(string input, int yearLength = 4)
         {
-            return OrdinalDateTimeParser.Parse(input);
+            return OrdinalDateTimeParser.Parse(input, yearLength);
         }
 
         public int CompareTo(Abstract.DateTime other)

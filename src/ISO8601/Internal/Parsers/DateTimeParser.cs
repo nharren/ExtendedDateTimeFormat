@@ -11,7 +11,7 @@ namespace System.ISO8601.Internal.Parsers
         {
             if (input.Contains('W'))
             {
-                return WeekDateTimeParser.Parse(input);
+                return WeekDateTimeParser.Parse(input, yearLength);
             }
 
             var adjustedYearLength = input.StartsWith("+") || input.StartsWith("-") ? yearLength + 1 : yearLength;
@@ -21,7 +21,7 @@ namespace System.ISO8601.Internal.Parsers
                 adjustedYearLength++;
             }
 
-            return input.IndexOf('T') - adjustedYearLength == 3 ? (Abstract.DateTime)OrdinalDateTimeParser.Parse(input) : CalendarDateTimeParser.Parse(input, yearLength);
+            return input.IndexOf('T') - adjustedYearLength == 3 ? (Abstract.DateTime)OrdinalDateTimeParser.Parse(input, yearLength) : CalendarDateTimeParser.Parse(input, yearLength);
         }
     }
 }

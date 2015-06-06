@@ -12,11 +12,7 @@ namespace System.ISO8601.Internal.Serializers
 
             if (weekDate.IsExpanded)
             {
-                if (weekDate.Year < 0)
-                {
-                    output.Append('-');
-                }
-                else
+                if (weekDate.Year >= 0)
                 {
                     output.Append('+');
                 }
