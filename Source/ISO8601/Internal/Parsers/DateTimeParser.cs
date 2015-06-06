@@ -7,17 +7,21 @@ namespace System.ISO8601.Internal.Parsers
         private const int OperatorLength = 1;
         private const int BaseYearLength = 4;
 
-        internal static ISO8601.Abstract.DateTime Parse(string input, int addedYearLength)
+        internal static Abstract.DateTime Parse(string input, int yearLength)
         {
             if (input.Contains('W'))
             {
                 return WeekDateTimeParser.Parse(input);
             }
 
-            var yearLength = input[0] == '+' || input[0] == '-' ? BaseYearLength + OperatorLength + addedYearLength : BaseYearLength;
-            var nonYearStart = input[yearLength] == '-' ? yearLength + 1 : yearLength;
+            var adjustedYearLength = input.StartsWith("+") || input.StartsWith("-") ? yearLength + 1 : yearLength;
 
-            return input.IndexOf('T') - nonYearStart == 3 ? (ISO8601.Abstract.DateTime)OrdinalDateTimeParser.Parse(input) : CalendarDateTimeParser.Parse(input);
+            if (input[adjustedYearLength] == '-')
+            {
+                adjustedYearLength++;
+            }
+
+            return input.IndexOf('T') - adjustedYearLength == 3 ? (Abstract.DateTime)OrdinalDateTimeParser.Parse(input) : CalendarDateTimeParser.Parse(input, yearLength);
         }
     }
 }

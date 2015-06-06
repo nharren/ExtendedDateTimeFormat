@@ -160,9 +160,9 @@ namespace System.ISO8601
             return Comparer.Compare(x, y) >= 0;
         }
 
-        public static CalendarDateTime Parse(string input)
+        public static CalendarDateTime Parse(string input, int yearLength = 4)
         {
-            return CalendarDateTimeParser.Parse(input);
+            return CalendarDateTimeParser.Parse(input, yearLength);
         }
 
         public int CompareTo(Abstract.DateTime other)

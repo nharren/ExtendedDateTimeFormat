@@ -5,8 +5,6 @@ namespace System.ISO8601.Internal.Parsers
 {
     internal static class TimeParser
     {
-        private enum TimeComponent { Hour = 0, Minute = 1, Second = 2, UtcHour = 3, UtcMinute = 4 }
-
         internal static Time Parse(string input)
         {
             if (input == null)

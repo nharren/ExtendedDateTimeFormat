@@ -2,7 +2,7 @@
 {
     internal static class StartEndTimeIntervalParser
     {
-        internal static StartEndTimeInterval Parse(string input)
+        internal static StartEndTimeInterval Parse(string input, int startYearLength, int endYearLength)
         {
             var parts = input.Split('/');
 
@@ -11,7 +11,7 @@
                 throw new ParseException("A start-end time interval must have one solidus ('/')", input);
             }
 
-            return new StartEndTimeInterval(CalendarDateTimeParser.Parse(parts[0]), CalendarDateTimeParser.Parse(parts[1]));
+            return new StartEndTimeInterval(CalendarDateTimeParser.Parse(parts[0], startYearLength), CalendarDateTimeParser.Parse(parts[1], endYearLength));
         }
     }
 }

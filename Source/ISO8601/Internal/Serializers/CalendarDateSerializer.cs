@@ -12,11 +12,7 @@ namespace System.ISO8601.Internal.Serializers
 
             if (calendarDate.IsExpanded)
             {
-                if (calendarDate.Century < 0)
-                {
-                    output.Append('-');
-                }
-                else
+                if (calendarDate.Century >= 0)
                 {
                     output.Append('+');
                 }
