@@ -7,13 +7,15 @@ namespace System.ISO8601
     public class OrdinalDateDuration : DateDuration
     {
         private readonly int _days;
-        private readonly int _years;
+        private bool _isExpanded;
+        private readonly long _years;
+        private int _yearLength;
 
-        public OrdinalDateDuration(int years, int days)
+        public OrdinalDateDuration(long years, int days)
         {
             if (years < 0 || years > 9999)
             {
-                throw new ArgumentOutOfRangeException(nameof(years), "Years must be a number between 0 and 9999.");
+                _isExpanded = true;
             }
 
             _years = years;
@@ -34,7 +36,20 @@ namespace System.ISO8601
             }
         }
 
-        public int Years
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+
+            set
+            {
+                _isExpanded = value;
+            }
+        }
+
+        public long Years
         {
             get
             {
@@ -42,9 +57,22 @@ namespace System.ISO8601
             }
         }
 
-        public static OrdinalDateDuration Parse(string input)
+        public int YearLength
         {
-            return OrdinalDateDurationParser.Parse(input);
+            get
+            {
+                return _yearLength;
+            }
+
+            set
+            {
+                _yearLength = value;
+            }
+        }
+
+        public static OrdinalDateDuration Parse(string input, int yearLength = 4)
+        {
+            return OrdinalDateDurationParser.Parse(input, yearLength);
         }
 
         public override string ToString()

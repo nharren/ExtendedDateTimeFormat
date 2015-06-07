@@ -7,7 +7,20 @@ namespace System.ISO8601.Internal.Serializers
         internal static string Serialize(OrdinalDateDuration ordinalDateDuration, bool withComponentSeparators)
         {
             var output = new StringBuilder("P");
-            output.AppendFormat("{0:D4}", ordinalDateDuration.Years);
+
+            if (ordinalDateDuration.IsExpanded)
+            {
+                if (ordinalDateDuration.Years < 0)
+                {
+                    output.Append('-');
+                }
+                else
+                {
+                    output.Append('+');
+                }
+            }
+
+            output.Append(ordinalDateDuration.Years.ToString("D" + ordinalDateDuration.YearLength));
 
             if (withComponentSeparators)
             {
