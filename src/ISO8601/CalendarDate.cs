@@ -53,6 +53,11 @@ namespace System.ISO8601
 
         private CalendarDate(int century)
         {
+            if (century < 0 || century > 99)
+            {
+                _isExpanded = true;
+            }
+
             _century = century;
             _precision = CalendarDatePrecision.Century;
         }
@@ -131,12 +136,7 @@ namespace System.ISO8601
 
             set
             {
-                if ((_year < 0 || _year > 9999) && !value)
-                {
-                    _isExpanded = true;
-                }
-
-                _isExpanded = value;
+                _isExpanded = _year < 0 || _year > 9999 || _century < 0 || _century > 99 ? true : value;
             }
         }
 

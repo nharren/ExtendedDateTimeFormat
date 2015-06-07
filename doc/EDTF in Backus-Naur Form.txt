@@ -12,7 +12,7 @@ The syntax used in this BNF description is:
 *  used for  zero or more
 +  used for one or more
 Surrounding parentheses used for grouping, thus
-( x | y)+ 
+( x | y )+ 
 means "one or more of x and y"
 (A B) | C 
 means either A followed by B, or C (parentheses used to determine how "or" is evaluated)

@@ -6,13 +6,42 @@ namespace System.ISO8601.Internal.Serializers
     {
         internal static string Serialize(CalendarDateDuration calendarDateDuration, bool withComponentSeparators)
         {
-            var noDays = calendarDateDuration.Days == 0;
-            var noMonths = calendarDateDuration.Months == 0 && noDays;
-
             var output = new StringBuilder("P");
-            output.AppendFormat("{0:D4}", calendarDateDuration.Years);
 
-            if (noMonths)
+            if (calendarDateDuration.Centuries != null)
+            {
+                if (calendarDateDuration.IsExpanded)
+                {
+                    if (calendarDateDuration.Centuries < 0)
+                    {
+                        output.Append('-');
+                    }
+                    else
+                    {
+                        output.Append('+');
+                    }
+                }
+
+                output.AppendFormat(calendarDateDuration.Centuries.Value.ToString("D" + (calendarDateDuration.YearLength - 2)));
+
+                return output.ToString();
+            }
+
+            if (calendarDateDuration.IsExpanded)
+            {
+                if (calendarDateDuration.Years < 0)
+                {
+                    output.Append('-');
+                }
+                else
+                {
+                    output.Append('+');
+                }
+            }
+
+            output.AppendFormat(calendarDateDuration.Years.ToString("D" + calendarDateDuration.YearLength));
+
+            if (calendarDateDuration.Months == null)
             {
                 return output.ToString();
             }
@@ -24,7 +53,7 @@ namespace System.ISO8601.Internal.Serializers
 
             output.AppendFormat("{0:D2}", calendarDateDuration.Months);
 
-            if (noDays)
+            if (calendarDateDuration.Days == null)
             {
                 return output.ToString();
             }

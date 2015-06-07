@@ -26,11 +26,11 @@ namespace System.ISO8601
             _timeDuration = timeDuration;
         }
 
-        public double Days
+        public int Days
         {
             get
             {
-                return _dateDuration.Days;
+                return _dateDuration.Days.Value;
             }
         }
 
@@ -63,11 +63,11 @@ namespace System.ISO8601
             }
         }
 
-        public double Months
+        public int Months
         {
             get
             {
-                return _dateDuration.Months;
+                return _dateDuration.Months.Value;
             }
         }
 
@@ -79,7 +79,7 @@ namespace System.ISO8601
             }
         }
 
-        public double Years
+        public long Years
         {
             get
             {
@@ -103,9 +103,9 @@ namespace System.ISO8601
             }
         }
 
-        public static CalendarDateTimeDuration Parse(string input, int fractionLength = 0)
+        public static CalendarDateTimeDuration Parse(string input, int yearLength = 4, int fractionLength = 0)
         {
-            return CalendarDateTimeDurationParser.Parse(input, fractionLength);
+            return CalendarDateTimeDurationParser.Parse(input, yearLength, fractionLength);
         }
 
         public override string ToString()

@@ -57,6 +57,7 @@
     <Compile Include="CalendarDateTimeTests.cs" />
     <Compile Include="OrdinalDateTimeTests.cs" />
     <Compile Include="DesignatedDurationTests.cs" />
+    <Compile Include="CalendarDateDurationTests.cs" />
     <Compile Include="WeekDateTimeTests.cs" />
     <Compile Include="WeekDateTests.cs" />
   </ItemGroup>
