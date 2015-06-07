@@ -7,7 +7,7 @@ namespace ISO8601.Tests
     public class CalendarDateTests
     {
         [TestMethod]
-        public void RoundTrip()
+        public void CanRoundTrip()
         {
             Assert.AreEqual("19501010", CalendarDate.Parse("19501010").ToString(false));
             Assert.AreEqual("1950-10-10", CalendarDate.Parse("1950-10-10").ToString(true));

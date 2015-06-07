@@ -8,7 +8,7 @@ namespace ISO8601.Tests
     public class OrdinalDateTimeTests
     {
         [TestMethod]
-        public void RoundTrip()
+        public void CanRoundTrip()
         {
             // Complete
             Assert.AreEqual("1950100121212", OrdinalDateTime.Parse("1950100121212").ToString(false, false, DecimalSeparator.Comma, false));

@@ -8,7 +8,7 @@ namespace ISO8601.Tests
     public class TimeTests
     {
         [TestMethod]
-        public void RoundTrip()
+        public void CanRoundTrip()
         {
             // Complete
             Assert.AreEqual("121212", Time.Parse("121212").ToString(false, DecimalSeparator.Comma, false, false));

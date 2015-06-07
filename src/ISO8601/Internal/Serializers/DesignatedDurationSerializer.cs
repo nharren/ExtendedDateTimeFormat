@@ -9,49 +9,49 @@ namespace System.ISO8601.Internal.Serializers
         {
             var cultureInfo = decimalSeparator == DecimalSeparator.Dot ? CultureInfo.GetCultureInfo("en-US") : CultureInfo.GetCultureInfo("fr-FR");
 
-            var noSeconds = designatedDuration.Seconds == 0;
-            var noMinutes = designatedDuration.Minutes == 0 && noSeconds;
-            var noHours = designatedDuration.Hours == 0 && noMinutes;
-            var noDays = designatedDuration.Days == 0 && noHours;
-            var noMonths = designatedDuration.Months == 0 && noDays;
-
             var output = new StringBuilder();
-            output.AppendFormat(cultureInfo, "P{0}Y", designatedDuration.Years);
 
-            if (noMonths)
+            output.Append('P');
+
+            if (designatedDuration.Years != null)
             {
-                return output.ToString();
+                output.AppendFormat(cultureInfo, "{0}Y", designatedDuration.Years); 
             }
 
-            output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Months);
-
-            if (noDays)
+            if (designatedDuration.Months != null)
             {
-                return output.ToString();
+                output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Months); 
             }
 
-            output.AppendFormat(cultureInfo, "{0}D", designatedDuration.Days);
-
-            if (noHours)
+            if (designatedDuration.Days != null)
             {
-                return output.ToString();
+                output.AppendFormat(cultureInfo, "{0}D", designatedDuration.Days); 
             }
 
-            output.AppendFormat(cultureInfo, "{0}H", designatedDuration.Hours);
-
-            if (noMinutes)
+            if (designatedDuration.Hours != null || designatedDuration.Minutes != null || designatedDuration.Seconds != null)
             {
-                return output.ToString();
+                output.Append('T');
             }
 
-            output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Minutes);
-
-            if (noSeconds)
+            if (designatedDuration.Hours != null)
             {
-                return output.ToString();
+                output.AppendFormat(cultureInfo, "{0}H", designatedDuration.Hours); 
             }
 
-            output.AppendFormat(cultureInfo, "{0}S", designatedDuration.Seconds);
+            if (designatedDuration.Minutes != null)
+            {
+                output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Minutes); 
+            }
+
+            if (designatedDuration.Seconds != null)
+            {
+                output.AppendFormat(cultureInfo, "{0}S", designatedDuration.Seconds);
+            }
+
+            if (designatedDuration.Weeks != null)
+            {
+                output.AppendFormat(cultureInfo, "{0}W", designatedDuration.Weeks);
+            }
 
             return output.ToString();
         }

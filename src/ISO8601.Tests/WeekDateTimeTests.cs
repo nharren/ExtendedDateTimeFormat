@@ -8,7 +8,7 @@ namespace ISO8601.Tests
     public class WeekDateTimeTests
     {
         [TestMethod]
-        public void RoundTrip()
+        public void CanRoundTrip()
         {
             // Complete
             Assert.AreEqual("1950W101121212", WeekDateTime.Parse("1950W101121212").ToString(false, false, DecimalSeparator.Comma, false));

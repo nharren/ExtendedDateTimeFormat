@@ -15,6 +15,8 @@ expanded leap year = "+" | "-", ? four or more digit leap years ? ;
 
 (* -------------------- Calendar Date -------------------- *)
 
+(* --- Common --- *)
+
 one to thirty = ( "0", digit ) - "00" | "1", digit | "2", digit
               | "30" ;
 one to twenty eight = one to thirty - "30" - "29" ;
@@ -41,13 +43,19 @@ extended month and day = thirty one day month, "-", one to thirty one
 
 extended leap month and day = "02-29" ;
 
+(* --- Complete --- *)
+
 basic complete calendar date = year, basic month and day 
                              | leap year, basic leap month and day ;
 extended complete calandar date = year, "-", extended month and day, 
                                 | leap year, "-", extended leap month and day ;
 complete calendar date = basic complete calandar date | extended complete calendar date ;
 
+(* --- Reduced --- *)
+
 reduced calendar date = year and month | year | century ;
+
+(* --- Expanded --- *)
 
 basic complete expanded calendar date = expanded year, basic month and day
                                       | expanded leap year, basic leap month and day ;
@@ -60,13 +68,19 @@ incomplete expanded calendar date = expanded year, "-", month
 
 expanded calendar date = complete expanded calendar date | incomplete expanded calendar dated;
 
+(* --- General --- *)
+
 calendar date = complete calendar date | reduced calendar date | expanded calendar date ;
 
 (* -------------------- Ordinal Date -------------------- *)
 
+(* --- Common --- *)
+
 day of year = ( "0", digit, digit ) - "000" | "1", digit, digit | "2", digit, digit 
             | "30", digit | "31", digit | "32", digit | "33", digit | "34", digit | "35", digit
             | "360" | "361" | "362" | "363" | "364" | "365" ;
+
+(* --- Complete --- *)
 
 basic complete ordinal date = year, day of year 
                             | leap year, "366" ;
@@ -74,15 +88,21 @@ extended complete ordinal date = year, "-", day of year
                                | leap year, "-366" ;
 complete ordinal date = basic complete ordinal date | extended complete ordinal date ;
 
+(* --- Expanded --- *)
+
 basic expanded ordinal date = expanded year, day of year 
                             | expanded leap year, "366" ;
 extended expanded ordinal date = expanded year, "-", day of year 
                                | expanded leap year, "-366" ;
 expanded ordinal date = basic expanded ordinal date | extended expanded ordinal date ;
 
+(* --- General --- *)
+
 ordinal date = complete ordinal date | expanded ordinal date ;
 
 (* -------------------- Week Date -------------------- *)
+
+(* --- Common --- *)
 
 fifty three week year = ? four digit fifty three week years ? ;
 expanded fifty three week year = "+" | "-", ? four or more digit fifty three week years ? ;
@@ -92,15 +112,21 @@ week = ( "0", digit ) - "00" | "1", digit | "2", digit | "3", digit | "4", digit
 
 day of week = "1" | "2" | "3" | "4" | "5" | "6" | "7" ;
 
+(* --- Complete --- *)
+
 basic complete week date = year, "W", week, day of week  
                          | fifty three week year, "W53", day of week ;
 extended complete week date = year, "-W", week, "-", day of week 
                             | fifty three week year, "-W53-", day of week ;
 complete week date = basic complete week date | extended complete week date ;
 
+(* --- Reduced --- *)
+
 basic reduced week date = year, "W", week  | fifty three week year, "W53" ;
 extended reduced week date = year, "-W", week | fifty three week year, "-W53" ;
 reduced week date = basic reduced week date | extended reduced week date ;
+
+(* --- Expanded --- *)
 
 basic complete expanded week date = expanded year, "W", week, day of week 
                          | expanded fifty three week year, "W53", day of week ;
@@ -116,9 +142,13 @@ incomplete expanded week date = basic complete expanded week date | extended com
 
 expanded week date = complete expanded week date | incomplete expanded week date ; 
 
+(* --- General --- *)
+
 week date = complete week date | reduced week date | expanded week date ;
 
 (* -------------------- General Date -------------------- *)
+
+(* --- Complete --- *)
 
 basic complete date = basic complete calendar date | basic complete ordinal date 
                     | basic complete week date ;
@@ -126,9 +156,13 @@ extended complete date = extended complete calendar date | extended complete ord
                        | extended complete week date ;
 complete date = basic complete date | extended complete date ;
 
+(* --- Reduced --- *)
+
 basic reduced date = reduced calendard date | basic reduced week date ;
 extended reduced date = extended reduced week date ;
 reduced date = basic reduced date | extended reduced date ;
+
+(* --- Expanded --- *)
 
 basic complete expanded date = basic complete expanded calendar date | basic complete expanded ordinal date 
                              | basic complete expanded week date ;
@@ -148,6 +182,8 @@ extended expanded date = extended expanded calendar date | extended expanded ord
                        | extended expanded week date ;
 expanded date = basic expanded date | extended expanded date ;
 
+(* --- General --- *)
+
 basic date = basic complete date | basic reduced date | basic expanded date ;
 extended date = extended complete date | extended reduced date | extended expanded date ;
 
@@ -164,13 +200,19 @@ second = "0", digit | "1", digit | "2", digit | "3", digit | "4", digit | "5", d
 
 (* -------------------- Local Time -------------------- *)
 
+(* --- Complete --- *)
+
 basic complete local time = hour, minute, second | "240000" ;
 extended complete local time = hour, ":", minute, ":", second | "24:00:00" ;
 complete local time = basic complete local time | extended complete local time ;
 
+(* --- Reduced --- *)
+
 basic reduced local time = hour, [ minute ] | "24", [ ":00" ] ;
 extended reduced local time = hour, ":", minute | "24:00" ;
 reduced local time = basic reduced local time | extended reduced local time ;
+
+(* --- Fractional --- *)
 
 basic fractional local time = basic complete local time, fractional part 
                             | basic reduced local time, fractional part ;
@@ -178,6 +220,8 @@ extended fractional local time = extended complete local time, fractional part
                                | extended reduced local time, fractional part ;
 fractional local time = complete local time, fractional part 
                       | reduced local time, fractional part ;
+
+(* --- General --- *)
 
 basic local time without time designator = basic complete local time | basic reduced local time 
                                          | basic fractional local time ;
@@ -211,17 +255,25 @@ local time and utc offset = basic local time and utc offset | extended local tim
 
 (* -------------------- General Time -------------------- *)
 
+(* --- Complete --- *)
+
 basic complete time = [ "T" ], basic complete local time, [ basic complete utc offset | "Z" ] ;
 extended complete time = [ "T" ], extended complete local time, [ extended complete utc offset | "Z" ] ;
 complete time  = basic complete time | extended complete time ;
+
+(* --- Reduced --- *)
 
 basic reduced time = [ "T" ], basic reduced local time, [ basic utc offset | "Z" ] ;
 extended reduced time = [ "T" ], extended reduced local time, [ extended utc offset | "Z" ] ;
 reduced time = basic reduced time | extended reduced time ;
 
+(* --- Fractional --- *)
+
 basic fractional time = [ "T" ], basic fractional local time, [ basic utc offset | "Z" ] ;
 extended fractional time = [ "T" ], extended fractional local time, [ extended utc offset | "Z" ] ;
 fractional time = basic fractional time | extended fractional time ;
+
+(* --- General --- *)
 
 basic time = [ "T" ], basic local time without time designator, [ basic utc offset | "Z" ] ;
 extended time = [ "T" ], extended local time without time designator, [ extended utc offset | "Z" ] ;
@@ -230,21 +282,31 @@ time = basic time | extended time ;
 
 (* ******************** DATE AND TIME OF DAY ******************** *)
 
+(* --- Complete --- *)
+
 basic complete datetime = basic complete date, basic complete time ;
 extended complete datetime = extended complete date, extended complete time ;
 complete datetime = basic complete datetime | extended complete datetime ;
+
+(* --- Reduced --- *)
 
 basic reduced datetime = basic complete date, basic reduced time ;
 extended reduced datetime = extended complete date, extended reduced time ;
 reduced datetime = basic reduced datetime | extended reduced datetime ;
 
+(* --- Fractional --- *)
+
 basic fractional datetime = basic complete date, basic fractional time ;
 extended fractional datetime = extended complete date, extended fractional time ;
 fractional datetime = basic fractional datetime | extended fractional datetime ;
 
+(* --- Expanded --- *)
+
 basic expanded datetime = basic complete expanded date, basic time ;
 extended expanded datetime = extended complete expanded date, extended time ;
 expanded datetime = basic expanded datetime | extended expanded datetime ;
+
+(* --- General --- *)
 
 basic datetime = basic complete datetime | basic reduced datetime 
                | basic fractional datetime | basic expanded datetime ;
@@ -293,6 +355,8 @@ designated duration = complete designated duration | reduced designated duration
 
 (* -------------------- Date Duration -------------------- *)
 
+(* --- Common --- *)
+
 centuries = digit, digit ;
 expanded centuries = "+" | "-", { digit }, centuries ;
 
@@ -309,42 +373,47 @@ hours = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
 minutes = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
 seconds = "1", digit | "2", digit | "3", digit | "4", digit | "5", digit | "60" ;
 
+(* --- Complete --- *)
+
 basic complete calendar date duration = "P", years, months, days ;
 extended complete calandar date duration = "P", years, "-", months, "-", days ;
 complete calendar date duration = basic complete calendar date duration | extended complete calandar date duration ;
 
+basic complete ordinal date duration = "P", years, days of year ;
+extended complete ordinal date duration = "P", years, "-", days of year ;
+complete ordinal date duration = basic complete ordinal date duration | extended complete ordinal date duration ;
+
+basic complete date duration = basic complete calendar date duration | basic complete ordinal date duration ;
+extended complete date duration = extended complete calendar date duration | extended complete ordinal date duration ;
+complete date duration = basic complete date duration | extended complete date duration;
+
+(* --- Reduced --- *)
+
 reduced calendar date duration = "P", years, "-", months | "P", centuries ;
+reduced date duration = reduced calendar date duration ;
+
+(* --- Expanded --- *)
 
 basic expanded calendar date duration = "P", expanded years, month, day ;
 extended expanded calendar date duration = "P", expanded years, "-", months, "-", days ;
                                          | "P", expanded years, "-", months | "P", expanded years | "P", expanded centuries ;
 expanded calendar date duration = basic expanded calendar date duration | extended expanded calendar date duration ;
 
-calendar date duration = complete calendar date duration | reduced calendar date duration | expanded calendar date duration ;
-
-basic complete ordinal date duration = "P", years, days of year ;
-extended complete ordinal date duration = "P", years, "-", days of year ;
-complete ordinal date duration = basic complete ordinal date duration | extended complete ordinal date duration ;
-
 basic expanded ordinal date duration = "P", expanded years, days of year ;
 extended expanded ordinal date duration = "P", expanded years, "-", days of year ;
 expanded ordinal date duration = basic expanded ordinal date duration | extended expanded ordinal date duration ;
-
-ordinal date duration = complete ordinal date duration | expanded ordinal date duration ;
-
-basic complete date duration = basic complete calendar date duration | basic complete ordinal date duration ;
-extended complete date duration = extended complete calendar date duration | extended complete ordinal date duration ;
-complete date duration = basic complete date duration | extended complete date duration;
-
-reduced date duration = reduced calendar date duration ;
 
 basic expanded date duration = basic expanded calendar date duration | basic expanded ordinal date duration ;
 extended expanded date duration = extended expanded calendar date duration | extended expanded ordinal date duration ;
 expanded date duration = basic expanded date duration | extended expanded date duration ;
 
+(* --- General --- *)
+
+calendar date duration = complete calendar date duration | reduced calendar date duration | expanded calendar date duration ;
+ordinal date duration = complete ordinal date duration | expanded ordinal date duration ;
+
 basic date duration = basic complete date duration | reduced date duration | basic expanded date duration ;
 extended date duration = extended complete date duration | extended expanded date duration ;
-
 date duration = basic date duration | extended date duration ;
 
 (* -------------------- Time Duration -------------------- *)

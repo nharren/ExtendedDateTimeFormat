@@ -7,7 +7,7 @@ namespace ISO8601.Tests
     public class OrdinalDateTests
     {
         [TestMethod]
-        public void RoundTrip()
+        public void CanRoundTrip()
         {
             Assert.AreEqual("1950100", OrdinalDate.Parse("1950100").ToString(false));
             Assert.AreEqual("1950-100", OrdinalDate.Parse("1950-100").ToString(true));

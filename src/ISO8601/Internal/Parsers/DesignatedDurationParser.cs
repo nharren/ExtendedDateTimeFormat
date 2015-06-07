@@ -5,9 +5,6 @@ namespace System.ISO8601.Internal.Parsers
 {
     internal static class DesignatedDurationParser
     {
-        private const int DurationDesignatorLength = 1;
-        private const int MinimumLength = 3;
-
         internal static DesignatedDuration Parse(string input)
         {
             if (input == null)
@@ -15,7 +12,7 @@ namespace System.ISO8601.Internal.Parsers
                 throw new ArgumentNullException(nameof(input));
             }
 
-            if (input.Length < MinimumLength)
+            if (input.Length < 3)
             {
                 throw new ParseException("The designated duration must be at least three characters long.", input);
             }
@@ -25,152 +22,226 @@ namespace System.ISO8601.Internal.Parsers
                 throw new ParseException("A duration designator was expected.", input);
             }
 
-            var startIndex = DurationDesignatorLength;
-            var endIndex = input.IndexOf('Y');
-            var componentString = input.Substring(startIndex, endIndex);
+            int startIndex;
+            int endIndex = 0;
+            string componentString = null;
+            int temp;
+            int? years = null;
+            int? months = null;
+            int? days = null;
+            int? hours = null;
+            int? minutes = null;
 
-            if (componentString.Contains('.'))
+            if (input.Contains('W'))
             {
-                return new DesignatedDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
-            }
-            else if (componentString.Contains(','))
-            {
-                return new DesignatedDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
-            }
+                startIndex = endIndex + 1;
+                endIndex = input.IndexOf('W');
+                componentString = input.Substring(startIndex, endIndex - startIndex);
 
-            int years;
+                if (componentString.Contains('.'))
+                {
+                    return DesignatedDuration.FromWeeks(double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                }
+                else if (componentString.Contains(','))
+                {
+                    return DesignatedDuration.FromWeeks(double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                }
 
-            if (!int.TryParse(input.Substring(startIndex, endIndex), out years))
-            {
-                throw new ParseException("The years component must be a number.", input);
-            }
+                if (!int.TryParse(componentString, out temp))
+                {
+                    throw new ParseException("The weeks component must be a number.", input);
+                }
 
-            if (input.Length < endIndex + 1)
-            {
-                return new DesignatedDuration(years);
-            }
+                if (input.Length == endIndex + 1)
+                {
+                    return DesignatedDuration.FromWeeks(temp);
+                }
 
-            startIndex = endIndex + 1;
-            endIndex = input.IndexOf("M");
-            componentString = input.Substring(startIndex, endIndex);
-
-            if (componentString.Contains('.'))
-            {
-                return new DesignatedDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
-            }
-            else if (componentString.Contains(','))
-            {
-                return new DesignatedDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
-            }
-
-            int months;
-
-            if (!int.TryParse(input.Substring(startIndex, endIndex), out months))
-            {
-                throw new ParseException("The months component must be a number.", input);
+                years = temp;
             }
 
-            if (input.Length < endIndex + 1)
+            if (input.Contains('Y'))
             {
-                return new DesignatedDuration(years, months);
+                startIndex = endIndex + 1;
+                endIndex = input.IndexOf('Y');
+                componentString = input.Substring(startIndex, endIndex - startIndex);
+
+                if (componentString.Contains('.'))
+                {
+                    return new DesignatedDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                }
+                else if (componentString.Contains(','))
+                {
+                    return new DesignatedDuration(double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                }
+
+                if (!int.TryParse(componentString, out temp))
+                {
+                    throw new ParseException("The years component must be a number.", input);
+                }
+
+                if (input.Length == endIndex + 1)
+                {
+                    return new DesignatedDuration(temp);
+                }
+
+                years = temp;
             }
 
-            startIndex = endIndex + 1;
-            endIndex = input.IndexOf("D");
-            componentString = input.Substring(startIndex, endIndex);
-
-            if (componentString.Contains('.'))
+            if (input.ContainsBefore('M', 'T'))
             {
-                return new DesignatedDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
-            }
-            else if (componentString.Contains(','))
-            {
-                return new DesignatedDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
-            }
+                startIndex = endIndex + 1;
+                endIndex = input.IndexOf('M');
+                componentString = input.Substring(startIndex, endIndex - startIndex);
 
-            int days;
+                if (componentString.Contains('.'))
+                {
+                    return new DesignatedDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                }
+                else if (componentString.Contains(','))
+                {
+                    return new DesignatedDuration(years, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                }
 
-            if (!int.TryParse(input.Substring(startIndex, endIndex), out days))
-            {
-                throw new ParseException("The days component must be a number.", input);
-            }
+                if (!int.TryParse(componentString, out temp))
+                {
+                    throw new ParseException("The months component must be a number.", input);
+                }
 
-            if (input.Length < endIndex + 1)
-            {
-                return new DesignatedDuration(years, months, days);
-            }
+                if (input.Length == endIndex + 1)
+                {
+                    return new DesignatedDuration(years, temp);
+                }
 
-            startIndex = endIndex + 2;
-            endIndex = input.IndexOf("H");
-            componentString = input.Substring(startIndex, endIndex);
-
-            if (componentString.Contains('.'))
-            {
-                return new DesignatedDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
-            }
-            else if (componentString.Contains(','))
-            {
-                return new DesignatedDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                months = temp;
             }
 
-            int hours;
-
-            if (!int.TryParse(input.Substring(startIndex, endIndex), out hours))
+            if (input.Contains('D'))
             {
-                throw new ParseException("The hours component must be a number.", input);
+                startIndex = endIndex + 1;
+                endIndex = input.IndexOf('D');
+                componentString = input.Substring(startIndex, endIndex - startIndex);
+
+                if (componentString.Contains('.'))
+                {
+                    return new DesignatedDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                }
+                else if (componentString.Contains(','))
+                {
+                    return new DesignatedDuration(years, months, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                }
+
+                if (!int.TryParse(componentString, out temp))
+                {
+                    throw new ParseException("The days component must be a number.", input);
+                }
+
+                if (input.Length == endIndex + 1)
+                {
+                    return new DesignatedDuration(years, months, temp);
+                }
+
+                days = temp;
             }
 
-            if (input.Length < endIndex + 1)
+            if (input.Contains('H'))
             {
-                return new DesignatedDuration(years, months, days, hours);
+                startIndex = endIndex + 1;
+
+                if (input[startIndex] == 'T')
+                {
+                    startIndex++;
+                }
+
+                endIndex = input.IndexOf('H');
+                componentString = input.Substring(startIndex, endIndex - startIndex);
+
+                if (componentString.Contains('.'))
+                {
+                    return new DesignatedDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                }
+                else if (componentString.Contains(','))
+                {
+                    return new DesignatedDuration(years, months, days, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                }
+
+                if (!int.TryParse(componentString, out temp))
+                {
+                    throw new ParseException("The hours component must be a number.", input);
+                }
+
+                if (input.Length == endIndex + 1)
+                {
+                    return new DesignatedDuration(years, months, days, temp);
+                }
+
+                hours = temp;
             }
 
-            startIndex = endIndex + 1;
-            endIndex = input.IndexOf("M", startIndex);
-            componentString = input.Substring(startIndex, endIndex);
-
-            if (componentString.Contains('.'))
+            if (input.ContainsAfter('M', 'T'))
             {
-                return new DesignatedDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
-            }
-            else if (componentString.Contains(','))
-            {
-                return new DesignatedDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
-            }
+                startIndex = endIndex + 1;
 
-            int minutes;
+                if (input[startIndex] == 'T')
+                {
+                    startIndex++;
+                }
 
-            if (!int.TryParse(input.Substring(startIndex, endIndex), out minutes))
-            {
-                throw new ParseException("The minutes component must be a number.", input);
-            }
+                endIndex = input.IndexOf('M', input.IndexOf('T'));
+                componentString = input.Substring(startIndex, endIndex - startIndex);
 
-            if (input.Length < endIndex + 1)
-            {
-                return new DesignatedDuration(years, months, days, hours, minutes);
-            }
+                if (componentString.Contains('.'))
+                {
+                    return new DesignatedDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                }
+                else if (componentString.Contains(','))
+                {
+                    return new DesignatedDuration(years, months, days, hours, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                }
 
-            startIndex = endIndex + 1;
-            endIndex = input.IndexOf("S", startIndex);
-            componentString = input.Substring(startIndex, endIndex);
+                if (!int.TryParse(componentString, out temp))
+                {
+                    throw new ParseException("The minutes component must be a number.", input);
+                }
 
-            if (componentString.Contains('.'))
-            {
-                return new DesignatedDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
-            }
-            else if (componentString.Contains(','))
-            {
-                return new DesignatedDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                if (input.Length == endIndex + 1)
+                {
+                    return new DesignatedDuration(years, months, days, hours, temp);
+                }
+
+                minutes = temp;
             }
 
-            int seconds;
-
-            if (!int.TryParse(input.Substring(startIndex, endIndex), out seconds))
+            if (input.Contains('S'))
             {
-                throw new ParseException("The seconds component must be a number.", input);
+                startIndex = endIndex + 1;
+
+                if (input[startIndex] == 'T')
+                {
+                    startIndex++;
+                }
+
+                endIndex = input.IndexOf('S', startIndex);
+                componentString = input.Substring(startIndex, endIndex - startIndex);
+
+                if (componentString.Contains('.'))
+                {
+                    return new DesignatedDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("en-US")));
+                }
+                else if (componentString.Contains(','))
+                {
+                    return new DesignatedDuration(years, months, days, hours, minutes, double.Parse(componentString, CultureInfo.GetCultureInfo("fr-FR")));
+                }
+
+                if (!int.TryParse(componentString, out temp))
+                {
+                    throw new ParseException("The seconds component must be a number.", input);
+                }
+
+                return new DesignatedDuration(years, months, days, hours, minutes, temp);
             }
 
-            return new DesignatedDuration(years, months, days, hours, minutes, seconds);
+            throw new ParseException("A designated duration string must contain a least one time component.", input);
         }
     }
 }

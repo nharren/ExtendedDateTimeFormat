@@ -8,7 +8,7 @@ namespace ISO8601.Tests
     public class CalendarDateTimeTests
     {
         [TestMethod]
-        public void RoundTrip()
+        public void CanRoundTrip()
         {
             // Complete
             Assert.AreEqual("19501010121212", CalendarDateTime.Parse("19501010121212").ToString(false, false, DecimalSeparator.Comma, false));

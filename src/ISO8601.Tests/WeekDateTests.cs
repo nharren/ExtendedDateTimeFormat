@@ -7,7 +7,7 @@ namespace ISO8601.Tests
     public class WeekDateTests
     {
         [TestMethod]
-        public void RoundTrip()
+        public void CanRoundTrip()
         {
             Assert.AreEqual("1950W101", WeekDate.Parse("1950W101").ToString(false));
             Assert.AreEqual("1950-W10-1", WeekDate.Parse("1950-W10-1").ToString(true));

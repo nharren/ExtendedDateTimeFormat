@@ -31,7 +31,7 @@ namespace System.ISO8601
             _seconds = seconds;
 
             var fractionParts = seconds.ToString().Split('.', ',');
-            _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, int? months, int? days, int? hours, double minutes)
@@ -43,7 +43,7 @@ namespace System.ISO8601
             _minutes = minutes;
 
             var fractionParts = minutes.ToString().Split('.', ',');
-            _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, int? months, int? days, double hours)
@@ -54,7 +54,7 @@ namespace System.ISO8601
             _hours = hours;
 
             var fractionParts = hours.ToString().Split('.', ',');
-            _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, int? months, double days)
@@ -64,7 +64,7 @@ namespace System.ISO8601
             _days = days;
 
             var fractionParts = days.ToString().Split('.', ',');
-            _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, double months)
@@ -73,7 +73,7 @@ namespace System.ISO8601
             _months = months;
 
             var fractionParts = months.ToString().Split('.', ',');
-            _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(double years)
@@ -81,7 +81,7 @@ namespace System.ISO8601
             _years = years;
 
             var fractionParts = years.ToString().Split('.', ',');
-            _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         private DesignatedDuration(double? weeks)
@@ -89,7 +89,7 @@ namespace System.ISO8601
             _weeks = weeks;
 
             var fractionParts = weeks.ToString().Split('.', ',');
-            _fractionLength = int.Parse(fractionParts[1]) == 0 ? 0 : fractionParts[1].Length;
+            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public double? Days
@@ -173,7 +173,7 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == "." ? DecimalSeparator.Dot : DecimalSeparator.Comma);
+            return ToString(DecimalSeparator.Comma);
         }
 
         public virtual string ToString(DecimalSeparator decimalSeparator)
