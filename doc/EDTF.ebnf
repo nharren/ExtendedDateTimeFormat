@@ -1,0 +1,187 @@
+(* ******************** Level 0 (ISO 8601 Profile) ******************** *)
+
+(* --- Common --- *)
+
+positive digit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+digit = positive digit | "0" ;
+
+one through twelve = "0", positive digit | "10" | "11" | "12" ;
+one through thirteen = one through twelve | "13" ;
+one through twenty three = "0", positive digit | "1", digit | "20" | "21" | "22" | "23" ;
+zero through twenty three = "00" | one through twenty three ;
+one through twenty nine = "0", positive digit | ( "1", "2" ), digit ;
+one through thirty = one through twenty nine | "30" ;
+one through thirty one = one through thirty | "31" ;
+one through fifty nine = "0", positive digit | ( "1" | "2" | "3" | "4" | "5" ), digit ;
+zero through fifty nine = "00" | one through fifty nine ; 
+
+(* --- Date --- *)
+
+year = digit digit digit digit ;
+month = one through twelve ;
+day = one through thirty one ;
+month and day = ( "01" | "03" | "05" | "07" | "08" | "10" | "12" ), "-", one through thirty one
+              | ( "04" | "06" | "09" | "11"), "-", one through thirty
+              | "02-", one through twenty nine ;
+year and month = year, "-", month ;
+year month and day = year, "-", month and day ;
+hour = zero through twenty three ;
+minute = zero through fifty nine ;
+second =  zero through fifty nine ;
+
+date =  year | year and month | year month and day ;
+
+(* --- Time --- *)
+
+zone offset hour = one through thirteen ;
+zone offset = "Z" | ( "+" | "-" ), ( zone offset hour, [ ":", minute ] | "14:00" | "00:", one through fifty nine ) ;
+base time = hour, ":", minute, ":", second ;
+time = base time, [ zone offset ] ;
+
+(* --- Date and Time --- *)
+
+datetime = date, "T", time ;
+
+(* --- Level Zero Interval --- *)
+
+level zero interval = date, "/", date ;
+
+(* --- General --- *)
+
+level zero expression = date | datetime | level zero interval ; 
+
+(* ******************** Level 1 (First-Level Extensions) ******************** *)
+
+(* --- Common --- *)
+
+uncertain or appoximate symbol = "?" | "~" | "?~" ;
+season = year, "-", ( "21" | "22" | "23" | "24" ) ;
+
+(* --- Uncertain or Approximate Date --- *)
+
+uncertain or approximate date = date, uncertain or appoximate symbol ;
+      
+(* --- Unspecified Date --- *)
+
+unspecified date = digit, digit, ( digit | "u" ), "u"
+                 | year, "-uu"
+                 | year and month, "-uu" 
+                 | year, "-uu-uu" ;
+
+(* --- Level One Interval --- *)
+      
+level one start = ( date | season ), [ uncertain or appoximate symbol ] | "unknown" ;
+level one end = level one start | "open" ;
+
+level one interval = level one start, "/", level one end ;
+
+(* --- Long Year Simple Form --- *)
+
+long year simple form = "y", [ "-" ], positive digit, digit, digit, digit, digit, { digit } ;
+
+(* --- General --- *)
+
+level one expression = uncertain or approximate date | unspecified date
+                     | level one interval | long year simple form | season ;
+
+(* ******************** Level 2 (Second-Level Extensions) ******************** *)
+
+(* --- Common --- *)
+
+date with internal uncertainty = internal uncertain or approximate
+                               | internal unspecified ;
+
+(* --- Internal Uncertain or Approximate --- *)
+
+internal uncertain or approximate base = year, uncertain or approximate symbol, "-", month, [ "-(", day, ")", uncertain or approximate symbol ]
+                                       | year, uncertain or approximate symbol, "-", month and day, [ uncertain or approximate symbol ]
+                                       | year, [ uncertain or approximate symbol ], "-(", month, ")", uncertain or approximate symbol, [ "-(", day, ")", uncertain or approximate symbol ]
+                                       | year, [ uncertain or approximate symbol ], "-(", month, ")", uncertain or approximate symbol, [ "-", day ]
+									   | year and month, uncertain or approximate symbol, "-(", day, ")", uncertain or approximate symbol
+									   | year and month, uncertain or approximate symbol, "-", day
+									   | year and month, "-(", day, ")", uncertain or approximate symbol
+									   | year, "-(", month and day, ")", uncertain or approximate symbol
+									   | season, uncertain or approximate symbol ;
+
+internal uncertain or approximate =  internal uncertain or approximate base | "(", internal uncertain or approximate base, ")", uncertain or approximate symbol ;
+ 
+(* --- Internal Unspecified --- *)
+
+day with unspecified = one through thirty one  
+                     | "u", ( digit | "u" )
+                     | ( "1" | "2" | "3" ), "u" ;
+
+month with unspecified = one through twelve | "0u" | "1u" | ( "u", digitOrU ) ;
+
+year with unspecified = "u", ( digit | "u" ), ( digit | "u" ), ( digit | "u" ) 
+                      | ( digit | "u" ), "u", ( digit | "u" ), ( digit | "u" )
+                      | ( digit | "u" ), ( digit | "u" ), "u", ( digit | "u" )
+                      | ( digit | "u" ), ( digit | "u" ), ( digit | "u" ), "u" ;
+
+month and day with unspecified = ( month | month with unspecified ), "-", day with unspecified
+                               | month with unspecified, "-", day ;
+
+year and month with unspecified = ( year | year with unspecified ), "-", month with unspecified ; 
+                                | year with unspecified, "-", month ;
+
+year month and day with unspecified = ( year with unspecified | year ), "-", month and day with unspecified 
+                                    | year with unspecified, "-", month and day ;
+
+internal unspecified = year with unspecified | year and month with unspecified | year month and day with unspecified ;
+ 
+(* --- Inclusive List and Choice List --- *)
+
+earlier = "..", date ;
+later = date, ".." ;
+consecutives = year month and day, "..", year month and day 
+             | year and month, "..", year and month 
+             | year, "..", year ;
+
+list element = date | date with internal uncertainty | uncertain or approximate date
+             | unspecified | consecutives ;
+
+list content = earlier, { ",", list element }
+             | [ earlier "," ], { list element "," }, later 
+             | list element, ",", list element, { ",", list element } 
+             | consecutives ;
+
+choice list = "[", list content, "]" ;
+inclusive list = "{", list content, "}" ;
+
+(* --- Masked precision --- *)
+
+masked precision = digit, digit, ( digit, "x" | "xx" ) ;
+ 
+(* --- Level Two Interval --- *)
+
+level two interval = date or season, "/", date with internal uncertainty
+                   | date with internal uncertainty, "/", date or season
+                   | date with internal uncertainty, "/", date with internal uncertainty ;
+
+
+(* --- Long Year Scientific Form --- *)
+
+positive integer = positive digit, { digit } ;
+
+long year scientific = "y", [ "-" ], positive integer, "e", positive integer, [ "p", positive integer ] ;
+
+(* --- Qualified Season --- *)
+
+qualifying string = ? non-whitespace characters ? ;
+season qualifier = qualifying string ;
+qualified season = season, "^", season qualifier ;
+
+(* --- General --- *)
+
+level two expression = internal uncertain or approximate
+                     | internal unspecified 
+                     | choice list
+                     | inclusive list 
+                     | masked precision
+                     | level two interval 
+                     | long year scientific
+                     | season qualified  ;
+
+(* ******************** General ******************** *)
+
+date and time = level zero expression | level one expression | level two expression ;

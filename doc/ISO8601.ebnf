@@ -17,8 +17,7 @@ expanded leap year = "+" | "-", ? four or more digit leap years ? ;
 
 (* --- Common --- *)
 
-one to thirty = ( "0", digit ) - "00" | "1", digit | "2", digit
-              | "30" ;
+one to thirty = ( "0", digit ) - "00" | "1", digit | "2", digit | "30" ;
 one to twenty eight = one to thirty - "30" - "29" ;
 one to thirty one = one to thirty | "31" ;
 
@@ -189,7 +188,7 @@ extended date = extended complete date | extended reduced date | extended expand
 
 date = basic date | extended date ;
 
-(* ********** TIME OF DAY ********** *)
+(* ******************** TIME OF DAY ******************** *)
 
 (* -------------------- Common -------------------- *)
 
