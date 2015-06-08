@@ -1,21 +1,19 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparers;
-using System.ISO8601.Internal.Converters;
-using System.ISO8601.Internal.Parsers;
-using System.ISO8601.Internal.Serializers;
+using System.ISO8601.Internal.Comparison;
+using System.ISO8601.Internal.Conversion;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
     public class CalendarDate : Date, IComparable, IComparable<Date>, IEquatable<Date>
     {
         private static DateComparer _comparer;
-        private readonly int _century;
         private readonly int _day;
         private readonly int _month;
-        private readonly CalendarDatePrecision _precision;
         private readonly long _year;
-        private int _yearLength;
-        private bool _isExpanded;
+        private int _century;
+        private CalendarDatePrecision _precision;
 
         public CalendarDate(long year, int month, int day) : this(year, month)
         {
@@ -41,25 +39,14 @@ namespace System.ISO8601
 
         public CalendarDate(long year)
         {
-            if (year < 0 || year > 9999)
-            {
-                _isExpanded = true;
-            }
-
             _year = year;
             _century = DateCalculator.CenturyOfYear(year);
             _precision = CalendarDatePrecision.Year;
         }
 
-        private CalendarDate(int century)
+        private CalendarDate()
         {
-            if (century < 0 || century > 99)
-            {
-                _isExpanded = true;
-            }
 
-            _century = century;
-            _precision = CalendarDatePrecision.Century;
         }
 
         public static DateComparer Comparer
@@ -105,6 +92,11 @@ namespace System.ISO8601
             {
                 return _precision;
             }
+
+            set
+            {
+                _precision = value;
+            }
         }
 
         public long Year
@@ -115,34 +107,13 @@ namespace System.ISO8601
             }
         }
 
-        public int YearLength
-        {
-            get
-            {
-                return _yearLength;
-            }
-            set
-            {
-                _yearLength = value;
-            }
-        }
-
-        public bool IsExpanded
-        {
-            get
-            {
-                return _isExpanded;
-            }
-
-            set
-            {
-                _isExpanded = _year < 0 || _year > 9999 || _century < 0 || _century > 99 ? true : value;
-            }
-        }
-
         public static CalendarDate FromCentury(int century)
         {
-            return new CalendarDate(century);
+            return new CalendarDate
+            {
+                _century = century,
+                _precision = CalendarDatePrecision.Century
+            };
         }
 
         public static TimeSpan operator -(CalendarDate x, CalendarDate y)
@@ -237,12 +208,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true);
+            return ToString();
         }
 
-        public virtual string ToString(bool hyphenate)
+        public virtual string ToString(bool withComponentSeparators = true, bool isExpanded = false, int yearLength = 4)
         {
-            return CalendarDateSerializer.Serialize(this, hyphenate);
+            return CalendarDateSerializer.Serialize(this, withComponentSeparators, isExpanded, yearLength);
         }
 
         public WeekDate ToWeekDate(WeekDatePrecision precision)

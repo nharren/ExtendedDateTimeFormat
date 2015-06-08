@@ -1,7 +1,7 @@
-﻿using System.ISO8601.Internal.Comparers;
-using System.ISO8601.Internal.Converters;
-using System.ISO8601.Internal.Parsers;
-using System.ISO8601.Internal.Serializers;
+﻿using System.ISO8601.Internal.Comparison;
+using System.ISO8601.Internal.Conversion;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
@@ -27,19 +27,6 @@ namespace System.ISO8601
                 }
 
                 return _comparer;
-            }
-        }
-
-        public int YearLength
-        {
-            get
-            {
-                return _date.YearLength;
-            }
-
-            set
-            {
-                Date.YearLength = value;
             }
         }
 

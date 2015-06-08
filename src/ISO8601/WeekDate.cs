@@ -1,8 +1,8 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparers;
-using System.ISO8601.Internal.Converters;
-using System.ISO8601.Internal.Parsers;
-using System.ISO8601.Internal.Serializers;
+using System.ISO8601.Internal.Comparison;
+using System.ISO8601.Internal.Conversion;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
@@ -10,11 +10,9 @@ namespace System.ISO8601
     {
         private static DateComparer _comparer;
         private readonly int _day;
-        private readonly WeekDatePrecision _precision;
+        private WeekDatePrecision _precision;
         private readonly int _week;
         private readonly long _year;
-        private int _yearLength;
-        private bool _isExpanded;
 
         public WeekDate(long year, int week, int day) : this(year, week)
         {
@@ -29,11 +27,6 @@ namespace System.ISO8601
 
         public WeekDate(long year, int week)
         {
-            if (year < 0 || year > 9999)
-            {
-                _isExpanded = true;
-            }
-
             int weeksInYear = DateCalculator.WeeksInYear(year);
 
             if (week < 1 || week > weeksInYear)
@@ -59,19 +52,6 @@ namespace System.ISO8601
             }
         }
 
-        public int YearLength
-        {
-            get
-            {
-                return _yearLength;
-            }
-
-            set
-            {
-                _yearLength = value;
-            }
-        }
-
         public int Day
         {
             get
@@ -85,6 +65,11 @@ namespace System.ISO8601
             get
             {
                 return _precision;
+            }
+
+            set
+            {
+                _precision = value;
             }
         }
 
@@ -101,19 +86,6 @@ namespace System.ISO8601
             get
             {
                 return _year;
-            }
-        }
-
-        public bool IsExpanded
-        {
-            get
-            {
-                return _isExpanded;
-            }
-
-            set
-            {
-                _isExpanded = value;
             }
         }
 
@@ -209,12 +181,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true);
+            return ToString();
         }
 
-        public virtual string ToString(bool hyphenate)
+        public virtual string ToString(bool withComponentSeparators = true, bool isExpanded = false, int yearLength = 4)
         {
-            return WeekDateSerializer.Serialize(this, hyphenate);
+            return WeekDateSerializer.Serialize(this, withComponentSeparators, isExpanded, yearLength);
         }
     }
 }

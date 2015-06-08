@@ -1,6 +1,6 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Parsers;
-using System.ISO8601.Internal.Serializers;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 using System.Globalization;
 
 namespace System.ISO8601

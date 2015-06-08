@@ -1,7 +1,7 @@
-﻿using System.ISO8601.Internal.Comparers;
-using System.ISO8601.Internal.Converters;
-using System.ISO8601.Internal.Parsers;
-using System.ISO8601.Internal.Serializers;
+﻿using System.ISO8601.Internal.Comparison;
+using System.ISO8601.Internal.Conversion;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
@@ -31,19 +31,6 @@ namespace System.ISO8601
                 }
 
                 return _comparer;
-            }
-        }
-
-        public int YearLength
-        {
-            get
-            {
-                return _date.YearLength;
-            }
-
-            set
-            {
-                Date.YearLength = value;
             }
         }
 
@@ -206,12 +193,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true, true, DecimalSeparator.Comma, true);
+            return ToString();
         }
 
-        public virtual string ToString(bool withTimeDesignator, bool withSeparators, DecimalSeparator decimalSeparator, bool withUtcOffset)
+        public virtual string ToString(bool withTimeDesignator = true, bool withComponentSeparators = true, DecimalSeparator decimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true)
         {
-            return WeekDateTimeSerializer.Serialize(this, withTimeDesignator, withSeparators, decimalSeparator, withUtcOffset);
+            return WeekDateTimeSerializer.Serialize(this, withTimeDesignator, withComponentSeparators, decimalSeparator, withUtcOffset);
         }
     }
 }

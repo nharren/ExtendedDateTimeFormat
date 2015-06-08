@@ -1,5 +1,5 @@
-using System.EDTF.Internal.Parsers;
-using System.EDTF.Internal.Serializers;
+using System.EDTF.Internal.Parsing;
+using System.EDTF.Internal.Serialization;
 
 namespace System.EDTF
 {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.EDTF.Internal.Converters;
-using System.EDTF.Internal.Parsers;
-using System.EDTF.Internal.Serializers;
+using System.EDTF.Internal.Conversion;
+using System.EDTF.Internal.Parsing;
+using System.EDTF.Internal.Serialization;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;

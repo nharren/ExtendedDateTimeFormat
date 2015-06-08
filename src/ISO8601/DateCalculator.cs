@@ -49,16 +49,14 @@
 
         internal static DayOfWeek DayOfWeek(CalendarDate calendarDate)              // http://www.stoimen.com/blog/2012/04/24/computer-algorithms-how-to-determine-the-day-of-the-week/
         {
-            var yearString = calendarDate.Year.ToString("D" + calendarDate.YearLength);
-            var yearOfCentury = int.Parse(yearString.Substring(yearString.Length - 2, 2));
-            var century = int.Parse(yearString.Substring(0, yearString.Length - 2));
+            var yearOfCentury = int.Parse(calendarDate.Year.ToString().Substring(calendarDate.Century.ToString().Length));
 
             return (DayOfWeek)((
                   calendarDate.Day
                 + (IsLeapYear(calendarDate.Year) ? DayOfWeekMonthKeys366[calendarDate.Month] : DayOfWeekMonthKeys365[calendarDate.Month])
                 + yearOfCentury
                 + yearOfCentury / 4
-                + DayOfWeekCenturyKeys[century % 4 < 0 ? 4 + (century % 4) : century % 4])
+                + DayOfWeekCenturyKeys[calendarDate.Century % 4 < 0 ? 4 + (calendarDate.Century % 4) : calendarDate.Century % 4])
             % 7);
         }
 

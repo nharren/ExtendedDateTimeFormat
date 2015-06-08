@@ -1,8 +1,8 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparers;
-using System.ISO8601.Internal.Converters;
-using System.ISO8601.Internal.Parsers;
-using System.ISO8601.Internal.Serializers;
+using System.ISO8601.Internal.Comparison;
+using System.ISO8601.Internal.Conversion;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
@@ -11,16 +11,9 @@ namespace System.ISO8601
         private static DateComparer _comparer;
         private readonly int _day;
         private readonly long _year;
-        private int _yearLength;
-        private bool _isExpanded;
 
         public OrdinalDate(long year, int day)
         {
-            if (year < 0 || year > 9999)
-            {
-                _isExpanded = true;
-            }
-
             var daysInYear = DateCalculator.DaysInYear(year);
 
             if (day < 1 || day > daysInYear)
@@ -45,19 +38,6 @@ namespace System.ISO8601
             }
         }
 
-        public int YearLength
-        {
-            get
-            {
-                return _yearLength;
-            }
-
-            set
-            {
-                _yearLength = value;
-            }
-        }
-
         public int Day
         {
             get
@@ -71,19 +51,6 @@ namespace System.ISO8601
             get
             {
                 return _year;
-            }
-        }
-
-        public bool IsExpanded
-        {
-            get
-            {
-                return _isExpanded;
-            }
-
-            set
-            {
-                _isExpanded = value;
             }
         }
 
@@ -174,12 +141,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true);
+            return ToString();
         }
 
-        public virtual string ToString(bool hyphenate)
+        public virtual string ToString(bool withComponentSeparators = true, bool isExpanded = false, int yearLength = 4)
         {
-            return OrdinalDateSerializer.Serialize(this, hyphenate);
+            return OrdinalDateSerializer.Serialize(this, withComponentSeparators, isExpanded, yearLength);
         }
 
         public WeekDate ToWeekDate(WeekDatePrecision precision)
