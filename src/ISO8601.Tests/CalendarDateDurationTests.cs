@@ -20,11 +20,11 @@ namespace ISO8601.Tests
             Assert.AreEqual("P12", CalendarDateDuration.Parse("P12").ToString(false));
 
             // Expanded
-            Assert.AreEqual("P+112341212", CalendarDateDuration.Parse("P+112341212", 5).ToString(false));
-            Assert.AreEqual("P+11234-12-12", CalendarDateDuration.Parse("P+11234-12-12", 5).ToString(true));
-            Assert.AreEqual("P+11234-12", CalendarDateDuration.Parse("P+11234-12", 5).ToString(true));
-            Assert.AreEqual("P+11234", CalendarDateDuration.Parse("P+11234", 5).ToString(true));
-            Assert.AreEqual("P+112", CalendarDateDuration.Parse("P+112", 5).ToString(false));
+            Assert.AreEqual("P+112341212", CalendarDateDuration.Parse("P+112341212", 5).ToString(false, true, 5));
+            Assert.AreEqual("P+11234-12-12", CalendarDateDuration.Parse("P+11234-12-12", 5).ToString(true, true, 5));
+            Assert.AreEqual("P+11234-12", CalendarDateDuration.Parse("P+11234-12", 5).ToString(true, true, 5));
+            Assert.AreEqual("P+11234", CalendarDateDuration.Parse("P+11234", 5).ToString(true, true, 5));
+            Assert.AreEqual("P+112", CalendarDateDuration.Parse("P+112", 5).ToString(false, true, 5));
         }
     }
 }

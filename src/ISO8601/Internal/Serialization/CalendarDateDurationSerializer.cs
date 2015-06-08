@@ -4,42 +4,34 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class CalendarDateDurationSerializer
     {
-        internal static string Serialize(CalendarDateDuration calendarDateDuration, bool withComponentSeparators)
+        internal static string Serialize(CalendarDateDuration calendarDateDuration, bool withComponentSeparators, bool isExpanded, int yearLength)
         {
             var output = new StringBuilder("P");
 
             if (calendarDateDuration.Centuries != null)
             {
-                if (calendarDateDuration.IsExpanded)
+                if (isExpanded)
                 {
-                    if (calendarDateDuration.Centuries < 0)
-                    {
-                        output.Append('-');
-                    }
-                    else
+                    if (calendarDateDuration.Centuries >= 0)
                     {
                         output.Append('+');
                     }
                 }
 
-                output.AppendFormat(calendarDateDuration.Centuries.Value.ToString("D" + (calendarDateDuration.YearLength - 2)));
+                output.AppendFormat(calendarDateDuration.Centuries.Value.ToString("D" + (yearLength - 2)));
 
                 return output.ToString();
             }
 
-            if (calendarDateDuration.IsExpanded)
+            if (isExpanded)
             {
-                if (calendarDateDuration.Years < 0)
-                {
-                    output.Append('-');
-                }
-                else
+                if (calendarDateDuration.Years >= 0)
                 {
                     output.Append('+');
                 }
             }
 
-            output.AppendFormat(calendarDateDuration.Years.ToString("D" + calendarDateDuration.YearLength));
+            output.AppendFormat(calendarDateDuration.Years.ToString("D" + yearLength));
 
             if (calendarDateDuration.Months == null)
             {

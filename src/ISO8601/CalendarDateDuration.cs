@@ -10,8 +10,6 @@ namespace System.ISO8601
         private readonly int? _days;
         private readonly int? _months;
         private readonly long _years;
-        private bool _isExpanded;
-        private int _yearLength;
 
         public CalendarDateDuration(long years, int months, int days) : this(years, months)
         {
@@ -35,21 +33,11 @@ namespace System.ISO8601
 
         public CalendarDateDuration(long years)
         {
-            if (years < 0 || years > 9999)
-            {
-                _isExpanded = true;
-            }
-
             _years = years;
         }
 
         private CalendarDateDuration(int centuries)
         {
-            if (centuries < 0 || centuries > 99)
-            {
-                _isExpanded = true;
-            }
-
             _centuries = centuries;
         }
 
@@ -85,32 +73,6 @@ namespace System.ISO8601
             }
         }
 
-        public bool IsExpanded
-        {
-            get
-            {
-                return _isExpanded;
-            }
-
-            set
-            {
-                _isExpanded = _years < 0 || _years > 9999 || _centuries < 0 || _centuries > 99 ? true : value;
-            }
-        }
-
-        public int YearLength
-        {
-            get
-            {
-                return _yearLength;
-            }
-
-            set
-            {
-                _yearLength = value;
-            }
-        }
-
         public static CalendarDateDuration FromCenturies(int centuries)
         {
             return new CalendarDateDuration(centuries);
@@ -123,12 +85,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true);
+            return ToString();
         }
 
-        public virtual string ToString(bool withComponentSeparators)
+        public virtual string ToString(bool withComponentSeparators = true, bool isExpanded = false, int yearLength = 4)
         {
-            return CalendarDateDurationSerializer.Serialize(this, withComponentSeparators);
+            return CalendarDateDurationSerializer.Serialize(this, withComponentSeparators, isExpanded, yearLength);
         }
     }
 }
