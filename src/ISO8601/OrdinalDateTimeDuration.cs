@@ -150,19 +150,19 @@ namespace System.ISO8601
             }
         }
 
-        public static OrdinalDateTimeDuration Parse(string input, int fractionLength = 0)
+        public static OrdinalDateTimeDuration Parse(string input, int yearLength = 4)
         {
-            return OrdinalDateTimeDurationParser.Parse(input, fractionLength);
+            return OrdinalDateTimeDurationParser.Parse(input, yearLength);
         }
 
         public override string ToString()
         {
-            return ToString(true, 0, CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == "." ? DecimalSeparator.Dot : DecimalSeparator.Comma);
+            return ToString();
         }
 
-        public virtual string ToString(bool withComponentSeparators, int fractionLength, DecimalSeparator decimalSeparator)
+        public virtual string ToString(bool withComponentSeparators = true, bool isExpanded = false, int yearLength = 4, int fractionLength = 0, DecimalSeparator decimalSeparator = DecimalSeparator.Comma)
         {
-            return OrdinalDateTimeDurationSerializer.Serialize(this, withComponentSeparators, fractionLength, decimalSeparator);
+            return OrdinalDateTimeDurationSerializer.Serialize(this, withComponentSeparators, isExpanded, yearLength, fractionLength, decimalSeparator);
         }
     }
 }

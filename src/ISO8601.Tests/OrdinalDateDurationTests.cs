@@ -15,8 +15,8 @@ namespace ISO8601.Tests
             Assert.AreEqual("P1234-111", OrdinalDateDuration.Parse("P1234-111").ToString(true));
 
             // Extended
-            Assert.AreEqual("P+11234111", OrdinalDateDuration.Parse("P+11234111", 5).ToString(false));
-            Assert.AreEqual("P+11234-111", OrdinalDateDuration.Parse("P+11234-111", 5).ToString(true));
+            Assert.AreEqual("P+11234111", OrdinalDateDuration.Parse("P+11234111", 5).ToString(false, true, 5));
+            Assert.AreEqual("P+11234-111", OrdinalDateDuration.Parse("P+11234-111", 5).ToString(true, true, 5));
         }
     }
 }

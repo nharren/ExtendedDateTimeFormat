@@ -211,8 +211,8 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 - [x] Calendar datetimes
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [ ] Conversion to ordinal datetimes
-	- [ ] Conversion to week datetimes
+	- [ ] Conversion to OrdinalDateTime
+	- [ ] Conversion to WeekDateTime
 - [x] Ordinal datetimes
 	- [x] Deserialization from string
 	- [x] Serialization to string
@@ -240,12 +240,12 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 - [x] Time durations
 	- [x] Deserialization from string
 	- [x] Serialization to string
-- [ ] Calendar datetime durations
-	- [ ] Deserialization from string
-	- [ ] Serialization to string
-- [ ] Ordinal datetime durations
-	- [ ] Deserialization from string
-	- [ ] Serialization to string
+- [x] Calendar datetime durations
+	- [x] Deserialization from string
+	- [x] Serialization to string
+- [x] Ordinal datetime durations
+	- [x] Deserialization from string
+	- [x] Serialization to string
 - [ ] Start-end time intervals
 	- [ ] Deserialization from string
 	- [ ] Serialization to string
