@@ -102,19 +102,6 @@ namespace System.ISO8601
             }
         }
 
-        public int FractionLength
-        {
-            get
-            {
-                return _timeDuration.FractionLength;
-            }
-
-            set
-            {
-                _timeDuration.FractionLength = value;
-            }
-        }
-
         public double Hours
         {
             get
@@ -123,7 +110,7 @@ namespace System.ISO8601
             }
         }
 
-        public double Minutes
+        public double? Minutes
         {
             get
             {
@@ -131,7 +118,7 @@ namespace System.ISO8601
             }
         }
 
-        public double Seconds
+        public double? Seconds
         {
             get
             {
@@ -170,12 +157,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true, CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == "." ? DecimalSeparator.Dot : DecimalSeparator.Comma);
+            return ToString(true, 0, CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == "." ? DecimalSeparator.Dot : DecimalSeparator.Comma);
         }
 
-        public virtual string ToString(bool withComponentSeparators, DecimalSeparator decimalSeparator)
+        public virtual string ToString(bool withComponentSeparators, int fractionLength, DecimalSeparator decimalSeparator)
         {
-            return OrdinalDateTimeDurationSerializer.Serialize(this, withComponentSeparators, decimalSeparator);
+            return OrdinalDateTimeDurationSerializer.Serialize(this, withComponentSeparators, fractionLength, decimalSeparator);
         }
     }
 }

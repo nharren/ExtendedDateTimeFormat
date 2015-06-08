@@ -5,50 +5,41 @@ namespace System.ISO8601.Internal.Serializers
 {
     internal static class TimeDurationSerializer
     {
-        internal static string Serialize(TimeDuration timeDuration, bool withTimeDesignator, bool withComponentSeparators, DecimalSeparator decimalSeparator)
+        internal static string Serialize(TimeDuration timeDuration, bool withComponentSeparators, int fractionLength, DecimalSeparator decimalSeparator)
         {
-            var cultureInfo = decimalSeparator == DecimalSeparator.Dot ? CultureInfo.GetCultureInfo("en-US") : CultureInfo.GetCultureInfo("fr-FR");
+            var numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = decimalSeparator == DecimalSeparator.Dot ? "." : "," };
 
-            var noSeconds = timeDuration.Seconds == 0.0d;
-            var noMinutes = timeDuration.Minutes == 0.0d && noSeconds;
-            var noHours = timeDuration.Hours == 0.0d && noMinutes;
+            var output = new StringBuilder("PT");
 
-            var output = new StringBuilder("P");
-
-            if (withTimeDesignator)
+            if (timeDuration.Minutes == null)
             {
-                output.Append('T');
-            }
-
-            if (noMinutes)
-            {
-                output.AppendFormat(cultureInfo, "{0:F" + timeDuration.FractionLength + "}", timeDuration.Hours);
+                output.AppendFormat(timeDuration.Hours.ToString("F" + fractionLength, numberFormatInfo));
 
                 return output.ToString();
             }
 
-            output.AppendFormat("{0:D2}", timeDuration.Hours);
+            output.AppendFormat("{0:##}", timeDuration.Hours);
 
             if (withComponentSeparators)
             {
                 output.Append(':');
             }
 
-            if (noSeconds)
+            if (timeDuration.Seconds == null)
             {
-                output.AppendFormat(cultureInfo, "{0:F" + timeDuration.FractionLength + "}", timeDuration.Minutes);
+                output.AppendFormat(timeDuration.Minutes.Value.ToString("F" + fractionLength, numberFormatInfo));
 
                 return output.ToString();
             }
 
-            output.AppendFormat("{0:D2}", timeDuration.Minutes);
+            output.AppendFormat("{0:##}", timeDuration.Minutes);
 
             if (withComponentSeparators)
             {
                 output.Append(':');
             }
 
-            output.AppendFormat(cultureInfo, "{0:F" + timeDuration.FractionLength + "}", timeDuration.Seconds);
+            output.AppendFormat(timeDuration.Seconds.Value.ToString("F" + fractionLength, numberFormatInfo));
 
             return output.ToString();
         }

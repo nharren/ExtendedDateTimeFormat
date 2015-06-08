@@ -15,7 +15,7 @@
                 throw new ParseException("The ordinal datetime duration must have a time component.", input);
             }
 
-            return new OrdinalDateTimeDuration(OrdinalDateDurationParser.Parse(components[0]), TimeDuration.Parse(components[1], fractionLength));
+            return new OrdinalDateTimeDuration(OrdinalDateDurationParser.Parse(components[0]), TimeDuration.Parse(components[1]));
         }
     }
 }

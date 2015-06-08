@@ -16,7 +16,7 @@
                 throw new ParseException("The calendar datetime duration must have a time component.", input);
             }
 
-            return new CalendarDateTimeDuration(CalendarDateDurationParser.Parse(components[0], yearLength), TimeDuration.Parse(components[1], fractionLength));
+            return new CalendarDateTimeDuration(CalendarDateDurationParser.Parse(components[0], yearLength), TimeDuration.Parse(components[1]));
         }
     }
 }

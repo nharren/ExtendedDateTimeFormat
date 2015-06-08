@@ -9,18 +9,20 @@ namespace ISO8601.Tests
         [TestMethod]
         public void CanRoundTrip()
         {
+            // Complete
             Assert.AreEqual("19501010", CalendarDate.Parse("19501010").ToString(false));
             Assert.AreEqual("1950-10-10", CalendarDate.Parse("1950-10-10").ToString(true));
 
+            // Reduced
             Assert.AreEqual("1950-10", CalendarDate.Parse("1950-10").ToString(true));
             Assert.AreEqual("1950", CalendarDate.Parse("1950").ToString(false));
             Assert.AreEqual("19", CalendarDate.Parse("19").ToString(false));
 
+            // Expanded
             Assert.AreEqual("+19501010", CalendarDate.Parse("+19501010").ToString(false));
             Assert.AreEqual("+119501010", CalendarDate.Parse("+119501010", 5).ToString(false));
             Assert.AreEqual("+1950-10-10", CalendarDate.Parse("+1950-10-10").ToString(true));
             Assert.AreEqual("+11950-10-10", CalendarDate.Parse("+11950-10-10", 5).ToString(true));
-
             Assert.AreEqual("+1950-10", CalendarDate.Parse("+1950-10").ToString(true));
             Assert.AreEqual("+11950-10", CalendarDate.Parse("+11950-10", 5).ToString(true));
             Assert.AreEqual("+1950", CalendarDate.Parse("+1950").ToString(false));
