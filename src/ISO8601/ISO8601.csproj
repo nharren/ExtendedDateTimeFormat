@@ -77,7 +77,7 @@
     <Compile Include="Internal\Serialization\RecurringTimeIntervalSerializer.cs" />
     <Compile Include="Internal\Serialization\StartDurationTimeIntervalSerializer.cs" />
     <Compile Include="Internal\Serialization\TimeIntervalSerializer.cs" />
-    <Compile Include="Internal\StringExtensions.cs" />
+    <Compile Include="Internal\EnumerableExtensions.cs" />
     <Compile Include="Internal\Parsing\CalendarDateDurationParser.cs" />
     <Compile Include="Internal\Parsing\CalendarDateParser.cs" />
     <Compile Include="Internal\Parsing\CalendarDateTimeDurationParser.cs" />
