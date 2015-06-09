@@ -56,6 +56,6 @@ The Extended Date Time Format is a proposed extension to the standard datetime f
 
 See [Features.md](doc/Features.md)
 
-#### License
+## License
 
 [The MIT License](LICENSE.txt)
