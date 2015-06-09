@@ -278,3 +278,7 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 - Descriptive, helpful exceptions.
 - Thorough performance tests.
 - Better documentation and examples.
+
+#### License
+
+[The MIT License](License.md)
