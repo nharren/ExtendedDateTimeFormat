@@ -281,4 +281,4 @@ private string ToXml(IExtendedDateTimeIndependentType extendedDateTimeIndependen
 
 #### License
 
-[The MIT License](License.md)
+[The MIT License](LICENSE.txt)
