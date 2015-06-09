@@ -1,13 +1,15 @@
 ﻿using System.ISO8601.Abstract;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
     public class StartDurationTimeInterval : TimeInterval
     {
         private readonly Duration _duration;
-        private readonly DateTime _start;
+        private readonly TimePoint _start;
 
-        public StartDurationTimeInterval(DateTime start, Duration duration)
+        public StartDurationTimeInterval(TimePoint start, Duration duration)
         {
             if (start == null)
             {
@@ -31,12 +33,27 @@ namespace System.ISO8601
             }
         }
 
-        public DateTime Start
+        public TimePoint Start
         {
             get
             {
                 return _start;
             }
+        }
+
+        public static StartDurationTimeInterval Parse(string input, int startYearLength = 4, int endYearLength = 4)
+        {
+            return StartDurationTimeIntervalParser.Parse(input, startYearLength, endYearLength);
+        }
+
+        public override string ToString()
+        {
+            return ToString();
+        }
+
+        public virtual string ToString(bool withTimeDesignator = true, bool withComponentSeparators = true, DecimalSeparator startDecimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true, bool isExpanded = false, int yearLength = 4, int fractionLength = 0, DecimalSeparator durationDecimalSeparator = DecimalSeparator.Comma)
+        {
+            return StartDurationTimeIntervalSerializer.Serialize(this, withTimeDesignator, withComponentSeparators, startDecimalSeparator, withUtcOffset, isExpanded, yearLength, fractionLength, durationDecimalSeparator);
         }
     }
 }

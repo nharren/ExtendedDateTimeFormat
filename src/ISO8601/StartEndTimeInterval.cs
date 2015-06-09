@@ -1,46 +1,26 @@
 ﻿using System.ISO8601.Abstract;
+using System.ISO8601.Internal.Parsing;
+using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
     public class StartEndTimeInterval : TimeInterval
     {
-        private readonly Abstract.DateTime _end;
-        private readonly Abstract.DateTime _start;
+        private readonly TimePoint _end;
+        private readonly TimePoint _start;
 
-        public StartEndTimeInterval(CalendarDateTime start, CalendarDateTime end)
+        public StartEndTimeInterval(TimePoint start, TimePoint end)
         {
-            if (start.Precision != TimePrecision.Second)
-            {
-                throw new ArgumentException("The starting calendar datetime must be precise to the second.");
-            }
-
             _start = start;
             _end = end;
         }
 
-        public StartEndTimeInterval(OrdinalDateTime start, OrdinalDateTime end)
+        public static StartEndTimeInterval Parse(string input, int startYearLength = 4, int endYearLength = 4)
         {
-            if (start.Precision != TimePrecision.Second)
-            {
-                throw new ArgumentException("The starting ordinal datetime must be precise to the second.");
-            }
-
-            _start = start;
-            _end = end;
+            return StartEndTimeIntervalParser.Parse(input, startYearLength, endYearLength);
         }
 
-        public StartEndTimeInterval(WeekDateTime start, WeekDateTime end)
-        {
-            if (start.Precision != TimePrecision.Second)
-            {
-                throw new ArgumentException("The starting week datetime must be precise to the second.");
-            }
-
-            _start = start;
-            _end = end;
-        }
-
-        public Abstract.DateTime End
+        public TimePoint End
         {
             get
             {
@@ -48,12 +28,22 @@ namespace System.ISO8601
             }
         }
 
-        public Abstract.DateTime Start
+        public TimePoint Start
         {
             get
             {
                 return _start;
             }
+        }
+
+        public override string ToString()
+        {
+            return ToString();
+        }
+
+        public virtual string ToString(bool withSeparators = true, bool withTimeDesignator = true, DecimalSeparator decimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true)
+        {
+            return StartEndTimeIntervalSerializer.Serialize(this, withTimeDesignator, withSeparators, decimalSeparator, withUtcOffset);
         }
     }
 }

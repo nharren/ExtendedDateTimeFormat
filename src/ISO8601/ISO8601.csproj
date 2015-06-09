@@ -45,6 +45,7 @@
     <Compile Include="Abstract\DateTimeDuration.cs" />
     <Compile Include="Abstract\Duration.cs" />
     <Compile Include="Abstract\TimeInterval.cs" />
+    <Compile Include="Abstract\TimePoint.cs" />
     <Compile Include="CalendarDate.cs" />
     <Compile Include="CalendarDateDuration.cs" />
     <Compile Include="CalendarDatePrecision.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="DecimalSeparator.cs" />
     <Compile Include="DesignatedDuration.cs" />
     <Compile Include="DurationEndTimeInterval.cs" />
-    <Compile Include="DurationTimeInterval.cs" />
+    <Compile Include="DurationContextTimeInterval.cs" />
     <Compile Include="Abstract\Date.cs" />
     <Compile Include="Internal\Conversion\CalendarDateConverter.cs" />
     <Compile Include="Internal\Conversion\CalendarDateTimeConverter.cs" />
@@ -66,6 +67,16 @@
     <Compile Include="Internal\Conversion\WeekDateTimeConverter.cs" />
     <Compile Include="Internal\Comparison\DateComparer.cs" />
     <Compile Include="Internal\Comparison\DateTimeComparer.cs" />
+    <Compile Include="Internal\Parsing\DurationContextTimeIntervalParser.cs" />
+    <Compile Include="Internal\Parsing\DurationEndTimeIntervalParser.cs" />
+    <Compile Include="Internal\Parsing\DurationParser.cs" />
+    <Compile Include="Internal\Parsing\StartDurationTimeIntervalParser.cs" />
+    <Compile Include="Internal\Parsing\TimePointParser.cs" />
+    <Compile Include="Internal\Serialization\DurationContextTimeIntervalSerializer.cs" />
+    <Compile Include="Internal\Serialization\DurationEndTimeIntervalSerializer.cs" />
+    <Compile Include="Internal\Serialization\RecurringTimeIntervalSerializer.cs" />
+    <Compile Include="Internal\Serialization\StartDurationTimeIntervalSerializer.cs" />
+    <Compile Include="Internal\Serialization\TimeIntervalSerializer.cs" />
     <Compile Include="Internal\StringExtensions.cs" />
     <Compile Include="Internal\Parsing\CalendarDateDurationParser.cs" />
     <Compile Include="Internal\Parsing\CalendarDateParser.cs" />

@@ -1,10 +1,11 @@
-﻿using System.ISO8601.Internal.Comparison;
+﻿using System.ISO8601.Abstract;
+using System.ISO8601.Internal.Comparison;
 using System.ISO8601.Internal.Parsing;
 using System.ISO8601.Internal.Serialization;
 
 namespace System.ISO8601
 {
-    public class Time : IComparable, IComparable<Time>, IEquatable<Time>
+    public class Time : TimePoint, IComparable, IComparable<Time>, IEquatable<Time>
     {
         private UtcOffset _utcOffset;
         private static TimeComparer _comparer;

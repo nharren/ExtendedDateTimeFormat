@@ -1,0 +1,17 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.ISO8601;
+
+namespace ISO8601.Tests
+{
+    [TestClass]
+    public class StartDurationTimeIntervalTests
+    {
+        [TestMethod]
+        public void CanRoundTrip()
+        {
+            Assert.AreEqual("19501010121212/P12341212T121212", StartDurationTimeInterval.Parse("19501010121212/P12341212T121212").ToString(false, false, DecimalSeparator.Comma, false));
+            Assert.AreEqual("1950100121212/P12341212T121212", StartDurationTimeInterval.Parse("1950100121212/P12341212T121212").ToString(false, false, DecimalSeparator.Comma, false));
+        }
+    }
+}

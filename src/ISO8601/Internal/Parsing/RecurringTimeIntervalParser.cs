@@ -4,7 +4,7 @@ namespace System.ISO8601.Internal.Parsing
 {
     internal class RecurringTimeIntervalParser
     {
-        internal static RecurringTimeInterval Parse(string input)
+        internal static RecurringTimeInterval Parse(string input, int startYearLength, int endYearLength)
         {
             if (input.Length < 4)
             {
@@ -42,7 +42,7 @@ namespace System.ISO8601.Internal.Parsing
                 recurrences = int.Parse(recurrencesString);
             }
 
-            return new RecurringTimeInterval(TimeIntervalParser.Parse(timeIntervalString), recurrences);
+            return new RecurringTimeInterval(TimeIntervalParser.Parse(timeIntervalString, startYearLength, endYearLength), recurrences);
         }
     }
 }

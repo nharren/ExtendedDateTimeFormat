@@ -2,9 +2,9 @@
 
 namespace System.ISO8601.Internal.Parsing
 {
-    internal static class TimeIntervalParser
+    internal static class TimePointParser
     {
-        internal static TimeInterval Parse(string input, int startYearLength, int endYearLength)
+        internal static TimePoint Parse(string input, int yearLength)
         {
             throw new NotImplementedException();
         }

@@ -97,11 +97,11 @@ internal uncertain or approximate base = year, uncertain or approximate symbol, 
                                        | year, uncertain or approximate symbol, "-", month and day, [ uncertain or approximate symbol ]
                                        | year, [ uncertain or approximate symbol ], "-(", month, ")", uncertain or approximate symbol, [ "-(", day, ")", uncertain or approximate symbol ]
                                        | year, [ uncertain or approximate symbol ], "-(", month, ")", uncertain or approximate symbol, [ "-", day ]
-									   | year and month, uncertain or approximate symbol, "-(", day, ")", uncertain or approximate symbol
-									   | year and month, uncertain or approximate symbol, "-", day
-									   | year and month, "-(", day, ")", uncertain or approximate symbol
-									   | year, "-(", month and day, ")", uncertain or approximate symbol
-									   | season, uncertain or approximate symbol ;
+                                       | year and month, uncertain or approximate symbol, "-(", day, ")", uncertain or approximate symbol
+                                       | year and month, uncertain or approximate symbol, "-", day
+                                       | year and month, "-(", day, ")", uncertain or approximate symbol
+                                       | year, "-(", month and day, ")", uncertain or approximate symbol
+                                       | season, uncertain or approximate symbol ;
 
 internal uncertain or approximate =  internal uncertain or approximate base | "(", internal uncertain or approximate base, ")", uncertain or approximate symbol ;
  

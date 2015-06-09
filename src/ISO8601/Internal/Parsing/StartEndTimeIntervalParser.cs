@@ -6,12 +6,7 @@
         {
             var parts = input.Split('/');
 
-            if (parts.Length != 2)
-            {
-                throw new ParseException("A start-end time interval must have one solidus ('/')", input);
-            }
-
-            return new StartEndTimeInterval(CalendarDateTimeParser.Parse(parts[0], startYearLength), CalendarDateTimeParser.Parse(parts[1], endYearLength));
+            return new StartEndTimeInterval(TimePointParser.Parse(parts[0], startYearLength), TimePointParser.Parse(parts[1], endYearLength));
         }
     }
 }
