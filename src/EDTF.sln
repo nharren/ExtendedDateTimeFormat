@@ -5,8 +5,11 @@ VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1AD5F03E-3813-4A95-8056-B7C0725D4085}"
 	ProjectSection(SolutionItems) = preProject
+		..\doc\EDTF Examples.md = ..\doc\EDTF Examples.md
 		..\doc\EDTF.ebnf = ..\doc\EDTF.ebnf
+		..\doc\Features.md = ..\doc\Features.md
 		..\doc\ISO8601.ebnf = ..\doc\ISO8601.ebnf
+		..\LICENSE.txt = ..\LICENSE.txt
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
