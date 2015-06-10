@@ -19,7 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTF", "EDTF\EDTF.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISO8601.Tests", "ISO8601.Tests\ISO8601.Tests.csproj", "{90BA7FE9-A60F-4825-8758-8E8907029557}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTF.Tests", "EDTF.Tests\EDTF.Tests.csproj", "{0A5F6182-FF2C-4D07-8AC3-AADE2B9ED613}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTF.Tests.Old", "EDTF.Tests.Old\EDTF.Tests.Old.csproj", "{0A5F6182-FF2C-4D07-8AC3-AADE2B9ED613}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTF.Tests", "EDTF.Tests\EDTF.Tests.csproj", "{143DEF20-18F4-487D-8E03-20F19649C147}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{0A5F6182-FF2C-4D07-8AC3-AADE2B9ED613}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A5F6182-FF2C-4D07-8AC3-AADE2B9ED613}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A5F6182-FF2C-4D07-8AC3-AADE2B9ED613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{143DEF20-18F4-487D-8E03-20F19649C147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{143DEF20-18F4-487D-8E03-20F19649C147}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{143DEF20-18F4-487D-8E03-20F19649C147}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{143DEF20-18F4-487D-8E03-20F19649C147}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
