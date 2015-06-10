@@ -31,7 +31,7 @@ namespace System.ISO8601
             }
         }
 
-        public static RecurringTimeInterval Parse(string input, int startYearLength, int endYearLength)
+        public static RecurringTimeInterval Parse(string input, int startYearLength = 4, int endYearLength = 4)
         {
             return RecurringTimeIntervalParser.Parse(input, startYearLength, endYearLength);
         }

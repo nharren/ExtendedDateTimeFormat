@@ -10,8 +10,8 @@ namespace ISO8601.Tests
         [TestMethod]
         public void CanRoundTrip()
         {
-            Assert.AreEqual("19501010121212/P12341212T121212", StartDurationTimeInterval.Parse("19501010121212/P12341212T121212").ToString(false, false, DecimalSeparator.Comma, false));
-            Assert.AreEqual("1950100121212/P12341212T121212", StartDurationTimeInterval.Parse("1950100121212/P12341212T121212").ToString(false, false, DecimalSeparator.Comma, false));
+            Assert.AreEqual("19501010T121212/P12341212T121212", StartDurationTimeInterval.Parse("19501010T121212/P12341212T121212").ToString(withComponentSeparators: false, withUtcOffset:false));
+            Assert.AreEqual("1950100T121212/P12341212T121212", StartDurationTimeInterval.Parse("1950100T121212/P12341212T121212").ToString(withComponentSeparators: false, withUtcOffset:false));
         }
     }
 }

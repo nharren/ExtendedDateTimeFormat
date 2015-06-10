@@ -64,6 +64,9 @@
     <Compile Include="OrdinalDateTimeDurationTests.cs" />
     <Compile Include="StartEndTimeIntervalTests.cs" />
     <Compile Include="StartDurationTimeIntervalTests.cs" />
+    <Compile Include="DurationContextTimeIntervalTests.cs" />
+    <Compile Include="DurationEndTimeIntervalTests.cs" />
+    <Compile Include="RecurringTimeIntervalTests.cs" />
     <Compile Include="WeekDateTimeTests.cs" />
     <Compile Include="WeekDateTests.cs" />
   </ItemGroup>
