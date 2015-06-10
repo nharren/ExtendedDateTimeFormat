@@ -62,28 +62,28 @@
 	- [x] Serialization to string
 - [x] Start-end time intervals
 	- [x] Deserialization from string
-	- [ ] Serialization to string
+	- [x] Serialization to string
 - [x] Duration-context time intervals
 	- [x] Deserialization from string
-	- [ ] Serialization to string
+	- [x] Serialization to string
 - [x] Start-duration time intervals
 	- [x] Deserialization from string
-	- [ ] Serialization to string
+	- [x] Serialization to string
 - [x] Duration-end time intervals
 	- [x] Deserialization from string
-	- [ ] Serialization to string
-- [ ] Recurring start-end time intervals
-	- [ ] Deserialization from string
-	- [ ] Serialization to string
-- [ ] Recurring duration-context time intervals
-	- [ ] Deserialization from string
-	- [ ] Serialization to string
-- [ ] Recurring start-duration time intervals
-	- [ ] Deserialization from string
-	- [ ] Serialization to string
-- [ ] Recurring duration-end time intervals
-	- [ ] Deserialization from string
-	- [ ] Serialization to string
+	- [x] Serialization to string
+- [x] Recurring start-end time intervals
+	- [x] Deserialization from string
+	- [x] Serialization to string
+- [x] Recurring duration-context time intervals
+	- [x] Deserialization from string
+	- [x] Serialization to string
+- [x] Recurring start-duration time intervals
+	- [x] Deserialization from string
+	- [x] Serialization to string
+- [x] Recurring duration-end time intervals
+	- [x] Deserialization from string
+	- [x] Serialization to string
 
 #### Future Ideas
 
@@ -92,3 +92,5 @@
 - Descriptive, helpful exceptions.
 - Thorough performance tests.
 - Better documentation and examples.
+- More calculation features.
+- Consolidating calendar-week-ordinal into single date or datetime.

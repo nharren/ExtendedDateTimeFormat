@@ -75,6 +75,7 @@
     <Compile Include="Internal\Parsing\TimePointParser.cs" />
     <Compile Include="Internal\Serialization\DurationContextTimeIntervalSerializer.cs" />
     <Compile Include="Internal\Serialization\DurationEndTimeIntervalSerializer.cs" />
+    <Compile Include="Internal\Serialization\DurationSerializer.cs" />
     <Compile Include="Internal\Serialization\RecurringTimeIntervalSerializer.cs" />
     <Compile Include="Internal\Serialization\StartDurationTimeIntervalSerializer.cs" />
     <Compile Include="Internal\Serialization\TimeIntervalSerializer.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Internal\Serialization\OrdinalDateTimeSerializer.cs" />
     <Compile Include="Internal\Serialization\StartEndTimeIntervalSerializer.cs" />
     <Compile Include="Internal\Serialization\TimeDurationSerializer.cs" />
+    <Compile Include="Internal\Serialization\TimePointSerializer.cs" />
     <Compile Include="Internal\Serialization\TimeSerializer.cs" />
     <Compile Include="Internal\Serialization\WeekDateSerializer.cs" />
     <Compile Include="Internal\Serialization\WeekDateTimeSerializer.cs" />

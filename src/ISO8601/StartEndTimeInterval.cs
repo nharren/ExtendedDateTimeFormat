@@ -41,9 +41,10 @@ namespace System.ISO8601
             return ToString();
         }
 
-        public virtual string ToString(bool withSeparators = true, bool withTimeDesignator = true, DecimalSeparator decimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true)
+        public virtual string ToString(bool withComponentSeparators = true, bool isStartExpanded = false, int startYearLength = 4, int startFractionLength = 0, bool withStartTimeDesignator = true, DecimalSeparator startDecimalSeparator = DecimalSeparator.Comma, bool withStartUtcOffset = true,
+            bool isEndExpanded = false, int endYearLength = 4, int endFractionLength = 0, bool withEndTimeDesignator = true, DecimalSeparator endDecimalSeparator = DecimalSeparator.Comma, bool withEndUtcOffset = true)
         {
-            return StartEndTimeIntervalSerializer.Serialize(this, withTimeDesignator, withSeparators, decimalSeparator, withUtcOffset);
+            return StartEndTimeIntervalSerializer.Serialize(this, withComponentSeparators, isStartExpanded, startYearLength, startFractionLength, withStartTimeDesignator, startDecimalSeparator, withStartUtcOffset, isEndExpanded, endYearLength, endFractionLength, withEndTimeDesignator, endDecimalSeparator, withEndUtcOffset);
         }
     }
 }

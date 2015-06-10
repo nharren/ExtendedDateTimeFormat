@@ -176,10 +176,10 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true, true, DecimalSeparator.Comma, true);
+            return ToString();
         }
 
-        public virtual string ToString(bool withTimeDesignator, bool withSeparators, DecimalSeparator decimalSeparator, bool withUtcOffset)
+        public virtual string ToString(bool withTimeDesignator = true, bool withSeparators = true, DecimalSeparator decimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true)
         {
             return OrdinalDateTimeSerializer.Serialize(this, withTimeDesignator, withSeparators, decimalSeparator, withUtcOffset);
         }

@@ -2,39 +2,12 @@
 {
     internal static class StartEndTimeIntervalSerializer
     {
-        internal static string Serialize(StartEndTimeInterval interval, bool withTimeDesignators, bool withComponentSeparators, DecimalSeparator decimalSeparator, bool withUtcOffsets)
+        internal static string Serialize(StartEndTimeInterval interval, bool withComponentSeparators, bool isStartExpanded, int startYearLength, int startFractionLength, bool withStartTimeDesignator, DecimalSeparator startDecimalSeparator, bool withStartUtcOffset, 
+            bool isEndExpanded, int endYearLength, int endFractionLength, bool withEndTimeDesignator, DecimalSeparator endDecimalSeparator, bool withEndUtcOffset)
         {
-            string startString = null;
-
-            if (interval.Start is CalendarDateTime)
-            {
-                startString = ((CalendarDateTime)interval.Start).ToString(withTimeDesignators, withComponentSeparators, decimalSeparator, withUtcOffsets);
-            }
-            else if (interval.Start is OrdinalDateTime)
-            {
-                startString = ((OrdinalDateTime)interval.Start).ToString(withTimeDesignators, withComponentSeparators, decimalSeparator, withUtcOffsets);
-            }
-            else if (interval.Start is WeekDateTime)
-            {
-                startString = ((WeekDateTime)interval.Start).ToString(withTimeDesignators, withComponentSeparators, decimalSeparator, withUtcOffsets);
-            }
-
-            string endString = null;
-
-            if (interval.End is CalendarDateTime)
-            {
-                endString = ((CalendarDateTime)interval.End).ToString(withTimeDesignators, withComponentSeparators, decimalSeparator, withUtcOffsets);
-            }
-            else if (interval.End is OrdinalDateTime)
-            {
-                endString = ((OrdinalDateTime)interval.End).ToString(withTimeDesignators, withComponentSeparators, decimalSeparator, withUtcOffsets);
-            }
-            else if (interval.End is WeekDateTime)
-            {
-                endString = ((WeekDateTime)interval.End).ToString(withTimeDesignators, withComponentSeparators, decimalSeparator, withUtcOffsets);
-            }
-
-            return string.Format("{0}/{1}", startString, endString);
+            return TimePointSerializer.Serialize(interval.Start, isStartExpanded, startYearLength, startFractionLength, withStartTimeDesignator, withComponentSeparators, startDecimalSeparator, withStartUtcOffset)
+                + "/"
+                + TimePointSerializer.Serialize(interval.End, isEndExpanded, endYearLength, endFractionLength, withEndTimeDesignator, withComponentSeparators, endDecimalSeparator, withEndUtcOffset);
         }
     }
 }

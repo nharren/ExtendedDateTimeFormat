@@ -4,7 +4,7 @@
     {
         internal static string Serialize(DurationContextTimeInterval interval, bool withComponentSeparators, bool isExpanded, int yearLength, int fractionLength, DecimalSeparator decimalSeparator)
         {
-            throw new NotImplementedException();
+            return DurationSerializer.Serialize(interval.Duration, withComponentSeparators, isExpanded, yearLength, fractionLength, decimalSeparator);
         }
     }
 }
