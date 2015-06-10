@@ -6,7 +6,17 @@ namespace System.ISO8601.Internal.Parsing
     {
         internal static TimePoint Parse(string input, int yearLength)
         {
-            throw new NotImplementedException();
+            if (input.StartsWith("T"))
+            {
+                return TimeParser.Parse(input);
+            }
+
+            if (input.Contains("T"))
+            {
+                return DateTimeParser.Parse(input, yearLength);
+            }
+
+            return DateParser.Parse(input, yearLength);
         }
     }
 }

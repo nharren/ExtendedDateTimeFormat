@@ -7,26 +7,26 @@
 - [x] Calendar dates 
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [ ] Conversion to OrdinalDates
-	- [ ] Conversion to WeekDates
+	- [x] Conversion to OrdinalDates
+	- [x] Conversion to WeekDates
 - [x] Ordinal dates 
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [ ] Conversion to CalendarDate
-	- [ ] Conversion to WeekDate
+	- [x] Conversion to CalendarDate
+	- [x] Conversion to WeekDate
 - [x] Week dates
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [ ] Conversion to CalendarDate
-	- [ ] Conversion to OrdinalDate
+	- [x] Conversion to CalendarDate
+	- [x] Conversion to OrdinalDate
 - [x] Time
 	- [x] Deserialization from string
 	- [x] Serialization to string
 - [x] Calendar datetimes
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [ ] Conversion to OrdinalDateTime
-	- [ ] Conversion to WeekDateTime
+	- [x] Conversion to OrdinalDateTime
+	- [x] Conversion to WeekDateTime
 - [x] Ordinal datetimes
 	- [x] Deserialization from string
 	- [x] Serialization to string
@@ -60,17 +60,17 @@
 - [x] Ordinal datetime durations
 	- [x] Deserialization from string
 	- [x] Serialization to string
-- [ ] Start-end time intervals
-	- [ ] Deserialization from string
+- [x] Start-end time intervals
+	- [x] Deserialization from string
 	- [ ] Serialization to string
-- [ ] Duration-context time intervals
-	- [ ] Deserialization from string
+- [x] Duration-context time intervals
+	- [x] Deserialization from string
 	- [ ] Serialization to string
-- [ ] Start-duration time intervals
-	- [ ] Deserialization from string
+- [x] Start-duration time intervals
+	- [x] Deserialization from string
 	- [ ] Serialization to string
-- [ ] Duration-end time intervals
-	- [ ] Deserialization from string
+- [x] Duration-end time intervals
+	- [x] Deserialization from string
 	- [ ] Serialization to string
 - [ ] Recurring start-end time intervals
 	- [ ] Deserialization from string

@@ -67,6 +67,7 @@
     <Compile Include="Internal\Conversion\WeekDateTimeConverter.cs" />
     <Compile Include="Internal\Comparison\DateComparer.cs" />
     <Compile Include="Internal\Comparison\DateTimeComparer.cs" />
+    <Compile Include="Internal\Parsing\DateParser.cs" />
     <Compile Include="Internal\Parsing\DurationContextTimeIntervalParser.cs" />
     <Compile Include="Internal\Parsing\DurationEndTimeIntervalParser.cs" />
     <Compile Include="Internal\Parsing\DurationParser.cs" />
