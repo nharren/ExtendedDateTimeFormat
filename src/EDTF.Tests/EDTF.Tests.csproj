@@ -55,6 +55,7 @@
     <Compile Include="ExtendedDateTimeIntervalTests.cs" />
     <Compile Include="ExtendedDateTimePossibilityCollectionTests.cs" />
     <Compile Include="ExtendedDateTimeCollectionTests.cs" />
+    <Compile Include="ExtendedDateTimeCalculatorTests.cs" />
     <Compile Include="UnspecifiedExtendedDateTimeTests.cs" />
   </ItemGroup>
   <ItemGroup>
