@@ -2,9 +2,14 @@
 {
     internal static class CalendarDateTimeDurationSerializer
     {
-        internal static string Serialize(CalendarDateTimeDuration dateTimeDuration, bool withComponentSeparators, bool isExpanded, int yearLength, int fractionLength, DecimalSeparator decimalSeparator)
+        internal static string Serialize(CalendarDateTimeDuration dateTimeDuration, ISO8601FormatInfo formatInfo)
         {
-            return string.Format("{0}{1}", dateTimeDuration.DateDuration.ToString(withComponentSeparators, isExpanded, yearLength), dateTimeDuration.TimeDuration.ToString(withComponentSeparators, fractionLength, decimalSeparator).Substring(1));
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+
+            return dateTimeDuration.DateDuration.ToString(formatInfo) + dateTimeDuration.TimeDuration.ToString(formatInfo).Substring(1);
         }
     }
 }

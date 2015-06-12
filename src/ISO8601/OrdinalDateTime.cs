@@ -176,12 +176,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString();
+            return ToString(null);
         }
 
-        public virtual string ToString(bool withTimeDesignator = true, bool withSeparators = true, DecimalSeparator decimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true)
+        public virtual string ToString(ISO8601FormatInfo formatInfo)
         {
-            return OrdinalDateTimeSerializer.Serialize(this, withTimeDesignator, withSeparators, decimalSeparator, withUtcOffset);
+            return OrdinalDateTimeSerializer.Serialize(this, formatInfo);
         }
 
         public WeekDateTime ToWeekDateTime()

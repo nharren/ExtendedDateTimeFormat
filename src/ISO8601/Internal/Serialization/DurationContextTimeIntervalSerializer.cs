@@ -2,9 +2,13 @@
 {
     internal static class DurationContextTimeIntervalSerializer
     {
-        internal static string Serialize(DurationContextTimeInterval interval, bool withComponentSeparators, bool isExpanded, int yearLength, int fractionLength, DecimalSeparator decimalSeparator)
+        internal static string Serialize(DurationContextTimeInterval interval, ISO8601FormatInfo formatInfo)
         {
-            return DurationSerializer.Serialize(interval.Duration, withComponentSeparators, isExpanded, yearLength, fractionLength, decimalSeparator);
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+            return DurationSerializer.Serialize(interval.Duration, formatInfo);
         }
     }
 }

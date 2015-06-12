@@ -1,6 +1,6 @@
+using System.EDTF.Internal;
 using System.EDTF.Internal.Parsing;
 using System.Linq;
-using System.EDTF.Internal;
 
 namespace System.EDTF
 {

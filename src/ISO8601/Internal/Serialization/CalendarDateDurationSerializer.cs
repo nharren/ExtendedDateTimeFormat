@@ -4,13 +4,18 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class CalendarDateDurationSerializer
     {
-        internal static string Serialize(CalendarDateDuration calendarDateDuration, bool withComponentSeparators, bool isExpanded, int yearLength)
+        internal static string Serialize(CalendarDateDuration calendarDateDuration, ISO8601FormatInfo formatInfo)
         {
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+
             var output = new StringBuilder("P");
 
             if (calendarDateDuration.Centuries != null)
             {
-                if (isExpanded)
+                if (formatInfo.IsExpanded)
                 {
                     if (calendarDateDuration.Centuries >= 0)
                     {
@@ -18,12 +23,12 @@ namespace System.ISO8601.Internal.Serialization
                     }
                 }
 
-                output.AppendFormat(calendarDateDuration.Centuries.Value.ToString("D" + (yearLength - 2)));
+                output.AppendFormat(calendarDateDuration.Centuries.Value.ToString("D" + (formatInfo.YearLength - 2)));
 
                 return output.ToString();
             }
 
-            if (isExpanded)
+            if (formatInfo.IsExpanded)
             {
                 if (calendarDateDuration.Years >= 0)
                 {
@@ -31,14 +36,14 @@ namespace System.ISO8601.Internal.Serialization
                 }
             }
 
-            output.AppendFormat(calendarDateDuration.Years.ToString("D" + yearLength));
+            output.AppendFormat(calendarDateDuration.Years.ToString("D" + formatInfo.YearLength));
 
             if (calendarDateDuration.Months == null)
             {
                 return output.ToString();
             }
 
-            if (withComponentSeparators)
+            if (formatInfo.UseComponentSeparators)
             {
                 output.Append('-');
             }
@@ -50,7 +55,7 @@ namespace System.ISO8601.Internal.Serialization
                 return output.ToString();
             }
 
-            if (withComponentSeparators)
+            if (formatInfo.UseComponentSeparators)
             {
                 output.Append('-');
             }

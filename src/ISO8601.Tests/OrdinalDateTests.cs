@@ -10,14 +10,14 @@ namespace ISO8601.Tests
         public void CanRoundTrip()
         {
             // Complete
-            Assert.AreEqual("1950100", OrdinalDate.Parse("1950100").ToString(false));
-            Assert.AreEqual("1950-100", OrdinalDate.Parse("1950-100").ToString(true));
+            Assert.AreEqual("1950100", OrdinalDate.Parse("1950100").ToString(new ISO8601FormatInfo { UseComponentSeparators = false }));
+            Assert.AreEqual("1950-100", OrdinalDate.Parse("1950-100").ToString());
 
             // Expanded
-            Assert.AreEqual("+1950100", OrdinalDate.Parse("+1950100").ToString(false, true));
-            Assert.AreEqual("+11950100", OrdinalDate.Parse("+11950100", 5).ToString(false, true, 5));
-            Assert.AreEqual("+1950-100", OrdinalDate.Parse("+1950-100").ToString(true, true));
-            Assert.AreEqual("+11950-100", OrdinalDate.Parse("+11950-100", 5).ToString(true, true, 5));
+            Assert.AreEqual("+1950100", OrdinalDate.Parse("+1950100").ToString(new ISO8601FormatInfo { UseComponentSeparators = false, IsExpanded = true }));
+            Assert.AreEqual("+11950100", OrdinalDate.Parse("+11950100", 5).ToString(new ISO8601FormatInfo { UseComponentSeparators = false, IsExpanded = true, YearLength = 5 }));
+            Assert.AreEqual("+1950-100", OrdinalDate.Parse("+1950-100").ToString(new ISO8601FormatInfo { IsExpanded = true }));
+            Assert.AreEqual("+11950-100", OrdinalDate.Parse("+11950-100", 5).ToString(new ISO8601FormatInfo { IsExpanded = true, YearLength = 5 }));
         }
     }
 }

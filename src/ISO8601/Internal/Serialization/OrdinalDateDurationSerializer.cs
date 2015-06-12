@@ -4,11 +4,16 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class OrdinalDateDurationSerializer
     {
-        internal static string Serialize(OrdinalDateDuration ordinalDateDuration, bool withComponentSeparators, bool isExpanded, int yearLength)
+        internal static string Serialize(OrdinalDateDuration ordinalDateDuration, ISO8601FormatInfo formatInfo)
         {
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+
             var output = new StringBuilder("P");
 
-            if (isExpanded)
+            if (formatInfo.IsExpanded)
             {
                 if (ordinalDateDuration.Years >= 0)
                 {
@@ -16,9 +21,9 @@ namespace System.ISO8601.Internal.Serialization
                 }
             }
 
-            output.Append(ordinalDateDuration.Years.ToString("D" + yearLength));
+            output.Append(ordinalDateDuration.Years.ToString("D" + formatInfo.YearLength));
 
-            if (withComponentSeparators)
+            if (formatInfo.UseComponentSeparators)
             {
                 output.Append('-');
             }

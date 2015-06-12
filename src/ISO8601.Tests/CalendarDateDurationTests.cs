@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ISO8601;
 
 namespace ISO8601.Tests
@@ -11,20 +10,20 @@ namespace ISO8601.Tests
         public void CanRoundTrip()
         {
             // Complete
-            Assert.AreEqual("P12341212", CalendarDateDuration.Parse("P12341212").ToString(false));
-            Assert.AreEqual("P1234-12-12", CalendarDateDuration.Parse("P1234-12-12").ToString(true));
+            Assert.AreEqual("P12341212", CalendarDateDuration.Parse("P12341212").ToString(new ISO8601FormatInfo { UseComponentSeparators = false }));
+            Assert.AreEqual("P1234-12-12", CalendarDateDuration.Parse("P1234-12-12").ToString());
 
             // Reduced
-            Assert.AreEqual("P1234-12", CalendarDateDuration.Parse("P1234-12").ToString(true));
-            Assert.AreEqual("P1234", CalendarDateDuration.Parse("P1234").ToString(true));
-            Assert.AreEqual("P12", CalendarDateDuration.Parse("P12").ToString(false));
+            Assert.AreEqual("P1234-12", CalendarDateDuration.Parse("P1234-12").ToString());
+            Assert.AreEqual("P1234", CalendarDateDuration.Parse("P1234").ToString());
+            Assert.AreEqual("P12", CalendarDateDuration.Parse("P12").ToString());
 
             // Expanded
-            Assert.AreEqual("P+112341212", CalendarDateDuration.Parse("P+112341212", 5).ToString(false, true, 5));
-            Assert.AreEqual("P+11234-12-12", CalendarDateDuration.Parse("P+11234-12-12", 5).ToString(true, true, 5));
-            Assert.AreEqual("P+11234-12", CalendarDateDuration.Parse("P+11234-12", 5).ToString(true, true, 5));
-            Assert.AreEqual("P+11234", CalendarDateDuration.Parse("P+11234", 5).ToString(true, true, 5));
-            Assert.AreEqual("P+112", CalendarDateDuration.Parse("P+112", 5).ToString(false, true, 5));
+            Assert.AreEqual("P+112341212", CalendarDateDuration.Parse("P+112341212", 5).ToString(new ISO8601FormatInfo { UseComponentSeparators = false, IsExpanded = true, YearLength = 5 }));
+            Assert.AreEqual("P+11234-12-12", CalendarDateDuration.Parse("P+11234-12-12", 5).ToString(new ISO8601FormatInfo { IsExpanded = true, YearLength = 5 }));
+            Assert.AreEqual("P+11234-12", CalendarDateDuration.Parse("P+11234-12", 5).ToString(new ISO8601FormatInfo { IsExpanded = true, YearLength = 5 }));
+            Assert.AreEqual("P+11234", CalendarDateDuration.Parse("P+11234", 5).ToString(new ISO8601FormatInfo { IsExpanded = true, YearLength = 5 }));
+            Assert.AreEqual("P+112", CalendarDateDuration.Parse("P+112", 5).ToString(new ISO8601FormatInfo { UseComponentSeparators = false, IsExpanded = true, YearLength = 5 }));
         }
     }
 }

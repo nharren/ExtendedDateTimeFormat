@@ -4,39 +4,44 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class TimePointSerializer
     {
-        internal static string Serialize(TimePoint end, bool isExpanded, int yearLength, int fractionLength, bool withTimeDesignator, bool withComponentSeparators, DecimalSeparator decimalSeparator, bool withUtcOffset)
+        internal static string Serialize(TimePoint timePoint, ISO8601FormatInfo formatInfo)
         {
-            if (end is CalendarDateTime)
+            if (formatInfo == null)
             {
-                return ((CalendarDateTime)end).ToString(withTimeDesignator, withComponentSeparators, decimalSeparator, withUtcOffset);
+                formatInfo = ISO8601FormatInfo.Default;
             }
 
-            if (end is OrdinalDateTime)
+            if (timePoint is CalendarDateTime)
             {
-                return ((OrdinalDateTime)end).ToString(withTimeDesignator, withComponentSeparators, decimalSeparator, withUtcOffset);
+                return ((CalendarDateTime)timePoint).ToString(formatInfo);
             }
 
-            if (end is WeekDateTime)
+            if (timePoint is OrdinalDateTime)
             {
-                return ((WeekDateTime)end).ToString(withTimeDesignator, withComponentSeparators, decimalSeparator, withUtcOffset);
+                return ((OrdinalDateTime)timePoint).ToString(formatInfo);
             }
 
-            if (end is CalendarDate)
+            if (timePoint is WeekDateTime)
             {
-                return ((CalendarDate)end).ToString(withComponentSeparators, isExpanded, yearLength);
+                return ((WeekDateTime)timePoint).ToString(formatInfo);
             }
 
-            if (end is OrdinalDate)
+            if (timePoint is CalendarDate)
             {
-                return ((OrdinalDate)end).ToString(withComponentSeparators, isExpanded, yearLength);
+                return ((CalendarDate)timePoint).ToString(formatInfo);
             }
 
-            if (end is WeekDate)
+            if (timePoint is OrdinalDate)
             {
-                return ((WeekDate)end).ToString(withComponentSeparators, isExpanded, yearLength);
+                return ((OrdinalDate)timePoint).ToString(formatInfo);
             }
 
-            return ((Time)end).ToString(withTimeDesignator, decimalSeparator, withComponentSeparators, withUtcOffset);
+            if (timePoint is WeekDate)
+            {
+                return ((WeekDate)timePoint).ToString(formatInfo);
+            }
+
+            return ((Time)timePoint).ToString(formatInfo);
         }
     }
 }

@@ -2,9 +2,14 @@
 {
     internal static class OrdinalDateTimeSerializer
     {
-        internal static string Serialize(OrdinalDateTime dateTime, bool withTimeDesignator, bool withSeparators, DecimalSeparator decimalSeparator, bool withUtcOffset)
+        internal static string Serialize(OrdinalDateTime dateTime, ISO8601FormatInfo formatInfo)
         {
-            return string.Format("{0}{1}", dateTime.Date.ToString(withSeparators), dateTime.Time.ToString(withTimeDesignator, decimalSeparator, withSeparators, withUtcOffset));
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+
+            return dateTime.Date.ToString(formatInfo) + dateTime.Time.ToString(formatInfo);
         }
     }
 }

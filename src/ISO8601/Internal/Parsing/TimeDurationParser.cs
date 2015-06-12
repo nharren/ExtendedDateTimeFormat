@@ -22,7 +22,7 @@ namespace System.ISO8601.Internal.Parsing
                     endIndex = input.Length;
 
                     return new TimeDuration(double.Parse(input.Substring(startIndex, endIndex - startIndex), NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US")));
-                } 
+                }
             }
 
             var hours = int.Parse(input.Substring(startIndex, endIndex - startIndex));
@@ -54,7 +54,7 @@ namespace System.ISO8601.Internal.Parsing
                     endIndex = input.Length;
 
                     return new TimeDuration(hours, double.Parse(input.Substring(startIndex, endIndex - startIndex), NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US")));
-                } 
+                }
             }
 
             var minutes = int.Parse(input.Substring(startIndex, endIndex - startIndex));
@@ -86,7 +86,7 @@ namespace System.ISO8601.Internal.Parsing
                     endIndex = input.Length;
 
                     return new TimeDuration(hours, minutes, double.Parse(input.Substring(startIndex, endIndex - startIndex), NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US")));
-                } 
+                }
             }
 
             return new TimeDuration(hours, minutes, int.Parse(input.Substring(startIndex, endIndex - startIndex)));

@@ -54,6 +54,7 @@
     <Compile Include="CalendarDateTimePrecision.cs" />
     <Compile Include="ConversionException.cs" />
     <Compile Include="DateCalculator.cs" />
+    <Compile Include="ISO8601FormatInfo.cs" />
     <Compile Include="DecimalSeparator.cs" />
     <Compile Include="DesignatedDuration.cs" />
     <Compile Include="DurationEndTimeInterval.cs" />

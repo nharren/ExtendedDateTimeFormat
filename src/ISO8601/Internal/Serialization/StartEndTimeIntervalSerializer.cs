@@ -2,12 +2,19 @@
 {
     internal static class StartEndTimeIntervalSerializer
     {
-        internal static string Serialize(StartEndTimeInterval interval, bool withComponentSeparators, bool isStartExpanded, int startYearLength, int startFractionLength, bool withStartTimeDesignator, DecimalSeparator startDecimalSeparator, bool withStartUtcOffset, 
-            bool isEndExpanded, int endYearLength, int endFractionLength, bool withEndTimeDesignator, DecimalSeparator endDecimalSeparator, bool withEndUtcOffset)
+        internal static string Serialize(StartEndTimeInterval interval, ISO8601FormatInfo startFormatInfo, ISO8601FormatInfo endFormatInfo)
         {
-            return TimePointSerializer.Serialize(interval.Start, isStartExpanded, startYearLength, startFractionLength, withStartTimeDesignator, withComponentSeparators, startDecimalSeparator, withStartUtcOffset)
-                + "/"
-                + TimePointSerializer.Serialize(interval.End, isEndExpanded, endYearLength, endFractionLength, withEndTimeDesignator, withComponentSeparators, endDecimalSeparator, withEndUtcOffset);
+            if (startFormatInfo == null)
+            {
+                startFormatInfo = ISO8601FormatInfo.Default;
+            }
+
+            if (endFormatInfo == null)
+            {
+                endFormatInfo = ISO8601FormatInfo.Default;
+            }
+
+            return TimePointSerializer.Serialize(interval.Start, startFormatInfo) + "/" + TimePointSerializer.Serialize(interval.End, endFormatInfo);
         }
     }
 }

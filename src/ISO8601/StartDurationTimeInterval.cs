@@ -48,12 +48,17 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString();
+            return ToString(null);
         }
 
-        public virtual string ToString(bool withTimeDesignator = true, bool withComponentSeparators = true, DecimalSeparator startDecimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true, bool isExpanded = false, int yearLength = 4, int fractionLength = 0, DecimalSeparator durationDecimalSeparator = DecimalSeparator.Comma)
+        public virtual string ToString(ISO8601FormatInfo formatInfo)
         {
-            return StartDurationTimeIntervalSerializer.Serialize(this, withTimeDesignator, withComponentSeparators, startDecimalSeparator, withUtcOffset, isExpanded, yearLength, fractionLength, durationDecimalSeparator);
+            return ToString(formatInfo, formatInfo);
+        }
+
+        public virtual string ToString(ISO8601FormatInfo startFormatInfo, ISO8601FormatInfo durationFormatInfo)
+        {
+            return StartDurationTimeIntervalSerializer.Serialize(this, startFormatInfo, durationFormatInfo);
         }
     }
 }

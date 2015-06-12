@@ -4,16 +4,22 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class CalendarDateSerializer
     {
-        internal static string Serialize(CalendarDate calendarDate, bool withComponentSeparators, bool isExpanded, int yearLength)
+        internal static string Serialize(CalendarDate calendarDate, ISO8601FormatInfo formatInfo)
         {
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+
             if (calendarDate.Century < 0 || calendarDate.Century > 99)
             {
-                isExpanded = true;
+                formatInfo = (ISO8601FormatInfo)formatInfo.Clone();
+                formatInfo.IsExpanded = true;
             }
 
             var output = new StringBuilder();
 
-            if (isExpanded)
+            if (formatInfo.IsExpanded)
             {
                 if (calendarDate.Century >= 0)
                 {
@@ -23,16 +29,16 @@ namespace System.ISO8601.Internal.Serialization
 
             if (calendarDate.Precision == CalendarDatePrecision.Century)
             {
-                output.Append(calendarDate.Century.ToString("D" + (yearLength - 2)));
+                output.Append(calendarDate.Century.ToString("D" + (formatInfo.YearLength - 2)));
             }
             else
             {
-                output.Append(calendarDate.Year.ToString("D" + yearLength));
+                output.Append(calendarDate.Year.ToString("D" + formatInfo.YearLength));
             }
 
             if (calendarDate.Precision > CalendarDatePrecision.Year)
             {
-                if (withComponentSeparators)
+                if (formatInfo.UseComponentSeparators)
                 {
                     output.Append('-');
                 }
@@ -42,7 +48,7 @@ namespace System.ISO8601.Internal.Serialization
 
             if (calendarDate.Precision == CalendarDatePrecision.Day)
             {
-                if (withComponentSeparators)
+                if (formatInfo.UseComponentSeparators)
                 {
                     output.Append('-');
                 }

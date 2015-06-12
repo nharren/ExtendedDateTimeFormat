@@ -206,12 +206,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString();
+            return ToString(null);
         }
 
-        public string ToString(bool withTimeDesignator = false, DecimalSeparator decimalSeparator = DecimalSeparator.Comma, bool withColons = true, bool withUtcOffset = true)
+        public string ToString(ISO8601FormatInfo formatInfo)
         {
-            return TimeSerializer.Serialize(this, withTimeDesignator, decimalSeparator, withColons, withUtcOffset);
+            return TimeSerializer.Serialize(this, formatInfo);
         }
     }
 }

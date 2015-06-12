@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace System.ISO8601.Internal.Parsing
 {
@@ -46,7 +45,6 @@ namespace System.ISO8601.Internal.Parsing
                 {
                     return new Time(double.Parse(hour + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count, UtcOffset = ParseUtcOffset(input, fractionIndex) };
                 }
-
             }
             else if (nextChar == '+' || nextChar == '-' || nextChar == 'Z')
             {
@@ -83,7 +81,6 @@ namespace System.ISO8601.Internal.Parsing
                 {
                     return new Time(hour, double.Parse(minute + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count, UtcOffset = ParseUtcOffset(input, fractionIndex) };
                 }
-
             }
             else if (nextChar == '+' || nextChar == '-' || nextChar == 'Z')
             {
@@ -119,7 +116,6 @@ namespace System.ISO8601.Internal.Parsing
                 {
                     return new Time(hour, minute, double.Parse(second + "." + new string(fractionPartBuffer.ToArray()))) { FractionLength = fractionPartBuffer.Count, UtcOffset = ParseUtcOffset(input, fractionIndex) };
                 }
-
             }
             else
             {

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.ISO8601.Abstract;
+﻿using System.ISO8601.Abstract;
 using System.ISO8601.Internal.Parsing;
 using System.ISO8601.Internal.Serialization;
 
@@ -173,12 +172,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(DecimalSeparator.Comma);
+            return ToString(null);
         }
 
-        public virtual string ToString(DecimalSeparator decimalSeparator)
+        public virtual string ToString(ISO8601FormatInfo formatInfo)
         {
-            return DesignatedDurationSerializer.Serialize(this, decimalSeparator);
+            return DesignatedDurationSerializer.Serialize(this, formatInfo);
         }
     }
 }

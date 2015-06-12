@@ -141,12 +141,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString();
+            return ToString(null);
         }
 
-        public virtual string ToString(bool withComponentSeparators = true, bool isExpanded = false, int yearLength = 4)
+        public virtual string ToString(ISO8601FormatInfo formatInfo)
         {
-            return OrdinalDateSerializer.Serialize(this, withComponentSeparators, isExpanded, yearLength);
+            return OrdinalDateSerializer.Serialize(this, formatInfo);
         }
 
         public WeekDate ToWeekDate(WeekDatePrecision precision)

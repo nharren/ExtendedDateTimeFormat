@@ -1,7 +1,6 @@
 ﻿using System.ISO8601.Abstract;
 using System.ISO8601.Internal.Parsing;
 using System.ISO8601.Internal.Serialization;
-using System.Globalization;
 
 namespace System.ISO8601
 {
@@ -72,12 +71,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString(true, 0, CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == "." ? DecimalSeparator.Dot : DecimalSeparator.Comma);
+            return ToString(null);
         }
 
-        public virtual string ToString(bool withComponentSeparators, int fractionLength, DecimalSeparator decimalSeparator)
+        public virtual string ToString(ISO8601FormatInfo formatInfo)
         {
-            return TimeDurationSerializer.Serialize(this, withComponentSeparators, fractionLength, decimalSeparator);
+            return TimeDurationSerializer.Serialize(this, formatInfo);
         }
     }
 }

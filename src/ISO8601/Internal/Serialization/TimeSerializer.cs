@@ -4,11 +4,15 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class TimeSerializer
     {
-        internal static string Serialize(Time time, bool withTimeDesignator, DecimalSeparator decimalSeparator, bool withColons, bool withUtcOffset)
+        internal static string Serialize(Time time, ISO8601FormatInfo formatInfo)
         {
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
             var output = new StringBuilder();
 
-            if (withTimeDesignator)
+            if (formatInfo.UseTimeDesignator)
             {
                 output.Append('T');
             }
@@ -17,7 +21,7 @@ namespace System.ISO8601.Internal.Serialization
 
             if (time.Precision == TimePrecision.Hour && hourParts.Length > 1)
             {
-                output.AppendFormat("{0}{1}{2}", int.Parse(hourParts[0]).ToString("D2"), decimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(hourParts[1]).ToString("D" + time.FractionLength));
+                output.AppendFormat("{0}{1}{2}", int.Parse(hourParts[0]).ToString("D2"), formatInfo.DecimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(hourParts[1]).ToString("D" + time.FractionLength));
             }
             else
             {
@@ -26,7 +30,7 @@ namespace System.ISO8601.Internal.Serialization
 
             if (time.Precision != TimePrecision.Hour)
             {
-                if (withColons)
+                if (formatInfo.UseComponentSeparators)
                 {
                     output.Append(":");
                 }
@@ -35,7 +39,7 @@ namespace System.ISO8601.Internal.Serialization
 
                 if (time.Precision == TimePrecision.Minute && minuteParts.Length > 1)
                 {
-                    output.AppendFormat("{0}{1}{2}", int.Parse(minuteParts[0]).ToString("D2"), decimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(minuteParts[1]).ToString("D" + time.FractionLength));
+                    output.AppendFormat("{0}{1}{2}", int.Parse(minuteParts[0]).ToString("D2"), formatInfo.DecimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(minuteParts[1]).ToString("D" + time.FractionLength));
                 }
                 else
                 {
@@ -45,7 +49,7 @@ namespace System.ISO8601.Internal.Serialization
 
             if (time.Precision == TimePrecision.Second)
             {
-                if (withColons)
+                if (formatInfo.UseComponentSeparators)
                 {
                     output.Append(":");
                 }
@@ -54,7 +58,7 @@ namespace System.ISO8601.Internal.Serialization
 
                 if (secondParts.Length > 1)
                 {
-                    output.AppendFormat("{0}{1}{2}", int.Parse(secondParts[0]).ToString("D2"), decimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(secondParts[1]).ToString("D" + time.FractionLength));
+                    output.AppendFormat("{0}{1}{2}", int.Parse(secondParts[0]).ToString("D2"), formatInfo.DecimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(secondParts[1]).ToString("D" + time.FractionLength));
                 }
                 else
                 {
@@ -62,7 +66,7 @@ namespace System.ISO8601.Internal.Serialization
                 }
             }
 
-            if (withUtcOffset)
+            if (formatInfo.UseUtcOffset)
             {
                 if (time.UtcOffset.Hours == 0 && time.UtcOffset.Minutes == 0)
                 {
@@ -76,10 +80,10 @@ namespace System.ISO8601.Internal.Serialization
                     }
 
                     output.AppendFormat("{0}", time.UtcOffset.Hours.ToString("D2"));
- 
+
                     if (time.UtcOffset.Minutes != 0)
                     {
-                        if (withColons)
+                        if (formatInfo.UseComponentSeparators)
                         {
                             output.Append(':');
                         }

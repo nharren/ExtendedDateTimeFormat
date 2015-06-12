@@ -4,16 +4,22 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class OrdinalDateSerializer
     {
-        internal static string Serialize(OrdinalDate ordinalDate, bool withComponentSeparators, bool isExpanded, int yearLength)
+        internal static string Serialize(OrdinalDate ordinalDate, ISO8601FormatInfo formatInfo)
         {
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+
             if (ordinalDate.Year < 0 || ordinalDate.Year > 9999)
             {
-                isExpanded = true;
+                formatInfo = (ISO8601FormatInfo)formatInfo.Clone();
+                formatInfo.IsExpanded = true;
             }
 
             var output = new StringBuilder();
 
-            if (isExpanded)
+            if (formatInfo.IsExpanded)
             {
                 if (ordinalDate.Year >= 0)
                 {
@@ -21,9 +27,9 @@ namespace System.ISO8601.Internal.Serialization
                 }
             }
 
-            output.Append(ordinalDate.Year.ToString("D" + yearLength));
+            output.Append(ordinalDate.Year.ToString("D" + formatInfo.YearLength));
 
-            if (withComponentSeparators)
+            if (formatInfo.UseComponentSeparators)
             {
                 output.Append('-');
             }

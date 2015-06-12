@@ -193,12 +193,12 @@ namespace System.ISO8601
 
         public override string ToString()
         {
-            return ToString();
+            return ToString(null);
         }
 
-        public virtual string ToString(bool withTimeDesignator = true, bool withComponentSeparators = true, DecimalSeparator decimalSeparator = DecimalSeparator.Comma, bool withUtcOffset = true)
+        public virtual string ToString(ISO8601FormatInfo formatInfo)
         {
-            return WeekDateTimeSerializer.Serialize(this, withTimeDesignator, withComponentSeparators, decimalSeparator, withUtcOffset);
+            return WeekDateTimeSerializer.Serialize(this, formatInfo);
         }
     }
 }

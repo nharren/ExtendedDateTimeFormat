@@ -5,9 +5,13 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class DesignatedDurationSerializer
     {
-        internal static string Serialize(DesignatedDuration designatedDuration, DecimalSeparator decimalSeparator)
+        internal static string Serialize(DesignatedDuration designatedDuration, ISO8601FormatInfo formatInfo)
         {
-            var cultureInfo = decimalSeparator == DecimalSeparator.Dot ? CultureInfo.GetCultureInfo("en-US") : CultureInfo.GetCultureInfo("fr-FR");
+            if (formatInfo == null)
+            {
+                formatInfo = ISO8601FormatInfo.Default;
+            }
+            var cultureInfo = formatInfo.DecimalSeparator == DecimalSeparator.Dot ? CultureInfo.GetCultureInfo("en-US") : CultureInfo.GetCultureInfo("fr-FR");
 
             var output = new StringBuilder();
 
@@ -15,17 +19,17 @@ namespace System.ISO8601.Internal.Serialization
 
             if (designatedDuration.Years != null)
             {
-                output.AppendFormat(cultureInfo, "{0}Y", designatedDuration.Years); 
+                output.AppendFormat(cultureInfo, "{0}Y", designatedDuration.Years);
             }
 
             if (designatedDuration.Months != null)
             {
-                output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Months); 
+                output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Months);
             }
 
             if (designatedDuration.Days != null)
             {
-                output.AppendFormat(cultureInfo, "{0}D", designatedDuration.Days); 
+                output.AppendFormat(cultureInfo, "{0}D", designatedDuration.Days);
             }
 
             if (designatedDuration.Hours != null || designatedDuration.Minutes != null || designatedDuration.Seconds != null)
@@ -35,12 +39,12 @@ namespace System.ISO8601.Internal.Serialization
 
             if (designatedDuration.Hours != null)
             {
-                output.AppendFormat(cultureInfo, "{0}H", designatedDuration.Hours); 
+                output.AppendFormat(cultureInfo, "{0}H", designatedDuration.Hours);
             }
 
             if (designatedDuration.Minutes != null)
             {
-                output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Minutes); 
+                output.AppendFormat(cultureInfo, "{0}M", designatedDuration.Minutes);
             }
 
             if (designatedDuration.Seconds != null)
