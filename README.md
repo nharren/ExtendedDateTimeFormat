@@ -50,8 +50,9 @@ The Extended Date Time Format is a proposed extension to the standard datetime f
 
 ## Examples
 
-[ISO 8601 Examples](doc/ISO 8601 Examples.md)
-[EDTF Examples](doc/EDTF Examples.md)
+[ISO 8601](doc/ISO 8601 Examples.md)
+
+[EDTF](doc/EDTF Examples.md)
 
 ## Features
 
@@ -60,6 +61,7 @@ The Extended Date Time Format is a proposed extension to the standard datetime f
 ## EBNF Descriptions
 
 [ISO 8601](doc/ISO 8601.ebnf)
+
 [EDTF](doc/EDTF.ebnf)
 
 ## License
