@@ -17,9 +17,9 @@ namespace System.ISO8601
 
         public CalendarDate(long year, int month, int day) : this(year, month)
         {
-            if (day < 1 || day > DateCalculator.DaysInMonth(year, month))
+            if (day < 1 || day > DateTimeCalculator.DaysInMonth(year, month))
             {
-                throw new ArgumentOutOfRangeException("day", string.Format("The day must be a value from 1 to {0}.", DateCalculator.DaysInMonth(year, month)));
+                throw new ArgumentOutOfRangeException("day", string.Format("The day must be a value from 1 to {0}.", DateTimeCalculator.DaysInMonth(year, month)));
             }
 
             _day = day;
@@ -40,7 +40,7 @@ namespace System.ISO8601
         public CalendarDate(long year)
         {
             _year = year;
-            _century = DateCalculator.CenturyOfYear(year);
+            _century = DateTimeCalculator.CenturyOfYear(year);
             _precision = CalendarDatePrecision.Year;
         }
 
@@ -117,7 +117,7 @@ namespace System.ISO8601
 
         public static TimeSpan operator -(CalendarDate x, CalendarDate y)
         {
-            return DateCalculator.Subtract(x, y);
+            return DateTimeCalculator.Subtract(x, y);
         }
 
         public static bool operator !=(CalendarDate x, Date y)
@@ -210,7 +210,7 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(ISO8601FormatInfo formatInfo)
+        public virtual string ToString(DateTimeFormatInfo formatInfo)
         {
             return CalendarDateSerializer.Serialize(this, formatInfo);
         }

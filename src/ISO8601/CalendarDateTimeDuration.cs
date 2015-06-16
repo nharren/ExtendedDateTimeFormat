@@ -99,7 +99,7 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(ISO8601FormatInfo formatInfo)
+        public virtual string ToString(DateTimeFormatInfo formatInfo)
         {
             return CalendarDateTimeDurationSerializer.Serialize(this, formatInfo);
         }

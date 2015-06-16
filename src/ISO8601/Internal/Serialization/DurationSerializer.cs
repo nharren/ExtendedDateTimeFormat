@@ -4,11 +4,11 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class DurationSerializer
     {
-        internal static string Serialize(Duration duration, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(Duration duration, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
             if (duration is DesignatedDuration)
             {

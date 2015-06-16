@@ -117,6 +117,21 @@ namespace System.ISO8601
             }
         }
 
+        public static TimeSpan operator -(CalendarDateTime x, CalendarDateTime y)
+        {
+            return DateTimeCalculator.Subtract(x, y);
+        }
+
+        public static TimeSpan operator -(CalendarDateTime x, CalendarDate y)
+        {
+            return DateTimeCalculator.Subtract(x, y);
+        }
+
+        public static TimeSpan operator -(CalendarDateTime x, Time y)
+        {
+            return DateTimeCalculator.Subtract(x, y);
+        }
+
         public static bool operator !=(CalendarDateTime x, Abstract.DateTime y)
         {
             return Comparer.Compare(x, y) != 0;
@@ -202,7 +217,7 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(ISO8601FormatInfo formatInfo)
+        public virtual string ToString(DateTimeFormatInfo formatInfo)
         {
             return CalendarDateTimeSerializer.Serialize(this, formatInfo);
         }

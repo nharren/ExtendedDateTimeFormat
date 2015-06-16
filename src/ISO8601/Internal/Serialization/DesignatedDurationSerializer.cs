@@ -5,13 +5,13 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class DesignatedDurationSerializer
     {
-        internal static string Serialize(DesignatedDuration designatedDuration, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(DesignatedDuration designatedDuration, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
-            var cultureInfo = formatInfo.DecimalSeparator == DecimalSeparator.Dot ? CultureInfo.GetCultureInfo("en-US") : CultureInfo.GetCultureInfo("fr-FR");
+            var cultureInfo = formatInfo.DecimalSeparator == '.' ? CultureInfo.GetCultureInfo("en-US") : CultureInfo.GetCultureInfo("fr-FR");
 
             var output = new StringBuilder();
 

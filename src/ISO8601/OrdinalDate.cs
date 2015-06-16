@@ -14,11 +14,11 @@ namespace System.ISO8601
 
         public OrdinalDate(long year, int day)
         {
-            var daysInYear = DateCalculator.DaysInYear(year);
+            var daysInYear = DateTimeCalculator.DaysInYear(year);
 
             if (day < 1 || day > daysInYear)
             {
-                throw new ArgumentOutOfRangeException("year", string.Format("The day must be a value from 1 to {0}.", daysInYear));
+                throw new ArgumentOutOfRangeException("year", $"The day must be a value from 1 to {daysInYear}.");
             }
 
             _year = year;
@@ -144,7 +144,7 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(ISO8601FormatInfo formatInfo)
+        public virtual string ToString(DateTimeFormatInfo formatInfo)
         {
             return OrdinalDateSerializer.Serialize(this, formatInfo);
         }

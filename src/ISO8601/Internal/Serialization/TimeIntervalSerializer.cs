@@ -4,26 +4,21 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class TimeIntervalSerializer
     {
-        internal static string Serialize(TimeInterval timeInterval, ISO8601FormatInfo leftFormatInfo, ISO8601FormatInfo rightFormatInfo)
+        internal static string Serialize(TimeInterval timeInterval, DateTimeFormatInfo leftFormatInfo, DateTimeFormatInfo rightFormatInfo)
         {
             if (leftFormatInfo == null)
             {
-                leftFormatInfo = ISO8601FormatInfo.Default;
+                leftFormatInfo = DateTimeFormatInfo.Default;
             }
 
             if (rightFormatInfo == null)
             {
-                rightFormatInfo = ISO8601FormatInfo.Default;
+                rightFormatInfo = DateTimeFormatInfo.Default;
             }
 
             if (timeInterval is StartEndTimeInterval)
             {
                 return ((StartEndTimeInterval)timeInterval).ToString(leftFormatInfo, rightFormatInfo);
-            }
-
-            if (timeInterval is DurationContextTimeInterval)
-            {
-                return ((DurationContextTimeInterval)timeInterval).ToString(leftFormatInfo);
             }
 
             if (timeInterval is StartDurationTimeInterval)

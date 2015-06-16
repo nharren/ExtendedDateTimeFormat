@@ -1,4 +1,5 @@
 ﻿using System.ISO8601.Abstract;
+using System.ISO8601.Internal.Conversion;
 using System.ISO8601.Internal.Parsing;
 using System.ISO8601.Internal.Serialization;
 
@@ -47,9 +48,14 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(ISO8601FormatInfo formatInfo)
+        public virtual string ToString(DateTimeFormatInfo formatInfo)
         {
             return OrdinalDateDurationSerializer.Serialize(this, formatInfo);
+        }
+
+        public CalendarDateDuration ToCalendarDateDuration()
+        {
+            return OrdinalDateDurationConverter.ToCalendarDateDuration(this);
         }
     }
 }

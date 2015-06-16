@@ -1,9 +1,9 @@
 ﻿namespace System.ISO8601
 {
-    sealed public class ISO8601FormatInfo : ICloneable
+    sealed public class DateTimeFormatInfo : ICloneable
     {
-        public static readonly ISO8601FormatInfo Default = new ISO8601FormatInfo();
-        private DecimalSeparator _decimalSeparator = DecimalSeparator.Comma;
+        public static readonly DateTimeFormatInfo Default = new DateTimeFormatInfo();
+        private char _decimalSeparator = ',';
         private int _fractionLength = 0;
         private bool _isExpanded = false;
         private bool _useComponentSeparators = true;
@@ -11,7 +11,7 @@
         private bool _useUtcOffset = true;
         private int _yearLength = 4;
 
-        public DecimalSeparator DecimalSeparator
+        public char DecimalSeparator
         {
             get
             {
@@ -20,6 +20,11 @@
 
             set
             {
+                if (_decimalSeparator != '.' || _decimalSeparator != ',')
+                {
+                    throw new InvalidOperationException("The decimal separator must be either a comma or a period.");
+                }
+
                 _decimalSeparator = value;
             }
         }

@@ -41,12 +41,12 @@ namespace System.ISO8601
             return ToString(null, null);
         }
 
-        public virtual string ToString(ISO8601FormatInfo formatInfo)
+        public virtual string ToString(DateTimeFormatInfo formatInfo)
         {
             return ToString(formatInfo, formatInfo);
         }
 
-        public virtual string ToString(ISO8601FormatInfo leftFormatInfo, ISO8601FormatInfo rightFormatInfo)
+        public virtual string ToString(DateTimeFormatInfo leftFormatInfo, DateTimeFormatInfo rightFormatInfo)
         {
             return RecurringTimeIntervalSerializer.Serialize(this, leftFormatInfo, rightFormatInfo);
         }

@@ -4,11 +4,11 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class TimeSerializer
     {
-        internal static string Serialize(Time time, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(Time time, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
             var output = new StringBuilder();
 
@@ -21,7 +21,7 @@ namespace System.ISO8601.Internal.Serialization
 
             if (time.Precision == TimePrecision.Hour && hourParts.Length > 1)
             {
-                output.AppendFormat("{0}{1}{2}", int.Parse(hourParts[0]).ToString("D2"), formatInfo.DecimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(hourParts[1]).ToString("D" + time.FractionLength));
+                output.AppendFormat("{0}{1}{2}", int.Parse(hourParts[0]).ToString("D2"), formatInfo.DecimalSeparator, int.Parse(hourParts[1]).ToString("D" + time.FractionLength));
             }
             else
             {
@@ -39,7 +39,7 @@ namespace System.ISO8601.Internal.Serialization
 
                 if (time.Precision == TimePrecision.Minute && minuteParts.Length > 1)
                 {
-                    output.AppendFormat("{0}{1}{2}", int.Parse(minuteParts[0]).ToString("D2"), formatInfo.DecimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(minuteParts[1]).ToString("D" + time.FractionLength));
+                    output.AppendFormat("{0}{1}{2}", int.Parse(minuteParts[0]).ToString("D2"), formatInfo.DecimalSeparator, int.Parse(minuteParts[1]).ToString("D" + time.FractionLength));
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace System.ISO8601.Internal.Serialization
 
                 if (secondParts.Length > 1)
                 {
-                    output.AppendFormat("{0}{1}{2}", int.Parse(secondParts[0]).ToString("D2"), formatInfo.DecimalSeparator == DecimalSeparator.Comma ? "," : ".", int.Parse(secondParts[1]).ToString("D" + time.FractionLength));
+                    output.AppendFormat("{0}{1}{2}", int.Parse(secondParts[0]).ToString("D2"), formatInfo.DecimalSeparator, int.Parse(secondParts[1]).ToString("D" + time.FractionLength));
                 }
                 else
                 {

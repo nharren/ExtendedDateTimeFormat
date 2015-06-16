@@ -4,16 +4,16 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class CalendarDateSerializer
     {
-        internal static string Serialize(CalendarDate calendarDate, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(CalendarDate calendarDate, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
 
             if (calendarDate.Century < 0 || calendarDate.Century > 99)
             {
-                formatInfo = (ISO8601FormatInfo)formatInfo.Clone();
+                formatInfo = (DateTimeFormatInfo)formatInfo.Clone();
                 formatInfo.IsExpanded = true;
             }
 

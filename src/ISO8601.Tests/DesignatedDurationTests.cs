@@ -38,20 +38,20 @@ namespace ISO8601.Tests
 
             // Fractional
             Assert.AreEqual("P5Y5M5DT5H5M5,55S", DesignatedDuration.Parse("P5Y5M5DT5H5M5,55S").ToString());
-            Assert.AreEqual("P5Y5M5DT5H5.55S", DesignatedDuration.Parse("P5Y5M5DT5H5.55S").ToString(new ISO8601FormatInfo { FractionLength = 2, DecimalSeparator = DecimalSeparator.Dot }));
+            Assert.AreEqual("P5Y5M5DT5H5.55S", DesignatedDuration.Parse("P5Y5M5DT5H5.55S").ToString(new DateTimeFormatInfo { FractionLength = 2, DecimalSeparator = '.' }));
             Assert.AreEqual("P5Y5M5DT5,55S", DesignatedDuration.Parse("P5Y5M5D5,55S").ToString());
-            Assert.AreEqual("P5Y5MT5.55S", DesignatedDuration.Parse("P5Y5MT5.55S").ToString(new ISO8601FormatInfo { FractionLength = 2, DecimalSeparator = DecimalSeparator.Dot }));
+            Assert.AreEqual("P5Y5MT5.55S", DesignatedDuration.Parse("P5Y5MT5.55S").ToString(new DateTimeFormatInfo { FractionLength = 2, DecimalSeparator = '.' }));
             Assert.AreEqual("P5YT5,55S", DesignatedDuration.Parse("P5YT5,55S").ToString());
-            Assert.AreEqual("PT5.55S", DesignatedDuration.Parse("PT5.55S").ToString(new ISO8601FormatInfo { FractionLength = 2, DecimalSeparator = DecimalSeparator.Dot }));
+            Assert.AreEqual("PT5.55S", DesignatedDuration.Parse("PT5.55S").ToString(new DateTimeFormatInfo { FractionLength = 2, DecimalSeparator = '.' }));
             Assert.AreEqual("P5M5DT5H5M5,55S", DesignatedDuration.Parse("P5M5DT5H5M5,55S").ToString());
-            Assert.AreEqual("P5M5DT5H5.55S", DesignatedDuration.Parse("P5M5DT5H5.55S").ToString(new ISO8601FormatInfo { FractionLength = 2, DecimalSeparator = DecimalSeparator.Dot }));
+            Assert.AreEqual("P5M5DT5H5.55S", DesignatedDuration.Parse("P5M5DT5H5.55S").ToString(new DateTimeFormatInfo { FractionLength = 2, DecimalSeparator = '.' }));
             Assert.AreEqual("P5M5DT5,55S", DesignatedDuration.Parse("P5M5DT5,55S").ToString());
-            Assert.AreEqual("P5MT5.55S", DesignatedDuration.Parse("P5MT5.55S").ToString(new ISO8601FormatInfo { FractionLength = 2, DecimalSeparator = DecimalSeparator.Dot }));
+            Assert.AreEqual("P5MT5.55S", DesignatedDuration.Parse("P5MT5.55S").ToString(new DateTimeFormatInfo { FractionLength = 2, DecimalSeparator = '.' }));
             Assert.AreEqual("P5DT5H5M5,55S", DesignatedDuration.Parse("P5DT5H5M5,55S").ToString());
-            Assert.AreEqual("P5DT5H5.55S", DesignatedDuration.Parse("P5DT5H5.55S").ToString(new ISO8601FormatInfo { FractionLength = 2, DecimalSeparator = DecimalSeparator.Dot }));
+            Assert.AreEqual("P5DT5H5.55S", DesignatedDuration.Parse("P5DT5H5.55S").ToString(new DateTimeFormatInfo { FractionLength = 2, DecimalSeparator = '.' }));
             Assert.AreEqual("P5DT5,55S", DesignatedDuration.Parse("P5DT5,55S").ToString());
             Assert.AreEqual("PT5H5M5,55S", DesignatedDuration.Parse("PT5H5M5,55S").ToString());
-            Assert.AreEqual("PT5H5.55S", DesignatedDuration.Parse("PT5H5.55S").ToString(new ISO8601FormatInfo { FractionLength = 2, DecimalSeparator = DecimalSeparator.Dot }));
+            Assert.AreEqual("PT5H5.55S", DesignatedDuration.Parse("PT5H5.55S").ToString(new DateTimeFormatInfo { FractionLength = 2, DecimalSeparator = '.' }));
             Assert.AreEqual("PT5M5,55S", DesignatedDuration.Parse("PT5M5,55S").ToString());
 
             Assert.AreEqual("P5Y5M5DT5H5,55M", DesignatedDuration.Parse("P5Y5M5DT5H5,55M").ToString());

@@ -2,11 +2,11 @@
 {
     internal static class CalendarDateTimeDurationSerializer
     {
-        internal static string Serialize(CalendarDateTimeDuration dateTimeDuration, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(CalendarDateTimeDuration dateTimeDuration, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
 
             return dateTimeDuration.DateDuration.ToString(formatInfo) + dateTimeDuration.TimeDuration.ToString(formatInfo).Substring(1);

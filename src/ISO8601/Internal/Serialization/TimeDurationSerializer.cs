@@ -5,13 +5,13 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class TimeDurationSerializer
     {
-        internal static string Serialize(TimeDuration timeDuration, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(TimeDuration timeDuration, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
-            var numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = formatInfo.DecimalSeparator == DecimalSeparator.Dot ? "." : "," };
+            var numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = formatInfo.DecimalSeparator.ToString() };
 
             var output = new StringBuilder("PT");
 

@@ -4,11 +4,11 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class TimePointSerializer
     {
-        internal static string Serialize(TimePoint timePoint, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(TimePoint timePoint, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
 
             if (timePoint is CalendarDateTime)

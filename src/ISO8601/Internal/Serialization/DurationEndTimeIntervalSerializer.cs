@@ -2,16 +2,16 @@
 {
     internal static class DurationEndTimeIntervalSerializer
     {
-        internal static string Serialize(DurationEndTimeInterval interval, ISO8601FormatInfo durationFormatInfo, ISO8601FormatInfo endFormatInfo)
+        internal static string Serialize(DurationEndTimeInterval interval, DateTimeFormatInfo durationFormatInfo, DateTimeFormatInfo endFormatInfo)
         {
             if (durationFormatInfo == null)
             {
-                durationFormatInfo = ISO8601FormatInfo.Default;
+                durationFormatInfo = DateTimeFormatInfo.Default;
             }
 
             if (endFormatInfo == null)
             {
-                endFormatInfo = ISO8601FormatInfo.Default;
+                endFormatInfo = DateTimeFormatInfo.Default;
             }
 
             return DurationSerializer.Serialize(interval.Duration, durationFormatInfo) + "/" + TimePointSerializer.Serialize(interval.End, endFormatInfo);

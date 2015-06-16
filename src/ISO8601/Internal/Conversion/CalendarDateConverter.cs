@@ -9,7 +9,7 @@
                 throw new ConversionException("The calendar date must be defined to the day to be converted to an ordinal date.");
             }
 
-            return new OrdinalDate(calendarDate.Year, DateCalculator.DayOfYear(calendarDate));
+            return new OrdinalDate(calendarDate.Year, DateTimeCalculator.DayOfYear(calendarDate));
         }
 
         internal static WeekDate ToWeekDate(CalendarDate calendarDate, WeekDatePrecision precision)
@@ -20,14 +20,14 @@
             }
 
             long year = calendarDate.Year;
-            int week = DateCalculator.WeekOfYear(calendarDate);
+            int week = DateTimeCalculator.WeekOfYear(calendarDate);
             var isLastWeekOfPreviousYear = week < 1;
-            var isFirstWeekOfNextYear = week > DateCalculator.WeeksInYear(year);
+            var isFirstWeekOfNextYear = week > DateTimeCalculator.WeeksInYear(year);
 
             if (isLastWeekOfPreviousYear)
             {
                 year--;
-                week = DateCalculator.WeeksInYear(year);
+                week = DateTimeCalculator.WeeksInYear(year);
             }
             else if (isFirstWeekOfNextYear)
             {
@@ -40,7 +40,7 @@
                 return new WeekDate(year, week);
             }
 
-            var day = (int)DateCalculator.DayOfWeek(calendarDate);
+            var day = (int)DateTimeCalculator.DayOfWeek(calendarDate);
 
             return new WeekDate(year, week, day);
         }

@@ -6,11 +6,6 @@ namespace System.ISO8601.Internal.Parsing
     {
         internal static TimeInterval Parse(string input, int startYearLength, int endYearLength)
         {
-            if (!input.Contains("/"))
-            {
-                return DurationContextTimeInterval.Parse(input, startYearLength);
-            }
-
             if (input.StartsWith("P"))
             {
                 return DurationEndTimeInterval.Parse(input, startYearLength, endYearLength);

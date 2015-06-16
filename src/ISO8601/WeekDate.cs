@@ -27,7 +27,7 @@ namespace System.ISO8601
 
         public WeekDate(long year, int week)
         {
-            int weeksInYear = DateCalculator.WeeksInYear(year);
+            int weeksInYear = DateTimeCalculator.WeeksInYear(year);
 
             if (week < 1 || week > weeksInYear)
             {
@@ -184,7 +184,7 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(ISO8601FormatInfo formatInfo)
+        public virtual string ToString(DateTimeFormatInfo formatInfo)
         {
             return WeekDateSerializer.Serialize(this, formatInfo);
         }

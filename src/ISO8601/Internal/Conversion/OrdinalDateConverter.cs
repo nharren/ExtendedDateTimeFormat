@@ -9,7 +9,7 @@
         {
             if (precision == CalendarDatePrecision.Century)
             {
-                return new CalendarDate(DateCalculator.CenturyOfYear(ordinalDate.Year));
+                return new CalendarDate(DateTimeCalculator.CenturyOfYear(ordinalDate.Year));
             }
 
             if (precision == CalendarDatePrecision.Year)
@@ -17,7 +17,7 @@
                 return new CalendarDate(ordinalDate.Year);
             }
 
-            var days = DateCalculator.IsLeapYear(ordinalDate.Year) ? DaysToMonth366 : DaysToMonth365;
+            var days = DateTimeCalculator.IsLeapYear(ordinalDate.Year) ? DaysToMonth366 : DaysToMonth365;
             var month = 0;
             var day = 0;
 

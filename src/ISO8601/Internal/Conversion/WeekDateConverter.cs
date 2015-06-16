@@ -20,12 +20,12 @@
             }
 
             var year = weekDate.Year;
-            var ordinalDay = DateCalculator.DayOfYear(weekDate);
-            var daysInYear = DateCalculator.DaysInYear(year);
+            var ordinalDay = DateTimeCalculator.DayOfYear(weekDate);
+            var daysInYear = DateTimeCalculator.DaysInYear(year);
 
             if (ordinalDay < 1)
             {
-                ordinalDay += DateCalculator.DaysInYear(year - 1);
+                ordinalDay += DateTimeCalculator.DaysInYear(year - 1);
             }
 
             if (ordinalDay > daysInYear)

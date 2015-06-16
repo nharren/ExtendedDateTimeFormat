@@ -2,39 +2,86 @@
 
 #### Version 1
 
+##### EDTF
+
+- [x] Extended date/times 
+	- [x] Deserialization from string
+	- [x] Serialization to string
+	- [x] Comparing
+	- [x] Serialization to XML
+	- [x] Serialization to Binary
+	- [x] Conversion from System.DateTime
+	- [x] Conversion from System.DateTimeOffset
+	- [x] Arithmetic operations
+		- [x] Subtract extended date/times
+		- [x] Subtract timespans
+		- [x] Add timespans
+- [x] Extended time intervals 
+	- [x] Deserialization from string
+	- [x] Serialization to string
+	- [x] Comparing
+	- [x] Serialization to XML
+	- [x] Serialization to Binary
+- [x] Extended date/time collection
+	- [x] Deserialization from string
+	- [x] Serialization to string
+	- [x] Comparing
+	- [x] Serialization to XML
+	- [x] Serialization to Binary
+- [x] Extended date/time possibility collection
+	- [x] Deserialization from string
+	- [x] Serialization to string
+	- [x] Comparing
+	- [x] Serialization to XML
+	- [x] Serialization to Binary
+- [x] Unspecified extended date/time
+	- [x] Deserialization from string
+	- [x] Serialization to string
+	- [x] Comparing
+	- [x] Serialization to XML
+	- [x] Serialization to Binary
+- [x] Extended timespan
+
 ##### ISO-8601:2004(E)
 
 - [x] Calendar dates 
 	- [x] Deserialization from string
 	- [x] Serialization to string
+	- [x] Comparison with other Dates
 	- [x] Conversion to OrdinalDates
 	- [x] Conversion to WeekDates
 - [x] Ordinal dates 
 	- [x] Deserialization from string
 	- [x] Serialization to string
+	- [x] Comparison with other Dates
 	- [x] Conversion to CalendarDate
 	- [x] Conversion to WeekDate
 - [x] Week dates
 	- [x] Deserialization from string
 	- [x] Serialization to string
+	- [x] Comparison with other Dates
 	- [x] Conversion to CalendarDate
 	- [x] Conversion to OrdinalDate
 - [x] Time
 	- [x] Deserialization from string
 	- [x] Serialization to string
+	- [x] Comparison with other Times
 - [x] Calendar datetimes
 	- [x] Deserialization from string
 	- [x] Serialization to string
+	- [x] Comparison with other DateTimes
 	- [x] Conversion to OrdinalDateTime
 	- [x] Conversion to WeekDateTime
 - [x] Ordinal datetimes
 	- [x] Deserialization from string
 	- [x] Serialization to string
+	- [x] Comparison with other DateTimes
 	- [x] Conversion to CalendarDateTime
 	- [x] Conversion to WeekDateTime
 - [x] Week datetimes
 	- [x] Deserialization from string
 	- [x] Serialization to string
+	- [x] Comparison with other DateTimes
 	- [x] Conversion to CalendarDateTime
 	- [x] Conversion to OrdinalDateTime
 - [x] Designated durations
@@ -87,10 +134,11 @@
 
 #### Future Ideas
 
-- Robust diagnostics
+- Robust diagnostics.
 - Optimistic parsing.
 - Descriptive, helpful exceptions.
 - Thorough performance tests.
 - Better documentation and examples.
 - More calculation features.
-- Consolidating calendar-week-ordinal into single date or datetime.
+- DateTimes will have internal storage of the year and ordinal second for easy comparison and arithmetic.
+- TimeIntervals will have internal storage of the duration in years and seconds.

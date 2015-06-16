@@ -4,16 +4,16 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class WeekDateSerializer
     {
-        internal static string Serialize(WeekDate weekDate, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(WeekDate weekDate, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
 
             if (weekDate.Year < 0 || weekDate.Year > 9999)
             {
-                formatInfo = (ISO8601FormatInfo)formatInfo.Clone();
+                formatInfo = (DateTimeFormatInfo)formatInfo.Clone();
                 formatInfo.IsExpanded = true;
             }
 

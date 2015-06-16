@@ -2,16 +2,16 @@
 {
     internal static class RecurringTimeIntervalSerializer
     {
-        internal static string Serialize(RecurringTimeInterval interval, ISO8601FormatInfo leftFormatInfo, ISO8601FormatInfo rightFormatInfo)
+        internal static string Serialize(RecurringTimeInterval interval, DateTimeFormatInfo leftFormatInfo, DateTimeFormatInfo rightFormatInfo)
         {
             if (leftFormatInfo == null)
             {
-                leftFormatInfo = ISO8601FormatInfo.Default;
+                leftFormatInfo = DateTimeFormatInfo.Default;
             }
 
             if (rightFormatInfo == null)
             {
-                rightFormatInfo = ISO8601FormatInfo.Default;
+                rightFormatInfo = DateTimeFormatInfo.Default;
             }
 
             return "R" + interval.Recurrences + (interval.Interval is DurationEndTimeInterval ? string.Empty : "/") + TimeIntervalSerializer.Serialize(interval.Interval, leftFormatInfo, rightFormatInfo);

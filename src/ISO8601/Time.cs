@@ -7,13 +7,13 @@ namespace System.ISO8601
 {
     public class Time : TimePoint, IComparable, IComparable<Time>, IEquatable<Time>
     {
-        private UtcOffset _utcOffset;
         private static TimeComparer _comparer;
         private readonly double _hour;
         private readonly double _minute;
         private readonly TimePrecision _precision;
         private readonly double _second;
         private int _fractionLength;
+        private UtcOffset _utcOffset;
 
         public Time(int hour, int minute, double second) : this(hour, minute)
         {
@@ -71,6 +71,19 @@ namespace System.ISO8601
             }
         }
 
+        public int FractionLength
+        {
+            get
+            {
+                return _fractionLength;
+            }
+
+            set
+            {
+                _fractionLength = value;
+            }
+        }
+
         public double Hour
         {
             get
@@ -116,17 +129,9 @@ namespace System.ISO8601
             }
         }
 
-        public int FractionLength
+        public static TimeSpan operator -(Time x, Time y)
         {
-            get
-            {
-                return _fractionLength;
-            }
-
-            set
-            {
-                _fractionLength = value;
-            }
+            return DateTimeCalculator.Subtract(x, y);
         }
 
         public static bool operator !=(Time x, Time y)
@@ -209,7 +214,7 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public string ToString(ISO8601FormatInfo formatInfo)
+        public string ToString(DateTimeFormatInfo formatInfo)
         {
             return TimeSerializer.Serialize(this, formatInfo);
         }

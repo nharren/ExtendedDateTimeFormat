@@ -4,11 +4,11 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class CalendarDateDurationSerializer
     {
-        internal static string Serialize(CalendarDateDuration calendarDateDuration, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(CalendarDateDuration calendarDateDuration, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
 
             var output = new StringBuilder("P");

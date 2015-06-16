@@ -4,16 +4,16 @@ namespace System.ISO8601.Internal.Serialization
 {
     internal static class OrdinalDateSerializer
     {
-        internal static string Serialize(OrdinalDate ordinalDate, ISO8601FormatInfo formatInfo)
+        internal static string Serialize(OrdinalDate ordinalDate, DateTimeFormatInfo formatInfo)
         {
             if (formatInfo == null)
             {
-                formatInfo = ISO8601FormatInfo.Default;
+                formatInfo = DateTimeFormatInfo.Default;
             }
 
             if (ordinalDate.Year < 0 || ordinalDate.Year > 9999)
             {
-                formatInfo = (ISO8601FormatInfo)formatInfo.Clone();
+                formatInfo = (DateTimeFormatInfo)formatInfo.Clone();
                 formatInfo.IsExpanded = true;
             }
 

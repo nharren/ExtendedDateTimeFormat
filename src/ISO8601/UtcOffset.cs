@@ -4,8 +4,8 @@
     {
         private static readonly UtcOffset _unsetUtcOffset = new UtcOffset(true, 0, 0, UtcPrecision.Hour);
         private readonly int _hours;
-        private readonly int _minutes;
         private readonly bool _isUnset;
+        private readonly int _minutes;
         private readonly UtcPrecision _precision;
 
         public UtcOffset(int hours) : this(false, hours, 0, UtcPrecision.Hour)
@@ -40,19 +40,19 @@
             }
         }
 
-        public int Minutes
-        {
-            get
-            {
-                return _minutes;
-            }
-        }
-
         public bool IsUnset
         {
             get
             {
                 return _isUnset;
+            }
+        }
+
+        public int Minutes
+        {
+            get
+            {
+                return _minutes;
             }
         }
 
@@ -62,6 +62,11 @@
             {
                 return _precision;
             }
+        }
+
+        public static TimeSpan operator -(UtcOffset x, UtcOffset y)
+        {
+            return DateTimeCalculator.Subtract(x, y);
         }
 
         public override int GetHashCode()

@@ -2,9 +2,9 @@
 
 namespace System.ISO8601.Internal.Comparison
 {
-    public class DateTimeComparer : IComparer<ISO8601.Abstract.DateTime>
+    public class DateTimeComparer : IComparer<Abstract.DateTime>
     {
-        public int Compare(ISO8601.Abstract.DateTime x, ISO8601.Abstract.DateTime y)
+        public int Compare(Abstract.DateTime x, Abstract.DateTime y)
         {
             if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
             {
