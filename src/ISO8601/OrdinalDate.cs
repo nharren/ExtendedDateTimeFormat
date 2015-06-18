@@ -1,8 +1,8 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparison;
-using System.ISO8601.Internal.Conversion;
-using System.ISO8601.Internal.Parsing;
-using System.ISO8601.Internal.Serialization;
+using System.ISO8601.Internal.Comparers;
+using System.ISO8601.Internal.Converters;
+using System.ISO8601.Internal.Parsers;
+using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
@@ -14,7 +14,7 @@ namespace System.ISO8601
 
         public OrdinalDate(long year, int day)
         {
-            var daysInYear = DateTimeCalculator.DaysInYear(year);
+            var daysInYear = ISO8601Calculator.DaysInYear(year);
 
             if (day < 1 || day > daysInYear)
             {
@@ -144,9 +144,9 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(DateTimeFormatInfo formatInfo)
+        public virtual string ToString(ISO8601Options options)
         {
-            return OrdinalDateSerializer.Serialize(this, formatInfo);
+            return OrdinalDateSerializer.Serialize(this, options);
         }
 
         public WeekDate ToWeekDate(WeekDatePrecision precision)

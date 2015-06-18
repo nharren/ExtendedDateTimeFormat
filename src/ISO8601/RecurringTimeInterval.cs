@@ -1,6 +1,6 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Parsing;
-using System.ISO8601.Internal.Serialization;
+using System.ISO8601.Internal.Parsers;
+using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
@@ -41,12 +41,12 @@ namespace System.ISO8601
             return ToString(null, null);
         }
 
-        public virtual string ToString(DateTimeFormatInfo formatInfo)
+        public virtual string ToString(ISO8601Options options)
         {
-            return ToString(formatInfo, formatInfo);
+            return ToString(options, options);
         }
 
-        public virtual string ToString(DateTimeFormatInfo leftFormatInfo, DateTimeFormatInfo rightFormatInfo)
+        public virtual string ToString(ISO8601Options leftFormatInfo, ISO8601Options rightFormatInfo)
         {
             return RecurringTimeIntervalSerializer.Serialize(this, leftFormatInfo, rightFormatInfo);
         }

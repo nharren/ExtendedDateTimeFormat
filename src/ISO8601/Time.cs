@@ -1,7 +1,7 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparison;
-using System.ISO8601.Internal.Parsing;
-using System.ISO8601.Internal.Serialization;
+using System.ISO8601.Internal.Comparers;
+using System.ISO8601.Internal.Parsers;
+using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
@@ -12,7 +12,6 @@ namespace System.ISO8601
         private readonly double _minute;
         private readonly TimePrecision _precision;
         private readonly double _second;
-        private int _fractionLength;
         private UtcOffset _utcOffset;
 
         public Time(int hour, int minute, double second) : this(hour, minute)
@@ -22,11 +21,13 @@ namespace System.ISO8601
                 throw new ArgumentOutOfRangeException(nameof(minute), "The second must be a number from 0 to 60 (excluding 60).");
             }
 
+            if (hour == 24 && minute != 0 && second != 0d)
+            {
+                throw new InvalidOperationException("Time does not support values greater than 24:00:00");
+            }
+
             _second = second;
             _precision = TimePrecision.Second;
-
-            var fractionParts = second.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public Time(int hour, double minute) : this(hour)
@@ -36,11 +37,13 @@ namespace System.ISO8601
                 throw new ArgumentOutOfRangeException(nameof(minute), "The minute must be a number from 0 to 60 (excluding 60).");
             }
 
+            if (hour == 24 && minute != 0d)
+            {
+                throw new InvalidOperationException("Time does not support values greater than 24:00:00");
+            }
+
             _minute = minute;
             _precision = TimePrecision.Minute;
-
-            var fractionParts = minute.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public Time(double hour)
@@ -53,9 +56,6 @@ namespace System.ISO8601
             _hour = hour;
             _precision = TimePrecision.Hour;
             _utcOffset = UtcOffset.Unset;
-
-            var fractionParts = hour.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public static TimeComparer Comparer
@@ -68,19 +68,6 @@ namespace System.ISO8601
                 }
 
                 return _comparer;
-            }
-        }
-
-        public int FractionLength
-        {
-            get
-            {
-                return _fractionLength;
-            }
-
-            set
-            {
-                _fractionLength = value;
             }
         }
 
@@ -131,7 +118,7 @@ namespace System.ISO8601
 
         public static TimeSpan operator -(Time x, Time y)
         {
-            return DateTimeCalculator.Subtract(x, y);
+            return ISO8601Calculator.Subtract(x, y);
         }
 
         public static bool operator !=(Time x, Time y)
@@ -214,9 +201,9 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public string ToString(DateTimeFormatInfo formatInfo)
+        public string ToString(ISO8601Options options)
         {
-            return TimeSerializer.Serialize(this, formatInfo);
+            return TimeSerializer.Serialize(this, options);
         }
     }
 }

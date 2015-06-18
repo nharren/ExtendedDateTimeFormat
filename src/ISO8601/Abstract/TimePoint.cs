@@ -4,12 +4,17 @@
     {
         public static TimeSpan operator -(TimePoint x, TimePoint y)
         {
-            return DateTimeCalculator.Subtract(x, y);
+            return ISO8601Calculator.Subtract(x, y);
         }
 
         public static TimePoint operator +(TimePoint x, Duration y)
         {
-            return DateTimeCalculator.Add(x, y);
+            return ISO8601Calculator.Add(x, y);
+        }
+
+        public static TimePoint operator -(TimePoint x, Duration y)
+        {
+            return ISO8601Calculator.Subtract(x, y);
         }
     }
 }

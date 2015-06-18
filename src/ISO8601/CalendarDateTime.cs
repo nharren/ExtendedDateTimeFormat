@@ -1,7 +1,7 @@
-﻿using System.ISO8601.Internal.Comparison;
-using System.ISO8601.Internal.Conversion;
-using System.ISO8601.Internal.Parsing;
-using System.ISO8601.Internal.Serialization;
+﻿using System.ISO8601.Internal.Comparers;
+using System.ISO8601.Internal.Converters;
+using System.ISO8601.Internal.Parsers;
+using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
@@ -119,17 +119,17 @@ namespace System.ISO8601
 
         public static TimeSpan operator -(CalendarDateTime x, CalendarDateTime y)
         {
-            return DateTimeCalculator.Subtract(x, y);
+            return ISO8601Calculator.Subtract(x, y);
         }
 
         public static TimeSpan operator -(CalendarDateTime x, CalendarDate y)
         {
-            return DateTimeCalculator.Subtract(x, y);
+            return ISO8601Calculator.Subtract(x, y);
         }
 
         public static TimeSpan operator -(CalendarDateTime x, Time y)
         {
-            return DateTimeCalculator.Subtract(x, y);
+            return ISO8601Calculator.Subtract(x, y);
         }
 
         public static bool operator !=(CalendarDateTime x, Abstract.DateTime y)
@@ -217,9 +217,9 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(DateTimeFormatInfo formatInfo)
+        public virtual string ToString(ISO8601Options options)
         {
-            return CalendarDateTimeSerializer.Serialize(this, formatInfo);
+            return CalendarDateTimeSerializer.Serialize(this, options);
         }
 
         public WeekDateTime ToWeekDateTime()

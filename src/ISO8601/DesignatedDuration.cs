@@ -1,6 +1,6 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Parsing;
-using System.ISO8601.Internal.Serialization;
+using System.ISO8601.Internal.Parsers;
+using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
@@ -175,9 +175,9 @@ namespace System.ISO8601
             return ToString(null);
         }
 
-        public virtual string ToString(DateTimeFormatInfo formatInfo)
+        public virtual string ToString(ISO8601Options options)
         {
-            return DesignatedDurationSerializer.Serialize(this, formatInfo);
+            return DesignatedDurationSerializer.Serialize(this, options);
         }
     }
 }

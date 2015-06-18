@@ -66,7 +66,7 @@
 
         public static TimeSpan operator -(UtcOffset x, UtcOffset y)
         {
-            return DateTimeCalculator.Subtract(x, y);
+            return ISO8601Calculator.Subtract(x, y);
         }
 
         public override int GetHashCode()
