@@ -11,7 +11,7 @@ namespace System.ISO8601.Internal.Serializers
             {
                 options = ISO8601Options.Default;
             }
-            var numberOptions = new NumberOptions { NumberDecimalSeparator = options.DecimalSeparator.ToString() };
+            var numberOptions = new NumberFormatInfo { NumberDecimalSeparator = options.DecimalSeparator.ToString() };
 
             var output = new StringBuilder("PT");
 

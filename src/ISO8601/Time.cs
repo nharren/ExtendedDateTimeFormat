@@ -193,7 +193,7 @@ namespace System.ISO8601
 
         public override int GetHashCode()
         {
-            return _hour.GetHashCode() ^ (_minute.GetHashCode() << 4) ^ (_second.GetHashCode() << 8) ^ (UtcOffset.GetHashCode() << 16);
+            return GetHashCodeOverride();
         }
 
         public override string ToString()
@@ -204,6 +204,11 @@ namespace System.ISO8601
         public string ToString(ISO8601Options options)
         {
             return TimeSerializer.Serialize(this, options);
+        }
+
+        internal override int GetHashCodeOverride()
+        {
+            return _hour.GetHashCode() ^ (_minute.GetHashCode() << 4) ^ (_second.GetHashCode() << 8) ^ (UtcOffset.GetHashCode() << 16);
         }
     }
 }
