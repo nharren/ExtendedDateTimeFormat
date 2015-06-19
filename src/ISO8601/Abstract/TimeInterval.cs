@@ -1,6 +1,4 @@
-﻿using System.ISO8601.Internal.Comparers;
-
-namespace System.ISO8601.Abstract
+﻿namespace System.ISO8601.Abstract
 {
     public abstract class TimeInterval : IComparable, IComparable<TimeInterval>, IEquatable<TimeInterval>
     {

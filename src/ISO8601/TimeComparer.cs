@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace System.ISO8601.Internal.Comparers
+namespace System.ISO8601
 {
     public class TimeComparer : IComparer<Time>
     {

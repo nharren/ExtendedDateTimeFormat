@@ -1,5 +1,4 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparers;
 using System.ISO8601.Internal.Parsers;
 using System.ISO8601.Internal.Serializers;
 

@@ -56,10 +56,10 @@
     <Compile Include="Internal\Converters\UnspecifiedExtendedDateTimeConverter.cs" />
     <Compile Include="ExtendedDateTime.cs" />
     <Compile Include="ExtendedDateTimeCalculator.cs" />
-    <Compile Include="Internal\Comparers\ExtendedDateTimeComparer.cs" />
+    <Compile Include="ExtendedDateTimeComparer.cs" />
     <Compile Include="ExtendedDateTimePossibilityCollection.cs" />
     <Compile Include="DateTimeOffsetExtensions.cs" />
-    <Compile Include="Internal\StringExtensions.cs" />
+    <Compile Include="Internal\EnumerableExtensions.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimeMaskedPrecisionParser.cs" />
     <Compile Include="Internal\Parsers\ExtendedDateTimePossibilityCollectionParser.cs" />
     <Compile Include="DayFlags.cs" />

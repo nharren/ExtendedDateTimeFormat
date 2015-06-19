@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ISO8601.Abstract;
 
-namespace System.ISO8601.Internal.Comparers
+namespace System.ISO8601
 {
     public class TimeIntervalComparer : IComparer<TimeInterval>
     {

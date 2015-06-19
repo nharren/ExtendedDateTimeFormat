@@ -54,7 +54,7 @@
     <Compile Include="CalendarDateTimePrecision.cs" />
     <Compile Include="ConversionException.cs" />
     <Compile Include="ISO8601Calculator.cs" />
-    <Compile Include="Internal\Comparers\TimeIntervalComparer.cs" />
+    <Compile Include="TimeIntervalComparer.cs" />
     <Compile Include="Internal\Converters\DurationEndTimeIntervalConverter.cs" />
     <Compile Include="Internal\Converters\OrdinalDateDurationConverter.cs" />
     <Compile Include="Internal\Converters\OrdinalDateTimeDurationConverter.cs" />
@@ -70,8 +70,8 @@
     <Compile Include="Internal\Converters\OrdinalDateTimeConverter.cs" />
     <Compile Include="Internal\Converters\WeekDateConverter.cs" />
     <Compile Include="Internal\Converters\WeekDateTimeConverter.cs" />
-    <Compile Include="Internal\Comparers\DateComparer.cs" />
-    <Compile Include="Internal\Comparers\DateTimeComparer.cs" />
+    <Compile Include="DateComparer.cs" />
+    <Compile Include="DateTimeComparer.cs" />
     <Compile Include="Internal\Parsers\DateParser.cs" />
     <Compile Include="Internal\Parsers\DurationEndTimeIntervalParser.cs" />
     <Compile Include="Internal\Parsers\DurationParser.cs" />
@@ -115,7 +115,7 @@
     <Compile Include="Internal\Serializers\TimeSerializer.cs" />
     <Compile Include="Internal\Serializers\WeekDateSerializer.cs" />
     <Compile Include="Internal\Serializers\WeekDateTimeSerializer.cs" />
-    <Compile Include="Internal\Comparers\TimeComparer.cs" />
+    <Compile Include="TimeComparer.cs" />
     <Compile Include="OrdinalDate.cs" />
     <Compile Include="OrdinalDateDuration.cs" />
     <Compile Include="OrdinalDateTime.cs" />

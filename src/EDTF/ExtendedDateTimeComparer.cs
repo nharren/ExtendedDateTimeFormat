@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace System.EDTF.Internal.Comparers
+namespace System.EDTF
 {
     public class ExtendedDateTimeComparer : IComparer<ExtendedDateTime>
     {
