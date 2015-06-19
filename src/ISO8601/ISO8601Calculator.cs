@@ -11,37 +11,7 @@ namespace System.ISO8601
         private static readonly int[] DaysToMonth365 = { 0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
         private static readonly int[] DaysToMonth366 = { 0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335 };
 
-        public static int DayOfYear(CalendarDate calendarDate)
-        {
-            return (IsLeapYear(calendarDate.Year) ? DaysToMonth366[calendarDate.Month] : DaysToMonth365[calendarDate.Month]) + calendarDate.Day;
-        }
-
-        public static int DaysInMonth(long year, int month)
-        {
-            return month == 2 && IsLeapYear(year) ? 29 : DaysInMonthArray[month];
-        }
-
-        public static int DaysInYear(long year)
-        {
-            return IsLeapYear(year) ? 366 : 365;
-        }
-
-        public static bool IsLeapYear(long year)                // http://www.timeanddate.com/date/leapyear.html
-        {
-            return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
-        }
-
-        public static int WeeksInYear(long year)
-        {
-            return WeekOfYear(new CalendarDate(year, 12, 28));
-        }
-
-        public static TimePoint Subtract(TimePoint x, Duration y)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static TimePoint Add(CalendarDateTime x, Duration y)
+        public static CalendarDateTime Add(CalendarDateTime x, Duration y)
         {
             if (y is CalendarDateTimeDuration)
             {
@@ -76,7 +46,7 @@ namespace System.ISO8601
             throw new InvalidOperationException("The Duration was of an unrecognized type.");
         }
 
-        public static TimePoint Add(CalendarDate x, Duration y)
+        public static CalendarDate Add(CalendarDate x, Duration y)
         {
             if (y is CalendarDateDuration)
             {
@@ -144,24 +114,369 @@ namespace System.ISO8601
             throw new InvalidOperationException("The TimePoint was of an unrecognized type.");
         }
 
-        public static TimePoint Add(CalendarDateTime x, CalendarDateTimeDuration y)
+        public static CalendarDateTime Add(CalendarDateTime x, CalendarDateTimeDuration y)
         {
-            throw new NotImplementedException();
+            double day = x.Day + y.Days;
+            double month = x.Month + y.Months;
+            double year = x.Year + y.Years;
+            var second = x.Second;
+            var minute = x.Minute;
+            var hour = x.Hour + y.Hours;
+            var precision = x.Precision;
+
+            if (y.Minutes != null)
+            {
+                minute += y.Minutes.Value;
+
+                if (hour != (int)hour)
+                {
+                    minute += (hour - (int)hour) * 60;
+                }
+
+                if (precision < TimePrecision.Minute)
+                {
+                    precision = TimePrecision.Minute;
+                }
+            }
+
+            if (y.Seconds != null)
+            {
+                second += y.Seconds.Value;
+
+                if (minute != (int)minute)
+                {
+                    second += (minute - (int)minute) * 60;
+                }
+
+                if (precision < TimePrecision.Second)
+                {
+                    precision = TimePrecision.Second;
+                }
+            }
+
+            while (!(second < 60))
+            {
+                second -= 60;
+                minute++;
+            }
+
+            while ((int)minute > 59 || (precision == TimePrecision.Minute && !(minute < 60d)))
+            {
+                minute -= 60;
+                hour++;
+            }
+
+            while ((int)hour > 23 || (precision == TimePrecision.Hour && hour >= 24d))
+            {
+                hour -= 24;
+                day++;
+            }
+
+            while ((int)month > 12)
+            {
+                month -= 12;
+                year++;
+            }
+
+            int daysInMonth = DaysInMonth((long)year, (int)month);
+
+            while (day > daysInMonth)
+            {
+                day -= daysInMonth;
+                month++;
+
+                daysInMonth = DaysInMonth((long)year, (int)month);
+            }
+
+            switch (precision)
+            {
+                case TimePrecision.Hour:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+                    }
+                case TimePrecision.Minute:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+                    }
+                default:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+                    }
+            }
         }
 
-        public static TimePoint Add(CalendarDateTime x, CalendarDateDuration y)
+        public static CalendarDateTime Add(CalendarDateTime x, CalendarDateDuration y)
         {
-            throw new NotImplementedException();
+            double day = x.Day;
+            double month = x.Month;
+            double year = x.Year;
+            var second = x.Second;
+            var minute = x.Minute;
+            var hour = x.Hour;
+            var precision = x.Precision;
+
+            year += y.Years;
+
+            if (y.Months != null)
+            {
+                month += y.Months.Value;
+            }
+
+            if (y.Days != null)
+            {
+                day += y.Days.Value;
+            }
+
+            while ((int)month > 12)
+            {
+                month -= 12;
+                year++;
+            }
+
+            int daysInMonth = DaysInMonth((long)year, (int)month);
+
+            while (day > daysInMonth)
+            {
+                day -= daysInMonth;
+                month++;
+
+                daysInMonth = DaysInMonth((long)year, (int)month);
+            }
+
+            switch (precision)
+            {
+                case TimePrecision.Hour:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+                    }
+                case TimePrecision.Minute:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+                    }
+                default:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+                    }
+            }
         }
 
-        public static TimePoint Add(CalendarDateTime x, TimeDuration y)
+        public static CalendarDateTime Add(CalendarDateTime x, TimeDuration y)
         {
-            throw new NotImplementedException();
+            double day = x.Day;
+            double month = x.Month;
+            double year = x.Year;
+            var second = x.Second;
+            var minute = x.Minute;
+            var hour = x.Hour;
+            var precision = x.Precision;
+
+            hour += y.Hours;
+
+            if (y.Minutes != null)
+            {
+                minute += y.Minutes.Value;
+
+                if (hour != (int)hour)
+                {
+                    minute += (hour - (int)hour) * 60;
+                }
+
+                if (precision < TimePrecision.Minute)
+                {
+                    precision = TimePrecision.Minute;
+                }
+            }
+
+            if (y.Seconds != null)
+            {
+                second += y.Seconds.Value;
+
+                if (minute != (int)minute)
+                {
+                    second += (minute - (int)minute) * 60;
+                }
+
+                if (precision < TimePrecision.Second)
+                {
+                    precision = TimePrecision.Second;
+                }
+            }
+
+            while (!(second < 60))
+            {
+                second -= 60;
+                minute++;
+            }
+
+            while ((int)minute > 59 || (precision == TimePrecision.Minute && !(minute < 60d)))
+            {
+                minute -= 60;
+                hour++;
+            }
+
+            while ((int)hour > 23 || (precision == TimePrecision.Hour && hour >= 24d))
+            {
+                hour -= 24;
+                day++;
+            }
+
+            while ((int)month > 12)
+            {
+                month -= 12;
+                year++;
+            }
+
+            int daysInMonth = DaysInMonth((long)year, (int)month);
+
+            while (day > daysInMonth)
+            {
+                day -= daysInMonth;
+                month++;
+
+                daysInMonth = DaysInMonth((long)year, (int)month);
+            }
+
+            switch (precision)
+            {
+                case TimePrecision.Hour:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+                    }
+                case TimePrecision.Minute:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+                    }
+                default:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+                    }
+            }
         }
 
-        public static TimePoint Add(CalendarDateTime x, DesignatedDuration y)
+        public static CalendarDateTime Add(CalendarDateTime x, DesignatedDuration y)
         {
-            throw new NotImplementedException();
+            double day = x.Day;
+            double month = x.Month;
+            double year = x.Year;
+            var second = x.Second;
+            var minute = x.Minute;
+            var hour = x.Hour;
+            var precision = x.Precision;
+
+            if (y.Years != null)
+            {
+                year += y.Years.Value;
+            }
+
+            if (y.Months != null)
+            {
+                month += y.Months.Value;
+
+                if (year != (int)year)
+                {
+                    month += (year - (int)year) * 60;
+                }
+            }
+
+            if (y.Days != null)
+            {
+                day += y.Days.Value;
+
+                if (month != (int)month)
+                {
+                    day += (month - (int)month) * 60;
+                }
+            }
+
+            if (y.Hours != null)
+            {
+                hour += y.Hours.Value;
+
+                if (day != (int)day)
+                {
+                    hour += (day - (int)day) * 24;
+                }
+            }
+
+            if (y.Minutes != null)
+            {
+                minute += y.Minutes.Value;
+
+                if (hour != (int)hour)
+                {
+                    minute += (hour - (int)hour) * 60;
+                }
+
+                if (precision < TimePrecision.Minute)
+                {
+                    precision = TimePrecision.Minute;
+                }
+            }
+
+            if (y.Seconds != null)
+            {
+                second += y.Seconds.Value;
+
+                if (minute != (int)minute)
+                {
+                    second += (minute - (int)minute) * 60;
+                }
+
+                if (precision < TimePrecision.Second)
+                {
+                    precision = TimePrecision.Second;
+                }
+            }
+
+            while (!(second < 60))
+            {
+                second -= 60;
+                minute++;
+            }
+
+            while ((int)minute > 59 || (precision == TimePrecision.Minute && !(minute < 60d)))
+            {
+                minute -= 60;
+                hour++;
+            }
+
+            while ((int)hour > 23 || (precision == TimePrecision.Hour && hour >= 24d))
+            {
+                hour -= 24;
+                day++;
+            }
+
+            while ((int)month > 12)
+            {
+                month -= 12;
+                year++;
+            }
+
+            int daysInMonth = DaysInMonth((long)year, (int)month);
+
+            while (day > daysInMonth)
+            {
+                day -= daysInMonth;
+                month++;
+
+                daysInMonth = DaysInMonth((long)year, (int)month);
+            }
+
+            switch (precision)
+            {
+                case TimePrecision.Hour:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+                    }
+                case TimePrecision.Minute:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+                    }
+                default:
+                    {
+                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+                    }
+            }
         }
 
         public static CalendarDate Add(CalendarDate x, CalendarDateDuration y)
@@ -497,6 +812,36 @@ namespace System.ISO8601
                         return new Time((int)hour, (int)minute, second);
                     }
             }
+        }
+
+        public static int DayOfYear(CalendarDate calendarDate)
+        {
+            return (IsLeapYear(calendarDate.Year) ? DaysToMonth366[calendarDate.Month] : DaysToMonth365[calendarDate.Month]) + calendarDate.Day;
+        }
+
+        public static int DaysInMonth(long year, int month)
+        {
+            return month == 2 && IsLeapYear(year) ? 29 : DaysInMonthArray[month];
+        }
+
+        public static int DaysInYear(long year)
+        {
+            return IsLeapYear(year) ? 366 : 365;
+        }
+
+        public static bool IsLeapYear(long year)                // http://www.timeanddate.com/date/leapyear.html
+        {
+            return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+        }
+
+        public static TimePoint Subtract(TimePoint x, Duration y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static int WeeksInYear(long year)
+        {
+            return WeekOfYear(new CalendarDate(year, 12, 28));
         }
 
         internal static int CenturyOfYear(long year)
