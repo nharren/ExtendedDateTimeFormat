@@ -1,14 +1,12 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparers;
 using System.ISO8601.Internal.Converters;
 using System.ISO8601.Internal.Parsers;
 using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
-    public class StartEndTimeInterval : TimeInterval, IComparable, IComparable<TimeInterval>
+    public class StartEndTimeInterval : TimeInterval
     {
-        private static TimeIntervalComparer _comparer;
         private readonly TimePoint _end;
         private readonly TimePoint _start;
 
@@ -16,19 +14,6 @@ namespace System.ISO8601
         {
             _start = start;
             _end = end;
-        }
-
-        public static TimeIntervalComparer Comparer
-        {
-            get
-            {
-                if (_comparer == null)
-                {
-                    _comparer = new TimeIntervalComparer();
-                }
-
-                return _comparer;
-            }
         }
 
         public TimePoint End
@@ -52,24 +37,9 @@ namespace System.ISO8601
             return StartEndTimeIntervalParser.Parse(input, startYearLength, endYearLength);
         }
 
-        public int CompareTo(TimeInterval other)
+        internal override int GetHashCodeOverride()
         {
-            return Comparer.Compare(this, other);
-        }
-
-        public int CompareTo(object obj)
-        {
-            if (obj == null)
-            {
-                return 1;
-            }
-
-            if (!(obj is TimeInterval))
-            {
-                throw new ArgumentException("A time interval can only be compared with other time intervals.");
-            }
-
-            return Comparer.Compare(this, (TimeInterval)obj);
+            return _start.GetHashCode() ^ _end.GetHashCode();
         }
 
         public override string ToString()
@@ -82,9 +52,9 @@ namespace System.ISO8601
             return ToString(options, options);
         }
 
-        public virtual string ToString(ISO8601Options startFormatInfo, ISO8601Options endFormatInfo)
+        public virtual string ToString(ISO8601Options startOptions, ISO8601Options endOptions)
         {
-            return StartEndTimeIntervalSerializer.Serialize(this, startFormatInfo, endFormatInfo);
+            return StartEndTimeIntervalSerializer.Serialize(this, startOptions, endOptions);
         }
 
         public override TimeSpan ToTimeSpan()

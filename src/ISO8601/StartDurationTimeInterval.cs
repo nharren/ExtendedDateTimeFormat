@@ -1,14 +1,12 @@
 ﻿using System.ISO8601.Abstract;
-using System.ISO8601.Internal.Comparers;
 using System.ISO8601.Internal.Converters;
 using System.ISO8601.Internal.Parsers;
 using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
-    public class StartDurationTimeInterval : TimeInterval, IComparable, IComparable<TimeInterval>
+    public class StartDurationTimeInterval : TimeInterval
     {
-        private static TimeIntervalComparer _comparer;
         private readonly Duration _duration;
         private readonly TimePoint _start;
 
@@ -26,19 +24,6 @@ namespace System.ISO8601
 
             _start = start;
             _duration = duration;
-        }
-
-        public static TimeIntervalComparer Comparer
-        {
-            get
-            {
-                if (_comparer == null)
-                {
-                    _comparer = new TimeIntervalComparer();
-                }
-
-                return _comparer;
-            }
         }
 
         public Duration Duration
@@ -62,26 +47,6 @@ namespace System.ISO8601
             return StartDurationTimeIntervalParser.Parse(input, startYearLength, endYearLength);
         }
 
-        public int CompareTo(TimeInterval other)
-        {
-            return Comparer.Compare(this, other);
-        }
-
-        public int CompareTo(object obj)
-        {
-            if (obj == null)
-            {
-                return 1;
-            }
-
-            if (!(obj is TimeInterval))
-            {
-                throw new ArgumentException("A time interval can only be compared with other time intervals.");
-            }
-
-            return Comparer.Compare(this, (TimeInterval)obj);
-        }
-
         public override string ToString()
         {
             return ToString(null);
@@ -92,14 +57,19 @@ namespace System.ISO8601
             return ToString(options, options);
         }
 
-        public virtual string ToString(ISO8601Options startFormatInfo, ISO8601Options durationFormatInfo)
+        public virtual string ToString(ISO8601Options startOptions, ISO8601Options durationOptions)
         {
-            return StartDurationTimeIntervalSerializer.Serialize(this, startFormatInfo, durationFormatInfo);
+            return StartDurationTimeIntervalSerializer.Serialize(this, startOptions, durationOptions);
         }
 
         public override TimeSpan ToTimeSpan()
         {
             return StartDurationTimeIntervalConverter.ToTimeSpan(this);
+        }
+
+        internal override int GetHashCodeOverride()
+        {
+            return _start.GetHashCode() ^ _duration.GetHashCode();
         }
     }
 }

@@ -11,13 +11,13 @@ namespace System.ISO8601.Internal.Serializers
             {
                 options = ISO8601Options.Default;
             }
-            var numberFormatInfo = new NumberFormatInfo { NumberDecimalSeparator = options.DecimalSeparator.ToString() };
+            var numberOptions = new NumberOptions { NumberDecimalSeparator = options.DecimalSeparator.ToString() };
 
             var output = new StringBuilder("PT");
 
             if (timeDuration.Minutes == null)
             {
-                output.AppendFormat(timeDuration.Hours.ToString("F" + options.FractionLength, numberFormatInfo));
+                output.AppendFormat(timeDuration.Hours.ToString("F" + options.FractionLength, numberOptions));
 
                 return output.ToString();
             }
@@ -31,7 +31,7 @@ namespace System.ISO8601.Internal.Serializers
 
             if (timeDuration.Seconds == null)
             {
-                output.AppendFormat(timeDuration.Minutes.Value.ToString("F" + options.FractionLength, numberFormatInfo));
+                output.AppendFormat(timeDuration.Minutes.Value.ToString("F" + options.FractionLength, numberOptions));
 
                 return output.ToString();
             }
@@ -43,7 +43,7 @@ namespace System.ISO8601.Internal.Serializers
                 output.Append(':');
             }
 
-            output.AppendFormat(timeDuration.Seconds.Value.ToString("F" + options.FractionLength, numberFormatInfo));
+            output.AppendFormat(timeDuration.Seconds.Value.ToString("F" + options.FractionLength, numberOptions));
 
             return output.ToString();
         }

@@ -2,19 +2,19 @@
 {
     internal static class RecurringTimeIntervalSerializer
     {
-        internal static string Serialize(RecurringTimeInterval interval, ISO8601Options leftFormatInfo, ISO8601Options rightFormatInfo)
+        internal static string Serialize(RecurringTimeInterval interval, ISO8601Options leftOptions, ISO8601Options rightOptions)
         {
-            if (leftFormatInfo == null)
+            if (leftOptions == null)
             {
-                leftFormatInfo = ISO8601Options.Default;
+                leftOptions = ISO8601Options.Default;
             }
 
-            if (rightFormatInfo == null)
+            if (rightOptions == null)
             {
-                rightFormatInfo = ISO8601Options.Default;
+                rightOptions = ISO8601Options.Default;
             }
 
-            return "R" + interval.Recurrences + (interval.Interval is DurationEndTimeInterval ? string.Empty : "/") + TimeIntervalSerializer.Serialize(interval.Interval, leftFormatInfo, rightFormatInfo);
+            return "R" + interval.Recurrences + (interval.Interval is DurationEndTimeInterval ? string.Empty : "/") + TimeIntervalSerializer.Serialize(interval.Interval, leftOptions, rightOptions);
         }
     }
 }

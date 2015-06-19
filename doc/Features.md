@@ -7,7 +7,7 @@
 - [x] Extended date/times 
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [x] Comparing
+	- [x] Comparison
 	- [x] Serialization to XML
 	- [x] Serialization to Binary
 	- [x] Conversion from System.DateTime
@@ -19,25 +19,25 @@
 - [x] Extended time intervals 
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [x] Comparing
+	- [x] Comparison
 	- [x] Serialization to XML
 	- [x] Serialization to Binary
 - [x] Extended date/time collection
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [x] Comparing
+	- [x] Comparison
 	- [x] Serialization to XML
 	- [x] Serialization to Binary
 - [x] Extended date/time possibility collection
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [x] Comparing
+	- [x] Comparison
 	- [x] Serialization to XML
 	- [x] Serialization to Binary
 - [x] Unspecified extended date/time
 	- [x] Deserialization from string
 	- [x] Serialization to string
-	- [x] Comparing
+	- [x] Comparison
 	- [x] Serialization to XML
 	- [x] Serialization to Binary
 - [x] Extended timespan
@@ -134,11 +134,9 @@
 
 #### Future Ideas
 
-- Robust diagnostics.
+- Robust validation.
+- Robust diagnostics with helpful exceptions.
 - Optimistic parsing.
-- Descriptive, helpful exceptions.
 - Thorough performance tests.
 - Better documentation and examples.
 - More calculation features.
-- DateTimes will have internal storage of the year and ordinal second for easy comparison and arithmetic.
-- TimeIntervals will have internal storage of the duration in years and seconds.

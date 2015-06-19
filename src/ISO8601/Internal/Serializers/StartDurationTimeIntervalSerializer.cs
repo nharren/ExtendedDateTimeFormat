@@ -2,19 +2,19 @@
 {
     internal static class StartDurationTimeIntervalSerializer
     {
-        internal static string Serialize(StartDurationTimeInterval interval, ISO8601Options startFormatInfo, ISO8601Options durationFormatInfo)
+        internal static string Serialize(StartDurationTimeInterval interval, ISO8601Options startOptions, ISO8601Options durationOptions)
         {
-            if (startFormatInfo == null)
+            if (startOptions == null)
             {
-                startFormatInfo = ISO8601Options.Default;
+                startOptions = ISO8601Options.Default;
             }
 
-            if (durationFormatInfo == null)
+            if (durationOptions == null)
             {
-                durationFormatInfo = ISO8601Options.Default;
+                durationOptions = ISO8601Options.Default;
             }
 
-            return TimePointSerializer.Serialize(interval.Start, startFormatInfo) + "/" + DurationSerializer.Serialize(interval.Duration, durationFormatInfo);
+            return TimePointSerializer.Serialize(interval.Start, startOptions) + "/" + DurationSerializer.Serialize(interval.Duration, durationOptions);
         }
     }
 }

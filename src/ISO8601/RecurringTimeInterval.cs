@@ -46,9 +46,9 @@ namespace System.ISO8601
             return ToString(options, options);
         }
 
-        public virtual string ToString(ISO8601Options leftFormatInfo, ISO8601Options rightFormatInfo)
+        public virtual string ToString(ISO8601Options leftOptions, ISO8601Options rightOptions)
         {
-            return RecurringTimeIntervalSerializer.Serialize(this, leftFormatInfo, rightFormatInfo);
+            return RecurringTimeIntervalSerializer.Serialize(this, leftOptions, rightOptions);
         }
     }
 }

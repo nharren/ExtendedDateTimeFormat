@@ -16,5 +16,12 @@
         {
             return ISO8601Calculator.Subtract(x, y);
         }
+
+        public override int GetHashCode()
+        {
+            return GetHashCodeOverride();
+        }
+
+        internal abstract int GetHashCodeOverride();
     }
 }
