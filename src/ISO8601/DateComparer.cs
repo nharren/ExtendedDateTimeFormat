@@ -10,7 +10,7 @@ namespace System.ISO8601
         {
             if (!(x is Date) || !(y is Date))
             {
-                throw new ArgumentException("The objects to compare must be dates.");
+                throw new ArgumentException("The objects to compare must be Dates.");
             }
 
             return Compare((Date)x, (Date)y);
@@ -33,61 +33,82 @@ namespace System.ISO8601
                 return -1;
             }
 
-            CalendarDate calendarDateX = null;
-
             if (x is CalendarDate)
             {
-                calendarDateX = (CalendarDate)x;
-            }
-            else if (x is OrdinalDate)
-            {
-                calendarDateX = ((OrdinalDate)x).ToCalendarDate(CalendarDatePrecision.Day);
-            }
-            else if (x is WeekDate)
-            {
-                calendarDateX = ((WeekDate)x).ToCalendarDate(CalendarDatePrecision.Day);
+                return Compare((CalendarDate)x, y);
             }
 
-            CalendarDate calendarDateY = null;
+            if (x is OrdinalDate)
+            {
+                return Compare(((OrdinalDate)x).ToCalendarDate(), y);
+            }
 
+            if (x is WeekDate)
+            {
+                return Compare(((WeekDate)x).ToCalendarDate(), y);
+            }
+
+            throw new InvalidOperationException("The type of Date in the first argument is unrecongnized.");
+        }
+
+        public int Compare(CalendarDate x, Date y)
+        {
             if (y is CalendarDate)
             {
-                calendarDateY = (CalendarDate)y;
-            }
-            else if (y is OrdinalDate)
-            {
-                calendarDateY = ((OrdinalDate)y).ToCalendarDate(CalendarDatePrecision.Day);
-            }
-            else if (y is WeekDate)
-            {
-                calendarDateY = ((WeekDate)y).ToCalendarDate(CalendarDatePrecision.Day);
+                return Compare(x, (CalendarDate)y);
             }
 
-            if (calendarDateX.Year > calendarDateY.Year)
+            if (y is OrdinalDate)
+            {
+                return Compare(x, ((OrdinalDate)y).ToCalendarDate());
+            }
+
+            if (y is WeekDate)
+            {
+                return Compare(x, ((WeekDate)y).ToCalendarDate());
+            }
+
+            throw new InvalidOperationException("The type of Date in the second argument is unrecongnized.");
+        }
+
+        public int Compare(CalendarDate x, CalendarDate y)
+        {
+            if (x.Century > y.Century)
             {
                 return 1;
             }
 
-            if (calendarDateX.Year < calendarDateY.Year)
+            if (x.Century < y.Century)
             {
                 return -1;
             }
 
-            if (calendarDateX.Month > calendarDateY.Month)
+            if (x.Year > y.Year)
             {
                 return 1;
             }
 
-            if (calendarDateX.Month < calendarDateY.Month)
+            if (x.Year < y.Year)
             {
                 return -1;
             }
 
-            if (calendarDateX.Day > calendarDateY.Day)
+            if (x.Month > y.Month)
             {
                 return 1;
             }
-            else if (calendarDateX.Day < calendarDateY.Day)
+
+            if (x.Month < y.Month)
+            {
+                return -1;
+            }
+
+            if (x.Day > y.Day)
+            {
+                return 1;
+            }
+
+            if (x.Day < y.Day)
             {
                 return -1;
             }

@@ -1,9 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace System.ISO8601
 {
-    public class DateTimeComparer : IComparer<Abstract.DateTime>
+    public class DateTimeComparer : IComparer, IComparer<Abstract.DateTime>
     {
+        public int Compare(object x, object y)
+        {
+            if (!(x is Abstract.DateTime) || !(y is Abstract.DateTime))
+            {
+                throw new ArgumentException("The objects of comparison must be DateTimes.");
+            }
+
+            return Compare((Abstract.DateTime)x, (Abstract.DateTime)y);
+        }
+
         public int Compare(Abstract.DateTime x, Abstract.DateTime y)
         {
             if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
@@ -21,52 +32,102 @@ namespace System.ISO8601
                 return -1;
             }
 
-            CalendarDateTime calendarDateTimeX = null;
-
             if (x is CalendarDateTime)
             {
-                calendarDateTimeX = (CalendarDateTime)x;
-            }
-            else if (x is OrdinalDateTime)
-            {
-                calendarDateTimeX = ((OrdinalDateTime)x).ToCalendarDateTime();
-            }
-            else if (x is WeekDateTime)
-            {
-                calendarDateTimeX = ((WeekDateTime)x).ToCalendarDateTime();
+                return Compare((CalendarDateTime)x, y);
             }
 
-            CalendarDateTime calendarDateTimeY = null;
+            if (x is OrdinalDateTime)
+            {
+                return Compare(((OrdinalDateTime)x).ToCalendarDateTime(), y);
+            }
 
+            if (x is WeekDateTime)
+            {
+                return Compare(((WeekDateTime)x).ToCalendarDateTime(), y);
+            }
+
+            throw new InvalidOperationException("The type of DateTime in the first argument is unrecongnized.");
+        }
+
+        public int Compare(CalendarDateTime x, Abstract.DateTime y)
+        {
             if (y is CalendarDateTime)
             {
-                calendarDateTimeY = (CalendarDateTime)y;
-            }
-            else if (y is OrdinalDateTime)
-            {
-                calendarDateTimeY = ((OrdinalDateTime)y).ToCalendarDateTime();
-            }
-            else if (y is WeekDateTime)
-            {
-                calendarDateTimeY = ((WeekDateTime)y).ToCalendarDateTime();
+                return Compare(x, (CalendarDateTime)y);
             }
 
-            if (calendarDateTimeX.Date > calendarDateTimeY.Date)
+            if (y is OrdinalDateTime)
+            {
+                return Compare(x, ((OrdinalDateTime)y).ToCalendarDateTime());
+            }
+
+            if (y is WeekDateTime)
+            {
+                return Compare(x, ((WeekDateTime)y).ToCalendarDateTime());
+            }
+
+            throw new InvalidOperationException("The type of DateTime in the second argument is unrecongnized.");
+        }
+
+        public int Compare(CalendarDateTime x, CalendarDateTime y)
+        {
+            if (x.Year > y.Year)
             {
                 return 1;
             }
 
-            if (calendarDateTimeX.Date < calendarDateTimeY.Date)
+            if (x.Year < y.Year)
             {
                 return -1;
             }
 
-            if (calendarDateTimeX.Time > calendarDateTimeY.Time)
+            if (x.Month > y.Month)
             {
                 return 1;
             }
 
-            if (calendarDateTimeX.Time < calendarDateTimeY.Time)
+            if (x.Month < y.Month)
+            {
+                return -1;
+            }
+
+            if (x.Day > y.Day)
+            {
+                return 1;
+            }
+
+            if (x.Day < y.Day)
+            {
+                return -1;
+            }
+
+            if (x.Hour > y.Hour)
+            {
+                return 1;
+            }
+
+            if (x.Hour < y.Hour)
+            {
+                return -1;
+            }
+
+            if (x.Minute > y.Minute)
+            {
+                return 1;
+            }
+
+            if (x.Minute < y.Minute)
+            {
+                return -1;
+            }
+
+            if (x.Second > y.Second)
+            {
+                return 1;
+            }
+
+            if (x.Second < y.Second)
             {
                 return -1;
             }

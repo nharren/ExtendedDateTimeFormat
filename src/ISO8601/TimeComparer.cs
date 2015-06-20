@@ -1,9 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace System.ISO8601
 {
-    public class TimeComparer : IComparer<Time>
+    public class TimeComparer : IComparer, IComparer<Time>
     {
+        public int Compare(object x, object y)
+        {
+            if (!(x is Time) || !(y is Time))
+            {
+                throw new ArgumentException("The objects of comparison must be Times.");
+            }
+
+            return Compare((Time)x, (Time)y);
+        }
+
         public int Compare(Time x, Time y)
         {
             if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
@@ -25,7 +36,8 @@ namespace System.ISO8601
             {
                 return 1;
             }
-            else if (x.Hour < y.Hour)
+
+            if (x.Hour < y.Hour)
             {
                 return -1;
             }
@@ -34,7 +46,8 @@ namespace System.ISO8601
             {
                 return 1;
             }
-            else if (x.Minute < y.Minute)
+
+            if (x.Minute < y.Minute)
             {
                 return -1;
             }
@@ -43,7 +56,8 @@ namespace System.ISO8601
             {
                 return 1;
             }
-            else if (x.Second < y.Second)
+
+            if (x.Second < y.Second)
             {
                 return -1;
             }
@@ -52,7 +66,8 @@ namespace System.ISO8601
             {
                 return 1;
             }
-            else if (x.UtcOffset.Hours < y.UtcOffset.Hours)
+
+            if (x.UtcOffset.Hours < y.UtcOffset.Hours)
             {
                 return -1;
             }
@@ -61,7 +76,8 @@ namespace System.ISO8601
             {
                 return 1;
             }
-            else if (x.UtcOffset.Minutes < y.UtcOffset.Minutes)
+
+            if (x.UtcOffset.Minutes < y.UtcOffset.Minutes)
             {
                 return -1;
             }
