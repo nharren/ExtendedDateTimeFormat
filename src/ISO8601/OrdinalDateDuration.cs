@@ -57,5 +57,10 @@ namespace System.ISO8601
         {
             return OrdinalDateDurationConverter.ToCalendarDateDuration(this);
         }
+
+        internal override int GetHashCodeOverride()
+        {
+            return _years.GetHashCode() ^ _days.GetHashCode();
+        }
     }
 }

@@ -92,5 +92,10 @@ namespace System.ISO8601
         {
             return CalendarDateDurationSerializer.Serialize(this, options);
         }
+
+        internal override int GetHashCodeOverride()
+        {
+            return _centuries.GetHashCode() ^ _years.GetHashCode() ^ _months.GetHashCode() ^ _days.GetHashCode();
+        }
     }
 }

@@ -169,5 +169,10 @@ namespace System.ISO8601
         {
             return OrdinalDateTimeDurationSerializer.Serialize(this, options);
         }
+
+        internal override int GetHashCodeOverride()
+        {
+            return DateDuration.GetHashCode() ^ TimeDuration.GetHashCode();
+        }
     }
 }

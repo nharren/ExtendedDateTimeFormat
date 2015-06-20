@@ -13,7 +13,6 @@ namespace System.ISO8601
         private readonly double? _seconds;
         private readonly double? _weeks;
         private readonly double? _years;
-        private int _fractionLength;
 
         public DesignatedDuration(int? years, int? months, int? days, int? hours, int? minutes, double? seconds)
         {
@@ -28,9 +27,6 @@ namespace System.ISO8601
             _hours = hours;
             _minutes = minutes;
             _seconds = seconds;
-
-            var fractionParts = seconds.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, int? months, int? days, int? hours, double minutes)
@@ -40,9 +36,6 @@ namespace System.ISO8601
             _days = days;
             _hours = hours;
             _minutes = minutes;
-
-            var fractionParts = minutes.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, int? months, int? days, double hours)
@@ -51,9 +44,6 @@ namespace System.ISO8601
             _months = months;
             _days = days;
             _hours = hours;
-
-            var fractionParts = hours.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, int? months, double days)
@@ -61,34 +51,22 @@ namespace System.ISO8601
             _years = years;
             _months = months;
             _days = days;
-
-            var fractionParts = days.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(int? years, double months)
         {
             _years = years;
             _months = months;
-
-            var fractionParts = months.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public DesignatedDuration(double years)
         {
             _years = years;
-
-            var fractionParts = years.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         private DesignatedDuration(double? weeks)
         {
             _weeks = weeks;
-
-            var fractionParts = weeks.ToString().Split('.', ',');
-            _fractionLength = fractionParts.Length == 1 ? 0 : fractionParts[1].Length;
         }
 
         public double? Days
@@ -96,19 +74,6 @@ namespace System.ISO8601
             get
             {
                 return _days;
-            }
-        }
-
-        public int FractionLength
-        {
-            get
-            {
-                return _fractionLength;
-            }
-
-            set
-            {
-                _fractionLength = value;
             }
         }
 
@@ -178,6 +143,11 @@ namespace System.ISO8601
         public virtual string ToString(ISO8601Options options)
         {
             return DesignatedDurationSerializer.Serialize(this, options);
+        }
+
+        internal override int GetHashCodeOverride()
+        {
+            return _years.GetHashCode() ^ _months.GetHashCode() ^ _weeks.GetHashCode() ^ _days.GetHashCode() ^ _hours.GetHashCode() ^ _minutes.GetHashCode() ^ _seconds.GetHashCode();
         }
     }
 }

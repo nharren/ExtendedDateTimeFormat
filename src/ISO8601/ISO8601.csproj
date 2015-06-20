@@ -53,6 +53,7 @@
     <Compile Include="CalendarDateTimeDuration.cs" />
     <Compile Include="CalendarDateTimePrecision.cs" />
     <Compile Include="ConversionException.cs" />
+    <Compile Include="DurationComparer.cs" />
     <Compile Include="ISO8601Calculator.cs" />
     <Compile Include="TimeIntervalComparer.cs" />
     <Compile Include="Internal\Converters\DurationEndTimeIntervalConverter.cs" />

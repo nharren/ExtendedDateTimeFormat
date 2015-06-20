@@ -103,5 +103,10 @@ namespace System.ISO8601
         {
             return CalendarDateTimeDurationSerializer.Serialize(this, options);
         }
+
+        internal override int GetHashCodeOverride()
+        {
+            return _dateDuration.GetHashCode() ^ _timeDuration.GetHashCode();
+        }
     }
 }

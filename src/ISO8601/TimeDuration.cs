@@ -78,5 +78,10 @@ namespace System.ISO8601
         {
             return TimeDurationSerializer.Serialize(this, options);
         }
+
+        internal override int GetHashCodeOverride()
+        {
+            return _hours.GetHashCode() ^ _minutes.GetHashCode() ^ _seconds.GetHashCode();
+        }
     }
 }

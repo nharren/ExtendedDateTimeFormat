@@ -1,10 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.ISO8601.Abstract;
 
 namespace System.ISO8601
 {
-    public class DateComparer : IComparer<Date>
+    public class DateComparer : IComparer, IComparer<Date>
     {
+        public int Compare(object x, object y)
+        {
+            if (!(x is Date) || !(y is Date))
+            {
+                throw new ArgumentException("The objects to compare must be dates.");
+            }
+
+            return Compare((Date)x, (Date)y);
+        }
+
         public int Compare(Date x, Date y)
         {
             if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
