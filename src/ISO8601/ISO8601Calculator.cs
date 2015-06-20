@@ -43,7 +43,7 @@ namespace System.ISO8601
                 return Add(x, (DesignatedDuration)y);
             }
 
-            throw new InvalidOperationException("The Duration was of an unrecognized type.");
+            throw new InvalidOperationException($"A {y.GetType()} cannot be added to a {x.GetType()}.");
         }
 
         public static CalendarDate Add(CalendarDate x, Duration y)
@@ -63,7 +63,7 @@ namespace System.ISO8601
                 return Add(x, (DesignatedDuration)y);
             }
 
-            throw new InvalidOperationException("The Duration was of an unrecognized type.");
+            throw new InvalidOperationException($"A {y.GetType()} cannot be added to a {x.GetType()}.");
         }
 
         public static TimePoint Add(TimePoint x, Duration y)
@@ -100,18 +100,25 @@ namespace System.ISO8601
 
             if (x is Time)
             {
-                if (y is TimeDuration)
-                {
-                    return Add((Time)x, (TimeDuration)y);
-                }
-
-                if (y is DesignatedDuration)
-                {
-                    return Add((Time)x, (DesignatedDuration)y);
-                }
+                return Add((Time)x, y);
             }
 
-            throw new InvalidOperationException("The TimePoint was of an unrecognized type.");
+            throw new InvalidOperationException($"A {y.GetType()} cannot be added to a {x.GetType()}.");
+        }
+
+        public static Time Add(Time x, Duration y)
+        {
+            if (y is TimeDuration)
+            {
+                return Add(x, (TimeDuration)y);
+            }
+
+            if (y is DesignatedDuration)
+            {
+                return Add(x, (DesignatedDuration)y);
+            }
+
+            throw new InvalidOperationException($"A {y.GetType()} cannot be added to a {x.GetType()}.");
         }
 
         public static CalendarDateTime Add(CalendarDateTime x, CalendarDateTimeDuration y)
@@ -722,7 +729,7 @@ namespace System.ISO8601
             }
         }
 
-        public static TimePoint Add(Time x, DesignatedDuration y)
+        public static Time Add(Time x, DesignatedDuration y)
         {
             if (y.Years != null)
             {
@@ -800,17 +807,16 @@ namespace System.ISO8601
             switch (precision)
             {
                 case TimePrecision.Hour:
-                    {
-                        return new Time(hour);
-                    }
+                    return new Time(hour);
+
                 case TimePrecision.Minute:
-                    {
-                        return new Time((int)hour, minute);
-                    }
+                    return new Time((int)hour, minute);
+
+                case TimePrecision.Second:
+                    return new Time((int)hour, (int)minute, second);
+
                 default:
-                    {
-                        return new Time((int)hour, (int)minute, second);
-                    }
+                    return null;
             }
         }
 
