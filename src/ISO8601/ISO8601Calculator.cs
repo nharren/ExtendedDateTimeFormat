@@ -191,17 +191,16 @@ namespace System.ISO8601
             switch (precision)
             {
                 case TimePrecision.Hour:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+
                 case TimePrecision.Minute:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+
+                case TimePrecision.Second:
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+
                 default:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
-                    }
+                    return null;
             }
         }
 
@@ -246,17 +245,16 @@ namespace System.ISO8601
             switch (precision)
             {
                 case TimePrecision.Hour:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+
                 case TimePrecision.Minute:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+
+                case TimePrecision.Second:
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+
                 default:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
-                    }
+                    return null;
             }
         }
 
@@ -339,17 +337,16 @@ namespace System.ISO8601
             switch (precision)
             {
                 case TimePrecision.Hour:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+
                 case TimePrecision.Minute:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+
+                case TimePrecision.Second:
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+
                 default:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
-                    }
+                    return null;
             }
         }
 
@@ -465,17 +462,16 @@ namespace System.ISO8601
             switch (precision)
             {
                 case TimePrecision.Hour:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time(hour));
+
                 case TimePrecision.Minute:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
-                    }
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, minute));
+
+                case TimePrecision.Second:
+                    return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
+
                 default:
-                    {
-                        return new CalendarDateTime(new CalendarDate((long)year, (int)month, (int)day), new Time((int)hour, (int)minute, second));
-                    }
+                    return null;
             }
         }
 
@@ -533,21 +529,19 @@ namespace System.ISO8601
             switch (precision)
             {
                 case CalendarDatePrecision.Century:
-                    {
-                        return CalendarDate.FromCentury(century);
-                    }
+                    return CalendarDate.FromCentury(century);
+
                 case CalendarDatePrecision.Year:
-                    {
-                        return new CalendarDate(year);
-                    }
+                    return new CalendarDate(year);
+
                 case CalendarDatePrecision.Month:
-                    {
-                        return new CalendarDate(year, month);
-                    }
+                    return new CalendarDate(year, month);
+
+                case CalendarDatePrecision.Day:
+                    return new CalendarDate(year, month, day);
+
                 default:
-                    {
-                        return new CalendarDate(year, month, day);
-                    }
+                    return null;
             }
         }
 
@@ -571,10 +565,14 @@ namespace System.ISO8601
             double day = x.Day;
             double month = x.Month;
             double year = x.Year;
+            int century = x.Century;
             var precision = x.Precision;
 
             if (y.Years != null)
             {
+                var yYearsString = ((int)y.Years.Value).ToString();
+                century += int.Parse(yYearsString.Substring(0, yYearsString.Length - 2));
+
                 year += y.Years.Value;
             }
 
@@ -639,18 +637,20 @@ namespace System.ISO8601
 
             switch (precision)
             {
+                case CalendarDatePrecision.Century:
+                    return CalendarDate.FromCentury(century);
+
                 case CalendarDatePrecision.Year:
-                    {
-                        return new CalendarDate((int)year);
-                    }
+                    return new CalendarDate((int)year);
+
                 case CalendarDatePrecision.Month:
-                    {
-                        return new CalendarDate((long)year, (int)month);
-                    }
+                    return new CalendarDate((long)year, (int)month);
+
+                case CalendarDatePrecision.Day:
+                    return new CalendarDate((long)year, (int)month, (int)day);
+
                 default:
-                    {
-                        return new CalendarDate((long)year, (int)month, (int)day);
-                    }
+                    return null;
             }
         }
 
@@ -829,7 +829,7 @@ namespace System.ISO8601
             return IsLeapYear(year) ? 366 : 365;
         }
 
-        public static bool IsLeapYear(long year)                // http://www.timeanddate.com/date/leapyear.html
+        public static bool IsLeapYear(long year)                                         // http://www.timeanddate.com/date/leapyear.html
         {
             return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
         }
@@ -857,7 +857,7 @@ namespace System.ISO8601
             return century;
         }
 
-        internal static DayOfWeek DayOfWeek(CalendarDate calendarDate)              // http://www.stoimen.com/blog/2012/04/24/computer-algorithms-how-to-determine-the-day-of-the-week/
+        internal static DayOfWeek DayOfWeek(CalendarDate calendarDate)                                                                  // http://www.stoimen.com/blog/2012/04/24/computer-algorithms-how-to-determine-the-day-of-the-week/
         {
             var yearOfCentury = int.Parse(calendarDate.Year.ToString().Substring(calendarDate.Century.ToString().Length));
 
@@ -961,105 +961,111 @@ namespace System.ISO8601
                 .Add(TimeSpan.FromSeconds(t2.Second - t1.Second));
         }
 
-        internal static TimeSpan Subtract(TimePoint d2, TimePoint d1)
+        internal static TimeSpan Subtract(TimePoint x, TimePoint y)
         {
-            CalendarDateTime calendarDateTime2 = null;
-            CalendarDate calendarDate2 = null;
-            Time time2 = null;
-            CalendarDateTime calendarDateTime1 = null;
-            CalendarDate calendarDate1 = null;
-            Time time1 = null;
-
-            if (d2 is CalendarDateTime)
+            if (x is CalendarDateTime)
             {
-                calendarDateTime2 = (CalendarDateTime)d2;
+                return Subtract((CalendarDateTime)x, y);
             }
-            else if (d2 is OrdinalDateTime)
+            else if (x is OrdinalDateTime)
             {
-                calendarDateTime2 = ((OrdinalDateTime)d2).ToCalendarDateTime();
+                return Subtract(((OrdinalDateTime)x).ToCalendarDateTime(), y);
             }
-            else if (d2 is WeekDateTime)
+            else if (x is WeekDateTime)
             {
-                calendarDateTime2 = ((WeekDateTime)d2).ToCalendarDateTime();
+                return Subtract(((WeekDateTime)x).ToCalendarDateTime(), y);
             }
-            else if (d2 is CalendarDate)
+            else if (x is CalendarDate)
             {
-                calendarDate2 = (CalendarDate)d2;
+                return Subtract((CalendarDate)x, y);
             }
-            else if (d2 is OrdinalDate)
+            else if (x is OrdinalDate)
             {
-                calendarDate2 = ((OrdinalDate)d2).ToCalendarDate();
+                return Subtract(((OrdinalDate)x).ToCalendarDate(), y);
             }
-            else if (d2 is WeekDate)
+            else if (x is WeekDate)
             {
-                calendarDate2 = ((WeekDate)d2).ToCalendarDate();
+                return Subtract(((WeekDate)x).ToCalendarDate(), y);
             }
-            else if (d2 is Time)
+            else if (x is Time)
             {
-                time2 = (Time)d2;
+                return Subtract((Time)x, y);
             }
 
-            if (d1 is CalendarDateTime)
-            {
-                calendarDateTime1 = (CalendarDateTime)d1;
-            }
-            else if (d1 is OrdinalDateTime)
-            {
-                calendarDateTime1 = ((OrdinalDateTime)d1).ToCalendarDateTime();
-            }
-            else if (d1 is WeekDateTime)
-            {
-                calendarDateTime1 = ((WeekDateTime)d1).ToCalendarDateTime();
-            }
-            else if (d1 is CalendarDate)
-            {
-                calendarDate1 = (CalendarDate)d1;
-            }
-            else if (d1 is OrdinalDate)
-            {
-                calendarDate1 = ((OrdinalDate)d1).ToCalendarDate();
-            }
-            else if (d1 is WeekDate)
-            {
-                calendarDate1 = ((WeekDate)d1).ToCalendarDate();
-            }
-            else if (d1 is Time)
-            {
-                time1 = (Time)d1;
-            }
-
-            if (calendarDateTime2 != null)
-            {
-                if (calendarDateTime1 != null)
-                {
-                    return calendarDateTime2 - calendarDateTime1;
-                }
-
-                if (calendarDate2 != null)
-                {
-                    return calendarDateTime2 - calendarDate1;
-                }
-
-                if (time2 != null)
-                {
-                    return calendarDateTime2 - time1;
-                }
-            }
-
-            if (calendarDate2 != null && calendarDate1 != null)
-            {
-                return calendarDate2 - calendarDate1;
-            }
-
-            if (time2 != null && time1 != null)
-            {
-                return time2 - time1;
-            }
-
-            throw new InvalidOperationException($"The timepoint of type {d1.GetType()} could not be subtracted from the type {d2.GetType()}");
+            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
         }
 
-        internal static int WeekOfYear(CalendarDate calendarDate)               // http://en.wikipedia.org/wiki/ISO_week_date
+        internal static TimeSpan Subtract(CalendarDate x, TimePoint y)
+        {
+            if (y is CalendarDate)
+            {
+                return x - (CalendarDate)y;
+            }
+
+            if (y is OrdinalDate)
+            {
+                return x - ((OrdinalDate)y).ToCalendarDate();
+            }
+
+            if (y is WeekDate)
+            {
+                return x - ((WeekDate)y).ToCalendarDate();
+            }
+
+            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
+        }
+
+        internal static TimeSpan Subtract(CalendarDateTime x, TimePoint y)
+        {
+            if (y is CalendarDateTime)
+            {
+                return x - (CalendarDateTime)y;
+            }
+
+            if (y is OrdinalDateTime)
+            {
+                return x - ((OrdinalDateTime)y).ToCalendarDateTime();
+            }
+
+            if (y is WeekDateTime)
+            {
+                return x - ((WeekDateTime)y).ToCalendarDateTime();
+            }
+
+            if (y is CalendarDate)
+            {
+                return x - (CalendarDate)y;
+            }
+
+            if (y is OrdinalDate)
+            {
+                return x - ((OrdinalDate)y).ToCalendarDate();
+            }
+
+            if (y is WeekDate)
+            {
+                return x - ((WeekDate)y).ToCalendarDate();
+            }
+
+            if (y is Time)
+            {
+                return x - (Time)y;
+            }
+
+            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
+        }
+
+        internal static TimeSpan Subtract(Time x, TimePoint y)
+        {
+            if (y is Time)
+            {
+                return x - (Time)y;
+            }
+
+            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
+        }
+
+        internal static int WeekOfYear(CalendarDate calendarDate)                                                                       // http://en.wikipedia.org/wiki/ISO_week_date
         {
             return (DayOfYear(calendarDate) - (int)DayOfWeek(calendarDate) + 10) / 7;
         }
