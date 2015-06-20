@@ -4,8 +4,9 @@ using System.ISO8601.Internal.Serializers;
 
 namespace System.ISO8601
 {
-    public class RecurringTimeInterval
+    public class RecurringTimeInterval : IComparable, IComparable<RecurringTimeInterval>, IEquatable<RecurringTimeInterval>
     {
+        private static RecurringTimeIntervalComparer _comparer;
         private readonly TimeInterval _interval;
         private readonly int? _recurrences;
 
@@ -13,6 +14,19 @@ namespace System.ISO8601
         {
             _interval = interval;
             _recurrences = recurrences;
+        }
+
+        public static RecurringTimeIntervalComparer Comparer
+        {
+            get
+            {
+                if (_comparer == null)
+                {
+                    _comparer = new RecurringTimeIntervalComparer();
+                }
+
+                return _comparer;
+            }
         }
 
         public TimeInterval Interval
@@ -31,9 +45,79 @@ namespace System.ISO8601
             }
         }
 
+        public static bool operator !=(RecurringTimeInterval x, RecurringTimeInterval y)
+        {
+            return Comparer.Compare(x, y) != 0;
+        }
+
+        public static bool operator <(RecurringTimeInterval x, RecurringTimeInterval y)
+        {
+            return Comparer.Compare(x, y) < 0;
+        }
+
+        public static bool operator <=(RecurringTimeInterval x, RecurringTimeInterval y)
+        {
+            return Comparer.Compare(x, y) <= 0;
+        }
+
+        public static bool operator ==(RecurringTimeInterval x, RecurringTimeInterval y)
+        {
+            return Comparer.Compare(x, y) == 0;
+        }
+
+        public static bool operator >(RecurringTimeInterval x, RecurringTimeInterval y)
+        {
+            return Comparer.Compare(x, y) > 0;
+        }
+
+        public static bool operator >=(RecurringTimeInterval x, RecurringTimeInterval y)
+        {
+            return Comparer.Compare(x, y) >= 0;
+        }
+
         public static RecurringTimeInterval Parse(string input, int startYearLength = 4, int endYearLength = 4)
         {
             return RecurringTimeIntervalParser.Parse(input, startYearLength, endYearLength);
+        }
+
+        public int CompareTo(RecurringTimeInterval other)
+        {
+            return Comparer.Compare(this, other);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+
+            if (!(obj is RecurringTimeInterval))
+            {
+                throw new ArgumentException("A RecurringTimeInterval can only be compared with another RecurringTimeInterval.");
+            }
+
+            return Comparer.Compare(this, (RecurringTimeInterval)obj);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(RecurringTimeInterval))
+            {
+                return false;
+            }
+
+            return Comparer.Compare(this, (RecurringTimeInterval)obj) == 0;
+        }
+
+        public bool Equals(RecurringTimeInterval other)
+        {
+            return Comparer.Compare(this, other) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return _interval.GetHashCode() ^ _recurrences.GetHashCode();
         }
 
         public override string ToString()
