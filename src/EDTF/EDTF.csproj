@@ -85,12 +85,6 @@
     <Compile Include="Season.cs" />
     <Compile Include="UnspecifiedExtendedDateTime.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ISO8601\ISO8601.csproj">
-      <Project>{67d4776b-cc09-418d-bb5e-b2dc31259967}</Project>
-      <Name>ISO8601</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
