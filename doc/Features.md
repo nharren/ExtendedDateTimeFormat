@@ -140,3 +140,8 @@
 - Thorough performance tests.
 - Better documentation and examples.
 - More calculation features.
+- Basic guide to ISO 8601 and EDTF formatting.
+- Add Date class to EDTF.
+- Conversion between Duration types.
+- Conversion between TimeInterval types.
+- Branch: Explore using internal fields and properties in abstract types to allow inheritors to use the same conversion and calculation methods.

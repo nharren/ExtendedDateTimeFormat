@@ -17,7 +17,7 @@ namespace System.ISO8601
         {
             if (day < 1 || day > ISO8601Calculator.DaysInMonth(year, month))
             {
-                throw new ArgumentOutOfRangeException("day", string.Format("The day must be a value from 1 to {0}.", ISO8601Calculator.DaysInMonth(year, month)));
+                throw new ArgumentOutOfRangeException("day", $"The day must be a value from 1 to {ISO8601Calculator.DaysInMonth(year, month)}.");
             }
 
             _day = day;
