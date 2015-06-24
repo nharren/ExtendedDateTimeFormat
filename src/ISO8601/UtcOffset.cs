@@ -64,11 +64,6 @@
             }
         }
 
-        public static TimeSpan operator -(UtcOffset x, UtcOffset y)
-        {
-            return ISO8601Calculator.Subtract(x, y);
-        }
-
         public override int GetHashCode()
         {
             return _hours ^ (_minutes << 6) ^ (_isUnset.GetHashCode() << 12);

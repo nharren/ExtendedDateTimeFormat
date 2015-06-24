@@ -579,14 +579,12 @@ namespace System.ISO8601
             double day = x.Day;
             double month = x.Month;
             double year = x.Year;
-            int century = x.Century;
+            long century = x.Century;
             var precision = x.Precision;
 
             if (y.Years != null)
             {
-                var yYearsString = ((int)y.Years.Value).ToString();
-                century += int.Parse(yYearsString.Substring(0, yYearsString.Length - 2));
-
+                century += (long)y.Years.Value / 100;
                 year += y.Years.Value;
             }
 
@@ -826,9 +824,33 @@ namespace System.ISO8601
             }
         }
 
+        public static long CenturyOfYear(long year)
+        {
+            return year / 100;
+        }
+
+        public static DayOfWeek DayOfWeek(CalendarDate calendarDate)                                                                  // http://www.stoimen.com/blog/2012/04/24/computer-algorithms-how-to-determine-the-day-of-the-week/
+        {
+            var yearOfCentury = YearOfCentury(calendarDate.Year);
+
+            return (DayOfWeek)(
+                         (calendarDate.Day
+                       + (IsLeapYear(calendarDate.Year) ? DayOfWeekMonthKeys366[calendarDate.Month] : DayOfWeekMonthKeys365[calendarDate.Month])
+                       + yearOfCentury + yearOfCentury / 4
+                       + DayOfWeekCenturyKeys[calendarDate.Century % 4 + calendarDate.Century < 0 ? 4 : 0])
+                     % 7);
+        }
+
         public static int DayOfYear(CalendarDate calendarDate)
         {
             return (IsLeapYear(calendarDate.Year) ? DaysToMonth366[calendarDate.Month] : DaysToMonth365[calendarDate.Month]) + calendarDate.Day;
+        }
+
+        public static int DayOfYear(WeekDate weekDate)
+        {
+            return (weekDate.Week - 1) * 7
+                 + (weekDate.Day - 1)
+                 + (int)DayOfWeek(new CalendarDate(weekDate.Year, 1, 1));
         }
 
         public static int DaysInMonth(long year, int month)
@@ -839,6 +861,11 @@ namespace System.ISO8601
         public static int DaysInYear(long year)
         {
             return IsLeapYear(year) ? 366 : 365;
+        }
+
+        public static int DaysToMonth(long year, int month)
+        {
+            return IsLeapYear(year) ? DaysToMonth366[month] : DaysToMonth365[month];
         }
 
         public static bool IsLeapYear(long year)                                         // http://www.timeanddate.com/date/leapyear.html
@@ -1325,7 +1352,7 @@ namespace System.ISO8601
 
         public static CalendarDate Subtract(CalendarDate x, CalendarDateDuration y)
         {
-            int century = x.Century;
+            long century = x.Century;
             long year = x.Year - y.Years;
             double month = x.Month;
             double day = x.Day;
@@ -1384,7 +1411,7 @@ namespace System.ISO8601
 
         public static CalendarDate Subtract(CalendarDate x, DesignatedDuration y)
         {
-            int century = x.Century;
+            long century = x.Century;
             long year = x.Year;
             double month = x.Month;
             double day = x.Day;
@@ -1661,233 +1688,198 @@ namespace System.ISO8601
             }
         }
 
+        public static TimeSpan Subtract(CalendarDate later, CalendarDate earlier)
+        {
+            return TimeSpan.FromDays(
+                         (later.Year - earlier.Year) * 365
+                       + (later.Year - 1) / 4 - (earlier.Year - 1) / 4
+                       - (later.Year - 1) / 100 + (earlier.Year - 1) / 100
+                       + (later.Year - 1) / 400 - (earlier.Year - 1) / 400
+                       + DaysToMonth(later.Year, later.Month)
+                       - DaysToMonth(earlier.Year, earlier.Month)
+                       + later.Day
+                       - earlier.Day);
+        }
+
+        public static TimeSpan Subtract(CalendarDateTime later, CalendarDateTime earlier)
+        {
+            return TimeSpan.FromDays(
+                         (later.Year - earlier.Year) * 365
+                       + (later.Year - 1) / 4 - (earlier.Year - 1) / 4
+                       - (later.Year - 1) / 100 + (earlier.Year - 1) / 100
+                       + (later.Year - 1) / 400 - (earlier.Year - 1) / 400
+                       + DaysToMonth(later.Year, later.Month)
+                       - DaysToMonth(earlier.Year, earlier.Month)
+                       + later.Day
+                       - earlier.Day)
+                 + TimeSpan.FromHours(
+                         later.Hour - earlier.Hour
+                       + later.Time.UtcOffset.Hours - earlier.Time.UtcOffset.Hours)
+                 + TimeSpan.FromMinutes(
+                         later.Minute - earlier.Minute
+                       + later.Time.UtcOffset.Minutes - earlier.Time.UtcOffset.Minutes)
+                 + TimeSpan.FromSeconds(later.Second - earlier.Second);
+        }
+
+        public static TimeSpan Subtract(CalendarDateTime later, CalendarDate earlier)
+        {
+            return TimeSpan.FromDays(
+                         (later.Year - earlier.Year) * 365
+                       + (later.Year - 1) / 4 - (earlier.Year - 1) / 4
+                       - (later.Year - 1) / 100 + (earlier.Year - 1) / 100
+                       + (later.Year - 1) / 400 - (earlier.Year - 1) / 400
+                       + DaysToMonth(later.Year, later.Month)
+                       - DaysToMonth(earlier.Year, earlier.Month)
+                       + later.Day
+                       - earlier.Day)
+                 + TimeSpan.FromHours(later.Hour)
+                 + TimeSpan.FromMinutes(later.Minute)
+                 + TimeSpan.FromSeconds(later.Second);
+        }
+
+        public static TimeSpan Subtract(CalendarDateTime later, Time earlier)
+        {
+            return TimeSpan.FromHours(
+                         later.Hour - earlier.Hour
+                       + later.Time.UtcOffset.Hours - earlier.UtcOffset.Hours)
+                 + TimeSpan.FromMinutes(
+                         later.Minute - earlier.Minute
+                       + later.Time.UtcOffset.Minutes - earlier.UtcOffset.Minutes)
+                 + TimeSpan.FromSeconds(later.Second - earlier.Second);
+        }
+
+        public static TimeSpan Subtract(Time later, Time earlier)
+        {
+            return TimeSpan.FromHours(
+                         later.Hour - earlier.Hour
+                       + later.UtcOffset.Hours - earlier.UtcOffset.Hours)
+                 + TimeSpan.FromMinutes(
+                         later.Minute - earlier.Minute
+                       + later.UtcOffset.Minutes - earlier.UtcOffset.Minutes)
+                 + TimeSpan.FromSeconds(later.Second - earlier.Second);
+        }
+
+        public static TimeSpan Subtract(TimePoint later, TimePoint earlier)
+        {
+            if (later is CalendarDateTime)
+            {
+                return Subtract((CalendarDateTime)later, earlier);
+            }
+
+            if (later is OrdinalDateTime)
+            {
+                return Subtract(((OrdinalDateTime)later).ToCalendarDateTime(), earlier);
+            }
+
+            if (later is WeekDateTime)
+            {
+                return Subtract(((WeekDateTime)later).ToCalendarDateTime(), earlier);
+            }
+
+            if (later is CalendarDate)
+            {
+                return Subtract((CalendarDate)later, earlier);
+            }
+
+            if (later is OrdinalDate)
+            {
+                return Subtract(((OrdinalDate)later).ToCalendarDate(), earlier);
+            }
+
+            if (later is WeekDate)
+            {
+                return Subtract(((WeekDate)later).ToCalendarDate(), earlier);
+            }
+
+            if (later is Time)
+            {
+                return Subtract((Time)later, earlier);
+            }
+
+            throw new InvalidOperationException($"A {earlier.GetType()} cannot be subtracted from a {later.GetType()}");
+        }
+
         public static int WeeksInYear(long year)
         {
             return WeekOfYear(new CalendarDate(year, 12, 28));
         }
 
-        internal static int CenturyOfYear(long year)
+        public static long YearOfCentury(long year)
         {
-            var yearString = year.ToString();
-            int century;
-
-            if (!int.TryParse(yearString.Substring(0, yearString.Length - 2), out century))
-            {
-                throw new InvalidOperationException("The century could not be parsed from the year.");
-            }
-
-            return century;
+            return year % 100;
         }
 
-        internal static DayOfWeek DayOfWeek(CalendarDate calendarDate)                                                                  // http://www.stoimen.com/blog/2012/04/24/computer-algorithms-how-to-determine-the-day-of-the-week/
+        internal static TimeSpan Subtract(CalendarDate later, TimePoint earlier)
         {
-            var yearOfCentury = int.Parse(calendarDate.Year.ToString().Substring(calendarDate.Century.ToString().Length));
+            if (earlier is CalendarDate)
+            {
+                return later - (CalendarDate)earlier;
+            }
 
-            return (DayOfWeek)((
-                  calendarDate.Day
-                + (IsLeapYear(calendarDate.Year) ? DayOfWeekMonthKeys366[calendarDate.Month] : DayOfWeekMonthKeys365[calendarDate.Month])
-                + yearOfCentury
-                + yearOfCentury / 4
-                + DayOfWeekCenturyKeys[calendarDate.Century % 4 < 0 ? 4 + (calendarDate.Century % 4) : calendarDate.Century % 4])
-            % 7);
+            if (earlier is OrdinalDate)
+            {
+                return later - ((OrdinalDate)earlier).ToCalendarDate();
+            }
+
+            if (earlier is WeekDate)
+            {
+                return later - ((WeekDate)earlier).ToCalendarDate();
+            }
+
+            throw new InvalidOperationException($"A {earlier.GetType()} cannot be subtracted from a {later.GetType()}");
         }
 
-        internal static int DayOfYear(WeekDate weekDate)
+        internal static TimeSpan Subtract(CalendarDateTime later, TimePoint earlier)
         {
-            return (weekDate.Week - 1) * 7
-                + (weekDate.Day - 1)
-                + (int)DayOfWeek(new CalendarDate(weekDate.Year, 1, 1));
+            if (earlier is CalendarDateTime)
+            {
+                return later - (CalendarDateTime)earlier;
+            }
+
+            if (earlier is OrdinalDateTime)
+            {
+                return later - ((OrdinalDateTime)earlier).ToCalendarDateTime();
+            }
+
+            if (earlier is WeekDateTime)
+            {
+                return later - ((WeekDateTime)earlier).ToCalendarDateTime();
+            }
+
+            if (earlier is CalendarDate)
+            {
+                return later - (CalendarDate)earlier;
+            }
+
+            if (earlier is OrdinalDate)
+            {
+                return later - ((OrdinalDate)earlier).ToCalendarDate();
+            }
+
+            if (earlier is WeekDate)
+            {
+                return later - ((WeekDate)earlier).ToCalendarDate();
+            }
+
+            if (earlier is Time)
+            {
+                return later - (Time)earlier;
+            }
+
+            throw new InvalidOperationException($"A {earlier.GetType()} cannot be subtracted from a {later.GetType()}");
         }
 
-        internal static TimeSpan Subtract(CalendarDate x, CalendarDate y)
+        internal static TimeSpan Subtract(Time later, TimePoint earlier)
         {
-            var years = x.Year - y.Year;
+            if (earlier is Time)
+            {
+                return later - (Time)earlier;
+            }
 
-            return TimeSpan.FromDays(
-                  years * 365
-                + years / 4
-                - years / 100
-                + years / 400
-                + (IsLeapYear(y.Year) && DaysToMonth366[y.Month] + y.Day <= 60 ? 1 : 0)
-                + (IsLeapYear(x.Year) && DaysToMonth366[x.Month] + x.Day > 60 ? 1 : 0)
-                + DaysToMonth365[x.Month]
-                - DaysToMonth365[y.Month]
-                + x.Day
-                - y.Day
-            );
+            throw new InvalidOperationException($"A {earlier.GetType()} cannot be subtracted from a {later.GetType()}");
         }
 
-        internal static TimeSpan Subtract(CalendarDateTime x, CalendarDateTime y)
-        {
-            var years = x.Year - y.Year;
-            var offsetDifference = x.Time.UtcOffset - y.Time.UtcOffset;
-
-            return TimeSpan.FromDays(
-                  years * 365
-                + years / 4
-                - years / 100
-                + years / 400
-                + (IsLeapYear(y.Year) && DaysToMonth366[y.Month] + y.Day <= 60 ? 1 : 0)
-                + (IsLeapYear(x.Year) && DaysToMonth366[x.Month] + x.Day > 60 ? 1 : 0)
-                + DaysToMonth365[x.Month]
-                - DaysToMonth365[y.Month]
-                + x.Day
-                - y.Day
-            )
-                .Add(TimeSpan.FromHours(x.Hour - y.Hour + offsetDifference.Hours))
-                .Add(TimeSpan.FromMinutes(x.Minute - y.Minute + offsetDifference.Minutes))
-                .Add(TimeSpan.FromSeconds(x.Second - y.Second));
-        }
-
-        internal static TimeSpan Subtract(CalendarDateTime x, CalendarDate y)
-        {
-            var years = x.Year - y.Year;
-
-            return TimeSpan.FromDays(
-                  years * 365
-                + years / 4
-                - years / 100
-                + years / 400
-                + (IsLeapYear(y.Year) && DaysToMonth366[y.Month] + y.Day <= 60 ? 1 : 0)
-                + (IsLeapYear(x.Year) && DaysToMonth366[x.Month] + x.Day > 60 ? 1 : 0)
-                + DaysToMonth365[x.Month]
-                - DaysToMonth365[y.Month]
-                + x.Day
-                - y.Day
-            )
-                .Add(TimeSpan.FromHours(x.Hour))
-                .Add(TimeSpan.FromMinutes(x.Minute))
-                .Add(TimeSpan.FromSeconds(x.Second));
-        }
-
-        internal static TimeSpan Subtract(CalendarDateTime x, Time y)
-        {
-            var offsetDifference = x.Time.UtcOffset - y.UtcOffset;
-
-            return TimeSpan.FromHours(x.Hour - y.Hour + offsetDifference.Hours)
-                .Add(TimeSpan.FromMinutes(x.Minute - y.Minute + offsetDifference.Minutes))
-                .Add(TimeSpan.FromSeconds(x.Second - y.Second));
-        }
-
-        internal static TimeSpan Subtract(UtcOffset x, UtcOffset y)
-        {
-            return new TimeSpan(x.Hours, x.Minutes, 0) - new TimeSpan(y.Hours, y.Minutes, 0);
-        }
-
-        internal static TimeSpan Subtract(Time x, Time y)
-        {
-            var offsetDifference = x.UtcOffset - y.UtcOffset;
-
-            return TimeSpan.FromHours(x.Hour - y.Hour + offsetDifference.Hours)
-                .Add(TimeSpan.FromMinutes(x.Minute - y.Minute + offsetDifference.Minutes))
-                .Add(TimeSpan.FromSeconds(x.Second - y.Second));
-        }
-
-        internal static TimeSpan Subtract(TimePoint x, TimePoint y)
-        {
-            if (x is CalendarDateTime)
-            {
-                return Subtract((CalendarDateTime)x, y);
-            }
-            else if (x is OrdinalDateTime)
-            {
-                return Subtract(((OrdinalDateTime)x).ToCalendarDateTime(), y);
-            }
-            else if (x is WeekDateTime)
-            {
-                return Subtract(((WeekDateTime)x).ToCalendarDateTime(), y);
-            }
-            else if (x is CalendarDate)
-            {
-                return Subtract((CalendarDate)x, y);
-            }
-            else if (x is OrdinalDate)
-            {
-                return Subtract(((OrdinalDate)x).ToCalendarDate(), y);
-            }
-            else if (x is WeekDate)
-            {
-                return Subtract(((WeekDate)x).ToCalendarDate(), y);
-            }
-            else if (x is Time)
-            {
-                return Subtract((Time)x, y);
-            }
-
-            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
-        }
-
-        internal static TimeSpan Subtract(CalendarDate x, TimePoint y)
-        {
-            if (y is CalendarDate)
-            {
-                return x - (CalendarDate)y;
-            }
-
-            if (y is OrdinalDate)
-            {
-                return x - ((OrdinalDate)y).ToCalendarDate();
-            }
-
-            if (y is WeekDate)
-            {
-                return x - ((WeekDate)y).ToCalendarDate();
-            }
-
-            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
-        }
-
-        internal static TimeSpan Subtract(CalendarDateTime x, TimePoint y)
-        {
-            if (y is CalendarDateTime)
-            {
-                return x - (CalendarDateTime)y;
-            }
-
-            if (y is OrdinalDateTime)
-            {
-                return x - ((OrdinalDateTime)y).ToCalendarDateTime();
-            }
-
-            if (y is WeekDateTime)
-            {
-                return x - ((WeekDateTime)y).ToCalendarDateTime();
-            }
-
-            if (y is CalendarDate)
-            {
-                return x - (CalendarDate)y;
-            }
-
-            if (y is OrdinalDate)
-            {
-                return x - ((OrdinalDate)y).ToCalendarDate();
-            }
-
-            if (y is WeekDate)
-            {
-                return x - ((WeekDate)y).ToCalendarDate();
-            }
-
-            if (y is Time)
-            {
-                return x - (Time)y;
-            }
-
-            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
-        }
-
-        internal static TimeSpan Subtract(Time x, TimePoint y)
-        {
-            if (y is Time)
-            {
-                return x - (Time)y;
-            }
-
-            throw new InvalidOperationException($"A {y.GetType()} cannot be subtracted from a {x.GetType()}");
-        }
-
-        internal static int WeekOfYear(CalendarDate calendarDate)                                                                       // http://en.wikipedia.org/wiki/ISO_week_date
+        internal static int WeekOfYear(CalendarDate calendarDate)
         {
             return (DayOfYear(calendarDate) - (int)DayOfWeek(calendarDate) + 10) / 7;
         }

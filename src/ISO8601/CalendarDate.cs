@@ -10,7 +10,7 @@ namespace System.ISO8601
         private readonly int _day;
         private readonly int _month;
         private readonly long _year;
-        private int _century;
+        private long _century;
         private CalendarDatePrecision _precision;
 
         public CalendarDate(long year, int month, int day) : this(year, month)
@@ -46,7 +46,7 @@ namespace System.ISO8601
         {
         }
 
-        public int Century
+        public long Century
         {
             get
             {
@@ -91,7 +91,7 @@ namespace System.ISO8601
             }
         }
 
-        public static CalendarDate FromCentury(int century)
+        public static CalendarDate FromCentury(long century)
         {
             return new CalendarDate
             {
@@ -100,9 +100,9 @@ namespace System.ISO8601
             };
         }
 
-        public static TimeSpan operator -(CalendarDate x, CalendarDate y)
+        public static TimeSpan operator -(CalendarDate later, CalendarDate earlier)
         {
-            return ISO8601Calculator.Subtract(x, y);
+            return ISO8601Calculator.Subtract(later, earlier);
         }
 
         public static CalendarDate Parse(string input, int yearLength = 4)
