@@ -5,6 +5,8 @@ namespace System.EDTF
     public static class ExtendedDateTimeCalculator
     {
         private static readonly int[] DaysInMonthArray = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        private static readonly int[] DaysToMonth365 = { 0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
+        private static readonly int[] DaysToMonth366 = { 0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335 };
 
         public static ExtendedDateTime AddMonths(ExtendedDateTime e, int monthsToAdd)
         {
@@ -69,78 +71,85 @@ namespace System.EDTF
             }
         }
 
-        internal static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)                                                                  // Called from ExtendedDateTime.
+        private const int DaysPerYear = 365;
+        private const int DaysPer4Years = DaysPerYear * 4 + 1;       // 1461
+        private const int DaysPer100Years = DaysPer4Years * 25 - 1;  // 36524
+        private const int DaysPer400Years = DaysPer100Years * 4 + 1; // 146097
+
+        internal static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)
         {
-            int second = e.Second + t.Seconds;
-            int minute = e.Minute + t.Minutes;
-            int hour = e.Hour + t.Hours;
-            int day = e.Day;
-            int month = e.Month;
-            int year = e.Year;
-            int daysToAdd = t.Days;
+            // To determine the precise date and time, we will use the following method:
+            //     1. Add the number of days (rounded down) from 1 CE to the starting date to the number of days in the added duration.
+            //     2. Determine the number of whole 400 years periods which have elapsed since 1 CE.
+            //     3. Subtract the number of days elapsed during the 400 year periods from the day total.
+            //     4. Repeat steps 2 and 3 for 100, 4, and 1 year periods. The remaining days will represent the number of days since the first of january.
+            //     5. Add one to the day total to get the ordinal day of the year.
+            //     6. To determine the month, we make an estimate by dividing the number of days by 32. We use 32 since it is greater 
+            //        than the number of days in any month and it is an easy number to divide using bitwise division (since 32 = 2^5).
+            //        The actual month will be equal to or greater than the estimate because at the end of each 32 day cycle, the month
+            //        will have already advanced.
+            //     7. To find the actual month, we increment the month until the day total is greater than or equal to the
+            //        number of days between the first of january and the start of the month.
+            //     8. Subtract the number of days between the first of january and the start of the month from the day total to get
+            //        the number of days from the first of the month to the day of the month.
+            //     9. Add one to the day total to get the day of the month.
+            //    10. The remainders of the total hours, minutes, and seconds when divided by their carry-over values will give
+            //        the correct time.
 
-            while (second > 59)
+            var t1 = e - new ExtendedDateTime(1, 1, 1);
+  
+            int totalDays = (int)(t1.TotalDays + t.TotalDays);
+
+            int fourHundredYearPeriods = totalDays / DaysPer400Years;
+            totalDays -= fourHundredYearPeriods * DaysPer400Years;
+
+            int oneHundredYearPeriods = totalDays / DaysPer100Years;
+            totalDays -= oneHundredYearPeriods * DaysPer100Years;
+
+            int fourYearPeriods = totalDays / DaysPer4Years;
+            totalDays -= fourYearPeriods * DaysPer4Years;
+
+            int oneYearPeriods = totalDays / DaysPerYear;
+            totalDays -= oneYearPeriods * DaysPerYear;
+
+            int year = fourHundredYearPeriods * 400 + oneHundredYearPeriods * 100 + fourYearPeriods * 4 + oneYearPeriods + 1;
+
+            int dayOfYear = totalDays + 1;
+
+            int month = totalDays / 32 + 1;
+
+            while (month < 12 && totalDays >= DaysToMonth(year, month + 1))
             {
-                second -= 60;
-                minute++;
+                month++;
             }
 
-            while (minute > 59)
-            {
-                minute -= 60;
-                hour++;
-            }
+            totalDays -= DaysToMonth(year, month);
 
-            while (hour > 23)
-            {
-                hour -= 24;
-                daysToAdd++;
-            }
+            totalDays++;
 
-            while (daysToAdd > 0)
-            {
-                int daysToNextMonth = DaysInMonth(year, month) - day;
-
-                if (daysToAdd >= daysToNextMonth)
-                {
-                    if (month == 12)
-                    {
-                        year++;
-                        month = 1;
-                    }
-                    else
-                    {
-                        month++;
-                    }
-
-                    day = 1;
-                    daysToAdd -= daysToNextMonth;
-                }
-                else
-                {
-                    day += daysToAdd;
-                    daysToAdd = 0;
-                }
-            }
+            int day = totalDays;
+            int hour = (int)((t1.TotalHours + t.TotalHours) % 24);
+            int minute = (int)((t1.TotalMinutes + t.TotalMinutes) % 60);
+            int second = (int)((t1.TotalSeconds + t.TotalSeconds) % 60);
 
             if (second != 0 || e.Precision == ExtendedDateTimePrecision.Second)
             {
-                return new ExtendedDateTime(year, month, day, hour, minute, second, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+                return new ExtendedDateTime(year, month, totalDays, hour, minute, second, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
             if (minute != 0 || e.Precision == ExtendedDateTimePrecision.Minute)
             {
-                return new ExtendedDateTime(year, month, day, hour, minute, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+                return new ExtendedDateTime(year, month, totalDays, hour, minute, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
             if (hour != 0 || e.Precision == ExtendedDateTimePrecision.Hour)
             {
-                return new ExtendedDateTime(year, month, day, hour, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
+                return new ExtendedDateTime(year, month, totalDays, hour, e.UtcOffset, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
-            if (day != 1 || e.Precision == ExtendedDateTimePrecision.Day)
+            if (totalDays != 1 || e.Precision == ExtendedDateTimePrecision.Day)
             {
-                return new ExtendedDateTime(year, month, day, e.YearFlags, e.MonthFlags, e.DayFlags);
+                return new ExtendedDateTime(year, month, totalDays, e.YearFlags, e.MonthFlags, e.DayFlags);
             }
 
             if (month != 1 || e.Precision == ExtendedDateTimePrecision.Month)
@@ -155,7 +164,8 @@ namespace System.EDTF
         {
             if (extendedDateTime.Month == 2 && extendedDateTime.Day == 29 && IsLeapYear(extendedDateTime.Year) && !IsLeapYear(extendedDateTime.Year + count))
             {
-                throw new InvalidOperationException("The years added to a leap day must result in another leap day.");
+                extendedDateTime.Month = 3;
+                extendedDateTime.Day = 1;
             }
 
             extendedDateTime.Year += count;
@@ -267,95 +277,29 @@ namespace System.EDTF
             return new ExtendedDateTime(year, e.YearFlags);
         }
 
-        internal static ExtendedTimeSpan Subtract(ExtendedDateTime minuend, ExtendedDateTime subtrahend)
+        public static int DaysToMonth(int year, int month)
         {
-            var invert = subtrahend > minuend;
+            return IsLeapYear(year) ? DaysToMonth366[month] : DaysToMonth365[month];
+        }
 
-            var e2 = invert ? subtrahend : minuend;
-            var e1 = invert ? minuend : subtrahend;
-
-            var years = 0;
-            var months = 0;
-            var totalMonths = 0d;
-            var days = 0;
-            var exclusiveDays = 0;
-            var offsetDifference = e2.UtcOffset - e1.UtcOffset;
-            var hours = e2.Hour - e1.Hour + offsetDifference.Hours;
-            var minutes = e2.Minute - e1.Minute + offsetDifference.Minutes;
-            var seconds = e2.Second - e1.Second;
-
-            var includeStartDay = e2.Hour >= e1.Hour;                                                                                                  // When there are more or equal hours added to the end day than hours passed in the start day, then we have a full day.
-            var includeStartMonth = e1.Day == 1 && includeStartDay;
-            var includeStartYear = e1.Month == 1 && includeStartMonth;
-
-            var yearsEqual = e1.Year == e2.Year;
-            var yearsMonthsEqual = yearsEqual && e1.Month == e2.Month;
-
-            if (yearsEqual)
-            {
-                for (int i = e1.Month + (includeStartMonth ? 0 : 1); i < e2.Month; i++)                                                                // Add the difference between two months in the same year.
-                {
-                    months++;
-                    totalMonths++;
-                    days += DaysInMonth(e1.Year, i);
-                }
-            }
-            else
-            {
-                for (int year = e1.Year + (includeStartYear ? 0 : 1); year < e2.Year; year++)                                                          // Add the years between.
-                {
-                    years++;
-                    days += DaysInYear(year);
-                }
-
-                if (!includeStartYear)
-                {
-                    for (int i = e1.Month + (includeStartMonth ? 0 : 1); i <= 12; i++)                                                                 // Add the months remaining in the starting year.
-                    {
-                        months++;
-                        totalMonths++;
-                        days += DaysInMonth(e1.Year, i);
-                    }
-
-                    for (int i = e2.Month - 1; i >= 1; i--)                                                                                            // Add the months into the ending year excluding the ending month.
-                    {
-                        months++;
-                        totalMonths++;
-                        days += DaysInMonth(e2.Year, i);
-                    }
-                }
-            }
-
-            if (yearsMonthsEqual)
-            {
-                totalMonths += (e2.Day - e1.Day) / DaysInMonth(e1.Year, e1.Month);
-
-                for (int i = e1.Day + (includeStartDay ? 0 : 1); i < e2.Day; i++)                                                                      // Add the difference between two days in the same month of the same year.
-                {
-                    exclusiveDays++;
-                    days++;
-                }
-            }
-            else if (!includeStartMonth)
-            {
-                var daysInMonth = DaysInMonth(e1.Year, e1.Month);
-
-                totalMonths += ((daysInMonth - (e1.Day - 1)) / (double)daysInMonth) + ((e2.Day - 1) / (double)DaysInMonth(e2.Year, e2.Month));         // The -1 is because the start day is excluded (e.g. If the start day is Dec. 2, then only one day has passed in the month, so there are 30 remaining days.)
-
-                for (int i = e1.Day + (includeStartDay ? 0 : 1); i <= daysInMonth; i++)                                                                // Add the days remaining in the starting month.
-                {
-                    exclusiveDays++;
-                    days++;
-                }
-
-                for (int i = e2.Day - 1; i >= 1; i--)                                                                                                  // Add the days into the ending month excluding the ending day.
-                {
-                    exclusiveDays++;
-                    days++;
-                }
-            }
-
-            return invert ? new ExtendedTimeSpan(-years, -totalMonths / 12, -months, -totalMonths, -exclusiveDays, new TimeSpan(-days, -hours, -minutes, -seconds)) : new ExtendedTimeSpan(years, totalMonths / 12, months, totalMonths, exclusiveDays, new TimeSpan(days, hours, minutes, seconds));
+        internal static TimeSpan Subtract(ExtendedDateTime later, ExtendedDateTime earlier)
+        {
+            return TimeSpan.FromDays(
+                         (later.Year - earlier.Year) * 365
+                       + (later.Year - 1) / 4 - (earlier.Year - 1) / 4
+                       - (later.Year - 1) / 100 + (earlier.Year - 1) / 100
+                       + (later.Year - 1) / 400 - (earlier.Year - 1) / 400
+                       + DaysToMonth(later.Year, later.Month)
+                       - DaysToMonth(earlier.Year, earlier.Month)
+                       + later.Day
+                       - earlier.Day)
+                 + TimeSpan.FromHours(
+                         later.Hour - earlier.Hour
+                       + later.UtcOffset.Hours - earlier.UtcOffset.Hours)
+                 + TimeSpan.FromMinutes(
+                         later.Minute - earlier.Minute
+                       + later.UtcOffset.Minutes - earlier.UtcOffset.Minutes)
+                 + TimeSpan.FromSeconds(later.Second - earlier.Second);
         }
 
         internal static ExtendedDateTime SubtractMonths(ExtendedDateTime e, int count)                                               // Called from ExtendedDateTime.

@@ -63,7 +63,7 @@ namespace System.EDTF
             return null;
         }
 
-        public ExtendedTimeSpan GetSpan()
+        public TimeSpan GetSpan()
         {
             return Latest() - Earliest();
         }

@@ -23,7 +23,7 @@ namespace System.EDTF
         {
         }
 
-        public ExtendedTimeSpan Span()
+        public TimeSpan Span()
         {
             return End.Latest() - Start.Earliest();
         }

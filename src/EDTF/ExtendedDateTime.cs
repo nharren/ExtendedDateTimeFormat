@@ -827,7 +827,7 @@ namespace System.EDTF
             return ExtendedDateTimeCalculator.Subtract(e, t);
         }
 
-        public static ExtendedTimeSpan operator -(ExtendedDateTime e2, ExtendedDateTime e1)
+        public static TimeSpan operator -(ExtendedDateTime e2, ExtendedDateTime e1)
         {
             return ExtendedDateTimeCalculator.Subtract(e2, e1);
         }
