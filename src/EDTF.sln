@@ -8,17 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\doc\EDTF Examples.md = ..\doc\EDTF Examples.md
 		..\doc\EDTF.ebnf = ..\doc\EDTF.ebnf
 		..\doc\Features.md = ..\doc\Features.md
-		..\doc\ISO 8601 Examples.md = ..\doc\ISO 8601 Examples.md
-		..\doc\ISO 8601.ebnf = ..\doc\ISO 8601.ebnf
 		..\LICENSE.txt = ..\LICENSE.txt
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISO8601", "ISO8601\ISO8601.csproj", "{67D4776B-CC09-418D-BB5E-B2DC31259967}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTF", "EDTF\EDTF.csproj", "{DE828727-15F5-4327-933C-6D6825513400}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISO8601.Tests", "ISO8601.Tests\ISO8601.Tests.csproj", "{90BA7FE9-A60F-4825-8758-8E8907029557}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTF.Tests", "EDTF.Tests\EDTF.Tests.csproj", "{143DEF20-18F4-487D-8E03-20F19649C147}"
 EndProject
@@ -28,18 +22,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{67D4776B-CC09-418D-BB5E-B2DC31259967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67D4776B-CC09-418D-BB5E-B2DC31259967}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67D4776B-CC09-418D-BB5E-B2DC31259967}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67D4776B-CC09-418D-BB5E-B2DC31259967}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE828727-15F5-4327-933C-6D6825513400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE828727-15F5-4327-933C-6D6825513400}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE828727-15F5-4327-933C-6D6825513400}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE828727-15F5-4327-933C-6D6825513400}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90BA7FE9-A60F-4825-8758-8E8907029557}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90BA7FE9-A60F-4825-8758-8E8907029557}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90BA7FE9-A60F-4825-8758-8E8907029557}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90BA7FE9-A60F-4825-8758-8E8907029557}.Release|Any CPU.Build.0 = Release|Any CPU
 		{143DEF20-18F4-487D-8E03-20F19649C147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{143DEF20-18F4-487D-8E03-20F19649C147}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{143DEF20-18F4-487D-8E03-20F19649C147}.Release|Any CPU.ActiveCfg = Release|Any CPU
