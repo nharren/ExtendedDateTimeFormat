@@ -14,18 +14,22 @@ var second = new ExtendedDateTime(2015, 4, 16, 3, 26, 25);
 #### UTC Offsets
 
 ```csharp
-var local = new ExtendedDateTime(2015, 4, 16, 3, 26, 25);
-var utc   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeSpan.Zero);
-var est   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, TimeSpan.FromHours(-5);
-var nst   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, new TimeSpan(-3, -30, 0);
+var utc   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25);
+var est   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, -5);
+var nst   = new ExtendedDateTime(2015, 4, 16, 3, 26, 25, -3, -30);
 ``` 
 
 #### Approximation and Uncertainty
 
 ```csharp
-var uncertainMonth       = new ExtendedDateTime(2015, 4, MonthFlags.Uncertain);
-var approximateMonth     = new ExtendedDateTime(2015, 4, MonthFlags.Approximate);
-var uncertainApproxMonth = new ExtendedDateTime(2015, 4, MonthFlags.Uncertain | MonthFlags.Approximate);
+var uncertainMonth = new ExtendedDateTime(2015, 4);
+uncertainMonth.MonthFlags = MonthFlags.Uncertain;
+
+var approximateMonth = new ExtendedDateTime(2015, 4);
+approximateMonth.MonthFlags = MonthFlags.Approximate;
+
+var uncertainApproxMonth = new ExtendedDateTime(2015, 4);
+uncertainApproxMonth.MonthFlags = MonthFlags.Uncertain | MonthFlags.Approximate;
 ```
 
 #### Seasons
@@ -33,7 +37,8 @@ var uncertainApproxMonth = new ExtendedDateTime(2015, 4, MonthFlags.Uncertain | 
 ```csharp
 var season            = ExtendedDateTime.FromSeason(2015, Season.Spring);
 var qualifiedSeason   = ExtendedDateTime.FromSeason(2105, Season.Spring, "NorthernHemisphere");
-var approximateSeason = ExtendedDateTime.FromSeason(2105, Season.Spring, SeasonFlags.Approximate);
+var approximateSeason = ExtendedDateTime.FromSeason(2105, Season.Spring);
+approximateSeason.SeasonFlags = SeasonFlags.Approximate;
 ```
 
 #### Long Years

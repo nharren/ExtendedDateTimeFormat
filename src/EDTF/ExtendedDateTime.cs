@@ -22,9 +22,9 @@ namespace System.EDTF
         private int _day;
         private DayFlags _dayFlags;
         private int _hour;
+        private bool _isLongYear;
         private bool _isOpen;
         private bool _isUnknown;
-        private bool _isLongYear;
         private int _minute;
         private int _month;
         private MonthFlags _monthFlags;
@@ -81,7 +81,6 @@ namespace System.EDTF
 
         internal ExtendedDateTime()
         {
-
         }
 
         protected ExtendedDateTime(SerializationInfo info, StreamingContext context)
@@ -174,6 +173,19 @@ namespace System.EDTF
             internal set
             {
                 _hour = value;
+            }
+        }
+
+        public bool IsLongYear
+        {
+            get
+            {
+                return _isLongYear;
+            }
+
+            set
+            {
+                _isLongYear = value;
             }
         }
 
@@ -392,19 +404,6 @@ namespace System.EDTF
             }
         }
 
-        public bool IsLongYear
-        {
-            get
-            {
-                return _isLongYear;
-            }
-
-            set
-            {
-                _isLongYear = value;
-            }
-        }
-
         public static ExtendedDateTime FromLongYear(int year)
         {
             return new ExtendedDateTime { _year = year, _isLongYear = true };
@@ -428,6 +427,16 @@ namespace System.EDTF
             }
 
             return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _yearPrecision = precision };
+        }
+
+        public static ExtendedDateTime FromSeason(int year, Season season, string seasonQualifier = null)
+        {
+            if (season == Season.Undefined)
+            {
+                throw new ArgumentException("A season cannot be input as undefined.");
+            }
+
+            return new ExtendedDateTime { _year = year, _season = season, _seasonQualifier = seasonQualifier };
         }
 
         public static ExtendedDateTime operator -(ExtendedDateTime e, TimeSpan t)
@@ -535,11 +544,6 @@ namespace System.EDTF
             return Comparer.Compare(this, (ExtendedDateTime)obj) == 0;
         }
 
-        public ExtendedDateTime ToRoundedPrecision(ExtendedDateTimePrecision p, bool roundUp = false)
-        {
-            return ExtendedDateTimeCalculator.ToRoundedPrecision(this, p, roundUp);
-        }
-
         public bool Equals(ExtendedDateTime other)
         {
             return Comparer.Compare(this, other) == 0;
@@ -578,6 +582,11 @@ namespace System.EDTF
         public ExtendedDateTime SubtractYears(int count)
         {
             return ExtendedDateTimeCalculator.SubtractYears(this, count);
+        }
+
+        public ExtendedDateTime ToRoundedPrecision(ExtendedDateTimePrecision p, bool roundUp = false)
+        {
+            return ExtendedDateTimeCalculator.ToRoundedPrecision(this, p, roundUp);
         }
 
         public override string ToString()
