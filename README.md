@@ -22,6 +22,8 @@ The Extended Date Time Format is a proposed extension to the standard datetime f
 
 [Features](doc/Features.md)
 
+[Nuget](https://www.nuget.org/packages/EDTF)
+
 [EBNF Description](doc/EDTF.ebnf)
 
 [The MIT License](LICENSE.txt)
