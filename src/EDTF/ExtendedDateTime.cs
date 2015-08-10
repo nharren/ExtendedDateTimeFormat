@@ -13,10 +13,10 @@ namespace System.EDTF
     [TypeConverter(typeof(ExtendedDateTimeConverter))]
     public class ExtendedDateTime : ISingleExtendedDateTimeType, IComparable, IComparable<ExtendedDateTime>, IEquatable<ExtendedDateTime>, ISerializable, IXmlSerializable, ICloneable
     {
-        public static readonly ExtendedDateTime Maximum = new ExtendedDateTime(9999, 12, 31, 23, 59, 59, TimeSpan.FromHours(14));
-        public static readonly ExtendedDateTime Minimum = new ExtendedDateTime(-9999, 1, 1, 0, 0, 0, TimeSpan.FromHours(-12));
-        public static readonly ExtendedDateTime Open = new ExtendedDateTime() { _isOpen = true };
-        public static readonly ExtendedDateTime Unknown = new ExtendedDateTime() { _isUnknown = true };
+        public static readonly ExtendedDateTime Maximum = new ExtendedDateTime(9999, 12, 31, 23, 59, 59, 14);
+        public static readonly ExtendedDateTime Minimum = new ExtendedDateTime(-9999, 1, 1, 0, 0, 0, -12);
+        public static readonly ExtendedDateTime Open = new ExtendedDateTime { _isOpen = true };
+        public static readonly ExtendedDateTime Unknown = new ExtendedDateTime { _isUnknown = true };
 
         private static ExtendedDateTimeComparer _comparer;
         private int _day;
@@ -24,6 +24,7 @@ namespace System.EDTF
         private int _hour;
         private bool _isOpen;
         private bool _isUnknown;
+        private bool _isLongYear;
         private int _minute;
         private int _month;
         private MonthFlags _monthFlags;
@@ -38,428 +39,52 @@ namespace System.EDTF
         private YearFlags _yearFlags;
         private int? _yearPrecision;
 
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
-        {
-            _dayFlags = dayFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute, second, utcOffset)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute, second)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, minute, second, utcOffset)
-        {
-            _dayFlags = dayFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, DayFlags dayFlags) : this(year, month, day, hour, minute, second)
-        {
-            _dayFlags = dayFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, MonthFlags monthFlags) : this(year, month, day, hour, minute, second, utcOffset)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, MonthFlags monthFlags) : this(year, month, day, hour, minute, second)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, minute, second, utcOffset)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, YearFlags yearFlags) : this(year, month, day, hour, minute, second)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, minute)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, minute)
-        {
-            _dayFlags = dayFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute, utcOffset)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, minute)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, minute, utcOffset)
-        {
-            _dayFlags = dayFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, DayFlags dayFlags) : this(year, month, day, hour, minute)
-        {
-            _dayFlags = dayFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, MonthFlags monthFlags) : this(year, month, day, hour, minute, utcOffset)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, MonthFlags monthFlags) : this(year, month, day, hour, minute)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, minute, utcOffset)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, YearFlags yearFlags) : this(year, month, day, hour, minute)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day, hour)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
-        {
-            _dayFlags = dayFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day, hour)
-        {
-            _dayFlags = dayFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour, utcOffset)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day, hour)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, DayFlags dayFlags) : this(year, month, day, hour, utcOffset)
-        {
-            _dayFlags = dayFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, DayFlags dayFlags) : this(year, month, day, hour)
-        {
-            _dayFlags = dayFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, MonthFlags monthFlags) : this(year, month, day, hour, utcOffset)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, MonthFlags monthFlags) : this(year, month, day, hour)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset, YearFlags yearFlags) : this(year, month, day, hour, utcOffset)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, YearFlags yearFlags) : this(year, month, day, hour)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, MonthFlags monthFlags, DayFlags dayFlags) : this(year, month, day)
-        {
-            _dayFlags = dayFlags;
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags, DayFlags dayFlags) : this(year, month, day)
-        {
-            _dayFlags = dayFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month, day)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, DayFlags dayFlags) : this(year, month, day)
-        {
-            _dayFlags = dayFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, MonthFlags monthFlags) : this(year, month, day)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, YearFlags yearFlags) : this(year, month, day)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, YearFlags yearFlags, MonthFlags monthFlags) : this(year, month)
-        {
-            _monthFlags = monthFlags;
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, MonthFlags monthFlags) : this(year, month)
-        {
-            _monthFlags = monthFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, YearFlags yearFlags) : this(year, month)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, YearFlags yearFlags) : this(year)
-        {
-            _yearFlags = yearFlags;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second, TimeSpan utcOffset) : this(year, month, day, hour, minute, utcOffset)
-        {
-            if (second < 0 || second > 59)
-            {
-                throw new ArgumentException("second");
-            }
-
-            _second = second;
-            _precision = ExtendedDateTimePrecision.Second;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, int second) : this(year, month, day, hour, minute)
-        {
-            if (second < 0 || second > 59)
-            {
-                throw new ArgumentException("second");
-            }
-
-            _second = second;
-            _precision = ExtendedDateTimePrecision.Second;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute, TimeSpan utcOffset) : this(year, month, day, hour, utcOffset)
-        {
-            if (minute < 0 || minute > 59)
-            {
-                throw new ArgumentException("minute");
-            }
-
-            _minute = minute;
-            _precision = ExtendedDateTimePrecision.Minute;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, int minute) : this(year, month, day, hour)
-        {
-            if (minute < 0 || minute > 59)
-            {
-                throw new ArgumentException("minute");
-            }
-
-            _minute = minute;
-            _precision = ExtendedDateTimePrecision.Minute;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour, TimeSpan utcOffset) : this(year, month, day, hour)
-        {
-            if (utcOffset.Milliseconds != 0 || utcOffset.Seconds != 0 || utcOffset.Days != 0)
-            {
-                throw new ArgumentOutOfRangeException("utcOffset");
-            }
-
-            _utcOffset = utcOffset;
-        }
-
-        public ExtendedDateTime(int year, int month, int day, int hour) : this(year, month, day)
-        {
-            if (hour < 0 || hour > 23)
-            {
-                throw new ArgumentException("hour");
-            }
-
-            _hour = hour;
-            _precision = ExtendedDateTimePrecision.Hour;
-        }
-
-        public ExtendedDateTime(int year, int month, int day) : this(year, month)
-        {
-            if (day < 1 || day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
-            {
-                throw new ArgumentOutOfRangeException("day");
-            }
-
-            _day = day;
-            _precision = ExtendedDateTimePrecision.Day;
-        }
-
-        public ExtendedDateTime(int year, int month) : this(year)
-        {
-            if (month < 1 || month > 12)
-            {
-                throw new ArgumentOutOfRangeException("month");
-            }
-
-            _month = month;
-            _precision = ExtendedDateTimePrecision.Month;
-        }
-
-        public ExtendedDateTime(int year) : this()
+        public ExtendedDateTime(int year, int month = 1, int day = 1, int hour = 0, int minute = 0, int second = 0, int utcHourOffset = 0, int utcMinuteOffset = 0)
         {
             if (year < -9999 || year > 9999)
             {
-                throw new ArgumentOutOfRangeException("year");
+                throw new ArgumentOutOfRangeException(nameof(year));
+            }
+
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentOutOfRangeException(nameof(month));
+            }
+
+            if (day < 1 || day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
+            {
+                throw new ArgumentOutOfRangeException(nameof(day));
+            }
+
+            if (hour < 0 || hour > 23)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hour));
+            }
+
+            if (minute < 0 || minute > 59)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minute));
+            }
+
+            if (second < 0 || second > 59)
+            {
+                throw new ArgumentOutOfRangeException(nameof(second));
             }
 
             _year = year;
-            _precision = ExtendedDateTimePrecision.Year;
+            _month = month;
+            _day = day;
+            _hour = hour;
+            _minute = minute;
+            _second = second;
         }
 
         internal ExtendedDateTime()
         {
-            _year = 0;
-            _month = 1;
-            _day = 1;
-            _hour = 0;
-            _minute = 0;
-            _second = 0;
-            _season = Season.Undefined;
-            _yearFlags = 0;
-            _monthFlags = 0;
-            _dayFlags = 0;
-            _seasonFlags = 0;
-            _seasonQualifier = null;
-            _isOpen = false;
-            _isUnknown = false;
-            _precision = ExtendedDateTimePrecision.Year;
-            _yearExponent = null;
-            _yearPrecision = null;
-            _utcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+
         }
 
-        protected ExtendedDateTime(SerializationInfo info, StreamingContext context) : this()
+        protected ExtendedDateTime(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
             {
@@ -494,6 +119,11 @@ namespace System.EDTF
         {
             get
             {
+                if (_isOpen)
+                {
+                    return Now.Day;
+                }
+
                 return _day;
             }
 
@@ -510,7 +140,7 @@ namespace System.EDTF
                 return _dayFlags;
             }
 
-            internal set
+            set
             {
                 _dayFlags = value;
             }
@@ -533,6 +163,11 @@ namespace System.EDTF
         {
             get
             {
+                if (_isOpen)
+                {
+                    return Now.Hour;
+                }
+
                 return _hour;
             }
 
@@ -572,6 +207,11 @@ namespace System.EDTF
         {
             get
             {
+                if (_isOpen)
+                {
+                    return Now.Minute;
+                }
+
                 return _minute;
             }
 
@@ -585,6 +225,11 @@ namespace System.EDTF
         {
             get
             {
+                if (_isOpen)
+                {
+                    return Now.Month;
+                }
+
                 return _month;
             }
 
@@ -601,7 +246,7 @@ namespace System.EDTF
                 return _monthFlags;
             }
 
-            internal set
+            set
             {
                 _monthFlags = value;
             }
@@ -614,7 +259,7 @@ namespace System.EDTF
                 return _precision;
             }
 
-            internal set
+            set
             {
                 _precision = value;
             }
@@ -640,7 +285,7 @@ namespace System.EDTF
                 return _seasonFlags;
             }
 
-            internal set
+            set
             {
                 _seasonFlags = value;
             }
@@ -663,6 +308,11 @@ namespace System.EDTF
         {
             get
             {
+                if (_isOpen)
+                {
+                    return Now.Second;
+                }
+
                 return _second;
             }
 
@@ -689,6 +339,11 @@ namespace System.EDTF
         {
             get
             {
+                if (_isOpen)
+                {
+                    return Now.Year;
+                }
+
                 return _year;
             }
 
@@ -718,7 +373,7 @@ namespace System.EDTF
                 return _yearFlags;
             }
 
-            internal set
+            set
             {
                 _yearFlags = value;
             }
@@ -737,12 +392,25 @@ namespace System.EDTF
             }
         }
 
-        public static ExtendedDateTime FromLongYear(int year)
+        public bool IsLongYear
         {
-            return new ExtendedDateTime { _year = year };
+            get
+            {
+                return _isLongYear;
+            }
+
+            set
+            {
+                _isLongYear = value;
+            }
         }
 
-        public static ExtendedDateTime FromScientificNotation(int significand, int exponent, int precision)
+        public static ExtendedDateTime FromLongYear(int year)
+        {
+            return new ExtendedDateTime { _year = year, _isLongYear = true };
+        }
+
+        public static ExtendedDateTime FromScientificNotation(int significand, int? exponent = null, int? precision = null)
         {
             if (exponent < 1)
             {
@@ -759,67 +427,7 @@ namespace System.EDTF
                 throw new ArgumentException("significand", "The significand must be nonzero.");
             }
 
-            return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _yearPrecision = precision, _precision = ExtendedDateTimePrecision.Year };
-        }
-
-        public static ExtendedDateTime FromScientificNotation(int significand, int exponent)
-        {
-            if (exponent < 1)
-            {
-                throw new ArgumentOutOfRangeException("exponent", "An exponent must be positive.");
-            }
-
-            if (significand == 0)
-            {
-                throw new ArgumentException("significand", "The significand must be nonzero.");
-            }
-
-            return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _precision = ExtendedDateTimePrecision.Year };
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags, SeasonFlags seasonFlags, string seasonQualifier)
-        {
-            if (season == Season.Undefined)
-            {
-                throw new ArgumentException("A season cannot be input as undefined.");
-            }
-
-            return new ExtendedDateTime { _year = year, _yearFlags = yearFlags, _season = season, _seasonQualifier = seasonQualifier, _seasonFlags = seasonFlags, _precision = ExtendedDateTimePrecision.Year };
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season, SeasonFlags seasonFlags, string seasonQualifier)
-        {
-            return FromSeason(year, season, 0, seasonFlags, seasonQualifier);
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags, string seasonQualifier)
-        {
-            return FromSeason(year, season, yearFlags, 0, seasonQualifier);
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season, string seasonQualifier)
-        {
-            return FromSeason(year, season, 0, 0, seasonQualifier);
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags, SeasonFlags seasonFlags)
-        {
-            return FromSeason(year, season, yearFlags, seasonFlags, null);
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season, SeasonFlags seasonFlags)
-        {
-            return FromSeason(year, season, 0, seasonFlags, null);
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season, YearFlags yearFlags)
-        {
-            return FromSeason(year, season, yearFlags, 0, null);
-        }
-
-        public static ExtendedDateTime FromSeason(int year, Season season)
-        {
-            return FromSeason(year, season, 0, 0, null);
+            return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _yearPrecision = precision };
         }
 
         public static ExtendedDateTime operator -(ExtendedDateTime e, TimeSpan t)
@@ -927,6 +535,11 @@ namespace System.EDTF
             return Comparer.Compare(this, (ExtendedDateTime)obj) == 0;
         }
 
+        public ExtendedDateTime ToRoundedPrecision(ExtendedDateTimePrecision p, bool roundUp = false)
+        {
+            return ExtendedDateTimeCalculator.ToRoundedPrecision(this, p, roundUp);
+        }
+
         public bool Equals(ExtendedDateTime other)
         {
             return Comparer.Compare(this, other) == 0;
@@ -965,11 +578,6 @@ namespace System.EDTF
         public ExtendedDateTime SubtractYears(int count)
         {
             return ExtendedDateTimeCalculator.SubtractYears(this, count);
-        }
-
-        public ExtendedDateTime ToPrecision(ExtendedDateTimePrecision precision, bool roundUp)
-        {
-            return ExtendedDateTimeCalculator.ToPrecision(this, precision, roundUp);
         }
 
         public override string ToString()

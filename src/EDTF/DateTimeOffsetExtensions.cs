@@ -4,7 +4,7 @@
     {
         public static ExtendedDateTime ToExtendedDateTime(this DateTimeOffset d)
         {
-            return new ExtendedDateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Offset);
+            return new ExtendedDateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Offset.Hours, d.Offset.Minutes);
         }
     }
 }
