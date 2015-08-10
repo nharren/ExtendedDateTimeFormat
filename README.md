@@ -19,6 +19,9 @@ The Extended Date Time Format is a proposed extension to the standard datetime f
 ## More Information
 
 [Examples](doc/EDTF Examples.md)
+
 [Features](doc/Features.md)
+
 [EBNF Description](doc/EDTF.ebnf)
+
 [The MIT License](LICENSE.txt)
