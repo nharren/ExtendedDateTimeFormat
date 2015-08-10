@@ -1,38 +1,6 @@
 ﻿## Introduction
 
-The ExtendedDateTimeFormat library is an implementation of the ISO 8601 standard and the Extended Date/Time Format (EDTF) extensions. Because EDTF is a proposed extension to the ISO 8601 standard, the features of EDTF are subject to change, and consequently, so are the features of this library. This library will likely undergo a series of breaking transformations; however, there will be stable releases along the way.
-
-#### ISO 8601
-
-From [Date and time format - ISO 8601](http://www.iso.org/iso/home/standards/iso8601.htm):
-
->##### What is ISO 8601?
->
->ISO 8601 describes an internationally accepted way to represent dates and times using numbers.
->
->When dates are represented with numbers they can be interpreted in different ways. For example, 01/05/12 could mean January 5, 2012, or May 1, 2012. On an individual level this uncertainty can be very frustrating, in a business context it can be very expensive. Organizing meetings and deliveries, writing contracts and buying airplane tickets can be very difficult when the date is unclear.
->
->ISO 8601 tackles this uncertainty by setting out an internationally agreed way to represent dates:
->
->YYYY-MM-DD
->
->For example, September 27, 2012 is represented as 2012-09-27.
->
->##### What can ISO 8601 do for me?
->
->ISO 8601 can be used by anyone who wants to use a standardized way of presenting dates and times. It helps cut out the uncertainty and confusion when communicating internationally.
->
->The full standard covers ways to write:
->
->- Date
->- Time of day
->- Coordinated universal time (UTC)
->- Local time with offset to UTC
->- Date and time
->- Time intervals
->- Recurring time intervals
-
-[The ISO 8601 Standard](http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=40874)
+The ExtendedDateTimeFormat library is an implementation the Extended Date/Time Format (EDTF) extensions. Because EDTF is a proposed extension to the ISO 8601 standard, the features of EDTF are subject to change, and consequently, so are the features of this library. This library will likely undergo a series of breaking transformations; however, there will be stable releases along the way.
 
 #### EDTF
 
@@ -48,22 +16,9 @@ The Extended Date Time Format is a proposed extension to the standard datetime f
 
 [The Extended Date/Time Format Standard](http://www.loc.gov/standards/datetime/pre-submission.html)
 
-## Examples
+## More Information
 
-[ISO 8601](doc/ISO 8601 Examples.md)
-
-[EDTF](doc/EDTF Examples.md)
-
-## Features
-
+[Examples](doc/EDTF Examples.md)
 [Features](doc/Features.md)
-
-## EBNF Descriptions
-
-[ISO 8601](doc/ISO 8601.ebnf)
-
-[EDTF](doc/EDTF.ebnf)
-
-## License
-
+[EBNF Description](doc/EDTF.ebnf)
 [The MIT License](LICENSE.txt)
