@@ -77,10 +77,13 @@ namespace System.EDTF
             _hour = hour;
             _minute = minute;
             _second = second;
+            _utcOffset = new TimeSpan(utcHourOffset, utcMinuteOffset, 0);
         }
 
         internal ExtendedDateTime()
         {
+            _month = 1;
+            _day = 1;
         }
 
         protected ExtendedDateTime(SerializationInfo info, StreamingContext context)

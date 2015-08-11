@@ -34,65 +34,6 @@
             return extendedDateTime;
         }
 
-        internal static ExtendedDateTime ToRoundedPrecision(ExtendedDateTime e, ExtendedDateTimePrecision p, bool roundUp = false)
-        {
-            var year = e.Year;
-            var month = e.Month;
-            var day = e.Day;
-            var hour = e.Hour;
-            var minute = e.Minute;
-            var second = e.Second;
-
-            if (p > ExtendedDateTimePrecision.Second)
-            {
-                second = 0;
-            }
-
-            if (p > ExtendedDateTimePrecision.Minute)
-            {
-                minute = 0;
-            }
-            else if (roundUp)
-            {
-                minute++;
-            }
-
-            if (p > ExtendedDateTimePrecision.Hour)
-            {
-                hour = 0;
-            }
-            else if (roundUp)
-            {
-                hour++;
-            }
-
-            if (p > ExtendedDateTimePrecision.Day)
-            {
-                day = 0;
-            }
-            else if (roundUp)
-            {
-                day++;
-            }
-
-            if (p > ExtendedDateTimePrecision.Month)
-            {
-                month = 0;
-            }
-            else if (roundUp)
-            {
-                month++;
-            }
-
-            var extendedDateTime = new ExtendedDateTime(year, month, day, hour, minute, second, e.UtcOffset.Hours, e.UtcOffset.Minutes);
-            extendedDateTime.YearFlags = e.YearFlags;
-            extendedDateTime.MonthFlags = e.MonthFlags;
-            extendedDateTime.DayFlags = e.DayFlags;
-            extendedDateTime.Precision = p;
-
-            return extendedDateTime;
-        }
-
         public static int CenturyOfYear(int year)
         {
             return year / 100;
@@ -121,63 +62,6 @@
         public static int YearOfCentury(int year)
         {
             return year % 100;
-        }
-
-        internal static ExtendedDateTime TimeSpanToExtendedDateTime(TimeSpan t, TimeSpan utcOffset)
-        {
-            // To determine the precise date and time, we will use the following method:
-            //     1. Add the number of days (rounded down) from 1 CE to the starting date to the number of days in the added duration.
-            //     2. Determine the number of whole 400 years periods which have elapsed since 1 CE.
-            //     3. Subtract the number of days elapsed during the 400 year periods from the day total.
-            //     4. Repeat steps 2 and 3 for 100, 4, and 1 year periods. The remaining days will represent the number of days since the first of january.
-            //     5. Add one to the day total to get the ordinal day of the year.
-            //     6. To determine the month, we make an estimate by dividing the number of days by 32. We use 32 since it is greater
-            //        than the number of days in any month and it is an easy number to divide using bitwise division (since 32 = 2^5).
-            //        The actual month will be equal to or greater than the estimate because at the end of each 32 day cycle, the month
-            //        will have already advanced.
-            //     7. To find the actual month, we increment the month until the day total is greater than or equal to the
-            //        number of days between the first of january and the start of the month.
-            //     8. Subtract the number of days between the first of january and the start of the month from the day total to get
-            //        the number of days from the first of the month to the day of the month.
-            //     9. Add one to the day total to get the day of the month.
-            //    10. The remainders of the total hours, minutes, and seconds when divided by their carry-over values will give
-            //        the correct time.
-
-            var totalDays = (int)t.TotalDays;
-
-            int fourHundredYearPeriods = totalDays / DaysPer400Years;
-            totalDays -= fourHundredYearPeriods * DaysPer400Years;
-
-            int oneHundredYearPeriods = totalDays / DaysPer100Years;
-            totalDays -= oneHundredYearPeriods * DaysPer100Years;
-
-            int fourYearPeriods = totalDays / DaysPer4Years;
-            totalDays -= fourYearPeriods * DaysPer4Years;
-
-            int oneYearPeriods = totalDays / DaysPerYear;
-            totalDays -= oneYearPeriods * DaysPerYear;
-
-            int year = fourHundredYearPeriods * 400 + oneHundredYearPeriods * 100 + fourYearPeriods * 4 + oneYearPeriods + 1;
-
-            int dayOfYear = totalDays + 1;
-
-            int month = totalDays / 32 + 1;
-
-            while (month < 12 && totalDays >= DaysToMonth(year, month + 1))
-            {
-                month++;
-            }
-
-            totalDays -= DaysToMonth(year, month);
-
-            totalDays++;
-
-            var day = totalDays;
-            var hour = (int)(t.TotalHours % 24);
-            var minute = (int)(t.TotalMinutes % 60);
-            var second = (int)(t.TotalSeconds % 60);
-
-            return new ExtendedDateTime(year, month, totalDays, hour, minute, second, utcOffset.Hours, utcOffset.Minutes);
         }
 
         internal static ExtendedDateTime Add(ExtendedDateTime e, TimeSpan t)
@@ -282,6 +166,122 @@
             extendedDateTime.MonthFlags = e.MonthFlags;
             extendedDateTime.DayFlags = e.DayFlags;
             extendedDateTime.Precision = e.Precision;
+
+            return extendedDateTime;
+        }
+
+        internal static ExtendedDateTime TimeSpanToExtendedDateTime(TimeSpan t, TimeSpan utcOffset)
+        {
+            // To determine the precise date and time, we will use the following method:
+            //     1. Add the number of days (rounded down) from 1 CE to the starting date to the number of days in the added duration.
+            //     2. Determine the number of whole 400 years periods which have elapsed since 1 CE.
+            //     3. Subtract the number of days elapsed during the 400 year periods from the day total.
+            //     4. Repeat steps 2 and 3 for 100, 4, and 1 year periods. The remaining days will represent the number of days since the first of january.
+            //     5. Add one to the day total to get the ordinal day of the year.
+            //     6. To determine the month, we make an estimate by dividing the number of days by 32. We use 32 since it is greater
+            //        than the number of days in any month and it is an easy number to divide using bitwise division (since 32 = 2^5).
+            //        The actual month will be equal to or greater than the estimate because at the end of each 32 day cycle, the month
+            //        will have already advanced.
+            //     7. To find the actual month, we increment the month until the day total is greater than or equal to the
+            //        number of days between the first of january and the start of the month.
+            //     8. Subtract the number of days between the first of january and the start of the month from the day total to get
+            //        the number of days from the first of the month to the day of the month.
+            //     9. Add one to the day total to get the day of the month.
+            //    10. The remainders of the total hours, minutes, and seconds when divided by their carry-over values will give
+            //        the correct time.
+
+            var totalDays = (int)t.TotalDays;
+
+            int fourHundredYearPeriods = totalDays / DaysPer400Years;
+            totalDays -= fourHundredYearPeriods * DaysPer400Years;
+
+            int oneHundredYearPeriods = totalDays / DaysPer100Years;
+            totalDays -= oneHundredYearPeriods * DaysPer100Years;
+
+            int fourYearPeriods = totalDays / DaysPer4Years;
+            totalDays -= fourYearPeriods * DaysPer4Years;
+
+            int oneYearPeriods = totalDays / DaysPerYear;
+            totalDays -= oneYearPeriods * DaysPerYear;
+
+            int year = fourHundredYearPeriods * 400 + oneHundredYearPeriods * 100 + fourYearPeriods * 4 + oneYearPeriods + 1;
+
+            int dayOfYear = totalDays + 1;
+
+            int month = totalDays / 32 + 1;
+
+            while (month < 12 && totalDays >= DaysToMonth(year, month + 1))
+            {
+                month++;
+            }
+
+            totalDays -= DaysToMonth(year, month);
+
+            totalDays++;
+
+            var day = totalDays;
+            var hour = (int)(t.TotalHours % 24);
+            var minute = (int)(t.TotalMinutes % 60);
+            var second = (int)(t.TotalSeconds % 60);
+
+            return new ExtendedDateTime(year, month, totalDays, hour, minute, second, utcOffset.Hours, utcOffset.Minutes);
+        }
+
+        internal static ExtendedDateTime ToRoundedPrecision(ExtendedDateTime e, ExtendedDateTimePrecision p, bool roundUp = false)
+        {
+            var year = e.Year;
+            var month = e.Month;
+            var day = e.Day;
+            var hour = e.Hour;
+            var minute = e.Minute;
+            var second = e.Second;
+
+            if (p > ExtendedDateTimePrecision.Second)
+            {
+                second = 0;
+            }
+
+            if (p > ExtendedDateTimePrecision.Minute)
+            {
+                minute = 0;
+            }
+            else if (roundUp)
+            {
+                minute++;
+            }
+
+            if (p > ExtendedDateTimePrecision.Hour)
+            {
+                hour = 0;
+            }
+            else if (roundUp)
+            {
+                hour++;
+            }
+
+            if (p > ExtendedDateTimePrecision.Day)
+            {
+                day = 0;
+            }
+            else if (roundUp)
+            {
+                day++;
+            }
+
+            if (p > ExtendedDateTimePrecision.Month)
+            {
+                month = 0;
+            }
+            else if (roundUp)
+            {
+                month++;
+            }
+
+            var extendedDateTime = new ExtendedDateTime(year, month, day, hour, minute, second, e.UtcOffset.Hours, e.UtcOffset.Minutes);
+            extendedDateTime.YearFlags = e.YearFlags;
+            extendedDateTime.MonthFlags = e.MonthFlags;
+            extendedDateTime.DayFlags = e.DayFlags;
+            extendedDateTime.Precision = p;
 
             return extendedDateTime;
         }
