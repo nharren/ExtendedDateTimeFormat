@@ -261,7 +261,7 @@
 
             if (p > ExtendedDateTimePrecision.Day)
             {
-                day = 0;
+                day = 1;
             }
             else if (roundUp)
             {
@@ -270,7 +270,7 @@
 
             if (p > ExtendedDateTimePrecision.Month)
             {
-                month = 0;
+                month = 1;
             }
             else if (roundUp)
             {
