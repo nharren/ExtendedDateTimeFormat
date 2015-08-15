@@ -236,12 +236,12 @@
             var minute = e.Minute;
             var second = e.Second;
 
-            if (p > ExtendedDateTimePrecision.Second)
+            if (p < ExtendedDateTimePrecision.Second)
             {
                 second = 0;
             }
 
-            if (p > ExtendedDateTimePrecision.Minute)
+            if (p < ExtendedDateTimePrecision.Minute)
             {
                 minute = 0;
             }
@@ -250,7 +250,7 @@
                 minute++;
             }
 
-            if (p > ExtendedDateTimePrecision.Hour)
+            if (p < ExtendedDateTimePrecision.Hour)
             {
                 hour = 0;
             }
@@ -259,18 +259,18 @@
                 hour++;
             }
 
-            if (p > ExtendedDateTimePrecision.Day)
+            if (p < ExtendedDateTimePrecision.Day)
             {
-                day = 0;
+                day = 1;
             }
             else if (roundUp)
             {
                 day++;
             }
 
-            if (p > ExtendedDateTimePrecision.Month)
+            if (p < ExtendedDateTimePrecision.Month)
             {
-                month = 0;
+                month = 1;
             }
             else if (roundUp)
             {
