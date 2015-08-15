@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.EDTF.Internal.Converters;
 using System.EDTF.Internal.Parsers;
 using System.EDTF.Internal.Serializers;
+using System.EDTF.Internal.Validators;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
@@ -43,32 +44,32 @@ namespace System.EDTF
         {
             if (year < -9999 || year > 9999)
             {
-                throw new ArgumentOutOfRangeException(nameof(year));
+                throw new ArgumentOutOfRangeException(nameof(year), year, $"The argument \"{nameof(year)}\" must be a value from -9999 to 9999");
             }
 
             if (month < 1 || month > 12)
             {
-                throw new ArgumentOutOfRangeException(nameof(month));
+                throw new ArgumentOutOfRangeException(nameof(month), month, $"The argument \"{nameof(month)}\" must be a value from 1 to 12");
             }
 
             if (day < 1 || day > ExtendedDateTimeCalculator.DaysInMonth(year, month))
             {
-                throw new ArgumentOutOfRangeException(nameof(day));
+                throw new ArgumentOutOfRangeException(nameof(day), day, $"The argument \"{nameof(day)}\" must be a value from 1 to {ExtendedDateTimeCalculator.DaysInMonth(year, month)}");
             }
 
             if (hour < 0 || hour > 23)
             {
-                throw new ArgumentOutOfRangeException(nameof(hour));
+                throw new ArgumentOutOfRangeException(nameof(hour), hour, $"The argument \"{nameof(hour)}\" must be a value from 0 to 23");
             }
 
             if (minute < 0 || minute > 59)
             {
-                throw new ArgumentOutOfRangeException(nameof(minute));
+                throw new ArgumentOutOfRangeException(nameof(minute), minute, $"The argument \"{nameof(minute)}\" must be a value from 0 to 59");
             }
 
             if (second < 0 || second > 59)
             {
-                throw new ArgumentOutOfRangeException(nameof(second));
+                throw new ArgumentOutOfRangeException(nameof(second), second, $"The argument \"{nameof(second)}\" must be a value from 0 to 59");
             }
 
             _year = year;
@@ -414,6 +415,11 @@ namespace System.EDTF
 
         public static ExtendedDateTime FromScientificNotation(int significand, int? exponent = null, int? precision = null)
         {
+            if (significand == 0)
+            {
+                throw new ArgumentException("significand", "The significand must be nonzero.");
+            }
+
             if (exponent < 1)
             {
                 throw new ArgumentOutOfRangeException("exponent", "An exponent must be positive.");
@@ -422,11 +428,6 @@ namespace System.EDTF
             if (precision < 1)
             {
                 throw new ArgumentOutOfRangeException("precision", "A precision must be positive.");
-            }
-
-            if (significand == 0)
-            {
-                throw new ArgumentException("significand", "The significand must be nonzero.");
             }
 
             return new ExtendedDateTime { _year = significand, _yearExponent = exponent, _yearPrecision = precision };
