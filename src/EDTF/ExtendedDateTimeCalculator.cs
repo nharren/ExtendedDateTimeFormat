@@ -1,5 +1,5 @@
 ﻿namespace System.EDTF
-{   
+{
     public static class ExtendedDateTimeCalculator
     {
         private const int DaysPer100Years = DaysPer4Years * 25 - 1;
@@ -13,39 +13,16 @@
         private static readonly int[] DaysToMonth365 = { 0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
         private static readonly int[] DaysToMonth366 = { 0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335 };
 
-        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int monthsToAdd, DayExceedsDaysInMonthStrategy dayExceedsDaysInMonthStrategy)
+        public static ExtendedDateTime AddMonths(ExtendedDateTime e, int monthsToAdd)
         {
             var monthTotal = e.Month + monthsToAdd;
+
             var month = monthTotal % 12;
+            var year = e.Year + monthTotal / 12;
 
-            if (month == 0)
+            if (e.Day > DaysInMonth(year, month))
             {
-                month = 12;
-            }
-
-            var year = e.Year + (monthTotal - 1) / 12;
-            var day = e.Day;
-
-            if (day > DaysInMonth(year, month))
-            {
-                switch (dayExceedsDaysInMonthStrategy)
-                {
-                    case DayExceedsDaysInMonthStrategy.RoundDown:
-                        day = DaysInMonth(year, month);
-                        break;
-                    case DayExceedsDaysInMonthStrategy.Overflow:
-                        day = day - DaysInMonth(year, month);
-                        monthTotal = month + 1;
-                        month = monthTotal % 12;
-
-                        if (month == 0)
-                        {
-                            month = 12;
-                        }
-
-                        year = e.Year + (monthTotal - 1) / 12;
-                        break;
-                }
+                throw new InvalidOperationException("The day is greater than the number of days in the resulting month.");
             }
 
             var extendedDateTime = new ExtendedDateTime(year, month, e.Day, e.Hour, e.Minute, e.Second, e.UtcOffset.Hours, e.UtcOffset.Minutes);
@@ -268,105 +245,36 @@
             {
                 minute = 0;
             }
+            else if (roundUp)
+            {
+                minute++;
+            }
 
             if (p < ExtendedDateTimePrecision.Hour)
             {
                 hour = 0;
+            }
+            else if (roundUp)
+            {
+                hour++;
             }
 
             if (p < ExtendedDateTimePrecision.Day)
             {
                 day = 1;
             }
+            else if (roundUp)
+            {
+                day++;
+            }
 
             if (p < ExtendedDateTimePrecision.Month)
             {
                 month = 1;
             }
-
-            if (roundUp)
+            else if (roundUp)
             {
-                switch (p)
-                {
-                    case ExtendedDateTimePrecision.Year:
-
-                        if (e.Month > 1)
-                        {
-                            year++; 
-                        }
-
-                        break;
-
-                    case ExtendedDateTimePrecision.Month:
-
-                        if (e.Day > 1)
-                        {
-                            month++; 
-                        }
-
-                        break;
-
-                    case ExtendedDateTimePrecision.Day:
-
-                        if (e.Hour > 0)
-                        {
-                            day++; 
-                        }
-
-                        break;
-
-                    case ExtendedDateTimePrecision.Hour:
-
-                        if (e.Minute > 0)
-                        {
-                            hour++; 
-                        }
-
-                        break;
-
-                    case ExtendedDateTimePrecision.Minute:
-
-                        if (e.Second > 0)
-                        {
-                            minute++; 
-                        }
-
-                        break;
-
-                    case ExtendedDateTimePrecision.Second:
-
-                        break;
-                }
-
-                if (second > 59)
-                {
-                    second = 0;
-                    minute++;
-                }
-
-                if (minute > 59)
-                {
-                    minute = 0;
-                    hour++;
-                }
-
-                if (hour > 23)
-                {
-                    hour = 0;
-                    day++;
-                }
-
-                if (day > DaysInMonth(year, month == 13 ? 1 : month))
-                {
-                    day = 1;
-                    month++;
-                }
-
-                if (month > 12)
-                {
-                    month = 1;
-                    year++;
-                }
+                month++;
             }
 
             var extendedDateTime = new ExtendedDateTime(year, month, day, hour, minute, second, e.UtcOffset.Hours, e.UtcOffset.Minutes);
