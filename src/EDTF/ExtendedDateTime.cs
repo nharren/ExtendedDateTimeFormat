@@ -497,9 +497,9 @@ namespace System.EDTF
             return ExtendedDateTimeParser.Parse(extendedDateTimeString);
         }
 
-        public ExtendedDateTime AddMonths(int count)
+        public ExtendedDateTime AddMonths(int count, DayExceedsDaysInMonthStrategy dayExceedsDaysInMonthStrategy = DayExceedsDaysInMonthStrategy.RoundDown)
         {
-            return ExtendedDateTimeCalculator.AddMonths(this, count);
+            return ExtendedDateTimeCalculator.AddMonths(this, count, dayExceedsDaysInMonthStrategy);
         }
 
         public ExtendedDateTime AddYears(int count)
